@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import '../../app/variables.scss';
 $board-width: 260px;
 $board-height: 140px;
 $board-margin: 5px;
@@ -70,19 +70,19 @@ $add-board-focus-bg: #ccc;
   color: white;
   overflow-wrap: break-word;
   text-decoration: none;
+}
 
-  &.green {
-    background: $green;
-  }
-  &.blue {
-    background: $blue;
-  }
-  &.red {
-    background: $red;
-  }
-  &.pink {
-    background: $pink;
-  }
+.board-link > .green {
+  background: $green;
+}
+.board-link > .blue {
+  background: $blue;
+}
+.board-link > .red {
+  background: $red;
+}
+.board-link > .pink {
+  background: $pink;
 }
 
 .board-link:hover,

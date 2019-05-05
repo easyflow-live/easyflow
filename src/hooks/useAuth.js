@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import firebase from 'firebase';
 
 export const useAuth = () => {
@@ -7,14 +7,16 @@ export const useAuth = () => {
     return { initializing: !user, user };
   });
 
-  const onChange = user => setState({ initializing: false, user });
-
   React.useEffect(() => {
+    const onChange = user => setState({ initializing: false, user });
+
     // listen for auth state changes
     const unsubscribe = firebase.auth().onAuthStateChanged(onChange);
     // unsubscribe to the listener when unmounting
     return () => unsubscribe();
   }, []);
 
-  return state;
+  const updateCurrentUser = user => firebase.auth().updateCurrentUser(user);
+
+  return { ...state, updateCurrentUser };
 };

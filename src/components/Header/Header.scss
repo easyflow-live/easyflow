@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import '../../app/variables.scss';
 
 // Header position has to fixed as the user scrolls to the right. Because of a limitation in react-beautiful-dnd library
 // the drag-drop context can only have one scroll container so the entire board has to be scrolled. Therefore,

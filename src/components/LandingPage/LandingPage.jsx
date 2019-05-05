@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Title } from 'react-head';
-import { FaTwitter, FaUserSecret } from 'react-icons/fa';
-import './LandingPage.css';
+import { FaUserSecret } from 'react-icons/fa';
 
-class LandingPage extends Component {
-  render = () => (
+import './LandingPage.scss';
+import { useGoogleLogin } from '../../hooks/useLogin';
+
+const LandingPage = () => {
+  const { login } = useGoogleLogin();
+
+  return (
     <div className="landing-page">
       <Title>Sign in | React Kanban</Title>
       <div className="landing-page-background">
@@ -39,18 +43,12 @@ class LandingPage extends Component {
           </p>
           <div className="signin-buttons">
             <div>
-              <a href="/auth/twitter" className="signin-button twitter-button">
-                <FaTwitter className="logo-icon" /> &nbsp;Sign in with Twitter
-              </a>
-            </div>
-            <div>
-              <a href="/auth/google" className="signin-button google-button">
+              <a onClick={login} className="signin-button google-button">
                 <img
                   className="google-logo"
                   src={'/static/images/google-logo.svg'}
                   alt="google logo"
                 />
-                &nbsp;Sign in with Google
               </a>
             </div>
             <div className="guest-button-wrapper">
@@ -63,6 +61,6 @@ class LandingPage extends Component {
       </div>
     </div>
   );
-}
+};
 
 export default LandingPage;

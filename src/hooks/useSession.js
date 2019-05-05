@@ -1,8 +1,13 @@
-const userContext = React.createContext({
+import { useContext } from 'react';
+
+const UserContext = React.createContext({
   user: null,
 });
 
+export const UserProvider = props => {
+  return <UserContext.Provider {...props} />;
+};
+
 export const useSession = () => {
-  const { user } = useContext(userContext);
-  return user;
+  return useContext(UserContext);
 };

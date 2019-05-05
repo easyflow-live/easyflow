@@ -1,18 +1,21 @@
-const withCSS = require('@zeit/next-css');
-const dotEnvResult = require('dotenv').config();
+const withSass = require('@zeit/next-sass');
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
-if (dotEnvResult.error) {
-  throw dotEnvResult.error;
-}
-const parsedVariables = dotEnvResult.parsed || {};
-const dotEnvVariables = {};
+module.exports = withSass({
+  webpack: config => {
+    config.plugins = config.plugins || [];
 
-for (const key of Object.keys(parsedVariables)) {
-  dotEnvVariables[key] = process.env[key];
-}
+    config.plugins = [
+      ...config.plugins,
 
-module.exports = withCSS({
-  env: {
-    ...dotEnvVariables,
+      // Read the .env file
+      new Dotenv({
+        path: path.join(__dirname, '.env'),
+        systemvars: true,
+      }),
+    ];
+
+    return config;
   },
 });

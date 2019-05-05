@@ -1,91 +1,65 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import slugify from "slugify";
-import shortid from "shortid";
-import ClickOutside from "../ClickOutside/ClickOutside";
+import React, { useState } from 'react';
+import ClickOutside from '../ClickOutside/ClickOutside';
+import firebase from 'firebase';
+import { useSession } from '../../hooks/useSession';
 
-class BoardAdder extends Component {
-  static propTypes = {
-    userId: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
-  };
-  constructor() {
-    super();
-    this.state = { isOpen: false, title: "" };
-  }
+const BoardAdder = () => {
+  const { user } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState('');
 
-  toggleOpen = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
   };
 
-  handleChange = event => {
-    this.setState({ title: event.target.value });
+  const handleChange = event => {
+    setTitle(event.target.value);
   };
 
-  handleSubmit = event => {
-    // Dispatch action to put new empty board in redux store and db + push new url to history
+  const handleSubmit = async event => {
     event.preventDefault();
-    const { title } = this.state;
-    if (title === "") {
-      return;
-    }
-    const { dispatch, history, userId } = this.props;
-    const boardId = shortid.generate();
-    dispatch({
-      type: "ADD_BOARD",
-      payload: {
-        boardTitle: title,
-        boardId,
-        userId
-      }
-    });
+    if (title === '') return;
 
-    const urlSlug = slugify(title, { lower: true });
-    history.push(`/b/${boardId}/${urlSlug}`);
+    await firebase
+      .database()
+      .ref(`boards`)
+      .push({ owner: user.uid, title, users: {} });
 
-    this.setState({ isOpen: false, title: "" });
+    setIsOpen(false);
+    setTitle('');
   };
 
-  handleKeyDown = event => {
+  const handleKeyDown = event => {
     if (event.keyCode === 27) {
-      this.setState({ isOpen: false });
+      setIsOpen(false);
     }
   };
 
-  render = () => {
-    const { isOpen, title } = this.state;
-    return isOpen ? (
-      <ClickOutside handleClickOutside={this.toggleOpen}>
-        <form onSubmit={this.handleSubmit} className="board-adder">
-          <input
-            autoFocus
-            className="submit-board-input"
-            type="text"
-            value={title}
-            onKeyDown={this.handleKeyDown}
-            onChange={this.handleChange}
-            spellCheck={false}
-          />
-          <input
-            type="submit"
-            value="Create"
-            className="submit-board-button"
-            disabled={title === ""}
-          />
-        </form>
-      </ClickOutside>
-    ) : (
-      <button onClick={this.toggleOpen} className="add-board-button">
-        Add a new board...
-      </button>
-    );
-  };
-}
+  return isOpen ? (
+    <ClickOutside handleClickOutside={toggleOpen}>
+      <form onSubmit={handleSubmit} className="board-adder">
+        <input
+          autoFocus
+          className="submit-board-input"
+          type="text"
+          value={title}
+          onKeyDown={handleKeyDown}
+          onChange={handleChange}
+          spellCheck={false}
+        />
+        <input
+          type="submit"
+          value="Create"
+          className="submit-board-button"
+          disabled={title === ''}
+        />
+      </form>
+    </ClickOutside>
+  ) : (
+    <button onClick={toggleOpen} className="add-board-button">
+      Add a new board...
+    </button>
+  );
+};
 
-const mapStateToProps = state => ({
-  userId: state.user ? state.user._id : "guest"
-});
-
-export default connect(mapStateToProps)(BoardAdder);
+export default BoardAdder;

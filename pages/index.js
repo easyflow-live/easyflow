@@ -1,8 +1,11 @@
 import LandingPage from '../src/components/LandingPage/LandingPage';
-import { useAuth } from '../src/hooks/useAuth';
+import Home from '../src/components/Home/Home';
+import { useSession } from '../src/hooks/useSession';
 
 export default () => {
-  const { user } = useAuth();
+  const { user, initializing } = useSession();
 
-  return user ? 'hellow' : <LandingPage />;
+  if (initializing) return 'Loading...';
+
+  return user ? <Home /> : <LandingPage />;
 };

@@ -27,10 +27,11 @@
     "react-beautiful-dnd": "github:yogaboll/react-beautiful-dnd#include-generated",
     "react-day-picker": "^7.1.9",
     "react-dom": "^16.8.6",
+    "react-google-login": "^5.0.4",
     "react-head": "^3.1.1",
     "react-icons": "^3.6.1",
     "react-modal": "^3.4.4",
-    "react-onclickoutside": "^6.7.1",
+    "react-onclickoutside": "^6.8.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -41,8 +42,10 @@
   },
   "devDependencies": {
     "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "autoprefixer": "^9.5.1",
     "dotenv": "^5.0.1",
+    "dotenv-webpack": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.12.0",
@@ -50,6 +53,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-react-hooks": "^1.6.0",
+    "node-sass": "^4.12.0",
     "prettier": "^1.17.0"
   }
 }
