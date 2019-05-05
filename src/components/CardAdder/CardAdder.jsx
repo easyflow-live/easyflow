@@ -1,22 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import Textarea from "react-textarea-autosize";
-import shortid from "shortid";
-import ClickOutside from "../ClickOutside/ClickOutside";
-import "./CardAdder.scss";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Textarea from 'react-textarea-autosize';
+import firebase from 'firebase';
+import ClickOutside from '../ClickOutside/ClickOutside';
+import './CardAdder.scss';
 
 class CardAdder extends Component {
   static propTypes = {
     listId: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    boardId: PropTypes.string.isRequired,
   };
 
   constructor() {
     super();
     this.state = {
-      newText: "",
-      isOpen: false
+      newText: '',
+      isOpen: false,
     };
   }
 
@@ -36,19 +35,23 @@ class CardAdder extends Component {
     }
   };
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
     const { newText } = this.state;
-    const { listId, dispatch } = this.props;
-    if (newText === "") return;
+    const { listId, boardId } = this.props;
+    if (newText === '') return;
 
-    const cardId = shortid.generate();
-    dispatch({
-      type: "ADD_CARD",
-      payload: { cardText: newText, cardId, listId }
-    });
+    await firebase
+      .database()
+      .ref(`boards`)
+      .child(boardId)
+      .child('lists')
+      .child(listId)
+      .child('cards')
+      .push({ text: newText });
+
     this.toggleCardComposer();
-    this.setState({ newText: "" });
+    this.setState({ newText: '' });
   };
 
   render() {
@@ -81,4 +84,4 @@ class CardAdder extends Component {
   }
 }
 
-export default connect()(CardAdder);
+export default CardAdder;
