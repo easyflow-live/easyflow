@@ -8,25 +8,17 @@ export const useBoards = () => {
 
   React.useEffect(() => {
     const unsubscribe = firebase
-      .database()
-      .ref('boards')
-      .on(
-        'value',
-        snapshot => {
-          const data = snapshot.val();
-          if (data) {
-            const boards = Object.keys(data).map(k => ({
-              uid: k,
-              ...data[k],
-            }));
-            setBoards(boards);
-          }
-          setLoading(false);
-        },
-        err => {
-          setError(err);
-        }
-      );
+      .firestore()
+      .collection('boards')
+      .get().then((querySnapshot) => {
+        const boards = [];
+        querySnapshot.forEach((doc) => {
+          debugger;
+          boards.push({...doc.data(), uid: doc.id});
+        });
+        setBoards(boards);
+        setLoading(false);        
+    });
 
     return () => unsubscribe();
   }, []);

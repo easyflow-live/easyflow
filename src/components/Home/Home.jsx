@@ -28,11 +28,11 @@ const Home = () => {
                   {board.lists &&
                     board.lists.map(listId => (
                       <div
-                        key={listId}
+                        key={listId.uid}
                         className="mini-list"
                         style={{
                           height: `${Math.min(
-                            (listsById[listId].cards.length + 1) * 18,
+                            (listId.cards.length + 1) * 18,
                             100
                           )}%`,
                         }}
