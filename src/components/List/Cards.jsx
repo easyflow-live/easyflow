@@ -6,6 +6,7 @@ import Card from '../Card/Card';
 class Cards extends Component {
   static propTypes = {
     listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(
       PropTypes.shape({ text: PropTypes.string, color: PropTypes.string })
     ).isRequired,
@@ -26,7 +27,7 @@ class Cards extends Component {
   };
 
   render() {
-    const { listId, cards } = this.props;
+    const { listId, boardId, cards } = this.props;
     return (
       <Droppable droppableId={listId}>
         {(provided, { isDraggingOver }) => (
@@ -39,6 +40,7 @@ class Cards extends Component {
                   card={card}
                   index={index}
                   listId={listId}
+                  boardId={boardId}
                   dispatch={a => console.log(a)}
                 />
               ))}

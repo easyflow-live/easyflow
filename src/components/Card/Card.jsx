@@ -15,6 +15,7 @@ class Card extends Component {
       color: PropTypes.string,
     }).isRequired,
     listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     isDraggingOver: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -72,7 +73,7 @@ class Card extends Component {
   };
 
   render() {
-    const { card, index, listId, isDraggingOver } = this.props;
+    const { card, index, listId, boardId, isDraggingOver } = this.props;
     const { isModalOpen } = this.state;
     const checkboxes = findCheckboxes(card.text);
     return (
@@ -125,8 +126,8 @@ class Card extends Component {
           cardElement={this.ref}
           card={card}
           listId={listId}
+          boardId={boardId}
           toggleCardEditor={this.toggleCardEditor}
-          dispatch={a => console.log(a)}
         />
       </>
     );

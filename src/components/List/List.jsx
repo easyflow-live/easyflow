@@ -32,7 +32,7 @@ const List = ({ boardId, index, list }) => {
                 dispatch={a => console.log(a)}
               />
               <div className="cards-wrapper">
-                <Cards listId={list.uid} cards={cards} />
+                <Cards listId={list.uid} cards={cards} boardId={boardId} />
               </div>
             </div>
             <CardAdder listId={list.uid} boardId={boardId} />

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import Modal from 'react-modal';
+import firebase from 'firebase';
+
 import CardBadges from '../CardBadges/CardBadges';
 import CardOptions from './CardOptions';
 import { findCheckboxes } from '../utils';
@@ -16,12 +18,12 @@ class CardModal extends Component {
       color: PropTypes.string,
     }).isRequired,
     listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     cardElement: PropTypes.shape({
       getBoundingClientRect: PropTypes.func.isRequired,
     }),
     isOpen: PropTypes.bool.isRequired,
     toggleCardEditor: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -49,18 +51,21 @@ class CardModal extends Component {
 
   submitCard = () => {
     const { newText } = this.state;
-    const { card, listId, dispatch, toggleCardEditor } = this.props;
+    const { card, listId, boardId, toggleCardEditor } = this.props;
     if (newText === '') {
       this.deleteCard();
     } else if (newText !== card.text) {
-      dispatch({
-        type: 'CHANGE_CARD_TEXT',
-        payload: {
-          cardText: newText,
-          cardId: card.uid,
-          listId,
-        },
-      });
+      firebase
+        .firestore()
+        .collection('boards')
+        .doc(boardId)
+        .collection('lists')
+        .doc(listId)
+        .collection('cards')
+        .doc(card.uid)
+        .update({
+          text: newText,
+        });
     }
     toggleCardEditor();
   };
@@ -177,6 +182,7 @@ class CardModal extends Component {
           isCardNearRightBorder={isCardNearRightBorder}
           isThinDisplay={isThinDisplay}
           toggleColorPicker={this.toggleColorPicker}
+          dispatch={a => console.log(a)}
         />
       </Modal>
     );

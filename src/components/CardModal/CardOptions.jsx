@@ -10,7 +10,7 @@ import './CardOptions.scss';
 class CardOptions extends Component {
   static propTypes = {
     isColorPickerOpen: PropTypes.bool.isRequired,
-    card: PropTypes.shape({ _id: PropTypes.string.isRequired }).isRequired,
+    card: PropTypes.shape({ uid: PropTypes.string.isRequired }).isRequired,
     listId: PropTypes.string.isRequired,
     isCardNearRightBorder: PropTypes.bool.isRequired,
     isThinDisplay: PropTypes.bool.isRequired,
@@ -28,7 +28,7 @@ class CardOptions extends Component {
     const { dispatch, listId, card } = this.props;
     dispatch({
       type: 'DELETE_CARD',
-      payload: { cardId: card._id, listId },
+      payload: { cardId: card.uid, listId },
     });
   };
 
@@ -37,7 +37,7 @@ class CardOptions extends Component {
     if (card.color !== color) {
       dispatch({
         type: 'CHANGE_CARD_COLOR',
-        payload: { color, cardId: card._id },
+        payload: { color, cardId: card.uid },
       });
     }
     toggleColorPicker();
@@ -160,7 +160,7 @@ class CardOptions extends Component {
           style={isThinDisplay ? calendarMobileStyle : calendarStyle}
         >
           <Calendar
-            cardId={card._id}
+            cardId={card.uid}
             date={card.date}
             toggleCalendar={this.toggleCalendar}
           />
