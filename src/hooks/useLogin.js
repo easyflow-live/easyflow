@@ -7,7 +7,7 @@ provider.addScope('profile');
 provider.addScope('email');
 
 export const useGoogleLogin = () => {
-  const { updateCurrentUser } = useAuth();
+  const { updateCurrentUser } = useAuth();  
 
   const login = async () => {
     const { user } = await firebase.auth().signInWithPopup(provider);

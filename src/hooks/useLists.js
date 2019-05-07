@@ -9,20 +9,16 @@ export const useLists = boardUid => {
 
   React.useEffect(() => {
     const unsubscribe = firebase
-      .database()
-      .ref(`boards/${boardUid}/lists`)
-      .on(
-        'value',
-        snapshot => {
-          const data = snapshot.val();
-          console.log(snapshot);
-          if (data) {
-            const lists = Object.keys(data).map(k => ({
-              uid: k,
-              ...data[k],
-            }));
-            setLists(lists);
-          }
+      .firestore()
+      .collection('boards')
+      .doc(boardUid)
+      .collection('lists')
+      .onSnapshot( snapshot => {
+          const lists = [];
+          snapshot.forEach(doc => {            
+            lists.push({ ...doc.data(), uid: doc.id });
+          });
+          setLists(lists);
           setLoading(false);
         },
         err => {

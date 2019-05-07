@@ -41,13 +41,11 @@ class ListAdder extends Component {
     await firebase
       .firestore()
       .collection('boards')
-      .doc(boardId)
-      
-      .update({
-        lists: firebase.firestore.FieldValue.arrayUnion({
-          title: listTitle,
-          uid: shortid.generate(),
-        }),
+      .doc(boardId)    
+      .collection('lists')  
+      .add({
+        uid: shortid.generate(),
+        title: listTitle,        
       });
 
     this.setState({ isOpen: false, listTitle: '' });

@@ -42,13 +42,13 @@ class CardAdder extends Component {
     if (newText === '') return;
 
     await firebase
-      .database()
-      .ref(`boards`)
-      .child(boardId)
-      .child('lists')
-      .child(listId)
-      .child('cards')
-      .push({ text: newText });
+      .firestore()
+      .collection(`boards`)
+      .doc(boardId)
+      .collection('lists')
+      .doc(listId)
+      .collection('cards')
+      .add({ text: newText });
 
     this.toggleCardComposer();
     this.setState({ newText: '' });

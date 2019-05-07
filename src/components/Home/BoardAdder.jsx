@@ -22,14 +22,20 @@ const BoardAdder = () => {
     event.preventDefault();
     if (title === '') return;
 
+    const userDocRef = await firebase
+    .firestore()
+    .collection(`users`)
+    .doc(user.email);
+
     await firebase
       .firestore()
       .collection('boards')
       .add({
         uid: shortid.generate(),
-        owner: user.uid,
+        owner: userDocRef,
         title,
-        users: [],
+        color: "",
+        users: firebase.firestore.FieldValue.arrayUnion(userDocRef),
         lists: [],
       });
 
