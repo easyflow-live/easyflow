@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
+import firebase from 'firebase';
 import './ListHeader.scss';
 
 class ListTitle extends Component {
@@ -40,13 +41,18 @@ class ListTitle extends Component {
 
   handleSubmit = () => {
     const { newTitle } = this.state;
-    const { listTitle, listId, dispatch } = this.props;
+    const { listTitle, listId, boardId } = this.props;
     if (newTitle === '') return;
     if (newTitle !== listTitle) {
-      dispatch({
-        type: 'CHANGE_LIST_TITLE',
-        payload: { listTitle: newTitle, listId },
-      });
+      firebase
+        .firestore()
+        .collection('boards')
+        .doc(boardId)
+        .collection('lists')
+        .doc(listId)
+        .update({
+          title: newTitle,
+        });
     }
     this.setState({ isOpen: false });
   };
@@ -56,11 +62,14 @@ class ListTitle extends Component {
   };
 
   deleteList = () => {
-    const { listId, cards, boardId, dispatch } = this.props;
-    dispatch({
-      type: 'DELETE_LIST',
-      payload: { cards, listId, boardId },
-    });
+    const { listId, boardId } = this.props;
+    firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .collection('lists')
+      .doc(listId)
+      .delete();
   };
 
   openTitleEditor = () => {
