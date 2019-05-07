@@ -1,13 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Modal from "react-modal";
-import FaTrash from "react-icons/lib/fa/trash";
-import MdAlarm from "react-icons/lib/md/access-alarm";
-import Calendar from "./Calendar";
-import ClickOutside from "../ClickOutside/ClickOutside";
-import colorIcon from "../../../assets/images/color-icon.png";
-import "./CardOptions.scss";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Modal from 'react-modal';
+import { FaTrash } from 'react-icons/fa';
+import { MdAlarm } from 'react-icons/md';
+import Calendar from './Calendar';
+import ClickOutside from '../ClickOutside/ClickOutside';
+import './CardOptions.scss';
 
 class CardOptions extends Component {
   static propTypes = {
@@ -18,7 +16,7 @@ class CardOptions extends Component {
     isThinDisplay: PropTypes.bool.isRequired,
     boundingRect: PropTypes.object.isRequired,
     toggleColorPicker: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -29,8 +27,8 @@ class CardOptions extends Component {
   deleteCard = () => {
     const { dispatch, listId, card } = this.props;
     dispatch({
-      type: "DELETE_CARD",
-      payload: { cardId: card._id, listId }
+      type: 'DELETE_CARD',
+      payload: { cardId: card._id, listId },
     });
   };
 
@@ -38,8 +36,8 @@ class CardOptions extends Component {
     const { dispatch, card, toggleColorPicker } = this.props;
     if (card.color !== color) {
       dispatch({
-        type: "CHANGE_CARD_COLOR",
-        payload: { color, cardId: card._id }
+        type: 'CHANGE_CARD_COLOR',
+        payload: { color, cardId: card._id },
       });
     }
     toggleColorPicker();
@@ -70,36 +68,37 @@ class CardOptions extends Component {
       toggleColorPicker,
       card,
       isThinDisplay,
-      boundingRect
+      boundingRect,
     } = this.props;
     const { isCalendarOpen } = this.state;
 
     const calendarStyle = {
       content: {
         top: Math.min(boundingRect.bottom + 10, window.innerHeight - 300),
-        left: boundingRect.left
-      }
+        left: boundingRect.left,
+      },
     };
 
     const calendarMobileStyle = {
       content: {
         top: 110,
-        left: "50%",
-        transform: "translateX(-50%)"
-      }
+        left: '50%',
+        transform: 'translateX(-50%)',
+      },
     };
     return (
       <div
         className="options-list"
         style={{
-          alignItems: isCardNearRightBorder ? "flex-end" : "flex-start"
+          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
         }}
       >
         <div>
           <button onClick={this.deleteCard} className="options-list-button">
             <div className="modal-icon">
               <FaTrash />
-            </div>&nbsp;Delete
+            </div>
+            &nbsp;Delete
           </button>
         </div>
         <div className="modal-color-picker-wrapper">
@@ -113,7 +112,11 @@ class CardOptions extends Component {
             aria-haspopup
             aria-expanded={isColorPickerOpen}
           >
-            <img src={colorIcon} alt="colorwheel" className="modal-icon" />
+            <img
+              src={'/static/images/color-icon.png'}
+              alt="colorwheel"
+              className="modal-icon"
+            />
             &nbsp;Color
           </button>
           {isColorPickerOpen && (
@@ -127,7 +130,7 @@ class CardOptions extends Component {
                 onKeyDown={this.handleKeyDown}
               >
                 {/* eslint-enable */}
-                {["white", "#6df", "#6f6", "#ff6", "#fa4", "#f66"].map(
+                {['white', '#6df', '#6f6', '#ff6', '#fa4', '#f66'].map(
                   color => (
                     <button
                       key={color}
@@ -145,7 +148,8 @@ class CardOptions extends Component {
           <button onClick={this.toggleCalendar} className="options-list-button">
             <div className="modal-icon">
               <MdAlarm />
-            </div>&nbsp;Due date
+            </div>
+            &nbsp;Due date
           </button>
         </div>
         <Modal
@@ -166,4 +170,4 @@ class CardOptions extends Component {
   }
 }
 
-export default connect()(CardOptions);
+export default CardOptions;

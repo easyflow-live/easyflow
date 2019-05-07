@@ -48,7 +48,7 @@ class CardAdder extends Component {
       .collection('lists')
       .doc(listId)
       .collection('cards')
-      .add({ text: newText });
+      .add({ text: newText, color: 'white' });
 
     this.toggleCardComposer();
     this.setState({ newText: '' });

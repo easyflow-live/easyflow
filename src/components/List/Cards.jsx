@@ -6,7 +6,9 @@ import Card from '../Card/Card';
 class Cards extends Component {
   static propTypes = {
     listId: PropTypes.string.isRequired,
-    cards: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cards: PropTypes.arrayOf(
+      PropTypes.shape({ text: PropTypes.string, color: PropTypes.string })
+    ).isRequired,
   };
 
   componentDidUpdate = prevProps => {
@@ -30,11 +32,11 @@ class Cards extends Component {
         {(provided, { isDraggingOver }) => (
           <>
             <div className="cards" ref={provided.innerRef}>
-              {cards.map((cardId, index) => (
+              {cards.map((card, index) => (
                 <Card
                   isDraggingOver={isDraggingOver}
-                  key={cardId}
-                  cardId={cardId}
+                  key={card.uid}
+                  card={card}
                   index={index}
                   listId={listId}
                   dispatch={a => console.log(a)}

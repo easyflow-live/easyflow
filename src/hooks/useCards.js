@@ -1,10 +1,10 @@
 import React from 'react';
 import firebase from 'firebase';
 
-export const useLists = boardUid => {
+export const useCards = (boardUid, listUid) => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const [lists, setLists] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     const unsubscribe = firebase
@@ -12,13 +12,15 @@ export const useLists = boardUid => {
       .collection('boards')
       .doc(boardUid)
       .collection('lists')
+      .doc(listUid)
+      .collection('cards')
       .onSnapshot(
         snapshot => {
-          const lists = [];
+          const cards = [];
           snapshot.forEach(doc => {
-            lists.push({ ...doc.data(), uid: doc.id });
+            cards.push({ ...doc.data(), uid: doc.id });
           });
-          setLists(lists);
+          setCards(cards);
           setLoading(false);
         },
         err => {
@@ -33,6 +35,6 @@ export const useLists = boardUid => {
   return {
     error,
     loading,
-    lists,
+    cards,
   };
 };

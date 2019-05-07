@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
-// import CardModal from '../CardModal/CardModal';
+import CardModal from '../CardModal/CardModal';
 // import CardBadges from '../CardBadges/CardBadges';
 import { findCheckboxes } from '../utils';
 import formatMarkdown from './formatMarkdown';
@@ -10,7 +10,7 @@ import './Card.scss';
 class Card extends Component {
   static propTypes = {
     card: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      uid: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
       color: PropTypes.string,
     }).isRequired,
@@ -67,7 +67,7 @@ class Card extends Component {
 
     dispatch({
       type: 'CHANGE_CARD_TEXT',
-      payload: { cardId: card._id, cardText: newText },
+      payload: { cardId: card.uid, cardText: newText },
     });
   };
 
@@ -77,7 +77,7 @@ class Card extends Component {
     const checkboxes = findCheckboxes(card.text);
     return (
       <>
-        <Draggable draggableId={card._id} index={index}>
+        <Draggable draggableId={card.uid} index={index}>
           {(provided, snapshot) => (
             <>
               {/* eslint-disable */}
@@ -120,13 +120,14 @@ class Card extends Component {
             </>
           )}
         </Draggable>
-        {/* <CardModal
+        <CardModal
           isOpen={isModalOpen}
           cardElement={this.ref}
           card={card}
           listId={listId}
           toggleCardEditor={this.toggleCardEditor}
-        /> */}
+          dispatch={a => console.log(a)}
+        />
       </>
     );
   }

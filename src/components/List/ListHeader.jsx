@@ -10,7 +10,9 @@ class ListTitle extends Component {
     listTitle: PropTypes.string.isRequired,
     listId: PropTypes.string.isRequired,
     boardId: PropTypes.string.isRequired,
-    cards: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cards: PropTypes.arrayOf(
+      PropTypes.shape({ text: PropTypes.string, color: PropTypes.string })
+    ).isRequired,
     dragHandleProps: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
   };

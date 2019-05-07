@@ -5,6 +5,7 @@ import { BoardProvider } from '../src/hooks/useBoardContext';
 
 const Board = props => {
   const { loading, board } = useBoard(props.query.uid);
+  const { lists } = useLists(props.query.uid);
 
   if (loading) return 'Loading...';
 
@@ -16,7 +17,7 @@ const Board = props => {
           boardId={board.uid}
           boardTitle={board.title}
           boardColor={'red'}
-          lists={board.lists}
+          lists={lists}
           dispatch={a => console.log(a)}
         />
       </div>
