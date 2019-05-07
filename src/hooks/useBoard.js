@@ -1,12 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 
-const createModel = rawObj =>
-  Object.keys(rawObj).map(k => ({
-    uid: k,
-    ...rawObj[k],
-  }));
-
 export const useBoard = boardUid => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
@@ -14,27 +8,23 @@ export const useBoard = boardUid => {
 
   React.useEffect(() => {
     const unsubscribe = firebase
-      .database()
-      .ref('boards')
-      .child(boardUid)
-      .on(
-        'value',
+      .firestore()
+      .collection('boards')
+      .doc(boardUid)
+      .onSnapshot(
         snapshot => {
-          const data = snapshot.val();
+          const data = snapshot.data();
           if (data) {
-            const listsSet = createModel(data.lists).map(
-              l => (l.cards = createModel(l.cards)[0])
-            );
             setBoard({
               ...data,
-              uid: boardUid,
-              lists: listsSet,
+              uid: snapshot.id,
             });
           }
           setLoading(false);
         },
         err => {
           setError(err);
+          setLoading(false);
         }
       );
 
