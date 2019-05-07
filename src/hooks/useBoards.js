@@ -10,15 +10,20 @@ export const useBoards = () => {
     const unsubscribe = firebase
       .firestore()
       .collection('boards')
-      .get().then((querySnapshot) => {
-        const boards = [];
-        querySnapshot.forEach((doc) => {
-          debugger;
-          boards.push({...doc.data(), uid: doc.id});
-        });
-        setBoards(boards);
-        setLoading(false);        
-    });
+      .onSnapshot(
+        snapshot => {
+          const boards = [];
+          snapshot.forEach(doc => {
+            boards.push({ ...doc.data(), uid: doc.id });
+          });
+          setBoards(boards);
+          setLoading(false);
+        },
+        err => {
+          setError(err);
+          setLoading(false);
+        }
+      );
 
     return () => unsubscribe();
   }, []);

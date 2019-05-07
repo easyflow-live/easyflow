@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import firebase from 'firebase';
+import shortid from 'shortid';
+
 import { useSession } from '../../hooks/useSession';
 
 const BoardAdder = () => {
@@ -21,9 +23,15 @@ const BoardAdder = () => {
     if (title === '') return;
 
     await firebase
-      .database()
-      .ref(`boards`)
-      .push({ owner: user.uid, title, users: {} });
+      .firestore()
+      .collection('boards')
+      .add({
+        uid: shortid.generate(),
+        owner: user.uid,
+        title,
+        users: [],
+        lists: [],
+      });
 
     setIsOpen(false);
     setTitle('');

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import firebase from 'firebase';
+import shortid from 'shortid';
 
 import './ListAdder.scss';
 
@@ -38,11 +39,15 @@ class ListAdder extends Component {
     if (listTitle === '') return;
 
     await firebase
-      .database()
-      .ref(`boards`)
-      .child(boardId)
-      .child('lists')
-      .push({ board: boardId, title: listTitle });
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .update({
+        lists: firebase.firestore.FieldValue.arrayUnion({
+          title: listTitle,
+          uid: shortid.generate(),
+        }),
+      });
 
     this.setState({ isOpen: false, listTitle: '' });
   };

@@ -7,7 +7,7 @@ const Board = props => {
   const { loading, board } = useBoard(props.query.uid);
 
   if (loading) return 'Loading...';
-  console.log(board);
+
   return (
     <BoardProvider value={board}>
       <div>
