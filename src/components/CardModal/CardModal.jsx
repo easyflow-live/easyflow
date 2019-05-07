@@ -88,7 +88,7 @@ class CardModal extends Component {
 
   render() {
     const { newText, isColorPickerOpen, isTextareaFocused } = this.state;
-    const { cardElement, card, listId, isOpen } = this.props;
+    const { cardElement, card, listId, boardId, isOpen } = this.props;
     if (!cardElement) {
       return null;
     }
@@ -178,6 +178,7 @@ class CardModal extends Component {
           isColorPickerOpen={isColorPickerOpen}
           card={card}
           listId={listId}
+          boardId={boardId}
           boundingRect={boundingRect}
           isCardNearRightBorder={isCardNearRightBorder}
           isThinDisplay={isThinDisplay}

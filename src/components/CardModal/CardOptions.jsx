@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm } from 'react-icons/md';
+import firebase from 'firebase';
+
 import Calendar from './Calendar';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import './CardOptions.scss';
@@ -12,6 +14,7 @@ class CardOptions extends Component {
     isColorPickerOpen: PropTypes.bool.isRequired,
     card: PropTypes.shape({ uid: PropTypes.string.isRequired }).isRequired,
     listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     isCardNearRightBorder: PropTypes.bool.isRequired,
     isThinDisplay: PropTypes.bool.isRequired,
     boundingRect: PropTypes.object.isRequired,
@@ -25,20 +28,31 @@ class CardOptions extends Component {
   }
 
   deleteCard = () => {
-    const { dispatch, listId, card } = this.props;
-    dispatch({
-      type: 'DELETE_CARD',
-      payload: { cardId: card.uid, listId },
-    });
+    const { listId, boardId, card } = this.props;
+
+    firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .collection('lists')
+      .doc(listId)
+      .collection('cards')
+      .doc(card.uid)
+      .delete();
   };
 
   changeColor = color => {
-    const { dispatch, card, toggleColorPicker } = this.props;
+    const { card, boardId, listId, toggleColorPicker } = this.props;
     if (card.color !== color) {
-      dispatch({
-        type: 'CHANGE_CARD_COLOR',
-        payload: { color, cardId: card.uid },
-      });
+      firebase
+        .firestore()
+        .collection('boards')
+        .doc(boardId)
+        .collection('lists')
+        .doc(listId)
+        .collection('cards')
+        .doc(card.uid)
+        .update({ color });
     }
     toggleColorPicker();
     this.colorPickerButton.focus();
