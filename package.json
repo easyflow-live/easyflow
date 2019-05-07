@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "deploy": "next build; gcloud app deploy --no-cache",
+    "start": "next start -p 8080",
+    "deploy": "next build; gcloud app deploy",
     "lint": "eslint --ext .js,.jsx src/",
     "format": "prettier --write '**/*.{js,jsx,css,scss,json,md}'"
   },

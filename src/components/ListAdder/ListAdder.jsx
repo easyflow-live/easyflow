@@ -42,6 +42,7 @@ class ListAdder extends Component {
       .firestore()
       .collection('boards')
       .doc(boardId)
+      
       .update({
         lists: firebase.firestore.FieldValue.arrayUnion({
           title: listTitle,

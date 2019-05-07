@@ -15,8 +15,9 @@ export const useGoogleLogin = () => {
     if (user) {
       updateCurrentUser(user);
       await firebase
-        .database()
-        .ref(`users/${user.uid}`)
+        .firestore()
+        .collection(`users`)
+        .doc(user.email)
         .set({
           username: user.displayName,
           email: user.email,
