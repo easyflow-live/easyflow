@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import { MdAlarm } from 'react-icons/md';
-import { MdDoneAll } from 'react-icons/fa';
+import { MdDoneAll } from 'react-icons/md';
 import './CardBadges.scss';
 
 class CardBadges extends Component {

@@ -19,7 +19,6 @@ class CardOptions extends Component {
     isThinDisplay: PropTypes.bool.isRequired,
     boundingRect: PropTypes.object.isRequired,
     toggleColorPicker: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
   };
 
   constructor() {

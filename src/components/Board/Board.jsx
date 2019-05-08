@@ -27,15 +27,6 @@ class Board extends Component {
     };
   }
 
-  // boardId is stored in the redux store so that it is available inside middleware
-  componentDidMount = () => {
-    const { boardId, dispatch } = this.props;
-    dispatch({
-      type: 'PUT_BOARD_ID_IN_REDUX',
-      payload: { boardId },
-    });
-  };
-
   handleDragEnd = ({ source, destination, type }) => {
     // dropped outside the list
     if (!destination) {

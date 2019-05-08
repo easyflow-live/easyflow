@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
+import firebase from 'firebase';
+
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
 import { findCheckboxes } from '../utils';
@@ -18,7 +20,6 @@ class Card extends Component {
     boardId: PropTypes.string.isRequired,
     isDraggingOver: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
-    dispatch: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -52,7 +53,7 @@ class Card extends Component {
 
   // identify the clicked checkbox by its index and give it a new checked attribute
   toggleCheckbox = (checked, i) => {
-    const { card, dispatch } = this.props;
+    const { card, boardId, listId } = this.props;
 
     let j = 0;
     const newText = card.text.replace(/\[(\s|x)\]/g, match => {
@@ -66,10 +67,17 @@ class Card extends Component {
       return newString;
     });
 
-    dispatch({
-      type: 'CHANGE_CARD_TEXT',
-      payload: { cardId: card.uid, cardText: newText },
-    });
+    firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .collection('lists')
+      .doc(listId)
+      .collection('cards')
+      .doc(card.uid)
+      .update({
+        text: newText,
+      });
   };
 
   render() {

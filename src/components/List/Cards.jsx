@@ -41,7 +41,6 @@ class Cards extends Component {
                   index={index}
                   listId={listId}
                   boardId={boardId}
-                  dispatch={a => console.log(a)}
                 />
               ))}
               {provided.placeholder}

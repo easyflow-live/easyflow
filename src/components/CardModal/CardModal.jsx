@@ -183,7 +183,6 @@ class CardModal extends Component {
           isCardNearRightBorder={isCardNearRightBorder}
           isThinDisplay={isThinDisplay}
           toggleColorPicker={this.toggleColorPicker}
-          dispatch={a => console.log(a)}
         />
       </Modal>
     );
