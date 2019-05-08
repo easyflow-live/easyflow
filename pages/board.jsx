@@ -12,7 +12,6 @@ const Board = props => {
   return (
     <BoardProvider value={board}>
       <div>
-        <h1>Board {board && board.title}</h1>
         <BoardComp
           boardId={board.uid}
           boardTitle={board.title}

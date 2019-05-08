@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaUserSecret } from 'react-icons/fa';
+import { Style } from 'react-head';
 import './Header.scss';
 import { useSession } from '../../hooks/useSession';
 import { useGoogleLogin } from '../../hooks/useLogin';
@@ -12,7 +13,7 @@ const Header = () => {
   return (
     <header>
       <Link href="/">
-        <a>React Kanban</a>
+        <a>Easy Flow</a>
       </Link>
       <div className="header-right-side">
         {user ? (

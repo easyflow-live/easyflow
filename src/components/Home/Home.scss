@@ -20,11 +20,8 @@ $add-board-focus-bg: #ccc;
 }
 
 .home {
-  display: inline-flex;
-  justify-content: center;
   height: 100%;
   width: 100%;
-  background: #eee;
   overflow: auto;
 }
 
@@ -32,7 +29,7 @@ $add-board-focus-bg: #ccc;
   display: inline-flex;
   flex-direction: column;
   width: 4 * $board-width + 8 * $board-margin;
-  margin: $main-margin;
+  margin: 80px 30px;
 }
 
 @media (max-width: 4 * $board-width + 8 * $board-margin + 2 * $main-margin) {
@@ -56,11 +53,16 @@ $add-board-focus-bg: #ccc;
 .main-content h1 {
   margin: 20px 5px;
   font-size: 22px;
+  color: #fff;
 }
 
 .boards {
   display: inline-flex;
   flex-wrap: wrap;
+
+  & > a {
+    background-color: #ffffff1f;
+  }
 }
 
 .board-link {

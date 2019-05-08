@@ -1,21 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import "./BoardTitle.scss";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import './BoardTitle.scss';
 
 class BoardTitle extends Component {
   static propTypes = {
     boardTitle: PropTypes.string.isRequired,
     boardId: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
-      newTitle: props.boardTitle
+      newTitle: props.boardTitle,
     };
   }
 
@@ -28,17 +26,17 @@ class BoardTitle extends Component {
   };
 
   submitTitle = () => {
-    const { dispatch, boardId, boardTitle } = this.props;
+    const { boardId, boardTitle } = this.props;
     const { newTitle } = this.state;
-    if (newTitle === "") return;
+    if (newTitle === '') return;
     if (boardTitle !== newTitle) {
-      dispatch({
-        type: "CHANGE_BOARD_TITLE",
-        payload: {
-          boardTitle: newTitle,
-          boardId
-        }
-      });
+      firebase
+        .firestore()
+        .collection('boards')
+        .doc(boardId)
+        .update({
+          title: newTitle,
+        });
     }
     this.setState({ isOpen: false });
   };
@@ -83,12 +81,4 @@ class BoardTitle extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { boardId } = ownProps.match.params;
-  return {
-    boardTitle: state.boardsById[boardId].title,
-    boardId
-  };
-};
-
-export default withRouter(connect(mapStateToProps)(BoardTitle));
+export default BoardTitle;

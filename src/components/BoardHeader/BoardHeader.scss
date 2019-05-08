@@ -2,14 +2,14 @@
 
 .board-header {
   position: fixed;
-  top: 40px;
+  top: 75px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   height: 40px;
   width: 100%;
-  padding: 8px 10px 5px 10px;
+  padding: 8px 30px 5px 30px;
   color: $white;
   z-index: 1;
 }

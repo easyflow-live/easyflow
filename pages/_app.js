@@ -1,6 +1,6 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-import { HeadProvider } from 'react-head';
+import { HeadProvider, Style } from 'react-head';
 import { FirebaseProvider } from '../src/components/Firebase/Firebase';
 import { UserProvider } from '../src/hooks/useSession';
 import firebase from 'firebase';
@@ -44,6 +44,17 @@ class MyApp extends App {
         <Container>
           <FirebaseProvider>
             <UserProvider value={{ user, initializing }}>
+              <Style>
+                {`
+                  * {
+                    padding: 0;
+                    margin: 0;
+                  }
+                  body {
+                    background-color: #2d2d2d;
+                  }
+                `}
+              </Style>
               <Component {...pageProps} />
             </UserProvider>
           </FirebaseProvider>

@@ -1,25 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
-import FaTrash from "react-icons/lib/fa/trash";
-import "./BoardDeleter.scss";
+import React, { Component } from 'react';
+import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
+import { FaTrash } from 'react-icons/fa';
+import './BoardDeleter.scss';
 
 class BoardDeleter extends Component {
-  static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({ boardId: PropTypes.string })
-    }).isRequired,
-    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-    dispatch: PropTypes.func.isRequired
-  };
-
   handleSelection = () => {
-    const { dispatch, match, history } = this.props;
-    const { boardId } = match.params;
-    dispatch({ type: "DELETE_BOARD", payload: { boardId } });
-    history.push("/");
+    const { boardId } = this.props;
+
+    firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .delete();
   };
 
   render = () => (
@@ -41,4 +33,4 @@ class BoardDeleter extends Component {
   );
 }
 
-export default withRouter(connect()(BoardDeleter));
+export default BoardDeleter;

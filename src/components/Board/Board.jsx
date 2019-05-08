@@ -127,7 +127,7 @@ class Board extends Component {
         <div className="board">
           <Title>{boardTitle} | React Kanban</Title>
           <Header />
-          <BoardHeader />
+          <BoardHeader boardTitle={boardTitle} boardId={boardId} />
           {/* eslint-disable jsx-a11y/no-static-element-interactions */}
           <div
             className="lists-wrapper"
