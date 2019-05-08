@@ -18,7 +18,12 @@ export const useCards = (boardUid, listUid) => {
         snapshot => {
           const cards = [];
           snapshot.forEach(doc => {
-            cards.push({ ...doc.data(), uid: doc.id });
+            const raw = doc.data();
+            cards.push({
+              ...raw,
+              uid: doc.id,
+              date: raw.date ? new Date(raw.date.seconds * 1000) : '',
+            });
           });
           setCards(cards);
           setLoading(false);

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import DayPicker from 'react-day-picker';
 import './ReactDayPicker.scss';
 
 class Calendar extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     cardId: PropTypes.string.isRequired,
     date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     toggleCalendar: PropTypes.func.isRequired,
@@ -33,11 +34,18 @@ class Calendar extends Component {
 
   handleSave = () => {
     const { selectedDay } = this.state;
-    const { dispatch, cardId, toggleCalendar } = this.props;
-    dispatch({
-      type: 'CHANGE_CARD_DATE',
-      payload: { date: selectedDay, cardId },
-    });
+    const { cardId, boardId, listId, toggleCalendar } = this.props;
+
+    firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .collection('lists')
+      .doc(listId)
+      .collection('cards')
+      .doc(cardId)
+      .update({ date: selectedDay });
+
     toggleCalendar();
   };
 
@@ -62,4 +70,4 @@ class Calendar extends Component {
   }
 }
 
-export default connect()(Calendar);
+export default Calendar;

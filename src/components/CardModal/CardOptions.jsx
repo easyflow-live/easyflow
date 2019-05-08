@@ -83,6 +83,8 @@ class CardOptions extends Component {
       card,
       isThinDisplay,
       boundingRect,
+      boardId,
+      listId,
     } = this.props;
     const { isCalendarOpen } = this.state;
 
@@ -175,6 +177,8 @@ class CardOptions extends Component {
         >
           <Calendar
             cardId={card.uid}
+            listId={listId}
+            boardId={boardId}
             date={card.date}
             toggleCalendar={this.toggleCalendar}
           />

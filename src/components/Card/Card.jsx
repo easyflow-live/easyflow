@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import CardModal from '../CardModal/CardModal';
-// import CardBadges from '../CardBadges/CardBadges';
+import CardBadges from '../CardBadges/CardBadges';
 import { findCheckboxes } from '../utils';
 import formatMarkdown from './formatMarkdown';
 import './Card.scss';
@@ -112,9 +112,9 @@ class Card extends Component {
                   }}
                 />
                 {/* eslint-enable */}
-                {(card.date || checkboxes.total > 0) && 'badges'
-                // <CardBadges date={card.date} checkboxes={checkboxes} />
-                }
+                {(card.date || checkboxes.total > 0) && 'badges' && (
+                  <CardBadges date={card.date} checkboxes={checkboxes} />
+                )}
               </div>
               {/* Remove placeholder when not dragging over to reduce snapping */}
               {isDraggingOver && provided.placeholder}
