@@ -6,7 +6,7 @@ import CardAdder from '../CardAdder/CardAdder';
 import './List.scss';
 import { useCards } from '../../hooks/useCards';
 
-const List = ({ boardId, index, list }) => {
+const List = ({ boardId, index, list, kioskMode }) => {
   const { cards } = useCards(boardId, list.uid);
 
   return (
@@ -35,7 +35,7 @@ const List = ({ boardId, index, list }) => {
                 <Cards listId={list.uid} cards={cards} boardId={boardId} />
               </div>
             </div>
-            <CardAdder listId={list.uid} boardId={boardId} />
+            {!kioskMode && <CardAdder listId={list.uid} boardId={boardId} />}
           </div>
           {provided.placeholder}
         </>

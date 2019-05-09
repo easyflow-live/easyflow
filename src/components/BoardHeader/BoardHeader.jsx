@@ -10,7 +10,7 @@ const BoardHeader = ({ boardTitle, boardId }) => (
     <BoardTitle boardTitle={boardTitle} boardId={boardId} />
     <div className="board-header-right">
       {/* <ColorPicker /> */}
-      <BoardAddMember boardId={boardId}/>
+      <BoardAddMember boardId={boardId} />
       <div className="vertical-line" />
       <BoardDeleter boardId={boardId} />
     </div>

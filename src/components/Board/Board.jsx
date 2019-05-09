@@ -30,12 +30,12 @@ class Board extends Component {
   }
 
   handleDragEnd = ({ draggableId, source, destination, type }) => {
-    console.log(type)
+    console.log(type);
     // dropped outside the list
     if (!destination) {
       return;
     }
-    const { dispatch, boardId } = this.props;    
+    const { dispatch, boardId } = this.props;
 
     // Move list
     if (type === 'COLUMN') {
@@ -57,9 +57,8 @@ class Board extends Component {
       source.index !== destination.index ||
       source.droppableId !== destination.droppableId
     ) {
-
       // const cardRef = firebase.getCard()
-      
+
       dispatch({
         type: 'MOVE_CARD',
         payload: {
@@ -128,13 +127,16 @@ class Board extends Component {
   };
 
   render = () => {
-    const { lists, boardTitle, boardId, boardColor } = this.props;
+    const { lists, boardTitle, boardId, boardColor, kioskMode } = this.props;
+    console.log(kioskMode);
     return (
       <>
         <div className="board">
           <Title>{boardTitle} | React Kanban</Title>
-          <Header />
-          <BoardHeader boardTitle={boardTitle} boardId={boardId} />
+          {!kioskMode && <Header />}
+          {!kioskMode && (
+            <BoardHeader boardTitle={boardTitle} boardId={boardId} />
+          )}
           {/* eslint-disable jsx-a11y/no-static-element-interactions */}
           <div
             className="lists-wrapper"
@@ -156,10 +158,11 @@ class Board extends Component {
                         boardId={boardId}
                         index={index}
                         key={list.uid}
+                        kioskMode={kioskMode}
                       />
                     ))}
                     {provided.placeholder}
-                    <ListAdder boardId={boardId} />
+                    {!kioskMode && <ListAdder boardId={boardId} />}
                   </div>
                 )}
               </Droppable>
