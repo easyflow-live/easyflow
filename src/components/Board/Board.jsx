@@ -54,12 +54,14 @@ class Board extends Component {
       source.index !== destination.index ||
       source.droppableId !== destination.droppableId
     ) {
+      console.log(source);
       dispatch({
         type: 'MOVE_CARD',
         payload: {
           sourceListId: source.droppableId,
           destListId: destination.droppableId,
           oldCardIndex: source.index,
+          oldCardUID: source.key,
           newCardIndex: destination.index,
           boardId,
         },
