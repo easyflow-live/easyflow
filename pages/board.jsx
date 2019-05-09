@@ -1,13 +1,15 @@
 import BoardComp from '../src/components/Board/Board';
-import { useBoard } from '../src/hooks/useBoard';
 import { useLists } from '../src/hooks/useLists';
 import { BoardProvider } from '../src/hooks/useBoardContext';
+import { useSession } from '../src/hooks/useSession';
 
 const Board = props => {
-  const { loading, board } = useBoard(props.query.uid);
+  const { boards } = useSession();
   const { lists } = useLists(props.query.uid);
+  
+  if (!boards) return 'Loading...';
 
-  if (loading) return 'Loading...';
+  const board = boards.find(b => b.uid === props.query.uid);
 
   return (
     <BoardProvider value={board}>
