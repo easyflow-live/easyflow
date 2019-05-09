@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
+import Router from 'next/router';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
+
+import firebase from '../../firebase.service'
 import './BoardButton.scss';
 
 class BoardDeleter extends Component {
-  handleSelection = () => {
+  handleSelection = async () => {
     const { boardId } = this.props;
 
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
+    await firebase
+      .getBoard(boardId)
       .delete();
+    
+    Router.push('/');
   };
 
   render = () => (
