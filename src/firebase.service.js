@@ -20,6 +20,7 @@ class Firebase {
     }
 
     /* Firebase APIs */
+    this.app = app;
     this.auth = app.auth();
     this.db = app.firestore();
 
@@ -75,7 +76,7 @@ class Firebase {
     return null;
   }
 
-  getBoard = uid => this.getBoards().doc(uid);
+  getBoard = uid => this.db.collection('boards').doc(uid);
 
   // *** Lists API ***
 

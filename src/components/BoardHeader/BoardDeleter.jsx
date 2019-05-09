@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
-import './BoardDeleter.scss';
+import './BoardButton.scss';
 
 class BoardDeleter extends Component {
   handleSelection = () => {
@@ -16,10 +16,10 @@ class BoardDeleter extends Component {
 
   render = () => (
     <Wrapper
-      className="board-deleter-wrapper"
+      className="board-wrapper"
       onSelection={this.handleSelection}
     >
-      <Button className="board-deleter-button">
+      <Button className="board-button">
         <div className="modal-icon">
           <FaTrash />
         </div>
