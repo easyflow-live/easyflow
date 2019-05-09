@@ -2,12 +2,10 @@ import React, { useRef, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 import './BoardButton.scss';
 import AddMemberModal from './AddMemberModal';
-import { useSession } from '../../hooks/useSession';
 
-const BoardAddMember = () => {
+const BoardAddMember = ({ boardId }) => {
   const buttonRef = useRef(null);
   const [ isOpen, setIsOpen ] = useState(false);
-  const {currentBoard} = useSession();
 
   return (
     <div className="board-wrapper">
@@ -21,7 +19,7 @@ const BoardAddMember = () => {
       <AddMemberModal 
         isOpen={isOpen}
         buttonElement={buttonRef.current}
-        boardId={currentBoard}
+        boardId={boardId}
         toggleCardEditor={() => setIsOpen(!isOpen)}
         />
     </div>
