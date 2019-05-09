@@ -1,33 +1,10 @@
-import firebase from 'firebase';
-import { useAuth } from './useAuth';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.addScope('profile');
-provider.addScope('email');
+import firebase from '../firebase.service';
 
 export const useGoogleLogin = () => {
-  const { updateCurrentUser } = useAuth();  
-
-  const login = async () => {
-    const { user } = await firebase.auth().signInWithPopup(provider);
-
-    if (user) {
-      updateCurrentUser(user);
-      await firebase
-        .firestore()
-        .collection(`users`)
-        .doc(user.email)
-        .set({
-          username: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          roles: {},
-        });
-    }
-  };
-
-  const logout = () => firebase.auth().signOut();
+  const login = useCallback(() => firebase.doSignInWithGoogle())
+  const logout = useCallback(() => firebase.doSignOut());
 
   return { login, logout };
 };

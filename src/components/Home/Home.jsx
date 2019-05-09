@@ -3,11 +3,24 @@ import { Title } from 'react-head';
 import Header from '../Header/Header';
 import BoardAdder from './BoardAdder';
 import './Home.scss';
-import { useBoards } from '../../hooks/useBoards';
+import { useSession } from '../../hooks/useSession';
+import WithRouter from '../WithRouter';
+
+
+const BoardLink = WithRouter(({ board, ...props }) => {
+  return (
+    <a className="board-link" {...props}>
+      <span className="board-link-title">{board.title}</span>
+    </a>
+  )
+});
 
 const Home = () => {
-  const { boards } = useBoards();
-  const listsById = {};
+  const { boards, setCurrentBoard } = useSession();
+
+  const setAsCurrentBoard = React.useCallback((boardId) => {
+    setCurrentBoard(boardId);
+  });
 
   return (
     <>
@@ -17,29 +30,13 @@ const Home = () => {
         <div className="main-content">
           <h1>Boards</h1>
           <div className="boards">
-            {boards.map(board => (
-              <a
-                key={board.uid}
-                href={`/board?uid=${board.uid}`}
-                className="board-link"
-              >
-                <div className="board-link-title">{board.title}</div>
-                <div className="mini-board">
-                  {board.lists &&
-                    board.lists.map(listId => (
-                      <div
-                        key={listId.uid}
-                        className="mini-list"
-                        style={{
-                          height: `${Math.min(
-                            (listId.cards.length + 1) * 18,
-                            100
-                          )}%`,
-                        }}
-                      />
-                    ))}
-                </div>
-              </a>
+            {boards && boards.length && boards.map(board => (
+              <BoardLink 
+                board={board} 
+                key={board.uid} 
+                onClick={() => setAsCurrentBoard(board.uid)}
+                routeTo={`/board?uid=${board.uid}`}
+              />
             ))}
             <BoardAdder />
           </div>
