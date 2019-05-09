@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
-import firebase from 'firebase';
+import firebase from '../../firebase.service';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import './CardAdder.scss';
 
@@ -41,14 +41,13 @@ class CardAdder extends Component {
     const { listId, boardId } = this.props;
     if (newText === '') return;
 
-    await firebase
-      .firestore()
-      .collection(`boards`)
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .collection('cards')
-      .add({ text: newText, color: 'white', date: '' });
+    const cardsRef = firebase
+      .getList(boardId, listId)
+      .collection('cards');
+
+    const cardsCount = (await cardsRef.get()).size;
+
+    cardsRef.add({ text: newText, color: 'white', date: '', index: cardsCount });
 
     this.toggleCardComposer();
     this.setState({ newText: '' });

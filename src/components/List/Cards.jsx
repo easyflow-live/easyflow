@@ -29,7 +29,7 @@ class Cards extends Component {
   render() {
     const { listId, boardId, cards } = this.props;
     return (
-      <Droppable droppableId={listId}>
+      <Droppable droppableId={listId} type='CARD' direction="vertical">
         {(provided, { isDraggingOver }) => (
           <>
             <div className="cards" ref={provided.innerRef}>

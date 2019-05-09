@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Title } from 'react-head';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import firebase from '../../firebase.service';
+
 import List from '../List/List';
 import ListAdder from '../ListAdder/ListAdder';
 import Header from '../Header/Header';
@@ -27,12 +29,13 @@ class Board extends Component {
     };
   }
 
-  handleDragEnd = ({ source, destination, type }) => {
+  handleDragEnd = ({ draggableId, source, destination, type }) => {
+    console.log(type)
     // dropped outside the list
     if (!destination) {
       return;
     }
-    const { dispatch, boardId } = this.props;
+    const { dispatch, boardId } = this.props;    
 
     // Move list
     if (type === 'COLUMN') {
@@ -54,16 +57,18 @@ class Board extends Component {
       source.index !== destination.index ||
       source.droppableId !== destination.droppableId
     ) {
-      console.log(source);
+
+      // const cardRef = firebase.getCard()
+      
       dispatch({
         type: 'MOVE_CARD',
         payload: {
           sourceListId: source.droppableId,
           destListId: destination.droppableId,
           oldCardIndex: source.index,
-          oldCardUID: source.key,
           newCardIndex: destination.index,
           boardId,
+          cardId: draggableId,
         },
       });
     }
