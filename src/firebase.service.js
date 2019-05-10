@@ -107,6 +107,7 @@ class Firebase {
       list.push({
         ...doc.data(),
         uid: doc.id,
+        ref: doc,
       });
     });
     return list;

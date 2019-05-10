@@ -3,13 +3,22 @@ import { decorate, observable, action } from "mobx";
 import firebase from './firebase.service';
 
 export class Board {
-  constructor({uid, owner, title, users, color, listStore}) {
+  constructor({uid, owner, title, users, color, listStore, ref}) {
     this.listStore = listStore;
     this.uid = uid;
     this.owner = owner;
     this.title = title;
     this.color = color || '';
     this.users = users ? users : firebase.app.firestore.FieldValue.arrayUnion(owner);
+    this.ref = ref;
+  }
+
+  update(data) {
+    this.ref.update(data)
+  }
+
+  remove() {
+    this.ref.delete();
   }
 }
 
@@ -25,19 +34,6 @@ export class List {
 export class ListStore {
   constructor() {
     this.lists = [];
-  }
-
-  startListener = () => {
-    return firebase.listenToBoards(boards =>
-      this.setBoards(boards.map(b => {
-          const board = new Board({
-            ...b,
-            listStore: new ListStore()
-          });
-          return board;
-        }),
-        e => console.log(e)
-      ));
   }
 }
 
