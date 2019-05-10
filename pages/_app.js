@@ -4,8 +4,10 @@ import { HeadProvider, Style } from 'react-head';
 import { FirebaseProvider } from '../src/components/Firebase/Firebase';
 import { UserProvider, BoardProvider } from '../src/hooks/useSession';
 import firebase from '../src/firebase.service';
+import boardStore from '../src/board-store';
+import { observer } from 'mobx-react';
 
-class MyApp extends App {
+export default observer(class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
@@ -27,6 +29,8 @@ class MyApp extends App {
 
     this.unsubscribe = () => {};
     this.unsubscribeBoards = null;
+
+    this.setCurrentBoard = this.setCurrentBoard.bind(this);
   }
 
   componentDidMount() {
@@ -35,11 +39,12 @@ class MyApp extends App {
         this.setState({ user, initializing: false })
 
         if (!this.unsubscribeBoards && user) {
-          this.unsubscribeBoards = firebase.listenToBoards(boards => {
-            this.setState({
-              boards
-            })
-          });
+          this.unsubscribeBoards = boardStore.startListener();
+          // this.unsubscribeBoards = firebase.listenToBoards(boards => {
+          //   this.setState({
+          //     boards
+          //   })
+          // });
         }
       });    
   }
@@ -49,7 +54,7 @@ class MyApp extends App {
     this.unsubscribeBoards && this.unsubscribeBoards();
   }
 
-  setCurrentBoard = (board) => {
+  setCurrentBoard(board) {
     this.setState({ currentBoard: board })
   }
 
@@ -62,7 +67,13 @@ class MyApp extends App {
         <Container>
           <FirebaseProvider>
             <UserProvider value={{ user, initializing }}>
-              <BoardProvider value={{ boards, currentBoard, setCurrentBoard: this.setCurrentBoard }}>
+              < BoardProvider value = {
+                {
+                  boards: boardStore.boards,
+                  currentBoard: boardStore.currentBoard,
+                  setCurrentBoard: this.setCurrentBoard
+                }
+              } >
                 <Style>
                   {`
                     * {
@@ -83,6 +94,6 @@ class MyApp extends App {
       </HeadProvider>
     );
   }
-}
+});
 
-export default MyApp;
+// export default MyApp;

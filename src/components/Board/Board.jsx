@@ -30,7 +30,6 @@ class Board extends Component {
   }
 
   handleDragEnd = async ({ draggableId, source, destination, type }) => {
-    console.log(type);
     // dropped outside the list
     if (!destination) {
       return;

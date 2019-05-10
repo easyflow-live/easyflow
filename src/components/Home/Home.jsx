@@ -5,6 +5,8 @@ import BoardAdder from './BoardAdder';
 import './Home.scss';
 import { useSession } from '../../hooks/useSession';
 import WithRouter from '../WithRouter';
+import { observer } from 'mobx-react-lite';
+import boardStore from '../../board-store';
 
 
 const BoardLink = WithRouter(({ board, ...props }) => {
@@ -15,11 +17,12 @@ const BoardLink = WithRouter(({ board, ...props }) => {
   )
 });
 
-const Home = () => {
-  const { boards, setCurrentBoard } = useSession();
+const Home = observer(() => {
+  // const { boards, setCurrentBoard } = useSession();
+  const boards = boardStore.boards;  
 
   const setAsCurrentBoard = React.useCallback((boardId) => {
-    setCurrentBoard(boardId);
+    boardStore.setCurrentBoard(boardId);
   });
 
   return (
@@ -44,6 +47,6 @@ const Home = () => {
       </div>
     </>
   );
-};
+});
 
 export default Home;
