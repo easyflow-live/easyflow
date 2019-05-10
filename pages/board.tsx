@@ -1,15 +1,20 @@
+import * as React from 'react';
 import { useMemo } from 'react';
 
 import BoardComponent from '../src/components/Board/Board';
 import { useLists } from '../src/hooks/useLists';
 import { useSession } from '../src/hooks/useSession';
 
-const Board = props => {
+type BoardPageProps = {
+  query: any;
+};
+
+const BoardPage: React.FunctionComponent = (props: BoardPageProps) => {
   const { boards } = useSession();
   const { uid, kiosk } = props.query;
   const { lists } = useLists(props.query.uid);
   const board = useMemo(
-    () => boards && boards.find(b => b.uid === props.query.uid),
+    () => boards && boards.find((b: { uid: any }) => b.uid === props.query.uid),
     [boards, props.query.uid]
   );
 
@@ -23,14 +28,12 @@ const Board = props => {
         boardColor={'red'}
         kioskMode={kiosk}
         lists={lists}
-        dispatch={a => console.log(a)}
+        dispatch={(a: any) => console.log(a)}
       />
     </div>
   );
 };
 
-Board.getInitialProps = ({ query }) => {
-  return { query };
-};
+BoardPage.getInitialProps = ({ query }) => ({ query });
 
-export default Board;
+export default BoardPage;
