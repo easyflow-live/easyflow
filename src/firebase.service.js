@@ -30,33 +30,32 @@ class Firebase {
   }
 
   // *** Auth API ***
-  doSignInWithGoogle = async (onLoggin) => {
+  doSignInWithGoogle = async onLoggin => {
     const { user } = await this.auth.signInWithPopup(this.googleProvider);
 
     if (user) {
-      const token = await user.getIdToken(true)
-      this.getUser(user.email)
-        .set({
-          username: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          roles: {},
-          token
-        });
-      
+      const token = await user.getIdToken(true);
+      this.getUser(user.email).set({
+        username: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        roles: {},
+        token,
+      });
+
       onLoggin && onLoggin(user);
     }
-  }
+  };
 
   doSignOut = () => this.auth.signOut();
 
-  getCurrentUser = () => this.auth.currentUser
+  getCurrentUser = () => this.auth.currentUser;
 
   // *** Merge Auth and DB User API *** //
 
-  onAuthUserListener = (onAuthChange) =>
-    this.auth.onAuthStateChanged(authUser =>
-      onAuthChange && onAuthChange(authUser)
+  onAuthUserListener = onAuthChange =>
+    this.auth.onAuthStateChanged(
+      authUser => onAuthChange && onAuthChange(authUser)
     );
 
   // *** User API ***
@@ -71,61 +70,84 @@ class Firebase {
     const u = this.getCurrentUser();
 
     if (u) {
-      return this.db.collection('boards').where("users", "array-contains", this.getUser(u.email));
+      return this.db
+        .collection('boards')
+        .where('users', 'array-contains', this.getUser(u.email));
     }
 
     return null;
-  }
+  };
 
   getBoard = uid => this.db.collection('boards').doc(uid);
 
   // *** Lists API ***
 
-  getLists = (boardUid) => this.getBoard(boardUid).collection('lists');
+  getLists = boardUid => this.getBoard(boardUid).collection('lists');
 
   getList = (boardUid, uid) => this.getLists(boardUid).doc(uid);
 
   // *** Cards API ***
 
-  getCards = (boardUid, listUid) => this.getList(boardUid, listUid).collection('cards');
+  getCards = (boardUid, listUid) =>
+    this.getList(boardUid, listUid).collection('cards');
 
-  getOrderedCards = (boardUid, listUid) => this.getList(boardUid, listUid).collection('cards').orderBy('index');
+  getOrderedCards = (boardUid, listUid) =>
+    this.getList(boardUid, listUid)
+      .collection('cards')
+      .orderBy('index');
 
-  getCard = (boardUid, listUid, uid) => this.getCards(boardUid, listUid).doc(uid);
+  getCard = (boardUid, listUid, uid) =>
+    this.getCards(boardUid, listUid).doc(uid);
 
   // *** Listeners API ***
 
-  __generateList = (snapshot) => {
+  __generateList = snapshot => {
     const list = [];
     snapshot.forEach(doc => {
       list.push({
         ...doc.data(),
-        uid: doc.id
+        uid: doc.id,
       });
     });
     return list;
-  }
+  };
 
   listenToBoards = (onUpdate, onError) => {
     const boardsRef = this.getBoards();
 
-    if(boardsRef) {
-      return boardsRef.onSnapshot(snapshot => onUpdate(this.__generateList(snapshot)), err => onError(err));
+    if (boardsRef) {
+      return boardsRef.onSnapshot(
+        snapshot => onUpdate(this.__generateList(snapshot)),
+        err => onError(err)
+      );
     }
 
     return () => {};
-  }
+  };
 
-  listenToCards = ({boardUid, listUid}, onUpdate, onError) => {
+  listenToCards = ({ boardUid, listUid }, onUpdate, onError) => {
     const cardsRef = this.getOrderedCards(boardUid, listUid);
 
     if (cardsRef) {
-      return cardsRef.onSnapshot(snapshot => onUpdate(this.__generateList(snapshot)), err => onError(err));
+      return cardsRef.onSnapshot(
+        async snapshot => {
+          const cards = this.__generateList(snapshot);
+          await Promise.all(
+            cards.map(async c => {
+              if (c.assignee) {
+                c.assignee = (await c.assignee.get()).data();
+              }
+              Promise.resolve(c);
+            })
+          );
+          return onUpdate(cards);
+        },
+        err => onError(err)
+      );
     }
 
     return () => {};
-  }
-
+  };
 }
 
 export default new Firebase();

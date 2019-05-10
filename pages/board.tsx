@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useMemo } from 'react';
-
 import BoardComponent from '../src/components/Board/Board';
 import { useLists } from '../src/hooks/useLists';
 import { useSession } from '../src/hooks/useSession';
@@ -13,7 +11,7 @@ const BoardPage: React.FunctionComponent = (props: BoardPageProps) => {
   const { boards } = useSession();
   const { uid, kiosk } = props.query;
   const { lists } = useLists(props.query.uid);
-  const board = useMemo(
+  const board = React.useMemo(
     () => boards && boards.find((b: { uid: any }) => b.uid === props.query.uid),
     [boards, props.query.uid]
   );
