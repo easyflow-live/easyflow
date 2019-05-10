@@ -31,19 +31,20 @@ class Firebase {
 
   // *** Auth API ***
   doSignInWithGoogle = async (onLoggin) => {
-    const {
-      user
-    } = this.auth.signInWithPopup(this.googleProvider);
+    const { user } = await this.auth.signInWithPopup(this.googleProvider);
 
     if (user) {
-      onLoggin && onLoggin(user);
-      this.user(user.email)
+      const token = await user.getIdToken(true)
+      this.getUser(user.email)
         .set({
           username: user.displayName,
           email: user.email,
           photo: user.photoURL,
           roles: {},
+          token
         });
+      
+      onLoggin && onLoggin(user);
     }
   }
 
@@ -88,6 +89,8 @@ class Firebase {
 
   getCards = (boardUid, listUid) => this.getList(boardUid, listUid).collection('cards');
 
+  getOrderedCards = (boardUid, listUid) => this.getList(boardUid, listUid).collection('cards').orderBy('index');
+
   getCard = (boardUid, listUid, uid) => this.getCards(boardUid, listUid).doc(uid);
 
   // *** Listeners API ***
@@ -108,6 +111,16 @@ class Firebase {
 
     if(boardsRef) {
       return boardsRef.onSnapshot(snapshot => onUpdate(this.__generateList(snapshot)), err => onError(err));
+    }
+
+    return () => {};
+  }
+
+  listenToCards = ({boardUid, listUid}, onUpdate, onError) => {
+    const cardsRef = this.getOrderedCards(boardUid, listUid);
+
+    if (cardsRef) {
+      return cardsRef.onSnapshot(snapshot => onUpdate(this.__generateList(snapshot)), err => onError(err));
     }
 
     return () => {};

@@ -29,7 +29,7 @@ class Board extends Component {
     };
   }
 
-  handleDragEnd = ({ draggableId, source, destination, type }) => {
+  handleDragEnd = async ({ draggableId, source, destination, type }) => {
     console.log(type);
     // dropped outside the list
     if (!destination) {
@@ -57,19 +57,22 @@ class Board extends Component {
       source.index !== destination.index ||
       source.droppableId !== destination.droppableId
     ) {
-      // const cardRef = firebase.getCard()
+      const sourceListId = source.droppableId;
+      const destListId = destination.droppableId;
+      const cardId = draggableId;
+      const oldCardIndex = source.index;
+      const newCardIndex = destination.index;
 
-      dispatch({
-        type: 'MOVE_CARD',
-        payload: {
-          sourceListId: source.droppableId,
-          destListId: destination.droppableId,
-          oldCardIndex: source.index,
-          newCardIndex: destination.index,
-          boardId,
-          cardId: draggableId,
-        },
-      });
+      const cardRef = firebase.getCard(boardId, sourceListId, cardId);
+      const rawCard = (await cardRef.get()).data();
+      await cardRef.delete();
+      
+      const cardsFromDestRef = firebase.getList(boardId, destListId).collection('cards');
+      const cardsCount = (await cardsFromDestRef.get()).size;
+
+      cardsFromDestRef.add({ ...rawCard, index: cardsCount })
+
+      
     }
   };
 
