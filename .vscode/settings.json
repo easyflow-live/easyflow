@@ -1,9 +1,4 @@
 {
-    "gitflow4code.features": [
-        {
-            "name": "feature/Create_Avatar_component",
-            "base": "develop"
-        }
-    ],
+    "gitflow4code.features": [],
     "debug.node.autoAttach": "on"
 }

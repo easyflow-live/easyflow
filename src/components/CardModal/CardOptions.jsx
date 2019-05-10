@@ -7,6 +7,7 @@ import firebase from 'firebase';
 
 import Calendar from './Calendar';
 import ClickOutside from '../ClickOutside/ClickOutside';
+import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 
 class CardOptions extends Component {
@@ -167,6 +168,11 @@ class CardOptions extends Component {
             &nbsp;Due date
           </button>
         </div>
+        <CardOptionAssignToMe
+          listId={listId}
+          cardId={card.uid}
+          boardId={boardId}
+        />
         <Modal
           isOpen={isCalendarOpen}
           onRequestClose={this.toggleCalendar}
