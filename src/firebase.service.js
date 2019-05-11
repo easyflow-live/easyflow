@@ -31,7 +31,9 @@ class Firebase {
 
   // *** Auth API ***
   doSignInWithGoogle = async onLoggin => {
-    const { user } = await this.auth.signInWithPopup(this.googleProvider);
+    const {
+      user
+    } = await this.auth.signInWithPopup(this.googleProvider);
 
     if (user) {
       const token = await user.getIdToken(true);
@@ -93,8 +95,8 @@ class Firebase {
 
   getOrderedCards = (boardUid, listUid) =>
     this.getList(boardUid, listUid)
-      .collection('cards')
-      .orderBy('index');
+    .collection('cards')
+    .orderBy('index');
 
   getCard = (boardUid, listUid, uid) =>
     this.getCards(boardUid, listUid).doc(uid);
@@ -125,24 +127,30 @@ class Firebase {
     return () => {};
   };
 
-  listenToCards = ({ boardUid, listUid }, onUpdate, onError) => {
+  listenToCards = ({
+    boardUid,
+    listUid
+  }, onUpdate, onError) => {
     const cardsRef = this.getOrderedCards(boardUid, listUid);
 
     if (cardsRef) {
       return cardsRef.onSnapshot(
         async snapshot => {
-          const cards = this.__generateList(snapshot);
-          await Promise.all(
-            cards.map(async c => {
-              if (c.assignee) {
-                c.assignee = (await c.assignee.get()).data();
-              }
-              Promise.resolve(c);
-            })
-          );
-          return onUpdate(cards);
-        },
-        err => onError(err)
+            const cards = this.__generateList(snapshot);
+            await Promise.all(
+              cards.map(async c => {
+                if (c.date) {
+                  c.date = c.date.toDate();
+                }
+                if (c.assignee) {
+                  c.assignee = (await c.assignee.get()).data();
+                }
+                Promise.resolve(c);
+              })
+            );
+            return onUpdate(cards);
+          },
+          err => onError(err)
       );
     }
 

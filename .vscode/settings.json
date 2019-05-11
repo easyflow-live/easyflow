@@ -1,4 +1,9 @@
 {
-    "gitflow4code.features": [],
+    "gitflow4code.features": [
+        {
+            "name": "feature/wrong_date_format",
+            "base": "develop"
+        }
+    ],
     "debug.node.autoAttach": "on"
 }
