@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
-import firebase from 'firebase';
 
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
@@ -12,12 +11,10 @@ import './Card.scss';
 class Card extends Component {
   static propTypes = {
     card: PropTypes.shape({
-      uid: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      color: PropTypes.string,
+      // uid: PropTypes.string.isRequired,
+      // text: PropTypes.string.isRequired,
+      // color: PropTypes.string,
     }).isRequired,
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
     isDraggingOver: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
   };
@@ -53,10 +50,10 @@ class Card extends Component {
 
   // identify the clicked checkbox by its index and give it a new checked attribute
   toggleCheckbox = (checked, i) => {
-    const { card, boardId, listId } = this.props;
+    const { card } = this.props;
 
     let j = 0;
-    const newText = card.text.replace(/\[(\s|x)\]/g, match => {
+    const newText = card.data.text.replace(/\[(\s|x)\]/g, match => {
       let newString;
       if (i === j) {
         newString = checked ? '[x]' : '[ ]';
@@ -67,26 +64,16 @@ class Card extends Component {
       return newString;
     });
 
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .collection('cards')
-      .doc(card.uid)
-      .update({
-        text: newText,
-      });
+    card.ref.update({ text: newText });
   };
 
   render() {
-    const { card, index, listId, boardId, isDraggingOver } = this.props;
+    const { card, index, isDraggingOver } = this.props;
     const { isModalOpen } = this.state;
-    const checkboxes = findCheckboxes(card.text);
+    const checkboxes = findCheckboxes(card.data.text);
     return (
       <>
-        <Draggable draggableId={card.uid} index={index}>
+        <Draggable draggableId={card.id} index={index}>
           {(provided, snapshot) => (
             <>
               {/* eslint-disable */}
@@ -110,22 +97,28 @@ class Card extends Component {
                 }}
                 style={{
                   ...provided.draggableProps.style,
-                  background: card.color,
+                  background: card.data.color,
                 }}
               >
                 <div
                   className="card-title-html"
                   dangerouslySetInnerHTML={{
-                    __html: formatMarkdown(card.text),
+                    __html: formatMarkdown(card.data.text),
                   }}
                 />
                 {/* eslint-enable */}
-                {(card.assignee || card.date || checkboxes.total > 0) &&
+                {(card.data.assignee ||
+                  card.data.date ||
+                  checkboxes.total > 0) &&
                   'badges' && (
                     <CardBadges
-                      date={card.date}
+                      date={
+                        card.data.date
+                          ? new Date(card.data.date.seconds * 1000)
+                          : ''
+                      }
                       checkboxes={checkboxes}
-                      user={card.assignee}
+                      user={card.data.assignee}
                     />
                   )}
               </div>
@@ -138,8 +131,6 @@ class Card extends Component {
           isOpen={isModalOpen}
           cardElement={this.ref}
           card={card}
-          listId={listId}
-          boardId={boardId}
           toggleCardEditor={this.toggleCardEditor}
         />
       </>

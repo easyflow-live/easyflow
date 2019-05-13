@@ -20,8 +20,13 @@
     "dotenv": "^5.0.1",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^5.11.1",
+    "firestore": "^1.1.6",
+    "firestorter": "^1.2.2",
     "helmet": "^3.12.1",
     "marked": "^0.6.2",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "mobx-react-lite": "^1.3.2",
     "next": "^8.1.0",
     "normalizr": "^3.2.4",
     "prop-types": "^15.7.2",
@@ -39,6 +44,7 @@
     "slugify": "^1.3.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.17",
     "autoprefixer": "^9.5.1",

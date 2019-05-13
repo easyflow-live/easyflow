@@ -1,47 +1,64 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { Collection } from 'firestorter';
+import { observer } from 'mobx-react';
+
+import CardAdder from '../CardAdder/CardAdder';
 import ListHeader from './ListHeader';
 import Cards from './Cards';
-import CardAdder from '../CardAdder/CardAdder';
 import './List.scss';
-import { useCards } from '../../hooks/useCards';
 
-const List = ({ boardId, index, list, kioskMode }) => {
-  const { cards } = useCards(boardId, list.uid);
+export default observer(
+  class List extends React.Component {
+    constructor(props) {
+      super(props);
 
-  return (
-    <Draggable
-      draggableId={list.uid}
-      index={index}
-      disableInteractiveElementBlocking
-    >
-      {(provided, snapshot) => (
-        <>
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            className="list-wrapper"
-          >
-            <div className={`list ${snapshot.isDragging ? 'list--drag' : ''}`}>
-              <ListHeader
-                dragHandleProps={provided.dragHandleProps}
-                listTitle={list.title}
-                listId={list.uid}
-                cards={cards}
-                boardId={boardId}
-                dispatch={a => console.log(a)}
-              />
-              <div className="cards-wrapper">
-                <Cards listId={list.uid} cards={cards} boardId={boardId} />
+      console.log(this.props.list.path);
+      this.cards = new Collection(`${this.props.list.path}/cards`);
+    }
+
+    componentWillReceiveProps(newProps) {
+      if (newProps.list !== this.props.list) {
+        this.cards.path = `${newProps.list.path}/cards`;
+      }
+    }
+
+    render() {
+      const { index, kioskMode, list } = this.props;
+      const { isLoading, docs } = this.cards;
+
+      return (
+        <Draggable
+          draggableId={list.id}
+          index={index}
+          disableInteractiveElementBlocking
+        >
+          {(provided, snapshot) => (
+            <>
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                className="list-wrapper"
+              >
+                <div
+                  className={`list ${snapshot.isDragging ? 'list--drag' : ''}`}
+                >
+                  <ListHeader
+                    dragHandleProps={provided.dragHandleProps}
+                    listTitle={list.data.title}
+                    list={list}
+                  />
+                  <div className="cards-wrapper">
+                    <Cards listId={list.id} cards={docs} />
+                  </div>
+                </div>
+                {!kioskMode && <CardAdder cards={this.cards} />}
               </div>
-            </div>
-            {!kioskMode && <CardAdder listId={list.uid} boardId={boardId} />}
-          </div>
-          {provided.placeholder}
-        </>
-      )}
-    </Draggable>
-  );
-};
-
-export default List;
+              {provided.placeholder}
+            </>
+          )}
+        </Draggable>
+      );
+    }
+  }
+);

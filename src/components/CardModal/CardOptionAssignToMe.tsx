@@ -3,27 +3,19 @@ import { useSession } from '../../hooks/useSession';
 import firebase from '../../firebase.service';
 
 type Props = {
-  boardId: string;
-  listId: string;
-  cardId: string;
+  card: any;
 };
 
-const CardOptionAssignToMe: React.FunctionComponent<Props> = ({
-  cardId,
-  listId,
-  boardId,
-}) => {
+const CardOptionAssignToMe = ({ card }: Props) => {
   const { user } = useSession();
   const toggleAssignment = async () => {
-    const cardRef = await firebase.getCard(boardId, listId, cardId);
-    const cardObj = (await cardRef.get()).data();
-    const cardAssigneeObj =
-      cardObj.assignee && (await cardObj.assignee.get()).data();
+    const cardAssigneeObj = card.assignee && (await card.assignee.get()).data();
     const userRef = await firebase.getUser(user.email);
+
     if (cardAssigneeObj && user.email == cardAssigneeObj.email) {
-      cardRef.update({ assignee: '' });
+      await card.ref.update({ assignee: null });
     } else {
-      cardRef.update({ assignee: userRef });
+      await card.ref.update({ assignee: userRef });
     }
   };
 

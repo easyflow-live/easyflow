@@ -1,68 +1,71 @@
 import React from 'react';
 import App, { Container } from 'next/app';
+import { observer } from 'mobx-react';
 import { HeadProvider, Style } from 'react-head';
-import { FirebaseProvider } from '../src/components/Firebase/Firebase';
-import { UserProvider, BoardProvider } from '../src/hooks/useSession';
-import firebase from '../src/firebase.service';
+import { SessionProvider } from '../src/hooks/useSession';
+import { BoardProvider } from '../src/components/Board/BoardProvider';
+import app from 'firebase/app';
+import fireservice from '../src/fire.service';
 
-class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
+export default observer(
+  class MyApp extends App {
+    static async getInitialProps({ Component, ctx }) {
+      let pageProps = {};
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
+      }
+      return { pageProps };
     }
-    return { pageProps };
-  }
 
-  constructor() {
-    super();
-    this.state = {
-      user: null,
-      initializing: true,
+    constructor() {
+      super();
+      this.unsubscribe = () => {};
 
-      boards: null,
-      currentBoard: null,
+      this.state = {
+        user: null,
+        initializing: true,
+        currentBoard: null,
+        boards: [],
+      };
+    }
+
+    componentDidMount() {
+      this.setState({ boards: fireservice.getBoards('aaa') });
+
+      this.unsubscribe = app.auth().onAuthStateChanged(user => {
+        this.setState({
+          user,
+          initializing: false,
+        });
+      });
+    }
+
+    setCurrentBoard = board => {
+      console.log(board);
+      this.setState({ currentBoard: board });
     };
 
-    this.unsubscribe = () => {};
-    this.unsubscribeBoards = null;
-  }
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
 
-  componentDidMount() {
-    this.unsubscribe = firebase
-      .onAuthUserListener(user => {
-        this.setState({ user, initializing: false })
+    render() {
+      const { Component, pageProps } = this.props;
+      const { user, initializing, currentBoard, boards } = this.state;
 
-        if (!this.unsubscribeBoards && user) {
-          this.unsubscribeBoards = firebase.listenToBoards(boards => {
-            this.setState({
-              boards
-            })
-          });
-        }
-      });    
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-    this.unsubscribeBoards && this.unsubscribeBoards();
-  }
-
-  setCurrentBoard = (board) => {
-    this.setState({ currentBoard: board })
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
-    const { user, boards, currentBoard, initializing } = this.state;
-
-    return (
-      <HeadProvider headTags={[]}>
-        <Container>
-          <FirebaseProvider>
-            <UserProvider value={{ user, initializing }}>
-              <BoardProvider value={{ boards, currentBoard, setCurrentBoard: this.setCurrentBoard }}>
+      return (
+        <HeadProvider headTags={[]}>
+          <Container>
+            <BoardProvider value={{ boards }}>
+              <SessionProvider
+                value={{
+                  user,
+                  initializing,
+                  currentBoard,
+                  setCurrentBoard: this.setCurrentBoard,
+                }}
+              >
                 <Style>
                   {`
                     * {
@@ -74,15 +77,13 @@ class MyApp extends App {
                     }
                   `}
                 </Style>
-                
-                <Component {...pageProps} />
-              </BoardProvider>
-            </UserProvider>
-          </FirebaseProvider>
-        </Container>
-      </HeadProvider>
-    );
-  }
-}
 
-export default MyApp;
+                <Component {...pageProps} />
+              </SessionProvider>
+            </BoardProvider>
+          </Container>
+        </HeadProvider>
+      );
+    }
+  }
+);

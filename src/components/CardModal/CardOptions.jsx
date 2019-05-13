@@ -13,9 +13,7 @@ import './CardOptions.scss';
 class CardOptions extends Component {
   static propTypes = {
     isColorPickerOpen: PropTypes.bool.isRequired,
-    card: PropTypes.shape({ uid: PropTypes.string.isRequired }).isRequired,
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
+    card: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
     isCardNearRightBorder: PropTypes.bool.isRequired,
     isThinDisplay: PropTypes.bool.isRequired,
     boundingRect: PropTypes.object.isRequired,
@@ -28,31 +26,14 @@ class CardOptions extends Component {
   }
 
   deleteCard = () => {
-    const { listId, boardId, card } = this.props;
-
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .collection('cards')
-      .doc(card.uid)
-      .delete();
+    const { card } = this.props;
+    card.ref.delete();
   };
 
   changeColor = color => {
-    const { card, boardId, listId, toggleColorPicker } = this.props;
-    if (card.color !== color) {
-      firebase
-        .firestore()
-        .collection('boards')
-        .doc(boardId)
-        .collection('lists')
-        .doc(listId)
-        .collection('cards')
-        .doc(card.uid)
-        .update({ color });
+    const { card, toggleColorPicker } = this.props;
+    if (card.data.color !== color) {
+      card.ref.update({ color });
     }
     toggleColorPicker();
     this.colorPickerButton.focus();
@@ -83,8 +64,6 @@ class CardOptions extends Component {
       card,
       isThinDisplay,
       boundingRect,
-      boardId,
-      listId,
     } = this.props;
     const { isCalendarOpen } = this.state;
 
@@ -168,11 +147,7 @@ class CardOptions extends Component {
             &nbsp;Due date
           </button>
         </div>
-        <CardOptionAssignToMe
-          listId={listId}
-          cardId={card.uid}
-          boardId={boardId}
-        />
+        <CardOptionAssignToMe card={card} />
         <Modal
           isOpen={isCalendarOpen}
           onRequestClose={this.toggleCalendar}
@@ -181,10 +156,8 @@ class CardOptions extends Component {
           style={isThinDisplay ? calendarMobileStyle : calendarStyle}
         >
           <Calendar
-            cardId={card.uid}
-            listId={listId}
-            boardId={boardId}
-            date={card.date}
+            card={card}
+            date={card.data.date ? new Date(card.data.date.seconds * 1000) : ''}
             toggleCalendar={this.toggleCalendar}
           />
         </Modal>

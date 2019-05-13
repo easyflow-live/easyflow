@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Title } from 'react-head';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import firebase from '../../firebase.service';
+import { observer } from 'mobx-react';
 
 import List from '../List/List';
 import ListAdder from '../ListAdder/ListAdder';
 import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
+import { Document, Collection } from 'firestorter';
 
 class Board extends Component {
   static propTypes = {
     lists: PropTypes.arrayOf(
-      PropTypes.shape({ uid: PropTypes.string.isRequired })
+      PropTypes.shape({ id: PropTypes.string.isRequired })
     ).isRequired,
-    boardId: PropTypes.string.isRequired,
-    boardTitle: PropTypes.string.isRequired,
-    boardColor: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -30,12 +28,11 @@ class Board extends Component {
   }
 
   handleDragEnd = async ({ draggableId, source, destination, type }) => {
-    console.log(type);
     // dropped outside the list
     if (!destination) {
       return;
     }
-    const { dispatch, boardId } = this.props;
+    const { dispatch, board, lists } = this.props;
 
     // Move list
     if (type === 'COLUMN') {
@@ -57,22 +54,20 @@ class Board extends Component {
       source.index !== destination.index ||
       source.droppableId !== destination.droppableId
     ) {
-      const sourceListId = source.droppableId;
-      const destListId = destination.droppableId;
-      const cardId = draggableId;
-      const oldCardIndex = source.index;
-      const newCardIndex = destination.index;
+      const sourceList = lists.find(l => l.id === source.droppableId);
+      const destList = lists.find(l => l.id === destination.droppableId);
 
-      const cardRef = firebase.getCard(boardId, sourceListId, cardId);
-      const rawCard = (await cardRef.get()).data();
-      await cardRef.delete();
-      
-      const cardsFromDestRef = firebase.getList(boardId, destListId).collection('cards');
-      const cardsCount = (await cardsFromDestRef.get()).size;
+      const card = new Document(`${sourceList.path}/cards/${draggableId}`);
+      const cardData = (await card.fetch()).data;
 
-      cardsFromDestRef.add({ ...rawCard, index: cardsCount })
+      const cardCollection = new Collection(`${destList.path}/cards/`, {
+        mode: 'off',
+      });
+      const cardsCount = (await cardCollection.fetch()).docs.length;
 
-      
+      cardCollection.add({ ...cardData, index: cardsCount });
+
+      card.delete();
     }
   };
 
@@ -130,15 +125,15 @@ class Board extends Component {
   };
 
   render = () => {
-    const { lists, boardTitle, boardId, boardColor, kioskMode } = this.props;
-    console.log(kioskMode);
+    const { lists, board, kioskMode } = this.props;
+
     return (
       <>
         <div className="board">
-          <Title>{boardTitle} | React Kanban</Title>
+          <Title>{board.title} | React Kanban</Title>
           {!kioskMode && <Header />}
           {!kioskMode && (
-            <BoardHeader boardTitle={boardTitle} boardId={boardId} />
+            <BoardHeader boardTitle={board.data.title} boardId={board.id} />
           )}
           {/* eslint-disable jsx-a11y/no-static-element-interactions */}
           <div
@@ -149,7 +144,7 @@ class Board extends Component {
             {/* eslint-enable jsx-a11y/no-static-element-interactions */}
             <DragDropContext onDragEnd={this.handleDragEnd}>
               <Droppable
-                droppableId={boardId}
+                droppableId={board.id}
                 type="COLUMN"
                 direction="horizontal"
               >
@@ -158,14 +153,13 @@ class Board extends Component {
                     {lists.map((list, index) => (
                       <List
                         list={list}
-                        boardId={boardId}
                         index={index}
-                        key={list.uid}
+                        key={list.id}
                         kioskMode={kioskMode}
                       />
                     ))}
                     {provided.placeholder}
-                    {!kioskMode && <ListAdder boardId={boardId} />}
+                    {!kioskMode && <ListAdder boardId={board.id} />}
                   </div>
                 )}
               </Droppable>
@@ -178,4 +172,4 @@ class Board extends Component {
   };
 }
 
-export default Board;
+export default observer(Board);
