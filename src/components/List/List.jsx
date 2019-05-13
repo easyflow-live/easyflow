@@ -13,7 +13,6 @@ export default observer(
     constructor(props) {
       super(props);
 
-      console.log(this.props.list.path);
       this.cards = new Collection(`${this.props.list.path}/cards`);
     }
 

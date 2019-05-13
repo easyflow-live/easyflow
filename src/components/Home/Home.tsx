@@ -11,8 +11,8 @@ const Home = () => {
     <>
       <Title>Home | React Kanban</Title>
       <Header />
-      <div className="home">
-        <div className="main-content">
+      <div className='home'>
+        <div className='main-content'>
           <h1>Boards</h1>
           <Boards />
         </div>

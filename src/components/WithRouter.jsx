@@ -5,7 +5,7 @@ export default (WrappedComponent) => (props) => {
   const { routeTo, children, onClick, ...othersProps } = props;
 
   const handleOnClick = useCallback(() => {
-    onClick();
+    onClick && onClick();
     Router.push(routeTo);
   });
 

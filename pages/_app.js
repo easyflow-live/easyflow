@@ -2,9 +2,12 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import { observer } from 'mobx-react';
 import { HeadProvider, Style } from 'react-head';
+import app from 'firebase/app';
+import { Collection, Document } from 'firestorter';
+
+
 import { SessionProvider } from '../src/hooks/useSession';
 import { BoardProvider } from '../src/components/Board/BoardProvider';
-import app from 'firebase/app';
 import fireservice from '../src/fire.service';
 
 export default observer(
@@ -25,26 +28,23 @@ export default observer(
       this.state = {
         user: null,
         initializing: true,
-        currentBoard: null,
-        boards: [],
       };
+
+      this.boards = new Collection('boards');
     }
 
     componentDidMount() {
-      this.setState({ boards: fireservice.getBoards('aaa') });
-
       this.unsubscribe = app.auth().onAuthStateChanged(user => {
-        this.setState({
-          user,
-          initializing: false,
-        });
+        this.setState({ user, initializing: false });
       });
     }
 
-    setCurrentBoard = board => {
-      console.log(board);
-      this.setState({ currentBoard: board });
-    };
+    componentDidUpdate(prevProps, prevState) {
+      if (prevState.user !== this.state.user) {
+        const userRef = new Document(`users/${this.state.user.email}`).ref;
+        this.boards.query = ref => ref.where('users', 'array-contains', userRef);
+      }
+    }
 
     componentWillUnmount() {
       this.unsubscribe();
@@ -52,20 +52,14 @@ export default observer(
 
     render() {
       const { Component, pageProps } = this.props;
-      const { user, initializing, currentBoard, boards } = this.state;
+      const { user, initializing } = this.state;
+      const { docs } = this.boards;
 
       return (
         <HeadProvider headTags={[]}>
           <Container>
-            <BoardProvider value={{ boards }}>
-              <SessionProvider
-                value={{
-                  user,
-                  initializing,
-                  currentBoard,
-                  setCurrentBoard: this.setCurrentBoard,
-                }}
-              >
+            <BoardProvider value={{ boards: docs }} >
+              <SessionProvider value={{ user, initializing }}>
                 <Style>
                   {`
                     * {

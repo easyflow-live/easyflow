@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useSession } from '../../hooks/useSession';
 import firebase from '../../firebase.service';
 
-type Props = {
+interface Props {
   card: any;
-};
+}
 
 const CardOptionAssignToMe = ({ card }: Props) => {
   const { user } = useSession();
@@ -12,7 +12,7 @@ const CardOptionAssignToMe = ({ card }: Props) => {
     const cardAssigneeObj = card.assignee && (await card.assignee.get()).data();
     const userRef = await firebase.getUser(user.email);
 
-    if (cardAssigneeObj && user.email == cardAssigneeObj.email) {
+    if (cardAssigneeObj && user.email === cardAssigneeObj.email) {
       await card.ref.update({ assignee: null });
     } else {
       await card.ref.update({ assignee: userRef });
@@ -21,8 +21,8 @@ const CardOptionAssignToMe = ({ card }: Props) => {
 
   return (
     <div>
-      <button onClick={toggleAssignment} className="options-list-button">
-        <div className="modal-icon" />
+      <button onClick={toggleAssignment} className='options-list-button'>
+        <div className='modal-icon' />
         &nbsp;Toggle assignment
       </button>
     </div>

@@ -14,7 +14,10 @@ import { Document, Collection } from 'firestorter';
 class Board extends Component {
   static propTypes = {
     lists: PropTypes.arrayOf(
-      PropTypes.shape({ id: PropTypes.string.isRequired })
+      PropTypes.shape({ id: PropTypes.string.isRequired }),
+      PropTypes.shape({ data: PropTypes.shape({
+        title: PropTypes.string.isRequired
+      }) }),
     ).isRequired,
     dispatch: PropTypes.func.isRequired,
   };
@@ -133,7 +136,7 @@ class Board extends Component {
           <Title>{board.title} | React Kanban</Title>
           {!kioskMode && <Header />}
           {!kioskMode && (
-            <BoardHeader boardTitle={board.data.title} boardId={board.id} />
+            <BoardHeader boardTitle={board.data && board.data.title} boardId={board.id} />
           )}
           {/* eslint-disable jsx-a11y/no-static-element-interactions */}
           <div

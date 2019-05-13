@@ -1,37 +1,43 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { Collection, Document } from 'firestorter';
+
 import BoardComponent from '../src/components/Board/Board';
-import { useSession } from '../src/hooks/useSession';
-import { useBoardContext } from '../src/components/Board/BoardProvider';
-import { observer } from 'mobx-react-lite';
-import fireService from '../src/fire.service';
 
-type BoardPageProps = {
-  query: any;
-};
+interface BoardPageProps {
+  query: { uid: string; kiosk: boolean };
+  children: React.ReactChildren;
+}
 
-const BoardPage = observer(({ query }: BoardPageProps) => {
-  const { uid, kiosk, user } = query;
+export default observer(
+  class Board extends React.Component<BoardPageProps, {}> {
+    lists: Collection;
+    board: Document;
 
-  const { currentBoard } = useSession();
-  const { boards } = useBoardContext();
+    static getInitialProps = ({ query }) => ({ query });
 
-  const board = boards.find(b => b.id === uid);
-  const lists = React.useMemo(() => fireService.getLists(uid), [uid]);
+    constructor(props) {
+      super(props);
 
-  if (!board) return <div>'Loading...'</div>;
+      const { query } = this.props;
+      this.lists = new Collection(`boards/${query.uid}/lists`);
+      this.board = new Document(`boards/${query.uid}`);
+    }
 
-  return (
-    <div>
-      <BoardComponent
-        board={board}
-        kioskMode={kiosk}
-        lists={lists}
-        dispatch={(a: any) => console.log(a)}
-      />
-    </div>
-  );
-});
+    render() {
+      const { query } = this.props;
+      const { docs } = this.lists;
 
-BoardPage.getInitialProps = ({ query }) => ({ query });
-
-export default BoardPage;
+      return (
+        <div>
+          <BoardComponent
+            board={this.board}
+            kioskMode={query.kiosk}
+            lists={docs}
+            dispatch={(a: any) => console.log(a)}
+          />
+        </div>
+      );
+    }
+  }
+);
