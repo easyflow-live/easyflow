@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import WithRouter from '../WithRouter';
-import BoardAdder from '../Home/BoardAdder';
+import BoardAdder from './BoardAdder';
 import { useBoardContext } from './BoardProvider';
 
 const BoardLink = WithRouter(({ board, ...props }) => {

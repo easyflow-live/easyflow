@@ -5,7 +5,8 @@ import { observer } from 'mobx-react';
 
 import CardAdder from '../CardAdder/CardAdder';
 import ListHeader from './ListHeader';
-import Cards from './Cards';
+import Cards from '../Card/Cards';
+import { CardsConsumer } from '../Card/CardsProvider';
 import './List.scss';
 
 export default observer(

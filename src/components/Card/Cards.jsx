@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
-import Card from '../Card/Card';
+import Card from './Card';
 
 class Cards extends Component {
   static propTypes = {

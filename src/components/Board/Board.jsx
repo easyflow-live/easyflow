@@ -5,23 +5,14 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react';
 
 import List from '../List/List';
+import ListColumns from '../List/ListColumns';
 import ListAdder from '../ListAdder/ListAdder';
 import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
 import { Document, Collection } from 'firestorter';
 
-class Board extends Component {
-  static propTypes = {
-    lists: PropTypes.arrayOf(
-      PropTypes.shape({ id: PropTypes.string.isRequired }),
-      PropTypes.shape({ data: PropTypes.shape({
-        title: PropTypes.string.isRequired
-      }) }),
-    ).isRequired,
-    dispatch: PropTypes.func.isRequired,
-  };
-
+export default observer(class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,50 +20,6 @@ class Board extends Component {
       startScrollX: null,
     };
   }
-
-  handleDragEnd = async ({ draggableId, source, destination, type }) => {
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-    const { dispatch, board, lists } = this.props;
-
-    // Move list
-    if (type === 'COLUMN') {
-      // Prevent update if nothing has changed
-      if (source.index !== destination.index) {
-        dispatch({
-          type: 'MOVE_LIST',
-          payload: {
-            oldListIndex: source.index,
-            newListIndex: destination.index,
-            boardId: source.droppableId,
-          },
-        });
-      }
-      return;
-    }
-    // Move card
-    if (
-      source.index !== destination.index ||
-      source.droppableId !== destination.droppableId
-    ) {
-      const sourceList = lists.find(l => l.id === source.droppableId);
-      const destList = lists.find(l => l.id === destination.droppableId);
-
-      const card = new Document(`${sourceList.path}/cards/${draggableId}`);
-      const cardData = (await card.fetch()).data;
-
-      const cardCollection = new Collection(`${destList.path}/cards/`, {
-        mode: 'off',
-      });
-      const cardsCount = (await cardCollection.fetch()).docs.length;
-
-      cardCollection.add({ ...cardData, index: cardsCount });
-
-      card.delete();
-    }
-  };
 
   // The following three methods implement dragging of the board by holding down the mouse
   handleMouseDown = ({ target, clientX }) => {
@@ -128,51 +75,25 @@ class Board extends Component {
   };
 
   render = () => {
-    const { lists, board, kioskMode } = this.props;
+    const { board, kioskMode } = this.props;
 
     return (
-      <>
         <div className="board">
           <Title>{board.title} | React Kanban</Title>
           {!kioskMode && <Header />}
           {!kioskMode && (
             <BoardHeader boardTitle={board.data && board.data.title} boardId={board.id} />
           )}
-          {/* eslint-disable jsx-a11y/no-static-element-interactions */}
+
           <div
             className="lists-wrapper"
             onMouseDown={this.handleMouseDown}
             onWheel={this.handleWheel}
           >
-            {/* eslint-enable jsx-a11y/no-static-element-interactions */}
-            <DragDropContext onDragEnd={this.handleDragEnd}>
-              <Droppable
-                droppableId={board.id}
-                type="COLUMN"
-                direction="horizontal"
-              >
-                {provided => (
-                  <div className="lists" ref={provided.innerRef}>
-                    {lists.map((list, index) => (
-                      <List
-                        list={list}
-                        index={index}
-                        key={list.id}
-                        kioskMode={kioskMode}
-                      />
-                    ))}
-                    {provided.placeholder}
-                    {!kioskMode && <ListAdder boardId={board.id} />}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <ListColumns board={board} kioskMode={kioskMode} />
           </div>
           <div className="board-underlay" />
         </div>
-      </>
     );
   };
-}
-
-export default observer(Board);
+});
