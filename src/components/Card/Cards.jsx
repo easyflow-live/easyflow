@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
+
 import Card from './Card';
 
 class Cards extends Component {
@@ -26,10 +27,10 @@ class Cards extends Component {
   };
 
   render() {
-    const { listId, cards } = this.props;
+    const { listId, cards, type } = this.props;
 
     return (
-      <Droppable droppableId={listId} type="CARD" direction="vertical">
+      <Droppable droppableId={listId} type={type} direction="vertical" isCombineEnabled>
         {(provided, { isDraggingOver }) => (
           <>
             <div className="cards" ref={provided.innerRef}>

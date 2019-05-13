@@ -2,11 +2,12 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Collection } from 'firestorter';
 import { observer } from 'mobx-react';
+import shortid from 'shortid';
 
 import CardAdder from '../CardAdder/CardAdder';
 import ListHeader from './ListHeader';
 import Cards from '../Card/Cards';
-import { CardsConsumer } from '../Card/CardsProvider';
+import DragEndContext from '../context/DragEndContext';
 import './List.scss';
 
 export default observer(
@@ -14,12 +15,44 @@ export default observer(
     constructor(props) {
       super(props);
 
+      this.state = {
+        lastDragResult: null
+      }
+
+      // used to created a Droppable scope
+      this.dropType = shortid.generate()
+
       this.cards = new Collection(`${this.props.list.path}/cards`);
+      this.cards.query = ref => ref.orderBy('index')
     }
 
     componentWillReceiveProps(newProps) {
       if (newProps.list !== this.props.list) {
         this.cards.path = `${newProps.list.path}/cards`;
+      }
+    }
+
+    onDragEnd(onDragEndResult) {
+      // dropped outside the list
+      const { result } = onDragEndResult;
+      
+      if (!result || !result.destination) {
+        return;
+      }
+
+      console.log('moved card child', result.source.droppableId);
+
+      if (result.type === this.dropType && (!this.state.lastDragResult || this.state.lastDragResult !== result)) {
+
+        const sameList = result.source.droppableId === result.destination.droppableId;
+        if (sameList) {
+          const [removed] = this.cards.docs.splice(result.source.index, 1);
+          this.cards.docs.splice(result.destination.index, 0, removed);
+
+          this.cards.docs.forEach((doc, index) => doc.update({...doc.data, index}) );
+        }
+
+        this.setState({ lastDragResult: result });
       }
     }
 
@@ -49,7 +82,11 @@ export default observer(
                     list={list}
                   />
                   <div className="cards-wrapper">
-                    <Cards listId={list.id} cards={docs} />
+                    {/* Consumer will receive dragEnd result object from Parent */}
+                    <DragEndContext.Consumer>
+                      {value => this.onDragEnd(value)}
+                    </DragEndContext.Consumer>
+                    <Cards type={this.dropType} listId={list.id} cards={docs} />
                   </div>
                 </div>
                 {!kioskMode && <CardAdder cards={this.cards} />}
