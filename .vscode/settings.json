@@ -1,4 +1,19 @@
 {
+    "debug.node.autoAttach": "on",
     "gitflow4code.features": [],
-    "debug.node.autoAttach": "on"
-}
+    "editor.formatOnPaste": true,
+    
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.preferences.quoteStyle": "single",
+    
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "javascript.preferences.quoteStyle": "single",
+    
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "prettier.tslintIntegration": true,
+    
+    "tslint.autoFixOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+  }
