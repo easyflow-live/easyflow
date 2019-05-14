@@ -1,7 +1,7 @@
 {
     "gitflow4code.features": [
         {
-            "name": "feature/wrong_date_format",
+            "name": "feature/sort_cards_with_error",
             "base": "develop"
         }
     ],

@@ -101,6 +101,33 @@ class Firebase {
   getCard = (boardUid, listUid, uid) =>
     this.getCards(boardUid, listUid).doc(uid);
 
+  updateCardIndex = async (boardId, listId, cardId, newCardIndex) => {
+    const cardRef = this.getCard(boardId, listId, cardId);
+    cardRef.update({
+      index: newCardIndex
+    }).then(() => {
+      this.getList(boardId, listId)
+        .collection('cards')
+        .where("index", ">=", newCardIndex)
+        .orderBy("index", 'asc')
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            if (cardRef.id != doc.id) {
+              newCardIndex++;
+              doc.ref.update({
+                index: newCardIndex
+              });
+            }
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+
+    });
+  }
+
   // *** Listeners API ***
 
   __generateList = snapshot => {
