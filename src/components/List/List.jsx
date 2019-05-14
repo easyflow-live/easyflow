@@ -10,17 +10,13 @@ import Cards from '../Card/Cards';
 import DragEndContext from '../context/DragEndContext';
 import './List.scss';
 
-export default observer(
-  class List extends React.Component {
+export default observer(class List extends React.Component {
     constructor(props) {
       super(props);
 
       this.state = {
         lastDragResult: null
       }
-
-      // used to created a Droppable scope
-      this.dropType = shortid.generate()
 
       this.cards = new Collection(`${this.props.list.path}/cards`);
       this.cards.query = ref => ref.orderBy('index')
@@ -32,24 +28,54 @@ export default observer(
       }
     }
 
-    onDragEnd(onDragEndResult) {
+    // componentWillUpdate(nextProps) {
+    //   if (nextProps.list !== this.props.list) {
+    //     return true;
+    //   }
+    //   return false;
+    // }
+
+    onDragEnd(result) {
       // dropped outside the list
-      const { result } = onDragEndResult;
+      const { lastDragResult} = this.state;
+      const { list } = this.props;
       
-      if (!result || !result.destination) {
+      if (!result.destination || lastDragResult === result) {
         return;
       }
 
       console.log('moved card child', result.source.droppableId);
 
-      if (result.type === this.dropType && (!this.state.lastDragResult || this.state.lastDragResult !== result)) {
+
+      if ( (!lastDragResult || lastDragResult !== result)) {
 
         const sameList = result.source.droppableId === result.destination.droppableId;
-        if (sameList) {
-          const [removed] = this.cards.docs.splice(result.source.index, 1);
-          this.cards.docs.splice(result.destination.index, 0, removed);
 
-          this.cards.docs.forEach((doc, index) => doc.update({...doc.data, index}) );
+        if (sameList) {
+          const [removed] = this.cards.splice(result.source.index, 1);
+          this.cards.splice(result.destination.index, 0, removed);
+
+          this.cards.forEach((doc, index) => doc.update({...doc.data, index}) );
+
+        } else {
+          // const { lists } = onDragEndResult;
+
+          // const isSourceList = lists.source.id === list.id;
+          // if (isSourceList) {
+          //   console.log('source list')
+          //   console.log(onDragEndResult.lists.source)
+          //   this.cards.splice(result.source.index, 1);
+          //   return;
+          // }
+
+          // const isDestinationList = lists.destination.id === list.id;
+          // if (isDestinationList) {
+          //   console.log('destination list')
+          //   console.log(onDragEndResult.lists.destination)
+          //   console.log(cards.length);
+          //   // cards.splice(result.destination.index, 0, removed);
+          //   return;
+          // }
         }
 
         this.setState({ lastDragResult: result });
@@ -86,7 +112,7 @@ export default observer(
                     <DragEndContext.Consumer>
                       {value => this.onDragEnd(value)}
                     </DragEndContext.Consumer>
-                    <Cards type={this.dropType} listId={list.id} cards={docs} />
+                    <Cards list={list} cards={docs} />
                   </div>
                 </div>
                 {!kioskMode && <CardAdder cards={this.cards} />}
@@ -97,5 +123,4 @@ export default observer(
         </Draggable>
       );
     }
-  }
-);
+  });

@@ -50,7 +50,7 @@ class ListAdder extends Component {
 
     this.setState({ isOpen: false, listTitle: '' });
   };
-  render = () => {
+  render(){
     const { isOpen, listTitle } = this.state;
     if (!isOpen) {
       return (

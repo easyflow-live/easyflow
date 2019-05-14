@@ -15,6 +15,7 @@ interface ListsProps {
 
 interface State {
   dragEndResult: object;
+  dragEndLists: object;
 }
 
 export default observer(
@@ -26,6 +27,7 @@ export default observer(
 
       this.state = {
         dragEndResult: {},
+        dragEndLists: {},
       };
 
       this.lists = new Collection(`${this.props.board.path}/lists`);
@@ -40,7 +42,24 @@ export default observer(
       }
 
       if (type !== 'COLUMN') {
-        this.setState({ dragEndResult: { result } });
+        if (source.droppableId !== destination.droppableId) {
+          const sourceList = this.lists.docs.find(
+            l => l.id === source.droppableId
+          );
+          const destList = this.lists.docs.find(
+            l => l.id === destination.droppableId
+          );
+
+          this.setState({
+            dragEndResult: result,
+            dragEndLists: {
+              source: sourceList,
+              destination: destList,
+            },
+          });
+        } else {
+          this.setState({ dragEndResult: result });
+        }
         return;
       }
 
