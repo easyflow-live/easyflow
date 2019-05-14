@@ -1,6 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { Collection, Document } from 'firestorter';
 
 import BoardComponent from '../src/components/Board/Board';
 
@@ -9,27 +7,16 @@ interface BoardPageProps {
   children: React.ReactChildren;
 }
 
-export default observer(
-  class Board extends React.Component<BoardPageProps, {}> {
-    board: Document;
+export default class Board extends React.Component<BoardPageProps, {}> {
+  static getInitialProps = ({ query }) => ({ query });
 
-    static getInitialProps = ({ query }) => ({ query });
+  render() {
+    const { query } = this.props;
 
-    constructor(props) {
-      super(props);
-
-      const { query } = this.props;
-      this.board = new Document(`boards/${query.uid}`);
-    }
-
-    render() {
-      const { query } = this.props;
-
-      return (
-        <div>
-          <BoardComponent board={this.board} kioskMode={query.kiosk} />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <BoardComponent uid={query.uid} kioskMode={query.kiosk} />
+      </div>
+    );
   }
-);
+}

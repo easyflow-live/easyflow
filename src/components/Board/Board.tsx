@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Title } from 'react-head';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react';
+import { Document } from 'firestorter';
 
-import List from '../List/List';
 import ListColumns from '../List/ListColumns';
-import ListAdder from '../ListAdder/ListAdder';
 import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
-import { Document, Collection } from 'firestorter';
 
-export default observer(class Board extends Component {
+const Board = class BoardComponent extends Component {
+  board: Document;
+
   constructor(props) {
     super(props);
+
     this.state = {
       startX: null,
       startScrollX: null,
     };
+
+    this.board = new Document(`boards/${this.props.uid}`);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.uid !== this.props.uid) {
+      this.board.path = `boards/${newProps.uid}`;
+    }
   }
 
   // The following three methods implement dragging of the board by holding down the mouse
@@ -74,26 +81,32 @@ export default observer(class Board extends Component {
     }
   };
 
-  render = () => {
-    const { board, kioskMode } = this.props;
+  render() {
+    const { kioskMode } = this.props;
+    const { isLoading } = this.board;
 
     return (
-        <div className="board">
-          <Title>{board.title} | React Kanban</Title>
-          {!kioskMode && <Header />}
-          {!kioskMode && (
-            <BoardHeader boardTitle={board.data && board.data.title} boardId={board.id} />
-          )}
+      <div className='board'>
+        <Title>{this.board.data.title} | React Kanban</Title>
+        {!kioskMode && <Header />}
+        {!kioskMode && (
+          <BoardHeader
+            boardTitle={this.board.data.title}
+            boardId={this.board.id}
+          />
+        )}
 
-          <div
-            className="lists-wrapper"
-            onMouseDown={this.handleMouseDown}
-            onWheel={this.handleWheel}
-          >
-            <ListColumns board={board} kioskMode={kioskMode} />
-          </div>
-          <div className="board-underlay" />
+        <div
+          className='lists-wrapper'
+          onMouseDown={this.handleMouseDown}
+          onWheel={this.handleWheel}
+        >
+          <ListColumns board={this.board} kioskMode={kioskMode} />
         </div>
+        <div className='board-underlay' />
+      </div>
     );
-  };
-});
+  }
+};
+
+export default observer(Board);
