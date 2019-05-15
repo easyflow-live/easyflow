@@ -1,9 +1,9 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import BoardComponent from '../src/components/Board/Board';
 import { useSession } from '../src/hooks/useSession';
-import { observer } from 'mobx-react-lite';
-import BoardDocument from 'src/stores/board.doc';
+import BoardDocument from '../src/documents/board.doc';
 
 interface BoardPageProps {
   query: { uid: string; kiosk: boolean };

@@ -1,5 +1,5 @@
 import { useContext, createContext } from 'react';
-import UserDocument from 'src/stores/user.doc';
+import UserDocument from '../documents/user.doc';
 
 interface SessionContextProps {
   user: null;

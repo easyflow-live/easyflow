@@ -2,12 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { FaUserSecret } from 'react-icons/fa';
 import { Style } from 'react-head';
-import './Header.scss';
+import { observer } from 'mobx-react-lite';
+
 import { useSession } from '../../hooks/useSession';
 import { useGoogleLogin } from '../../hooks/useLogin';
 import { Avatar } from '../Avatar/Avatar';
+import './Header.scss';
 
-const Header = () => {
+const Header = observer(() => {
   const { user } = useSession();
   const { logout } = useGoogleLogin();
 
@@ -18,7 +20,7 @@ const Header = () => {
       </Link>
 
       <div className="header-right-side">
-        <Avatar user={user} />
+        {user && <Avatar imgUrl={user.photoURL} username={user.displayName} />}
         {user ? (
           <a className="signout-link" onClick={logout}>
             Sign out
@@ -31,6 +33,6 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;

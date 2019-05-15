@@ -15,6 +15,8 @@
   "author": "Markus Englund <markus.s.englund@gmail.com>",
   "license": "MIT",
   "dependencies": {
+     "@zeit/next-css": "^1.0.1",
+     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "date-fns": "^1.30.1",
     "dotenv": "^5.0.1",
@@ -47,8 +49,6 @@
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.17",
-    "@zeit/next-css": "^1.0.1",
-    "@zeit/next-sass": "^1.0.1",
     "autoprefixer": "^9.5.1",
     "node-sass": "^4.12.0",
     "prettier": "^1.17.0",

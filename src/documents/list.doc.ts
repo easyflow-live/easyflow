@@ -9,7 +9,7 @@ import CardDocument from './card.doc';
 // }
 
 export default class ListDocument extends Document {
-  cards: Collection;
+  cards: Collection<CardDocument>;
 
   constructor(source, options = {}) {
     super(source, {

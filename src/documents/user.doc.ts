@@ -11,7 +11,7 @@ import BoardDocument from './board.doc';
 // }
 
 export default class UserDocument extends Document {
-  boards: Collection;
+  boards: Collection<BoardDocument>;
 
   constructor(source, options = {}) {
     super(source, {

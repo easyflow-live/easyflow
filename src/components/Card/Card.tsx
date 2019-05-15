@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react';
 
+import CardDocument from '../../documents/card.doc';
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
 import { findCheckboxes } from '../utils';
 import formatMarkdown from './formatMarkdown';
 import './Card.scss';
-import CardDocument from 'src/stores/card.doc';
 
 interface CardProps {
   card: CardDocument;
@@ -17,6 +17,7 @@ interface CardProps {
 
 interface State {
   isModalOpen: boolean;
+  assigneeUser: any;
 }
 
 export default observer(
@@ -25,7 +26,18 @@ export default observer(
       super(props);
       this.state = {
         isModalOpen: false,
+        assigneeUser: null,
       };
+    }
+
+    async componentDidMount() {
+      const assigneeUser = (await this.props.card.data.assignee.get()).data();
+      this.setState({
+        assigneeUser: {
+          photo: assigneeUser.photo,
+          username: assigneeUser.username,
+        },
+      });
     }
 
     toggleCardEditor = () => {
@@ -72,7 +84,7 @@ export default observer(
     render() {
       const { card, index, isDraggingOver } = this.props;
 
-      const { isModalOpen } = this.state;
+      const { isModalOpen, assigneeUser } = this.state;
       const checkboxes = findCheckboxes(card.data.text);
 
       return (
@@ -122,7 +134,7 @@ export default observer(
                             : ''
                         }
                         checkboxes={checkboxes}
-                        user={card.data.assignee}
+                        user={assigneeUser}
                       />
                     )}
                 </div>

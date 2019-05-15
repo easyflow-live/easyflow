@@ -6,7 +6,7 @@ import app from 'firebase/app';
 
 
 import { SessionProvider } from '../src/hooks/useSession';
-import UserDocument from '../src/stores/user.doc';
+import UserDocument from '../src/documents/user.doc';
 import firebaseService from '../src/firebase.service';
 
 export default observer(
