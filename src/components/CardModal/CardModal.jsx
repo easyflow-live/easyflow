@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import Modal from 'react-modal';
-import firebase from 'firebase';
 
 import CardBadges from '../CardBadges/CardBadges';
 import CardOptions from './CardOptions';
@@ -12,13 +11,8 @@ import './CardModal.scss';
 class CardModal extends Component {
   static propTypes = {
     card: PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      uid: PropTypes.string.isRequired,
-      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-      color: PropTypes.string,
+      id: PropTypes.string.isRequired,
     }).isRequired,
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
     cardElement: PropTypes.shape({
       getBoundingClientRect: PropTypes.func.isRequired,
     }),
@@ -29,7 +23,7 @@ class CardModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newText: props.card.text,
+      newText: props.card.data.text,
       isColorPickerOpen: false,
       isTextareaFocused: true,
     };
@@ -39,7 +33,7 @@ class CardModal extends Component {
   }
 
   componentWillReceiveProps = nextProps => {
-    this.setState({ newText: nextProps.card.text });
+    this.setState({ newText: nextProps.card.data.text });
   };
 
   handleKeyDown = event => {
@@ -51,21 +45,11 @@ class CardModal extends Component {
 
   submitCard = () => {
     const { newText } = this.state;
-    const { card, listId, boardId, toggleCardEditor } = this.props;
+    const { card, toggleCardEditor } = this.props;
     if (newText === '') {
       this.deleteCard();
-    } else if (newText !== card.text) {
-      firebase
-        .firestore()
-        .collection('boards')
-        .doc(boardId)
-        .collection('lists')
-        .doc(listId)
-        .collection('cards')
-        .doc(card.uid)
-        .update({
-          text: newText,
-        });
+    } else if (newText !== card.data.text) {
+      card.ref.update({ text: newText });
     }
     toggleCardEditor();
   };
@@ -88,7 +72,7 @@ class CardModal extends Component {
 
   render() {
     const { newText, isColorPickerOpen, isTextareaFocused } = this.state;
-    const { cardElement, card, listId, boardId, isOpen } = this.props;
+    const { cardElement, card, isOpen } = this.props;
     if (!cardElement) {
       return null;
     }
@@ -156,7 +140,7 @@ class CardModal extends Component {
             boxShadow: isTextareaFocused
               ? '0px 0px 3px 2px rgb(0, 180, 255)'
               : null,
-            background: card.color,
+            background: card.data.color,
           }}
         >
           <Textarea
@@ -170,19 +154,19 @@ class CardModal extends Component {
             onFocus={() => this.setState({ isTextareaFocused: true })}
             onBlur={() => this.setState({ isTextareaFocused: false })}
           />
-          {(card.assignee || card.date || checkboxes.total > 0) && (
+          {(card.data.assignee || card.data.date || checkboxes.total > 0) && (
             <CardBadges
-              date={card.date}
+              date={
+                card.data.date ? new Date(card.data.date.seconds * 1000) : ''
+              }
               checkboxes={checkboxes}
-              user={card.assignee}
+              user={card.data.assignee}
             />
           )}
         </div>
         <CardOptions
           isColorPickerOpen={isColorPickerOpen}
           card={card}
-          listId={listId}
-          boardId={boardId}
           boundingRect={boundingRect}
           isCardNearRightBorder={isCardNearRightBorder}
           isThinDisplay={isThinDisplay}

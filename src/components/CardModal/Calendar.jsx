@@ -6,9 +6,6 @@ import './ReactDayPicker.scss';
 
 class Calendar extends Component {
   static propTypes = {
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
-    cardId: PropTypes.string.isRequired,
     date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     toggleCalendar: PropTypes.func.isRequired,
   };
@@ -34,17 +31,9 @@ class Calendar extends Component {
 
   handleSave = () => {
     const { selectedDay } = this.state;
-    const { cardId, boardId, listId, toggleCalendar } = this.props;
+    const { card, toggleCalendar } = this.props;
 
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .collection('cards')
-      .doc(cardId)
-      .update({ date: selectedDay });
+    card.ref.update({ date: selectedDay });
 
     toggleCalendar();
   };

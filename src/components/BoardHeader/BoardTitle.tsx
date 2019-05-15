@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import firebase from 'firebase';
+
 import './BoardTitle.scss';
 
-class BoardTitle extends Component {
-  static propTypes = {
-    boardTitle: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
-  };
+interface BoardTitleProps {
+  boardTitle: string;
+  boardId: string;
+}
 
+interface State {
+  isOpen: boolean;
+  newTitle: string;
+}
+
+class BoardTitle extends Component<BoardTitleProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,17 +70,17 @@ class BoardTitle extends Component {
       <input
         autoFocus
         value={newTitle}
-        type="text"
+        type='text'
         onKeyDown={this.handleKeyDown}
         onChange={this.handleChange}
         onBlur={this.revertTitle}
         onFocus={this.handleFocus}
-        className="board-title-input"
+        className='board-title-input'
         spellCheck={false}
       />
     ) : (
-      <button className="board-title-button" onClick={this.handleClick}>
-        <h1 className="board-title-text">{boardTitle}</h1>
+      <button className='board-title-button' onClick={this.handleClick}>
+        <h1 className='board-title-text'>{boardTitle}</h1>
       </button>
     );
   }

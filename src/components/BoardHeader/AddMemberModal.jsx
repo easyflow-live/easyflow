@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
-import firebase from '../../firebase.service';
+import firebase from 'firebase/app';
 
 import './AddMemberModal.scss';
 
@@ -38,17 +38,32 @@ class AddMemberModal extends Component {
     }
   };
 
-  submitAddMember = () => {
+  submitAddMember = async () => {
     const { email } = this.state;
     const { boardId, toggleCardEditor } = this.props;
     if (email === '') {
       return;
     }
-    firebase
-      .getBoard(boardId)
+
+    let user = null;
+
+    try {
+      user = await firebase
+        .firestore()
+        .collection('users')
+        .doc(email);
+    } catch (error) {
+      console.log(`User ${email} does not exists!`)
+    }
+
+    await firebase
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
       .update({
-        users: firebase.app.firestore.FieldValue.arrayUnion(firebase.getUser(email)),
+        users: firebase.firestore.FieldValue.arrayUnion(user),
       });
+
     toggleCardEditor();
   };
 

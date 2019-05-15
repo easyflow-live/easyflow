@@ -1,99 +1,79 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-import { HeadProvider, Style } from 'react-head';
-import { FirebaseProvider } from '../src/components/Firebase/Firebase';
-import { UserProvider, BoardProvider } from '../src/hooks/useSession';
-import firebase from '../src/firebase.service';
-import boardStore from '../src/board-store';
 import { observer } from 'mobx-react';
+import { HeadProvider, Style } from 'react-head';
+import app from 'firebase/app';
 
-export default observer(class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+import { SessionProvider } from '../src/hooks/useSession';
+import UserDocument from '../src/stores/user.doc';
+import firebaseService from '../src/firebase.service';
+
+export default observer(
+  class MyApp extends App {
+    static async getInitialProps({ Component, ctx }) {
+      let pageProps = {};
+
+      if (Component.getInitialProps) {
+        pageProps = await Component.getInitialProps(ctx);
+      }
+      return { pageProps };
     }
-    return { pageProps };
-  }
 
-  constructor() {
-    super();
-    this.state = {
-      user: null,
-      initializing: true,
+    constructor() {
+      super();
+      this.unsubscribe = () => {};
 
-      boards: null,
-      currentBoard: null,
-    };
+      this.state = {
+        user: null,
+        initializing: true,
+      };
+    }
 
-    this.unsubscribe = () => {};
-    this.unsubscribeBoards = null;
+    componentDidMount() {
+      this.unsubscribe = app.auth().onAuthStateChanged(user => {
+        this.setState({ user, initializing: false });
+      });
+    }
 
-    this.setCurrentBoard = this.setCurrentBoard.bind(this);
-  }
-
-  componentDidMount() {
-    this.unsubscribe = firebase
-      .onAuthUserListener(user => {
-        this.setState({ user, initializing: false })
-
-        if (!this.unsubscribeBoards && user) {
-          this.unsubscribeBoards = boardStore.startListener();
-          // this.unsubscribeBoards = firebase.listenToBoards(boards => {
-          //   this.setState({
-          //     boards
-          //   })
-          // });
+    componentDidUpdate(prevProps, prevState) {
+      if (prevState.user !== this.state.user) {
+        if (this.state.user) {
+          const userDoc = new UserDocument(`users/${this.state.user.email}`);
+          this.setState({ userDoc })
         }
-      });    
+      }
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
+    render() {
+      const { Component, pageProps } = this.props;
+      const { user, userDoc, initializing } = this.state;
+
+      return (
+        <HeadProvider headTags={[]}>
+          <Container>
+            <SessionProvider value={{ user, userDoc, initializing }}>
+              <Style>
+                {`
+                  * {
+                    padding: 0;
+                    margin: 0;
+                  }
+                  body {
+                    background-color: #2d2d2d;
+                  }
+                `}
+              </Style>
+
+              <Component {...pageProps} />
+            </SessionProvider>
+          </Container>
+        </HeadProvider>
+      );
+    }
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-    this.unsubscribeBoards && this.unsubscribeBoards();
-  }
-
-  setCurrentBoard(board) {
-    this.setState({ currentBoard: board })
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
-    const { user, boards, currentBoard, initializing } = this.state;
-
-    return (
-      <HeadProvider headTags={[]}>
-        <Container>
-          <FirebaseProvider>
-            <UserProvider value={{ user, initializing }}>
-              < BoardProvider value = {
-                {
-                  boards: boardStore.boards,
-                  currentBoard: boardStore.currentBoard,
-                  setCurrentBoard: this.setCurrentBoard
-                }
-              } >
-                <Style>
-                  {`
-                    * {
-                      padding: 0;
-                      margin: 0;
-                    }
-                    body {
-                      background-color: #2d2d2d;
-                    }
-                  `}
-                </Style>
-                
-                <Component {...pageProps} />
-              </BoardProvider>
-            </UserProvider>
-          </FirebaseProvider>
-        </Container>
-      </HeadProvider>
-    );
-  }
-});
-
-// export default MyApp;
+);
