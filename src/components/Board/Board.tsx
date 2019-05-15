@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react';
-import { Document } from 'firestorter';
 
 import ListColumns from '../List/ListColumns';
 import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
+import BoardDocument from '../../stores/board.doc';
 
-const Board = class BoardComponent extends Component {
-  board: Document;
+interface BoardProps {
+  uid: string;
+  kioskMode: boolean;
+}
+
+interface State {
+  startX: number;
+  startScrollX: number;
+}
+
+const Board = class BoardComponent extends Component<BoardProps, State> {
+  board: BoardDocument;
 
   constructor(props) {
     super(props);
@@ -19,7 +29,7 @@ const Board = class BoardComponent extends Component {
       startScrollX: null,
     };
 
-    this.board = new Document(`boards/${this.props.uid}`);
+    this.board = new BoardDocument(`boards/${this.props.uid}`);
   }
 
   componentWillReceiveProps(newProps) {

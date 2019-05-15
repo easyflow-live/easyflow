@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { Document } from 'firestorter';
 import { Observer } from 'mobx-react';
 
 import Card from './Card';
+import ListDocument from '../../stores/list.doc';
+import CardDocument from '../../stores/card.doc';
 
 interface CardProps {
-  list: Document;
-  cards: Document[];
+  list: ListDocument;
+  cards: CardDocument[];
 }
 
 export default class Cards extends Component<CardProps, {}> {

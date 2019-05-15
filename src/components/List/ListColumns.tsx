@@ -1,17 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Collection, Document } from 'firestorter';
+import { Collection } from 'firestorter';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import List from './List';
-import ListAdder from '../ListAdder/ListAdder';
-import DragEndContext from '../context/DragEndContext';
 import ListDocument from '../../stores/list.doc';
+import BoardDocument from '../../stores/board.doc';
+import ListAdder from '../ListAdder/ListAdder';
+import List from './List';
 
 interface ListsProps {
-  board: Document;
+  board: BoardDocument;
   kioskMode: boolean;
-  children: React.ReactChildren;
 }
 
 interface State {
@@ -21,7 +20,7 @@ interface State {
 
 export default observer(
   class ListColumns extends React.Component<ListsProps, State> {
-    lists: Collection;
+    lists: Collection<ListDocument>;
 
     constructor(props) {
       super(props);
@@ -30,16 +29,11 @@ export default observer(
         dragEndResult: {},
         dragEndLists: {},
       };
-
-      this.lists = new Collection(`${this.props.board.path}/lists`, {
-        createDocument: (source, options) => new ListDocument(source, options),
-        query: ref => ref.orderBy('index'),
-      });
     }
 
     componentWillReceiveProps(newProps) {
       if (newProps.board !== this.props.board) {
-        this.lists.path = `${newProps.board.path}/lists`;
+        this.props.board.lists.path = `${newProps.board.path}/lists`;
       }
     }
 
@@ -54,10 +48,10 @@ export default observer(
 
       if (isMovingAList) {
         if (source.index !== destination.index) {
-          const [removed] = this.lists.docs.splice(source.index, 1);
-          this.lists.docs.splice(destination.index, 0, removed);
+          const [removed] = this.props.board.lists.docs.splice(source.index, 1);
+          this.props.board.lists.docs.splice(destination.index, 0, removed);
 
-          this.lists.docs.forEach((doc, index) =>
+          this.props.board.lists.docs.forEach((doc, index) =>
             doc.update({ ...doc.data, index })
           );
         }
@@ -113,7 +107,7 @@ export default observer(
 
     render() {
       const { board, kioskMode } = this.props;
-      const { isLoading, docs } = this.lists;
+      const { isLoading, docs } = board.lists;
 
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>
