@@ -1,18 +1,16 @@
 import { useContext, createContext } from 'react';
-import { Document } from 'firestorter';
+import UserDocument from 'src/stores/user.doc';
 
 interface SessionContextProps {
   user: null;
   initializing: boolean;
-  currentBoard: Document;
-  setCurrentBoard(boardUid: string): void;
+  userDoc: UserDocument;
 }
 
 const SessionContext = createContext<SessionContextProps>({
   user: null,
   initializing: true,
-  currentBoard: null,
-  setCurrentBoard: (boardUid: string) => {},
+  userDoc: null,
 });
 
 export const SessionProvider = props => {

@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 
 import WithRouter from '../WithRouter';
 import BoardAdder from './BoardAdder';
-import { useBoardContext } from './BoardProvider';
+import { useSession } from '../../hooks/useSession';
 
 const BoardLink = WithRouter(({ board, ...props }) => {
   return (
@@ -13,12 +13,13 @@ const BoardLink = WithRouter(({ board, ...props }) => {
 });
 
 export const Boards = observer(() => {
-  const { boards } = useBoardContext();
+  const { userDoc } = useSession();
+  const { boards } = userDoc;
 
   return (
     <div className='boards'>
-      {boards &&
-        boards.map(board => (
+      {boards.docs &&
+        boards.docs.map(board => (
           <BoardLink
             board={board.data}
             key={board.id}

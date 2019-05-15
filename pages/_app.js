@@ -3,12 +3,10 @@ import App, { Container } from 'next/app';
 import { observer } from 'mobx-react';
 import { HeadProvider, Style } from 'react-head';
 import app from 'firebase/app';
-import { Collection, Document } from 'firestorter';
 
 
 import { SessionProvider } from '../src/hooks/useSession';
-import { BoardProvider } from '../src/components/Board/BoardProvider';
-import fireservice from '../src/fire.service';
+import UserDocument from '../src/stores/user.doc';
 
 export default observer(
   class MyApp extends App {
@@ -29,8 +27,6 @@ export default observer(
         user: null,
         initializing: true,
       };
-
-      this.boards = new Collection('boards');
     }
 
     componentDidMount() {
@@ -41,8 +37,8 @@ export default observer(
 
     componentDidUpdate(prevProps, prevState) {
       if (prevState.user !== this.state.user) {
-        const userRef = new Document(`users/${this.state.user.email}`).ref;
-        this.boards.query = ref => ref.where('users', 'array-contains', userRef);
+        const userDoc = new UserDocument(`users/${this.state.user.email}`);
+        this.setState({ userDoc })
       }
     }
 
@@ -52,29 +48,26 @@ export default observer(
 
     render() {
       const { Component, pageProps } = this.props;
-      const { user, initializing } = this.state;
-      const { docs } = this.boards;
+      const { user, userDoc, initializing } = this.state;
 
       return (
         <HeadProvider headTags={[]}>
           <Container>
-            <BoardProvider value={{ boards: docs }} >
-              <SessionProvider value={{ user, initializing }}>
-                <Style>
-                  {`
-                    * {
-                      padding: 0;
-                      margin: 0;
-                    }
-                    body {
-                      background-color: #2d2d2d;
-                    }
-                  `}
-                </Style>
+            <SessionProvider value={{ user, userDoc, initializing }}>
+              <Style>
+                {`
+                  * {
+                    padding: 0;
+                    margin: 0;
+                  }
+                  body {
+                    background-color: #2d2d2d;
+                  }
+                `}
+              </Style>
 
-                <Component {...pageProps} />
-              </SessionProvider>
-            </BoardProvider>
+              <Component {...pageProps} />
+            </SessionProvider>
           </Container>
         </HeadProvider>
       );
