@@ -50,83 +50,65 @@ export default observer(
         return;
       }
 
-      if (type !== 'COLUMN') {
-        const sourceList = this.lists.docs.find(
-          l => l.id === source.droppableId
-        );
+      const isMovingAList = type === 'COLUMN';
 
-        // from one list to another
-        if (source.droppableId !== destination.droppableId) {
-          const destList = this.lists.docs.find(
-            l => l.id === destination.droppableId
-          );
+      if (isMovingAList) {
+        if (source.index !== destination.index) {
+          const [removed] = this.lists.docs.splice(source.index, 1);
+          this.lists.docs.splice(destination.index, 0, removed);
 
-          const [removed] = sourceList.cards.docs.splice(
-            result.source.index,
-            1
-          );
-          destList.cards.docs.splice(result.destination.index, 0, removed);
-
-          removed.delete();
-
-          sourceList.cards.docs.forEach((doc, index) =>
-            doc.update({ ...doc.data, index })
-          );
-
-          destList.cards.docs.forEach((doc, index) => {
-            doc.id === removed.id
-              ? destList.cards.add({
-                  ...doc.data,
-                  index,
-                })
-              : doc.update({ ...doc.data, index });
-          });
-        } else {
-          // same list
-          const [removed] = sourceList.cards.docs.splice(
-            result.source.index,
-            1
-          );
-          sourceList.cards.docs.splice(result.destination.index, 0, removed);
-
-          sourceList.cards.docs.forEach((doc, index) =>
+          this.lists.docs.forEach((doc, index) =>
             doc.update({ ...doc.data, index })
           );
         }
         return;
       }
 
-      if (source.index !== destination.index) {
-        const [removed] = this.lists.docs.splice(source.index, 1);
-        this.lists.docs.splice(destination.index, 0, removed);
+      // otherwise, is moving a card
 
-        this.lists.docs.forEach((doc, index) =>
-          doc.update({ ...doc.data, index })
+      const sourceListDocument = this.lists.docs.find(
+        l => l.id === source.droppableId
+      );
+
+      const isMovingToAnotherList =
+        source.droppableId !== destination.droppableId;
+
+      if (isMovingToAnotherList) {
+        const destListDocument = this.lists.docs.find(
+          l => l.id === destination.droppableId
         );
+
+        const [removedCard] = sourceListDocument.cards.docs.splice(
+          source.index,
+          1
+        );
+        removedCard.delete();
+
+        // Add the removed item to the new list
+        destListDocument.cards.docs.splice(destination.index, 0, removedCard);
+        destListDocument.cards.docs.forEach((doc, index) => {
+          doc.id === removedCard.id
+            ? destListDocument.cards.add({
+                ...doc.data,
+                index,
+              })
+            : doc.update({ ...doc.data, index });
+        });
+      } else {
+        // same list
+        // change item position
+        const [removedCard] = sourceListDocument.cards.docs.splice(
+          source.index,
+          1
+        );
+        sourceListDocument.cards.docs.splice(destination.index, 0, removedCard);
       }
 
-      // Move card
-      // if (
-      //   source.index !== destination.index ||
-      //   source.droppableId !== destination.droppableId
-      // ) {
-      //   console.log('moved card parent');
-      //   this.setState({ dragEndResult: result });
-      // const sourceList = lists.find(l => l.id === source.droppableId);
-      // const destList = lists.find(l => l.id === destination.droppableId);
-
-      // const card = new Document(`${sourceList.path}/cards/${draggableId}`);
-      // const cardData = (await card.fetch()).data;
-
-      // const cardCollection = new Collection(`${destList.path}/cards/`, {
-      //   mode: 'off',
-      // });
-      // const cardsCount = (await cardCollection.fetch()).docs.length;
-
-      // cardCollection.add({ ...cardData, index: cardsCount });
-
-      // card.delete();
-      // }
+      // update source list with the new indexes
+      sourceListDocument.cards.docs.forEach((doc, index) =>
+        doc.update({ ...doc.data, index })
+      );
+      return;
     };
 
     render() {
