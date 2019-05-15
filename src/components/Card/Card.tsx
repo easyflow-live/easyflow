@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react';
 
@@ -8,11 +7,12 @@ import CardBadges from '../CardBadges/CardBadges';
 import { findCheckboxes } from '../utils';
 import formatMarkdown from './formatMarkdown';
 import './Card.scss';
+import CardDocument from 'src/stores/card.doc';
 
 interface CardProps {
-  card: Document;
+  card: CardDocument;
   isDraggingOver: boolean;
-  index: nunmber;
+  index: number;
 }
 
 interface State {
@@ -71,7 +71,7 @@ export default observer(
 
     render() {
       const { card, index, isDraggingOver } = this.props;
-      console.log(card);
+
       const { isModalOpen } = this.state;
       const checkboxes = findCheckboxes(card.data.text);
 

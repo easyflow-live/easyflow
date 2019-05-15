@@ -17,9 +17,6 @@ export default observer(class List extends React.Component {
       this.state = {
         lastDragResult: null
       }
-
-      this.cards = new Collection(`${this.props.list.path}/cards`);
-      this.cards.query = ref => ref.orderBy('index')
     }
 
     componentWillReceiveProps(newProps) {
@@ -27,13 +24,6 @@ export default observer(class List extends React.Component {
         this.cards.path = `${newProps.list.path}/cards`;
       }
     }
-
-    // componentWillUpdate(nextProps) {
-    //   if (nextProps.list !== this.props.list) {
-    //     return true;
-    //   }
-    //   return false;
-    // }
 
     onDragEnd(result) {
       // dropped outside the list
@@ -84,8 +74,8 @@ export default observer(class List extends React.Component {
 
     render() {
       const { index, kioskMode, list } = this.props;
-      const { isLoading, docs } = this.cards;
-
+      const { isLoading, cards } = list;
+      
       return (
         <Draggable
           draggableId={list.id}
@@ -112,10 +102,10 @@ export default observer(class List extends React.Component {
                     <DragEndContext.Consumer>
                       {value => this.onDragEnd(value)}
                     </DragEndContext.Consumer>
-                    <Cards list={list} cards={docs} />
+                    <Cards list={list} cards={list.cards.docs} />
                   </div>
                 </div>
-                {!kioskMode && <CardAdder cards={this.cards} />}
+                {!kioskMode && <CardAdder cards={list.cards} />}
               </div>
               {provided.placeholder}
             </>

@@ -6,6 +6,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import List from './List';
 import ListAdder from '../ListAdder/ListAdder';
 import DragEndContext from '../context/DragEndContext';
+import ListDocument from '../../stores/list.doc';
 
 interface ListsProps {
   board: Document;
@@ -30,8 +31,16 @@ export default observer(
         dragEndLists: {},
       };
 
-      this.lists = new Collection(`${this.props.board.path}/lists`);
-      this.lists.query = ref => ref.orderBy('index');
+      this.lists = new Collection(`${this.props.board.path}/lists`, {
+        createDocument: (source, options) => new ListDocument(source, options),
+        query: ref => ref.orderBy('index'),
+      });
+    }
+
+    componentWillReceiveProps(newProps) {
+      if (newProps.board !== this.props.board) {
+        this.lists.path = `${newProps.board.path}/lists`;
+      }
     }
 
     handleDragEnd = result => {
