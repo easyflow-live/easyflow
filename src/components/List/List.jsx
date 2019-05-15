@@ -19,59 +19,6 @@ export default observer(class List extends React.Component {
       }
     }
 
-    componentWillReceiveProps(newProps) {
-      if (newProps.list !== this.props.list) {
-        this.cards.path = `${newProps.list.path}/cards`;
-      }
-    }
-
-    onDragEnd(result) {
-      // dropped outside the list
-      const { lastDragResult} = this.state;
-      const { list } = this.props;
-      
-      if (!result.destination || lastDragResult === result) {
-        return;
-      }
-
-      console.log('moved card child', result.source.droppableId);
-
-
-      if ( (!lastDragResult || lastDragResult !== result)) {
-
-        const sameList = result.source.droppableId === result.destination.droppableId;
-
-        if (sameList) {
-          const [removed] = this.cards.splice(result.source.index, 1);
-          this.cards.splice(result.destination.index, 0, removed);
-
-          this.cards.forEach((doc, index) => doc.update({...doc.data, index}) );
-
-        } else {
-          // const { lists } = onDragEndResult;
-
-          // const isSourceList = lists.source.id === list.id;
-          // if (isSourceList) {
-          //   console.log('source list')
-          //   console.log(onDragEndResult.lists.source)
-          //   this.cards.splice(result.source.index, 1);
-          //   return;
-          // }
-
-          // const isDestinationList = lists.destination.id === list.id;
-          // if (isDestinationList) {
-          //   console.log('destination list')
-          //   console.log(onDragEndResult.lists.destination)
-          //   console.log(cards.length);
-          //   // cards.splice(result.destination.index, 0, removed);
-          //   return;
-          // }
-        }
-
-        this.setState({ lastDragResult: result });
-      }
-    }
-
     render() {
       const { index, kioskMode, list } = this.props;
       const { isLoading, cards } = list;
@@ -99,9 +46,6 @@ export default observer(class List extends React.Component {
                   />
                   <div className="cards-wrapper">
                     {/* Consumer will receive dragEnd result object from Parent */}
-                    <DragEndContext.Consumer>
-                      {value => this.onDragEnd(value)}
-                    </DragEndContext.Consumer>
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
                 </div>

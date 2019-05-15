@@ -44,30 +44,54 @@ export default observer(
     }
 
     handleDragEnd = result => {
-      const { draggableId, source, destination, type } = result;
+      const { source, destination, type } = result;
       // dropped outside the list
       if (!destination) {
         return;
       }
 
       if (type !== 'COLUMN') {
+        const sourceList = this.lists.docs.find(
+          l => l.id === source.droppableId
+        );
+
+        // from one list to another
         if (source.droppableId !== destination.droppableId) {
-          const sourceList = this.lists.docs.find(
-            l => l.id === source.droppableId
-          );
           const destList = this.lists.docs.find(
             l => l.id === destination.droppableId
           );
 
-          this.setState({
-            dragEndResult: result,
-            dragEndLists: {
-              source: sourceList,
-              destination: destList,
-            },
+          const [removed] = sourceList.cards.docs.splice(
+            result.source.index,
+            1
+          );
+          destList.cards.docs.splice(result.destination.index, 0, removed);
+
+          removed.delete();
+
+          sourceList.cards.docs.forEach((doc, index) =>
+            doc.update({ ...doc.data, index })
+          );
+
+          destList.cards.docs.forEach((doc, index) => {
+            doc.id === removed.id
+              ? destList.cards.add({
+                  ...doc.data,
+                  index,
+                })
+              : doc.update({ ...doc.data, index });
           });
         } else {
-          this.setState({ dragEndResult: result });
+          // same list
+          const [removed] = sourceList.cards.docs.splice(
+            result.source.index,
+            1
+          );
+          sourceList.cards.docs.splice(result.destination.index, 0, removed);
+
+          sourceList.cards.docs.forEach((doc, index) =>
+            doc.update({ ...doc.data, index })
+          );
         }
         return;
       }
@@ -120,12 +144,12 @@ export default observer(
               <div className='lists' ref={provided.innerRef}>
                 {/*Context Provider will update all droppable childs */}
                 {docs.map((list, index) => (
-                  <DragEndContext.Provider
-                    value={this.state.dragEndResult}
+                  <List
                     key={list.id}
-                  >
-                    <List list={list} index={index} kioskMode={kioskMode} />
-                  </DragEndContext.Provider>
+                    list={list}
+                    index={index}
+                    kioskMode={kioskMode}
+                  />
                 ))}
                 {provided.placeholder}
                 {!kioskMode && <ListAdder boardId={board.id} />}
