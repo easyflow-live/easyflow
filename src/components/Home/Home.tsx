@@ -9,7 +9,7 @@ import './Home.scss';
 const Home = () => {
   return (
     <>
-      <Title>Home | React Kanban</Title>
+      <Title>Home | Easy Flow</Title>
       <Header />
       <div className='home'>
         <div className='main-content'>

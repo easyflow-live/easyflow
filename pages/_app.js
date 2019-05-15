@@ -7,6 +7,7 @@ import app from 'firebase/app';
 
 import { SessionProvider } from '../src/hooks/useSession';
 import UserDocument from '../src/stores/user.doc';
+import firebaseService from '../src/firebase.service';
 
 export default observer(
   class MyApp extends App {
@@ -37,8 +38,10 @@ export default observer(
 
     componentDidUpdate(prevProps, prevState) {
       if (prevState.user !== this.state.user) {
-        const userDoc = new UserDocument(`users/${this.state.user.email}`);
-        this.setState({ userDoc })
+        if (this.state.user) {
+          const userDoc = new UserDocument(`users/${this.state.user.email}`);
+          this.setState({ userDoc })
+        }
       }
     }
 

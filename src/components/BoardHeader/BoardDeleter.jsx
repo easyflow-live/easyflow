@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
 
-import firebase from '../../firebase.service'
+import firebase from 'firebase';
 import './BoardButton.scss';
 
 class BoardDeleter extends Component {
@@ -11,10 +11,13 @@ class BoardDeleter extends Component {
     const { boardId } = this.props;
 
     await firebase
-      .getBoard(boardId)
-      .delete();
+      .firestore()
+      .collection('boards')
+      .doc(boardId)
+      .delete()
     
     Router.push('/');
+    return;
   };
 
   render(){

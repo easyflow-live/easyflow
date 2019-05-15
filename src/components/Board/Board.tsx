@@ -9,7 +9,7 @@ import './Board.scss';
 import BoardDocument from '../../stores/board.doc';
 
 interface BoardProps {
-  uid: string;
+  board: BoardDocument;
   kioskMode: boolean;
 }
 
@@ -19,8 +19,6 @@ interface State {
 }
 
 const Board = class BoardComponent extends Component<BoardProps, State> {
-  board: BoardDocument;
-
   constructor(props) {
     super(props);
 
@@ -28,14 +26,6 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
       startX: null,
       startScrollX: null,
     };
-
-    this.board = new BoardDocument(`boards/${this.props.uid}`);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.uid !== this.props.uid) {
-      this.board.path = `boards/${newProps.uid}`;
-    }
   }
 
   // The following three methods implement dragging of the board by holding down the mouse
@@ -92,18 +82,17 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
   };
 
   render() {
-    const { kioskMode } = this.props;
-    const { isLoading } = this.board;
+    const { kioskMode, board } = this.props;
+
+    if (!board) return null;
+    const { isLoading, data } = board;
 
     return (
       <div className='board'>
-        <Title>{this.board.data.title} | React Kanban</Title>
+        <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <Header />}
         {!kioskMode && (
-          <BoardHeader
-            boardTitle={this.board.data.title}
-            boardId={this.board.id}
-          />
+          <BoardHeader boardTitle={data.title} boardId={board.id} />
         )}
 
         <div
@@ -111,7 +100,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
           onMouseDown={this.handleMouseDown}
           onWheel={this.handleWheel}
         >
-          <ListColumns board={this.board} kioskMode={kioskMode} />
+          <ListColumns board={board} kioskMode={kioskMode} />
         </div>
         <div className='board-underlay' />
       </div>

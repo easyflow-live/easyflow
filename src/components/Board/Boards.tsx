@@ -13,7 +13,10 @@ const BoardLink = WithRouter(({ board, ...props }) => {
 });
 
 export const Boards = observer(() => {
-  const { userDoc } = useSession();
+  const { userDoc, user } = useSession();
+
+  if (!userDoc || !user) return <div>'Loading...'</div>;
+
   const { boards } = userDoc;
 
   return (

@@ -1,22 +1,29 @@
 import React from 'react';
 
 import BoardComponent from '../src/components/Board/Board';
+import { useSession } from '../src/hooks/useSession';
+import { observer } from 'mobx-react-lite';
+import BoardDocument from 'src/stores/board.doc';
 
 interface BoardPageProps {
   query: { uid: string; kiosk: boolean };
   children: React.ReactChildren;
 }
 
-export default class Board extends React.Component<BoardPageProps, {}> {
-  static getInitialProps = ({ query }) => ({ query });
+const Board = ({ query }: BoardPageProps) => {
+  const { userDoc } = useSession();
+  const boards = userDoc ? userDoc.boards.docs : [];
 
-  render() {
-    const { query } = this.props;
+  if (!boards.length) return <div>'Loading'</div>;
 
-    return (
-      <div>
-        <BoardComponent uid={query.uid} kioskMode={query.kiosk} />
-      </div>
-    );
-  }
-}
+  const board: BoardDocument = boards.find(d => d.id === query.uid);
+  return (
+    <div>
+      <BoardComponent board={board} kioskMode={query.kiosk} />
+    </div>
+  );
+};
+
+Board.getInitialProps = ({ query }) => ({ query });
+
+export default observer(Board);

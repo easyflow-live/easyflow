@@ -60,7 +60,7 @@ export default observer(
 
       // otherwise, is moving a card
 
-      const sourceListDocument = this.lists.docs.find(
+      const sourceListDocument = this.props.board.lists.docs.find(
         l => l.id === source.droppableId
       );
 
@@ -68,7 +68,7 @@ export default observer(
         source.droppableId !== destination.droppableId;
 
       if (isMovingToAnotherList) {
-        const destListDocument = this.lists.docs.find(
+        const destListDocument = this.props.board.lists.docs.find(
           l => l.id === destination.droppableId
         );
 
