@@ -44,6 +44,10 @@
 .delete-list-wrapper {
   position: relative;
   align-self: flex-start;
+  opacity: 0;
+}
+.list:hover .delete-list-wrapper {
+  opacity: 1;
 }
 
 .delete-list-button {

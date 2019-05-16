@@ -14,11 +14,16 @@
   transition: background 0.2s;
   user-select: none;
   cursor: pointer;
+  visibility: hidden;
 }
 
 .add-list-button:hover,
 .add-list-button:focus {
   background: rgba(0, 0, 0, 0.25);
+}
+
+.lists:hover .add-list-button {
+  visibility: visible;
 }
 
 .list-adder-textarea {

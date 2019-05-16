@@ -88,7 +88,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { isLoading, data } = board;
 
     return (
-      <div className='board'>
+      <div className={`board ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <Header />}
         {!kioskMode && (

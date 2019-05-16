@@ -15,18 +15,18 @@ const Header = observer(() => {
 
   return (
     <header>
-      <Link href="/">
+      <Link href='/'>
         <a>Easy Flow</a>
       </Link>
 
-      <div className="header-right-side">
+      <div className='header-right-side'>
         {user && <Avatar imgUrl={user.photoURL} username={user.displayName} />}
         {user ? (
-          <a className="signout-link" onClick={logout}>
+          <a className='signout-link' onClick={logout}>
             Sign out
           </a>
         ) : (
-          <a className="signout-link" href="/">
+          <a className='signout-link' href='/'>
             Sign in
           </a>
         )}
