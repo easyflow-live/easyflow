@@ -91,9 +91,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
       <div className={`board ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <Header />}
-        {!kioskMode && (
-          <BoardHeader boardTitle={data.title} boardId={board.id} />
-        )}
+        <BoardHeader boardTitle={data.title} boardId={board.id} />
 
         <div
           className='lists-wrapper'
