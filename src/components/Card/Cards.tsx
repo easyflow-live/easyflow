@@ -3,8 +3,8 @@ import { Droppable } from 'react-beautiful-dnd';
 import { Observer } from 'mobx-react';
 
 import Card from './Card';
-import ListDocument from '../../stores/list.doc';
-import CardDocument from '../../stores/card.doc';
+import ListDocument from '../../documents/list.doc';
+import CardDocument from '../../documents/card.doc';
 
 interface CardProps {
   list: ListDocument;

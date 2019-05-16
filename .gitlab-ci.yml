@@ -1,14 +1,28 @@
-image: google/cloud-sdk:alpine
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - deploy_production
+
+build:
+  image: node:10
+  stage: build
+  script:
+    - npm install
+    - npm run build
 
 deploy_production:
-  stage: deploy
+  image: google/cloud-sdk:alpine
+  stage: deploy_production
   environment: Production
   only:
-  - master
+    - master
   script:
-  - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
-  - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
-  - gcloud --quiet --project $PROJECT_ID app deploy app.yaml
+    - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+    - gcloud --quiet --project $PROJECT_ID app deploy app.yaml
 
 after_script:
-- rm /tmp/$CI_PIPELINE_ID.json
+  - rm /tmp/$CI_PIPELINE_ID.json

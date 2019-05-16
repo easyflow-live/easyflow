@@ -4,18 +4,21 @@ import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import { MdAlarm } from 'react-icons/md';
 import { MdDoneAll } from 'react-icons/md';
-import './CardBadges.scss';
+import { FaUserSecret } from 'react-icons/fa';
+
 import { Avatar } from '../Avatar/Avatar';
+import './CardBadges.scss';
 
-class CardBadges extends Component {
-  static propTypes = {
-    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-    checkboxes: PropTypes.shape({
-      total: PropTypes.number.isRequired,
-      checked: PropTypes.number.isRequired,
-    }).isRequired,
-  };
+interface CardBadges {
+  user: any;
+  date: Date | string;
+  checkboxes: { total: number; checked: number };
+}
 
+class CardBadges extends Component<CardBadges, {}> {
+  componentDidMount() {
+    console.log(this.props.user);
+  }
   renderDueDate = () => {
     const { date } = this.props;
     if (!date) {
@@ -46,8 +49,8 @@ class CardBadges extends Component {
     }
 
     return (
-      <div className="badge" style={{ background: dueDateColor }}>
-        <MdAlarm className="badge-icon" />
+      <div className='badge' style={{ background: dueDateColor }}>
+        <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
       </div>
@@ -62,10 +65,10 @@ class CardBadges extends Component {
     }
     return (
       <div
-        className="badge"
+        className='badge'
         style={{ background: checked === total ? 'green' : '#444' }}
       >
-        <MdDoneAll className="badge-icon" />
+        <MdDoneAll className='badge-icon' />
         &nbsp;
         {checked}/{total}
       </div>
@@ -74,11 +77,16 @@ class CardBadges extends Component {
 
   render() {
     const { user } = this.props;
+
     return (
-      <div className="card-badges">
+      <div className='card-badges'>
         {this.renderDueDate()}
         {this.renderTaskProgress()}
-        <Avatar user={user} />
+        {user ? (
+          <Avatar imgUrl={user.photo} username={user.username} />
+        ) : (
+          <FaUserSecret className='guest-icon' />
+        )}
       </div>
     );
   }

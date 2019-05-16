@@ -1,21 +1,21 @@
 import * as React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import { useSession } from '../../hooks/useSession';
-import firebase from '../../firebase.service';
+import CardDocument from '../../documents/card.doc';
 
 interface Props {
-  card: any;
+  card: CardDocument;
 }
 
-const CardOptionAssignToMe = ({ card }: Props) => {
-  const { user } = useSession();
-  const toggleAssignment = async () => {
-    const cardAssigneeObj = card.assignee && (await card.assignee.get()).data();
-    const userRef = await firebase.getUser(user.email);
+const CardOptionAssignToMe = observer(({ card }: Props) => {
+  const { userDoc } = useSession();
 
-    if (cardAssigneeObj && user.email === cardAssigneeObj.email) {
-      await card.ref.update({ assignee: null });
+  const toggleAssignment = async () => {
+    if (card.data.assignee && card.data.assignee.id === userDoc.ref.id) {
+      await card.update({ assignee: null });
     } else {
-      await card.ref.update({ assignee: userRef });
+      await card.update({ assignee: userDoc.ref });
     }
   };
 
@@ -27,6 +27,6 @@ const CardOptionAssignToMe = ({ card }: Props) => {
       </button>
     </div>
   );
-};
+});
 
 export default CardOptionAssignToMe;

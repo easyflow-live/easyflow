@@ -1,4 +1,4 @@
-import { Document, isTimestamp } from 'firestorter';
+import { Document } from 'firestorter';
 
 // class CardSchema {
 //   text: string;
@@ -14,5 +14,7 @@ export default class CardDocument extends Document {
       // schema: CardSchema,
       ...options,
     });
+
+    this.assigneeDoc = new Document(() => this.data.assigne);
   }
 }

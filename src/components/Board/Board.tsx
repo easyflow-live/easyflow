@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react';
 
+import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
 import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
-import BoardDocument from '../../stores/board.doc';
 
 interface BoardProps {
   board: BoardDocument;
@@ -88,7 +88,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { isLoading, data } = board;
 
     return (
-      <div className='board'>
+      <div className={`board ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <Header />}
         {!kioskMode && (

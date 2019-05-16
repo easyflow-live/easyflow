@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import { Collection } from 'firestorter';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import ListDocument from '../../stores/list.doc';
-import BoardDocument from '../../stores/board.doc';
+import ListDocument from '../../documents/list.doc';
+import BoardDocument from '../../documents/board.doc';
 import ListAdder from '../ListAdder/ListAdder';
 import List from './List';
 

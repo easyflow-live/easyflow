@@ -11,7 +11,7 @@ import ListDocument from './list.doc';
 // }
 
 export default class BoardDocument extends Document {
-  lists: Collection;
+  lists: Collection<ListDocument>;
 
   constructor(source, options = {}) {
     super(source, {
