@@ -15,8 +15,8 @@
   "author": "Markus Englund <markus.s.englund@gmail.com>",
   "license": "MIT",
   "dependencies": {
-     "@zeit/next-css": "^1.0.1",
-     "@zeit/next-sass": "^1.0.1",
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "date-fns": "^1.30.1",
     "dotenv": "^5.0.1",
@@ -34,6 +34,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-aria-menubutton": "^5.1.1",
+    "react-autosuggest": "^9.4.3",
     "react-beautiful-dnd": "github:yogaboll/react-beautiful-dnd#include-generated",
     "react-day-picker": "^7.1.9",
     "react-dom": "^16.8.6",
@@ -41,6 +42,7 @@
     "react-icons": "^3.6.1",
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.8.0",
+    "react-tagsinput": "^3.19.0",
     "react-textarea-autosize": "^6.1.0",
     "shortid": "^2.2.8",
     "slugify": "^1.3.0"
