@@ -34,13 +34,15 @@ class CardModal extends Component {
   }
 
   async componentDidMount() {
-    const assigneeUser = (await this.props.card.data.assignee.get()).data();
-    this.setState({
-      assigneeUser: {
-        photo: assigneeUser.photo,
-        username: assigneeUser.username,
-      },
-    });
+    if (this.props.card.data.assignee) {
+      const assigneeUser = (await this.props.card.data.assignee.get()).data();
+      this.setState({
+        assigneeUser: {
+          photo: assigneeUser.photo,
+          username: assigneeUser.username,
+        },
+      });
+    }
   }
 
   componentWillReceiveProps = nextProps => {
@@ -172,6 +174,7 @@ class CardModal extends Component {
               }
               checkboxes={checkboxes}
               user={assigneeUser}
+              card={card}
             />
           )}
         </div>

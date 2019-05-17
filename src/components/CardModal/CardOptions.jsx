@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import Calendar from './Calendar';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
+import AddTags from '../Tag/AddTags';
 import './CardOptions.scss';
 
 class CardOptions extends Component {
@@ -148,6 +149,7 @@ class CardOptions extends Component {
           </button>
         </div>
         <CardOptionAssignToMe card={card} />
+        <AddTags attach={card} />
         <Modal
           isOpen={isCalendarOpen}
           onRequestClose={this.toggleCalendar}

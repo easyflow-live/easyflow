@@ -1,7 +1,7 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 import { observer } from 'mobx-react';
-import { HeadProvider, Style } from 'react-head';
+import { HeadProvider, Style, Link } from 'react-head';
 import app from 'firebase/app';
 
 
@@ -68,6 +68,7 @@ export default observer(
                   }
                 `}
               </Style>
+              <Link rel="shortcut icon" href="/static/images/icone.png" />
 
               <Component {...pageProps} />
             </SessionProvider>
