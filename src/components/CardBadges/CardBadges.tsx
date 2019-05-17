@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
-import { MdAlarm } from 'react-icons/md';
-import { MdDoneAll } from 'react-icons/md';
+import { MdAlarm, MdDoneAll } from 'react-icons/md';
 import { FaUserSecret } from 'react-icons/fa';
+import firebase from 'firebase';
 
+import CardDocument from '../../documents/card.doc';
+import Tag from '../Tag/Tag';
 import { Avatar } from '../Avatar/Avatar';
 import './CardBadges.scss';
-import CardDocument from 'src/documents/card.doc';
-import Tag from '../Tag/Tag';
 
 interface CardBadges {
   card: CardDocument;
@@ -18,9 +18,6 @@ interface CardBadges {
 }
 
 class CardBadges extends Component<CardBadges, {}> {
-  componentDidMount() {
-    console.log(this.props.user);
-  }
   renderDueDate = () => {
     const { date } = this.props;
     if (!date) {
@@ -77,6 +74,11 @@ class CardBadges extends Component<CardBadges, {}> {
     );
   };
 
+  handleTagClick = tag => {
+    const { card } = this.props;
+    card.update({ tags: firebase.firestore.FieldValue.arrayRemove(tag) });
+  };
+
   render() {
     const { user, card } = this.props;
 
@@ -94,7 +96,7 @@ class CardBadges extends Component<CardBadges, {}> {
             style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}
           >
             {card.data.tags.map((t, index) => (
-              <Tag key={index} title={t} />
+              <Tag key={index} title={t} onClick={this.handleTagClick} />
             ))}
           </div>
         )}
