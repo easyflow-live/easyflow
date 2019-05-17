@@ -6,7 +6,7 @@ import TagsInput from 'react-tagsinput';
 import './AddTags.scss';
 
 interface AddTagsProps {
-  attach: Document;
+  document: Document;
 }
 
 interface State {
@@ -26,19 +26,11 @@ export default class AddTags extends Component<AddTagsProps, State> {
   handleChange = tags => {
     this.setState({ tags });
 
-    this.props.attach.update({
-      tags: firebase.firestore.FieldValue.arrayUnion(...this.splitTags(tags)),
-    });
+    const tagsSet = this.splitTags(tags).map(tag => ({ title: tag }));
 
-    firebase
-      .firestore()
-      .collection('tags')
-      .doc('NjB6qhspzusxn0hCWxCF')
-      .update({
-        suggestions: firebase.firestore.FieldValue.arrayUnion(
-          ...this.splitTags(tags)
-        ),
-      });
+    this.props.document.update({
+      tags: firebase.firestore.FieldValue.arrayUnion(...tagsSet),
+    });
   };
 
   render() {

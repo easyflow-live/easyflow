@@ -1,0 +1,20 @@
+.tags {
+  appearance: none;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffffff1f;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > button {
+      background-color: transparent;
+      border: 0;
+      color: red;
+      cursor: pointer;
+    }
+  }
+}
