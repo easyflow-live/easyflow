@@ -19,11 +19,15 @@ export default class AddTags extends Component<AddTagsProps, State> {
     this.state = { tags: [] };
   }
 
+  splitTags = tags => {
+    return tags.join(',').split(',');
+  };
+
   handleChange = tags => {
     this.setState({ tags });
 
     this.props.attach.update({
-      tags: firebase.firestore.FieldValue.arrayUnion(...tags),
+      tags: firebase.firestore.FieldValue.arrayUnion(...this.splitTags(tags)),
     });
 
     firebase
@@ -31,7 +35,9 @@ export default class AddTags extends Component<AddTagsProps, State> {
       .collection('tags')
       .doc('NjB6qhspzusxn0hCWxCF')
       .update({
-        suggestions: firebase.firestore.FieldValue.arrayUnion(...tags),
+        suggestions: firebase.firestore.FieldValue.arrayUnion(
+          ...this.splitTags(tags)
+        ),
       });
   };
 
