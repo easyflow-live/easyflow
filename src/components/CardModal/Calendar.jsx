@@ -6,17 +6,14 @@ import './ReactDayPicker.scss';
 
 class Calendar extends Component {
   static propTypes = {
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
-    cardId: PropTypes.string.isRequired,
     date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-    toggleCalendar: PropTypes.func.isRequired,
+    toggleCalendar: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedDay: props.date ? new Date(props.date) : undefined,
+      selectedDay: null
     };
   }
 
@@ -34,17 +31,12 @@ class Calendar extends Component {
 
   handleSave = () => {
     const { selectedDay } = this.state;
-    const { cardId, boardId, listId, toggleCalendar } = this.props;
+    const { card, toggleCalendar } = this.props;
+    debugger;
 
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .collection('cards')
-      .doc(cardId)
-      .update({ date: selectedDay });
+    const newDate = selectedDay ? selectedDay : card.data.date;
+
+    card.update({ date: new Date(newDate) });
 
     toggleCalendar();
   };
@@ -53,14 +45,14 @@ class Calendar extends Component {
     const { selectedDay } = this.state;
     const { toggleCalendar } = this.props;
     return (
-      <div className="calendar">
+      <div className='calendar'>
         <DayPicker
           onDayClick={this.handleDayClick}
           selectedDays={selectedDay}
           disabledDays={{ before: new Date() }}
         />
-        <div className="calendar-buttons">
-          <button onClick={this.handleSave} className="calendar-save-button">
+        <div className='calendar-buttons'>
+          <button onClick={this.handleSave} className='calendar-save-button'>
             Save
           </button>
           <button onClick={toggleCalendar}>Cancel</button>

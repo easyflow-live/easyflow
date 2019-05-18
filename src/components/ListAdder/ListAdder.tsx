@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import firebase from 'firebase';
 import shortid from 'shortid';
 
 import './ListAdder.scss';
 
-class ListAdder extends Component {
-  static propTypes = {
-    boardId: PropTypes.string.isRequired,
-  };
+interface ListAdderProps {
+  boardId: string;
+}
 
-  constructor() {
-    super();
+interface State {
+  isOpen: boolean;
+  listTitle: string;
+}
+
+class ListAdder extends Component<ListAdderProps, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       listTitle: '',
@@ -38,45 +42,49 @@ class ListAdder extends Component {
 
     if (listTitle === '') return;
 
-    await firebase
+    const lists = firebase
       .firestore()
       .collection('boards')
-      .doc(boardId)    
-      .collection('lists')  
-      .add({
-        uid: shortid.generate(),
-        title: listTitle,        
-      });
+      .doc(boardId)
+      .collection('lists');
+
+    const index = (await lists.get()).size;
+
+    await lists.add({
+      uid: shortid.generate(),
+      title: listTitle,
+      index,
+    });
 
     this.setState({ isOpen: false, listTitle: '' });
   };
-  render = () => {
+  render() {
     const { isOpen, listTitle } = this.state;
     if (!isOpen) {
       return (
         <button
           onClick={() => this.setState({ isOpen: true })}
-          className="add-list-button"
+          className='add-list-button'
         >
           Add a new list...
         </button>
       );
     }
     return (
-      <div className="list">
+      <div className='list'>
         <Textarea
           autoFocus
           useCacheForDOMMeasurements
           value={listTitle}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          className="list-adder-textarea"
+          className='list-adder-textarea'
           onBlur={this.handleBlur}
           spellCheck={false}
         />
       </div>
     );
-  };
+  }
 }
 
 export default ListAdder;

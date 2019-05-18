@@ -9,13 +9,7 @@ import './ListHeader.scss';
 class ListTitle extends Component {
   static propTypes = {
     listTitle: PropTypes.string.isRequired,
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
-    cards: PropTypes.arrayOf(
-      PropTypes.shape({ text: PropTypes.string, color: PropTypes.string })
-    ).isRequired,
     dragHandleProps: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -41,18 +35,10 @@ class ListTitle extends Component {
 
   handleSubmit = () => {
     const { newTitle } = this.state;
-    const { listTitle, listId, boardId } = this.props;
+    const { listTitle, list } = this.props;
     if (newTitle === '') return;
     if (newTitle !== listTitle) {
-      firebase
-        .firestore()
-        .collection('boards')
-        .doc(boardId)
-        .collection('lists')
-        .doc(listId)
-        .update({
-          title: newTitle,
-        });
+      list.ref.update({ title: newTitle });
     }
     this.setState({ isOpen: false });
   };
@@ -62,14 +48,8 @@ class ListTitle extends Component {
   };
 
   deleteList = () => {
-    const { listId, boardId } = this.props;
-    firebase
-      .firestore()
-      .collection('boards')
-      .doc(boardId)
-      .collection('lists')
-      .doc(listId)
-      .delete();
+    const { list } = this.props;
+    list.ref.delete();
   };
 
   openTitleEditor = () => {

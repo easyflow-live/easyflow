@@ -1,40 +1,32 @@
 import * as React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import { useSession } from '../../hooks/useSession';
-import firebase from '../../firebase.service';
+import CardDocument from '../../documents/card.doc';
 
-type Props = {
-  boardId: string;
-  listId: string;
-  cardId: string;
-};
+interface Props {
+  card: CardDocument;
+}
 
-const CardOptionAssignToMe: React.FunctionComponent<Props> = ({
-  cardId,
-  listId,
-  boardId,
-}) => {
-  const { user } = useSession();
+const CardOptionAssignToMe = observer(({ card }: Props) => {
+  const { userDoc } = useSession();
+
   const toggleAssignment = async () => {
-    const cardRef = await firebase.getCard(boardId, listId, cardId);
-    const cardObj = (await cardRef.get()).data();
-    const cardAssigneeObj =
-      cardObj.assignee && (await cardObj.assignee.get()).data();
-    const userRef = await firebase.getUser(user.email);
-    if (cardAssigneeObj && user.email == cardAssigneeObj.email) {
-      cardRef.update({ assignee: '' });
+    if (card.data.assignee && card.data.assignee.id === userDoc.ref.id) {
+      await card.update({ assignee: null });
     } else {
-      cardRef.update({ assignee: userRef });
+      await card.update({ assignee: userDoc.ref });
     }
   };
 
   return (
     <div>
-      <button onClick={toggleAssignment} className="options-list-button">
-        <div className="modal-icon" />
+      <button onClick={toggleAssignment} className='options-list-button'>
+        <div className='modal-icon' />
         &nbsp;Toggle assignment
       </button>
     </div>
   );
-};
+});
 
 export default CardOptionAssignToMe;

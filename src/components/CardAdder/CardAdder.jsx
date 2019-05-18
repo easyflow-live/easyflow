@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
-import firebase from '../../firebase.service';
+
 import ClickOutside from '../ClickOutside/ClickOutside';
 import './CardAdder.scss';
 
 class CardAdder extends Component {
-  static propTypes = {
-    listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
-  };
-
   constructor() {
     super();
     this.state = {
@@ -38,16 +33,11 @@ class CardAdder extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { newText } = this.state;
-    const { listId, boardId } = this.props;
+    const { cards } = this.props;
     if (newText === '') return;
 
-    const cardsRef = firebase
-      .getList(boardId, listId)
-      .collection('cards');
-
-    const cardsCount = (await cardsRef.get()).size;
-
-    cardsRef.add({ text: newText, color: 'white', date: '', index: cardsCount });
+    const index = (await cards.ref.get()).size;
+    cards.add({ text: newText, color: 'white', date: '', index });
 
     this.toggleCardComposer();
     this.setState({ newText: '' });

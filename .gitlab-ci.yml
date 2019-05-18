@@ -1,0 +1,22 @@
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - deploy_production
+
+deploy_production:
+  image: rlancer/gcloud-node:1.0.2
+  stage: deploy_production
+  environment: Production
+  only:
+    - master
+  script:
+    - npm install
+    - npm run build
+    - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+    - gcloud --quiet --project $PROJECT_ID app deploy app.yaml
+
+after_script:
+  - rm /tmp/$CI_PIPELINE_ID.json

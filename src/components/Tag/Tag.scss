@@ -1,0 +1,19 @@
+.tag {
+  padding: 3px 5px;
+  border-radius: 3px;
+  margin: 2px 5px;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+// Only shows in modal mode
+.modal-textarea-wrapper .tag:hover > .tag__close:after {
+  content: 'x';
+  color: red;
+  height: 100%;
+  position: absolute;
+  text-align: right;
+  top: -22px;
+  right: 0;
+  width: 100%;
+}

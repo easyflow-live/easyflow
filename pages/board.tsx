@@ -1,37 +1,29 @@
-import * as React from 'react';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import BoardComponent from '../src/components/Board/Board';
-import { useLists } from '../src/hooks/useLists';
 import { useSession } from '../src/hooks/useSession';
+import BoardDocument from '../src/documents/board.doc';
 
-type BoardPageProps = {
-  query: any;
-};
+interface BoardPageProps {
+  query: { uid: string; kiosk: boolean };
+  children: React.ReactChildren;
+}
 
-const BoardPage: React.FunctionComponent = (props: BoardPageProps) => {
-  const { boards } = useSession();
-  const { uid, kiosk } = props.query;
-  const { lists } = useLists(props.query.uid);
-  const board = React.useMemo(
-    () => boards && boards.find((b: { uid: any }) => b.uid === props.query.uid),
-    [boards, props.query.uid]
-  );
+const Board = ({ query }: BoardPageProps) => {
+  const { userDoc } = useSession();
+  const boards = userDoc ? userDoc.boards.docs : [];
 
-  if (!board) return 'Loading...';
+  if (!boards.length) return <div>'Loading'</div>;
 
+  const board: BoardDocument = boards.find(d => d.id === query.uid);
   return (
     <div>
-      <BoardComponent
-        boardId={board.uid}
-        boardTitle={board.title}
-        boardColor={'red'}
-        kioskMode={kiosk}
-        lists={lists}
-        dispatch={(a: any) => console.log(a)}
-      />
+      <BoardComponent board={board} kioskMode={query.kiosk} />
     </div>
   );
 };
 
-BoardPage.getInitialProps = ({ query }) => ({ query });
+Board.getInitialProps = ({ query }) => ({ query });
 
-export default BoardPage;
+export default observer(Board);

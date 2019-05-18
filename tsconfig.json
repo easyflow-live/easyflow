@@ -1,19 +1,22 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "experimentalDecorators": true,
+    "target": "esnext",
     "module": "esnext",
+    "jsx": "preserve",
+    "allowJs": true,
     "moduleResolution": "node",
-    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "preserveConstEnums": true,
+    "emitDecoratorMetadata": true,
     "removeComments": false,
-    "skipLibCheck": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "esnext"
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "lib": ["dom", "es2016"]
   }
 }

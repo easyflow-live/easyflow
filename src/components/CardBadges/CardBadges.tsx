@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
-import { MdAlarm } from 'react-icons/md';
-import { MdDoneAll } from 'react-icons/md';
-import './CardBadges.scss';
+import { MdAlarm, MdDoneAll } from 'react-icons/md';
+import { FaUserSecret } from 'react-icons/fa';
+import firebase from 'firebase';
+
+import CardDocument from '../../documents/card.doc';
+import Tag from '../Tag/Tag';
 import { Avatar } from '../Avatar/Avatar';
+import './CardBadges.scss';
 
-class CardBadges extends Component {
-  static propTypes = {
-    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-    checkboxes: PropTypes.shape({
-      total: PropTypes.number.isRequired,
-      checked: PropTypes.number.isRequired,
-    }).isRequired,
-  };
+interface CardBadges {
+  card: CardDocument;
+  user: any;
+  date: Date | string;
+  checkboxes: { total: number; checked: number };
+}
 
+class CardBadges extends Component<CardBadges, {}> {
   renderDueDate = () => {
     const { date } = this.props;
     if (!date) {
@@ -46,8 +48,8 @@ class CardBadges extends Component {
     }
 
     return (
-      <div className="badge" style={{ background: dueDateColor }}>
-        <MdAlarm className="badge-icon" />
+      <div className='badge' style={{ background: dueDateColor }}>
+        <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
       </div>
@@ -62,23 +64,42 @@ class CardBadges extends Component {
     }
     return (
       <div
-        className="badge"
+        className='badge'
         style={{ background: checked === total ? 'green' : '#444' }}
       >
-        <MdDoneAll className="badge-icon" />
+        <MdDoneAll className='badge-icon' />
         &nbsp;
         {checked}/{total}
       </div>
     );
   };
 
+  handleTagClick = tag => {
+    const { card } = this.props;
+    card.update({ tags: firebase.firestore.FieldValue.arrayRemove(tag) });
+  };
+
   render() {
-    const { user } = this.props;
+    const { user, card } = this.props;
+
     return (
-      <div className="card-badges">
+      <div className='card-badges'>
         {this.renderDueDate()}
         {this.renderTaskProgress()}
-        <Avatar user={user} />
+        {user ? (
+          <Avatar imgUrl={user.photo} username={user.username} />
+        ) : (
+          <FaUserSecret className='guest-icon' />
+        )}
+        {card.data.tags && (
+          <div
+            style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}
+          >
+            {card.data.tags.map((t, index) => (
+              <Tag key={index} title={t} onClick={this.handleTagClick} />
+            ))}
+          </div>
+        )}
       </div>
     );
   }

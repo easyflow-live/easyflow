@@ -30,9 +30,14 @@
   font-size: 28px;
   transition: background 0.1s;
   cursor: pointer;
+  opacity: 0;
 }
 
 .add-card-button:hover,
 .add-card-button:focus {
   background: $less-transparent-black;
+}
+
+.list-wrapper:hover .add-card-button {
+  opacity: 1;
 }
