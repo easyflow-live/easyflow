@@ -53,10 +53,8 @@ class Board extends Component {
       return;
     }
     // Move card
-    if (
-      source.index !== destination.index ||
-      source.droppableId !== destination.droppableId
-    ) {
+    if (type === 'CARD') {
+      const isSameList = source.droppableId === destination.droppableId;
       const sourceListId = source.droppableId;
       const destListId = destination.droppableId;
       const cardId = draggableId;
@@ -64,15 +62,24 @@ class Board extends Component {
       const newCardIndex = destination.index;
 
       const cardRef = firebase.getCard(boardId, sourceListId, cardId);
-      const rawCard = (await cardRef.get()).data();
-      await cardRef.delete();
-      
-      const cardsFromDestRef = firebase.getList(boardId, destListId).collection('cards');
-      const cardsCount = (await cardsFromDestRef.get()).size;
+      if (isSameList) {
+        firebase.updateCardIndex(
+          boardId,
+          sourceListId,
+          cardId,
+          destination.index
+        );
+      } else {
+        const rawCard = (await cardRef.get()).data();
+        await cardRef.delete();
 
-      cardsFromDestRef.add({ ...rawCard, index: cardsCount })
+        const cardsFromDestRef = firebase
+          .getList(boardId, destListId)
+          .collection('cards');
+        const cardsCount = (await cardsFromDestRef.get()).size;
 
-      
+        cardsFromDestRef.add({ ...rawCard, index: cardsCount });
+      }
     }
   };
 

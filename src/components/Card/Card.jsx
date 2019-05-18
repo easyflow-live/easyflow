@@ -113,6 +113,7 @@ class Card extends Component {
                   background: card.color,
                 }}
               >
+                {card.index}
                 <div
                   className="card-title-html"
                   dangerouslySetInnerHTML={{
