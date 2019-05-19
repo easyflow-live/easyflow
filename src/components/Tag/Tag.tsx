@@ -6,7 +6,7 @@ interface TagProps {
   color?: string;
   bgcolor?: string;
   tagStyle?: CSSProperties;
-  onClick(tag: string): void;
+  onClick?(tag: string): void;
 }
 
 const Tag = ({
@@ -19,7 +19,7 @@ const Tag = ({
 }: TagProps) => {
   const style = {
     color: color || 'white',
-    backgroundColor: bgcolor || '#3f51b5',
+    backgroundColor: bgcolor || '#025E6B',
     ...tagStyle,
   };
 
@@ -27,8 +27,10 @@ const Tag = ({
 
   return (
     <span style={style} className='tag' {...otherProps}>
-      <span className='tag__close' onClick={handleClick} />
       {title}
+      <span className='tag__close' onClick={handleClick}>
+        x
+      </span>
     </span>
   );
 };

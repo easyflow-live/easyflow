@@ -8,7 +8,7 @@ import firebase from 'firebase';
 import Calendar from './Calendar';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
-import AddTags from '../Tag/AddTags';
+import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
 import './CardOptions.scss';
 
 class CardOptions extends Component {
@@ -18,7 +18,7 @@ class CardOptions extends Component {
     isCardNearRightBorder: PropTypes.bool.isRequired,
     isThinDisplay: PropTypes.bool.isRequired,
     boundingRect: PropTypes.object.isRequired,
-    toggleColorPicker: PropTypes.func.isRequired,
+    toggleColorPicker: PropTypes.func.isRequired
   };
 
   constructor() {
@@ -64,42 +64,42 @@ class CardOptions extends Component {
       toggleColorPicker,
       card,
       isThinDisplay,
-      boundingRect,
+      boundingRect
     } = this.props;
     const { isCalendarOpen } = this.state;
 
     const calendarStyle = {
       content: {
         top: Math.min(boundingRect.bottom + 10, window.innerHeight - 300),
-        left: boundingRect.left,
-      },
+        left: boundingRect.left
+      }
     };
 
     const calendarMobileStyle = {
       content: {
         top: 110,
         left: '50%',
-        transform: 'translateX(-50%)',
-      },
+        transform: 'translateX(-50%)'
+      }
     };
     return (
       <div
-        className="options-list"
+        className='options-list'
         style={{
-          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
+          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start'
         }}
       >
         <div>
-          <button onClick={this.deleteCard} className="options-list-button">
-            <div className="modal-icon">
+          <button onClick={this.deleteCard} className='options-list-button'>
+            <div className='modal-icon'>
               <FaTrash />
             </div>
             &nbsp;Delete
           </button>
         </div>
-        <div className="modal-color-picker-wrapper">
+        <div className='modal-color-picker-wrapper'>
           <button
-            className="options-list-button"
+            className='options-list-button'
             onClick={toggleColorPicker}
             onKeyDown={this.handleKeyDown}
             ref={ref => {
@@ -110,19 +110,19 @@ class CardOptions extends Component {
           >
             <img
               src={'/static/images/color-icon.png'}
-              alt="colorwheel"
-              className="modal-icon"
+              alt='colorwheel'
+              className='modal-icon'
             />
             &nbsp;Color
           </button>
           {isColorPickerOpen && (
             <ClickOutside
-              eventTypes="click"
+              eventTypes='click'
               handleClickOutside={this.handleClickOutside}
             >
               {/* eslint-disable */}
               <div
-                className="modal-color-picker"
+                className='modal-color-picker'
                 onKeyDown={this.handleKeyDown}
               >
                 {/* eslint-enable */}
@@ -131,7 +131,7 @@ class CardOptions extends Component {
                     <button
                       key={color}
                       style={{ background: color }}
-                      className="color-picker-color"
+                      className='color-picker-color'
                       onClick={() => this.changeColor(color)}
                     />
                   )
@@ -141,20 +141,20 @@ class CardOptions extends Component {
           )}
         </div>
         <div>
-          <button onClick={this.toggleCalendar} className="options-list-button">
-            <div className="modal-icon">
+          <button onClick={this.toggleCalendar} className='options-list-button'>
+            <div className='modal-icon'>
               <MdAlarm />
             </div>
             &nbsp;Due date
           </button>
         </div>
         <CardOptionAssignToMe card={card} />
-        <AddTags attach={card} />
+        <AddTagsWithAutocomplete card={card} />
         <Modal
           isOpen={isCalendarOpen}
           onRequestClose={this.toggleCalendar}
-          overlayClassName="calendar-underlay"
-          className="calendar-modal"
+          overlayClassName='calendar-underlay'
+          className='calendar-modal'
           style={isThinDisplay ? calendarMobileStyle : calendarStyle}
         >
           <Calendar

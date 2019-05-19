@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Document } from 'firestorter';
 import firebase from 'firebase';
 
@@ -9,37 +9,22 @@ interface AddTagsProps {
   document: Document;
 }
 
-interface State {
-  tags: string[];
-}
+const AddTags = ({ document }: AddTagsProps) => {
+  const [tags, setTags] = useState<string[]>([]);
 
-export default class AddTags extends Component<AddTagsProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = { tags: [] };
-  }
+  const splitTags = tagsSet => tagsSet.join(',').split(',');
 
-  splitTags = tags => {
-    return tags.join(',').split(',');
-  };
+  const handleChange = newTags => {
+    setTags(newTags);
 
-  handleChange = tags => {
-    this.setState({ tags });
-
-    const tagsSet = this.splitTags(tags).map(tag => ({ title: tag }));
-
-    this.props.document.update({
-      tags: firebase.firestore.FieldValue.arrayUnion(...tagsSet),
+    document.update({
+      tags: firebase.firestore.FieldValue.arrayUnion(...splitTags(newTags)),
     });
   };
 
-  render() {
-    return (
-      <TagsInput
-        value={this.state.tags}
-        onChange={this.handleChange}
-        renderTag={() => null}
-      />
-    );
-  }
-}
+  return (
+    <TagsInput value={tags} onChange={handleChange} renderTag={() => null} />
+  );
+};
+
+export default AddTags;

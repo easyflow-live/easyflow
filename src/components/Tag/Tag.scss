@@ -7,13 +7,13 @@
 }
 
 // Only shows in modal mode
-.modal-textarea-wrapper .tag:hover > .tag__close:after {
-  content: 'x';
-  color: red;
-  height: 100%;
-  position: absolute;
-  text-align: right;
-  top: -22px;
-  right: 0;
-  width: 100%;
+.tag__close {
+  display: none;
+  transition: all 0.5s;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 6px;
+}
+.modal-textarea-wrapper .tag__close {
+  display: inline;
 }

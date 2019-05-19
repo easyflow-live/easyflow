@@ -3,13 +3,11 @@ import Modal from 'react-modal';
 import firebase from 'firebase';
 
 import BoardDocument from '../../documents/board.doc';
-import Tag from '../Tag/Tag';
+import TagList from '../Tag/TagList';
 import { observer } from 'mobx-react';
 import AddTags from '../Tag/AddTags';
-import './AddTagsModal.scss';
-import ColorPicker from '../ColorPicker/ColorPicker';
 
-interface AddMemberModalProps {
+interface AddTagsModalProps {
   boardId: string;
   buttonElement: HTMLButtonElement;
   isOpen: boolean;
@@ -20,7 +18,7 @@ interface State {
   isColorPickerOpen: boolean;
 }
 
-class AddMemberModal extends Component<AddMemberModalProps, State> {
+class AddTagsModal extends Component<AddTagsModalProps, State> {
   board: BoardDocument;
   colorPickerButton: HTMLButtonElement;
 
@@ -47,21 +45,6 @@ class AddMemberModal extends Component<AddMemberModalProps, State> {
 
   handleRemoveClick = tag => {
     this.board.update({ tags: firebase.firestore.FieldValue.arrayRemove(tag) });
-  };
-
-  pickColor = (color, tag) => {
-    this.board.set(
-      {
-        tags: [
-          ...this.board.data.tags,
-          {
-            title: tag.title,
-            bgcolor: color,
-          },
-        ],
-      },
-      { merge: true }
-    );
   };
 
   render() {
@@ -94,7 +77,7 @@ class AddMemberModal extends Component<AddMemberModalProps, State> {
         ),
         left: isCardNearRightBorder ? null : boundingRect.left,
         right: isCardNearRightBorder
-          ? window.innerWidth - boundingRect.right
+          ? window.innerWidth - boundingRect.right + 11
           : null,
         flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row',
       },
@@ -115,7 +98,7 @@ class AddMemberModal extends Component<AddMemberModalProps, State> {
         closeTimeoutMS={150}
         isOpen={isOpen}
         onRequestClose={this.handleRequestClose}
-        contentLabel='Add new member to board'
+        contentLabel='Add new tags to board'
         overlayClassName='modal-underlay'
         className='modal'
         style={isThinDisplay ? mobileStyle : style}
@@ -126,23 +109,16 @@ class AddMemberModal extends Component<AddMemberModalProps, State> {
           className='tags-modal'
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
-            width: isThinDisplay ? '100%' : '350px',
+            width: isThinDisplay ? '100%' : '290px',
           }}
         >
           <AddTags document={this.board} />
 
           {this.board.data.tags && this.board.data.tags.length && (
-            <ul className='tags'>
-              {this.board.data.tags.map((t, index) => (
-                <div key={index} className='tags__container'>
-                  <Tag {...t} />
-                  <ColorPicker onChange={color => this.pickColor(color, t)} />
-                  <button onClick={() => this.handleRemoveClick(t)}>
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </ul>
+            <TagList
+              tags={this.board.data.tags}
+              onRemoveTag={this.handleRemoveClick}
+            />
           )}
         </div>
       </Modal>
@@ -150,4 +126,4 @@ class AddMemberModal extends Component<AddMemberModalProps, State> {
   }
 }
 
-export default observer(AddMemberModal);
+export default observer(AddTagsModal);
