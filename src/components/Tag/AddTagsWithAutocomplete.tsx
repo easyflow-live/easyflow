@@ -2,12 +2,12 @@ import React from 'react';
 import firebase from 'firebase';
 import Autosuggest from 'react-autosuggest';
 import { observer } from 'mobx-react';
-import { Document } from 'firestorter';
 
+import CardDocument from '../../documents/card.doc';
 import './AddTagsWithAutocomplete.scss';
 
 interface AddTagsWithAutocompleteProps {
-  attach: Document;
+  card: CardDocument;
 }
 
 interface State {
@@ -47,15 +47,12 @@ class AddTagsWithAutocomplete extends React.Component<
   }
 
   async componentDidMount() {
-    const tags = (await firebase
-      .firestore()
-      .collection('tags')
-      .doc('NjB6qhspzusxn0hCWxCF')
-      .get()).data();
+    const boardRef = this.props.card.ref.parent.parent.parent.parent;
+    const board = (await boardRef.get()).data();
 
     this.setState({
-      cachedSuggestions: tags.suggestions,
-      tags: this.props.attach.data.tags || [],
+      cachedSuggestions: board.tags || [],
+      tags: this.props.card.data.tags || [],
     });
   }
 
@@ -65,11 +62,10 @@ class AddTagsWithAutocomplete extends React.Component<
       this.handleSelection(newValue);
     }
     this.setState({ value: newValue });
-    console.log(method);
   };
 
   handleSelection = value => {
-    this.props.attach.update({
+    this.props.card.update({
       tags: firebase.firestore.FieldValue.arrayUnion(value),
     });
 
