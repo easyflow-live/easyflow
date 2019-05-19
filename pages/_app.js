@@ -3,7 +3,7 @@ import App, { Container } from 'next/app';
 import { observer } from 'mobx-react';
 import { HeadProvider, Style, Link } from 'react-head';
 import app from 'firebase/app';
-
+import '../src/styles/style.css';
 
 import { SessionProvider } from '../src/hooks/useSession';
 import UserDocument from '../src/documents/user.doc';
@@ -26,7 +26,7 @@ export default observer(
 
       this.state = {
         user: null,
-        initializing: true,
+        initializing: true
       };
     }
 
@@ -40,7 +40,7 @@ export default observer(
       if (prevState.user !== this.state.user) {
         if (this.state.user) {
           const userDoc = new UserDocument(`users/${this.state.user.email}`);
-          this.setState({ userDoc })
+          this.setState({ userDoc });
         }
       }
     }
@@ -68,7 +68,7 @@ export default observer(
                   }
                 `}
               </Style>
-              <Link rel="shortcut icon" href="/static/images/icone.png" />
+              <Link rel='shortcut icon' href='/static/images/icone.png' />
 
               <Component {...pageProps} />
             </SessionProvider>
