@@ -6,8 +6,8 @@ import { FaUserSecret } from 'react-icons/fa';
 import firebase from 'firebase';
 
 import CardDocument from '../../documents/card.doc';
-import Tag from '../Tag/Tag';
 import { Avatar } from '../Avatar/Avatar';
+import BadgeTags from './BadgeTags';
 import './CardBadges.scss';
 
 interface CardBadges {
@@ -91,15 +91,7 @@ class CardBadges extends Component<CardBadges, {}> {
         ) : (
           <FaUserSecret className='guest-icon' />
         )}
-        {card.data.tags && (
-          <div
-            style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}
-          >
-            {card.data.tags.map((t, index) => (
-              <Tag key={index} title={t} onClick={this.handleTagClick} />
-            ))}
-          </div>
-        )}
+        <BadgeTags tags={card.data.tags} onTagClick={this.handleTagClick} />
       </div>
     );
   }
