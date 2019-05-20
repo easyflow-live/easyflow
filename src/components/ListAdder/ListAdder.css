@@ -1,0 +1,8 @@
+.add-list-button {
+  width: 300px;
+  transition: all 0.2s;
+}
+
+.lists:hover .add-list-button {
+  visibility: visible;
+}

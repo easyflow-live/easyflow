@@ -117,7 +117,7 @@ export default observer(
             direction='horizontal'
           >
             {provided => (
-              <div className='lists' ref={provided.innerRef}>
+              <div className='lists flex justify-start' ref={provided.innerRef}>
                 {/*Context Provider will update all droppable childs */}
                 {docs.map((list, index) => (
                   <List

@@ -1,0 +1,9 @@
+.board-link {
+  width: 260px;
+  height: 140px;
+  transition: all 0.3s;
+}
+
+.board-link:first-child {
+  margin-left: 0;
+}

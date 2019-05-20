@@ -1,0 +1,11 @@
+.add-card-button {
+  align-self: center;
+  width: 39px;
+  height: 39px;
+  margin-top: 6px;
+  transition: all 0.3s;
+}
+
+.list:hover .add-card-button {
+  opacity: 1;
+}

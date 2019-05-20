@@ -1,0 +1,17 @@
+.list {
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 300px;
+  /*fix flexbox browser incostiency */
+  min-height: 0px;
+  max-height: 100%;
+}
+
+.list:first-child {
+  margin-left: 0;
+}
+
+.list--drag {
+  box-shadow: 1px 3px 8px 2px rgba(0, 0, 0, 0.3) !important;
+}

@@ -15,7 +15,7 @@ const Board = props => {
     [boards, props.query.uid]
   );
 
-  if (!board) return 'Loading...';
+  if (!board) return null;
 
   return (
     <div>

@@ -1,5 +1,4 @@
 import Tag from './Tag';
-import './TagList.scss';
 
 interface TagListProps {
   tags: string[];
@@ -8,11 +7,19 @@ interface TagListProps {
 
 const TagList = ({ tags, onRemoveTag }: TagListProps) =>
   tags && (
-    <ul className='tags'>
+    <ul className='mt-2 text-white bg-gray-800 p-6 shadow-lg rounded-sm min-w-full'>
       {tags.map((tag: string, index: number) => (
-        <div key={index} className='tags__container'>
+        <div
+          key={index}
+          className='flex justify-between items-center mb-3 px-25 py-7'
+        >
           <Tag title={tag} />
-          <button onClick={() => onRemoveTag(tag)}>Remove</button>
+          <button
+            className='text-red-500 hover:text-red-600'
+            onClick={() => onRemoveTag(tag)}
+          >
+            Remove
+          </button>
         </div>
       ))}
     </ul>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Textarea from 'react-textarea-autosize';
 import firebase from 'firebase';
 import shortid from 'shortid';
 
-import './ListAdder.scss';
+import './ListAdder.css';
 
 interface ListAdderProps {
   boardId: string;
@@ -64,7 +63,7 @@ class ListAdder extends Component<ListAdderProps, State> {
       return (
         <button
           onClick={() => this.setState({ isOpen: true })}
-          className='add-list-button'
+          className='m-2 p-2 bg-gray-700 hover:bg-gray-600 shadow-lg text-white rounded-lg cursor-pointer invisible select-none flex inline-flex add-list-button'
         >
           Add a new list...
         </button>
@@ -72,13 +71,12 @@ class ListAdder extends Component<ListAdderProps, State> {
     }
     return (
       <div className='list'>
-        <Textarea
+        <input
           autoFocus
-          useCacheForDOMMeasurements
           value={listTitle}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          className='list-adder-textarea'
+          className='shadow appearance-none border rounded w-full py-2 px-3 my-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
           onBlur={this.handleBlur}
           spellCheck={false}
         />
