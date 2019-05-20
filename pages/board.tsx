@@ -14,7 +14,7 @@ const Board = ({ query }: BoardPageProps) => {
   const { userDoc } = useSession();
   const boards = userDoc ? userDoc.boards.docs : [];
 
-  if (!boards.length) return <div>'Loading'</div>;
+  if (!boards.length) return null;
 
   const board: BoardDocument = boards.find(d => d.id === query.uid);
   return (
