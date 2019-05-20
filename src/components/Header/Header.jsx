@@ -36,6 +36,8 @@ const Header = observer(() => {
               <div className='flex items-center justify-end'>
                 {user && (
                   <UserMenu
+                    userName={user.displayName}
+                    userEmail={user.email}
                     trigger={
                       <Avatar
                         imgUrl={user.photoURL}
