@@ -29,7 +29,7 @@ $add-board-focus-bg: #ccc;
   display: inline-flex;
   flex-direction: column;
   width: 4 * $board-width + 8 * $board-margin;
-  margin: 80px 30px;
+  margin: 80px 1.5rem;
 }
 
 @media (max-width: 4 * $board-width + 8 * $board-margin + 2 * $main-margin) {

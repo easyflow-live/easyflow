@@ -5,11 +5,12 @@ interface AvatarProps {
   username: string;
 }
 
-export const Avatar = memo(({ imgUrl, username }: AvatarProps) => (
+export const Avatar = memo(({ imgUrl, username, ...props }: AvatarProps) => (
   <img
     src={imgUrl}
     alt={username}
     className='user-thumbnail'
     title={username}
+    {...props}
   />
 ));

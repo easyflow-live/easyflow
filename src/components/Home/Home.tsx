@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <>
       <Title>Home | Easy Flow</Title>
-      <Header />
       <div className='home'>
         <div className='main-content'>
           <h1>Boards</h1>
