@@ -40,15 +40,15 @@ class CardBadges extends Component<CardBadges, {}> {
 
     let dueDateColor;
     if (dueDateFromToday < 0) {
-      dueDateColor = 'red';
+      dueDateColor = 'bg-red-500';
     } else if (dueDateFromToday === 0) {
-      dueDateColor = '#d60';
+      dueDateColor = 'bg-orange-500';
     } else {
-      dueDateColor = 'green';
+      dueDateColor = 'bg-green-500';
     }
 
     return (
-      <div className='badge' style={{ background: dueDateColor }}>
+      <div className={`badge ${dueDateColor}`}>
         <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
@@ -64,8 +64,9 @@ class CardBadges extends Component<CardBadges, {}> {
     }
     return (
       <div
-        className='badge'
-        style={{ background: checked === total ? 'green' : '#444' }}
+        className={`badge ${
+          checked === total ? 'bg-green-600' : 'bg-gray-600'
+        }`}
       >
         <MdDoneAll className='badge-icon' />
         &nbsp;
