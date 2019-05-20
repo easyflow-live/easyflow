@@ -67,16 +67,15 @@ class ListTitle extends Component {
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
     return (
-      <div className="list-header">
+      <div className="flex inline-flex text-lg mx-1">
         {isOpen ? (
-          <div className="list-title-textarea-wrapper">
-            <Textarea
+          <div className="p-1">
+            <input
               autoFocus
-              useCacheForDOMMeasurements
               value={newTitle}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
-              className="list-title-textarea"
+              className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               onBlur={this.handleSubmit}
               spellCheck={false}
             />
@@ -91,7 +90,7 @@ class ListTitle extends Component {
               this.handleButtonKeyDown(event);
               dragHandleProps.onKeyDown(event);
             }}
-            className="list-title-button"
+              className="text-white font-semibold p-2 w-full cursor-pointer break-words flex-grow"
           >
             {listTitle}
           </div>

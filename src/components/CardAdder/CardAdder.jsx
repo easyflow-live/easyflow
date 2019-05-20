@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Textarea from 'react-textarea-autosize';
 
 import ClickOutside from '../ClickOutside/ClickOutside';
-import './CardAdder.scss';
+import './CardAdder.css';
 
 class CardAdder extends Component {
   constructor() {
@@ -47,18 +45,13 @@ class CardAdder extends Component {
     const { newText, isOpen } = this.state;
     return isOpen ? (
       <ClickOutside handleClickOutside={this.toggleCardComposer}>
-        <form
-          onSubmit={this.handleSubmit}
-          className="card-adder-textarea-wrapper"
-        >
-          <Textarea
+        <form onSubmit={this.handleSubmit} className="m-2">
+          <input
             autoFocus
-            useCacheForDOMMeasurements
-            minRows={1}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={newText}
-            className="card-adder-textarea"
+            className="shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Add a new card..."
             spellCheck={false}
             onBlur={this.toggleCardComposer}
@@ -66,7 +59,9 @@ class CardAdder extends Component {
         </form>
       </ClickOutside>
     ) : (
-      <button onClick={this.toggleCardComposer} className="add-card-button">
+        <button
+          onClick={this.toggleCardComposer}
+          className="add-card-button flex justify-center bg-pink-500 hover:bg-pink-600 text-2xl shadow-lg rounded-lg cursor-pointer text-white opacity-0">
         +
       </button>
     );
