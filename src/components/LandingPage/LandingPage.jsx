@@ -4,6 +4,7 @@ import { FaUserSecret } from 'react-icons/fa';
 
 import './LandingPage.scss';
 import { useGoogleLogin } from '../../hooks/useLogin';
+import CallToActionButton from '../Buttons/CallToActionButton';
 
 const LandingPage = () => {
   const { login } = useGoogleLogin();
@@ -51,12 +52,7 @@ const LandingPage = () => {
               can focus on complete tasks and ship great products.
             </p>
             <div className='flex mt-6 justify-start md:justify-center xl:justify-start'>
-              <a
-                onClick={login}
-                className='rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-pink-500 hover:bg-pink-600 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md cursor-pointer'
-              >
-                Get Started
-              </a>
+              <CallToActionButton onClick={login}> Get Started </CallToActionButton>
             </div>
           </div>
           <div className='mt-12 xl:mt-0 px-6 flex-shrink-0 hidden md:block'>
