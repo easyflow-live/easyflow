@@ -42,7 +42,7 @@ const Header = observer(() => {
                       <Avatar
                         imgUrl={user.photoURL}
                         username={user.displayName}
-                        className='h-10 rounded-full cursor-pointer'
+                        className='cursor-pointer'
                       />
                     }
                   />
