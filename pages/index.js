@@ -4,7 +4,7 @@ import { useSession } from '../src/hooks/useSession';
 
 export default () => {
   const { user, initializing } = useSession();
-  if (initializing) return 'Loading...';
+  if (initializing) return null;
 
   return user ? <Home /> : <LandingPage />;
 };

@@ -8,6 +8,7 @@ import '../src/styles/style.css';
 import { SessionProvider } from '../src/hooks/useSession';
 import UserDocument from '../src/documents/user.doc';
 import firebaseService from '../src/firebase.service';
+import Header from '../src/components/Header/Header';
 
 export default observer(
   class MyApp extends App {
@@ -57,19 +58,7 @@ export default observer(
         <HeadProvider headTags={[]}>
           <Container>
             <SessionProvider value={{ user, userDoc, initializing }}>
-              <Style>
-                {`
-                  * {
-                    padding: 0;
-                    margin: 0;
-                  }
-                  body {
-                    background-color: #2d2d2d;
-                  }
-                `}
-              </Style>
-              <Link rel='shortcut icon' href='/static/images/icone.png' />
-
+              <Header />
               <Component {...pageProps} />
             </SessionProvider>
           </Container>
