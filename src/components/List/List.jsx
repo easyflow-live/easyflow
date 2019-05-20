@@ -32,7 +32,7 @@ export default observer(class List extends React.Component {
           {(provided, snapshot) => (
             <>
               <div ref={provided.innerRef} {...provided.draggableProps}>
-                <div className={`list relative bg-gray-700 shadow-lg rounded-lg p-4 m-2 cursor-pointer ${snapshot.isDragging ? 'list--drag' : ''}`}>
+                <div className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${snapshot.isDragging ? 'list--drag' : ''}`}>
                   <ListHeader
                     dragHandleProps={provided.dragHandleProps}
                     listTitle={list.data.title}
