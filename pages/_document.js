@@ -19,11 +19,6 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <link
-            href='https://fonts.googleapis.com/css?family=Nunito:400,600'
-            rel='stylesheet'
-          />
-          <link rel='shortcut icon' href='/static/images/icone.png' />
         </body>
       </Html>
     );
