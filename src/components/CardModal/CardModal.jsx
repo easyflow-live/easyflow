@@ -11,13 +11,13 @@ import './CardModal.scss';
 class CardModal extends Component {
   static propTypes = {
     card: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired
     }).isRequired,
     cardElement: PropTypes.shape({
-      getBoundingClientRect: PropTypes.func.isRequired,
+      getBoundingClientRect: PropTypes.func.isRequired
     }),
     isOpen: PropTypes.bool.isRequired,
-    toggleCardEditor: PropTypes.func.isRequired,
+    toggleCardEditor: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -26,7 +26,7 @@ class CardModal extends Component {
       newText: props.card.data.text,
       isColorPickerOpen: false,
       isTextareaFocused: true,
-      assigneeUser: null,
+      assigneeUser: null
     };
     if (typeof document !== 'undefined') {
       Modal.setAppElement('#__next');
@@ -39,8 +39,8 @@ class CardModal extends Component {
       this.setState({
         assigneeUser: {
           photo: assigneeUser.photo,
-          username: assigneeUser.username,
-        },
+          username: assigneeUser.username
+        }
       });
     }
   }
@@ -84,7 +84,12 @@ class CardModal extends Component {
   };
 
   render() {
-    const { newText, isColorPickerOpen, isTextareaFocused, assigneeUser } = this.state;
+    const {
+      newText,
+      isColorPickerOpen,
+      isTextareaFocused,
+      assigneeUser
+    } = this.state;
     const { cardElement, card, isOpen } = this.props;
     if (!cardElement) {
       return null;
@@ -119,8 +124,8 @@ class CardModal extends Component {
         right: isCardNearRightBorder
           ? window.innerWidth - boundingRect.right
           : null,
-        flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row',
-      },
+        flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row'
+      }
     };
 
     // For layouts that are less wide than 550px, let the modal take up the entire width at the top of the screen
@@ -129,8 +134,8 @@ class CardModal extends Component {
         flexDirection: 'column',
         top: 3,
         left: 3,
-        right: 3,
-      },
+        right: 3
+      }
     };
 
     return (
@@ -138,22 +143,22 @@ class CardModal extends Component {
         closeTimeoutMS={150}
         isOpen={isOpen}
         onRequestClose={this.handleRequestClose}
-        contentLabel="Card editor"
-        overlayClassName="modal-underlay"
-        className="modal"
+        contentLabel='Card editor'
+        overlayClassName='modal-underlay'
+        className='modal'
         style={isThinDisplay ? mobileStyle : style}
         includeDefaultStyles={false}
         onClick={this.handleRequestClose}
       >
         <div
-          className="modal-textarea-wrapper"
+          className='modal-textarea-wrapper'
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
             width: isThinDisplay ? '100%' : boundingRect.width,
             boxShadow: isTextareaFocused
               ? '0px 0px 3px 2px rgb(0, 180, 255)'
               : null,
-            background: card.data.color,
+            background: card.data.color
           }}
         >
           <Textarea
@@ -162,12 +167,15 @@ class CardModal extends Component {
             value={newText}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
-            className="modal-textarea"
+            className='modal-textarea'
             spellCheck={false}
             onFocus={() => this.setState({ isTextareaFocused: true })}
             onBlur={() => this.setState({ isTextareaFocused: false })}
           />
-          {(card.data.assignee || card.data.date || checkboxes.total > 0) && (
+          {(card.data.assignee ||
+            card.data.date ||
+            card.data.tags ||
+            checkboxes.total > 0) && (
             <CardBadges
               date={
                 card.data.date ? new Date(card.data.date.seconds * 1000) : ''

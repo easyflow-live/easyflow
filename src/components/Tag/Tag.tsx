@@ -1,5 +1,5 @@
-import './Tag.scss';
 import { CSSProperties } from 'react';
+import './Tag.css';
 
 interface TagProps {
   title: string;

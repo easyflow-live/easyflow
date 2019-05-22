@@ -6,6 +6,8 @@
   transition: all 0.3s;
 }
 
-.list:hover .add-card-button {
+.list:hover .add-card-button,
+.list:focus .add-card-button,
+.add-card-button:focus {
   opacity: 1;
 }

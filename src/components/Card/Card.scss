@@ -1,5 +1,9 @@
 @import '../../app/variables.scss';
 
+.cards {
+  min-height: 1px;
+}
+
 .card-title {
   position: relative;
   box-sizing: border-box;

@@ -3,10 +3,6 @@
 .delete-list-wrapper {
   position: relative;
   align-self: flex-start;
-  opacity: 0;
-}
-.list:hover .delete-list-wrapper {
-  opacity: 1;
 }
 
 .delete-list-button {
@@ -18,15 +14,13 @@
   color: $white;
   font-size: 16px;
   cursor: pointer;
+  opacity: 0;
 }
 
 .delete-list-button:hover,
 .delete-list-button:focus {
   background: $transparent-black;
-}
-
-.delete-list-button {
-  cursor: pointer;
+  opacity: 1;
 }
 
 .delete-list-menu {
