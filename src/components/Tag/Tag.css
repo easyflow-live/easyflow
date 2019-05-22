@@ -5,8 +5,11 @@
   font-size: 1.1rem;
   position: relative;
 }
+.tag:first-child {
+  margin-left: 0;
+}
 
-// Only shows in modal mode
+/* Only shows in modal mode */
 .tag__close {
   display: none;
   transition: all 0.5s;

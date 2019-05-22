@@ -18,7 +18,7 @@ export const Boards = observer(() => {
           <BoardLink
             board={board.data}
             key={board.id}
-            routeTo={`/board?uid=${board.id}`}
+            href={`/board?uid=${board.id}`}
           />
         ))}
       <BoardAdder />

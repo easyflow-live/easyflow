@@ -10,7 +10,6 @@ interface BadgeTags {
 const style = {
   display: 'flex',
   alignItems: 'center',
-  marginLeft: '6px',
 };
 
 const BadgeTags = observer(

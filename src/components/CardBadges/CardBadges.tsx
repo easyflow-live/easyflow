@@ -85,10 +85,12 @@ class CardBadges extends Component<CardBadges, {}> {
 
     return (
       <div className='card-badges'>
-        {user ? (
-          <Avatar imgUrl={user.photo} username={user.username} />
-        ) : (
-          <FaUserSecret className='guest-icon h-10 rounded-full' />
+        {user && (
+          <Avatar
+            imgUrl={user.photo}
+            username={user.username}
+            style={{ marginRight: '6px' }}
+          />
         )}
         <BadgeTags tags={card.data.tags} onTagClick={this.handleTagClick} />
         {this.renderDueDate()}
