@@ -17,6 +17,10 @@
   opacity: 0;
 }
 
+.list:hover .delete-list-button {
+  opacity: 1;
+}
+
 .delete-list-button:hover,
 .delete-list-button:focus {
   background: $transparent-black;
