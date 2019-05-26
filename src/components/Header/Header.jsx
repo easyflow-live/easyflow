@@ -16,10 +16,7 @@ const Header = observer(() => {
 
   return (
     <header className='fixed z-100 bg-gray-900 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
-      <nav
-        className='w-full relative mx-auto px-6'
-        style={{ maxWidth: !user ? '1280px' : '' }}
-      >
+      <nav className='w-full relative mx-auto px-6'>
         <div className='h-24 flex flex-col justify-center'>
           <div className='flex items-center -mx-6 justify-between'>
             <div className='lg:w-1/4 xl:w-1/5 pl-6 pr-6'>
