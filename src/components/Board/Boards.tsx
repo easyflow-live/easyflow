@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { useSession } from '../../hooks/useSession';
 import BoardAdder from './BoardAdder';
@@ -12,16 +13,18 @@ export const Boards = observer(() => {
   const { boards } = userDoc;
 
   return (
-    <div className='inline-flex flex-wrap w-full'>
+    <TransitionGroup className='inline-flex flex-wrap w-full'>
+      <BoardAdder style={{ minHeight: '140px', marginLeft: 0 }} />
       {boards.docs &&
         boards.docs.map(board => (
-          <BoardLink
-            board={board.data}
-            key={board.id}
-            href={`/board?uid=${board.id}`}
-          />
+          <CSSTransition key={board.id} timeout={200} classNames='item'>
+            <BoardLink
+              board={board.data}
+              key={board.id}
+              href={`/board?uid=${board.id}`}
+            />
+          </CSSTransition>
         ))}
-      <BoardAdder />
-    </div>
+    </TransitionGroup>
   );
 });
