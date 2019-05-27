@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 
 import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
-import Header from '../Header/Header';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
 
@@ -95,7 +94,8 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
         )}
 
         <div
-          className='inline-flex mt-5'
+          className='inline-flex mt-5 overflow-x-auto'
+          style={{ width: 'calc(100vw - 3rem)' }}
           onMouseDown={this.handleMouseDown}
           onWheel={this.handleWheel}
         >
