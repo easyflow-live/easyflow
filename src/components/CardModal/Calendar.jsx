@@ -32,6 +32,7 @@ class Calendar extends Component {
   handleSave = () => {
     const { selectedDay } = this.state;
     const { card, toggleCalendar } = this.props;
+    debugger;
 
     const newDate = selectedDay ? selectedDay : card.data.date;
 

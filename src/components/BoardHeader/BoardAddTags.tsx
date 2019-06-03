@@ -9,7 +9,7 @@ const BoardAddTags = ({ boardId }) => {
 
   return (
     <div className='board-wrapper'>
-      <span
+      <button
         className='board-button'
         ref={buttonRef}
         onClick={() => setIsOpen(true)}
@@ -18,7 +18,7 @@ const BoardAddTags = ({ boardId }) => {
           <FaHashtag />
         </div>
         <div className='board-header-right-text'>&nbsp;Tags</div>
-      </span>
+      </button>
 
       <AddTagsModal
         isOpen={isOpen}

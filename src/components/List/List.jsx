@@ -10,19 +10,20 @@ import Cards from '../Card/Cards';
 import DragEndContext from '../context/DragEndContext';
 import './List.css';
 
-export default observer(class List extends React.Component {
+export default observer(
+  class List extends React.Component {
     constructor(props) {
       super(props);
 
       this.state = {
         lastDragResult: null
-      }
+      };
     }
 
     render() {
       const { index, kioskMode, list } = this.props;
       const { isLoading, cards } = list;
-      
+
       return (
         <Draggable
           draggableId={list.id}
@@ -32,13 +33,18 @@ export default observer(class List extends React.Component {
           {(provided, snapshot) => (
             <>
               <div ref={provided.innerRef} {...provided.draggableProps}>
-                <div className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${snapshot.isDragging ? 'list--drag' : ''}`}>
+                <div
+                  tabIndex={0}
+                  className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${
+                    snapshot.isDragging ? 'list--drag' : ''
+                  }`}
+                >
                   <ListHeader
                     dragHandleProps={provided.dragHandleProps}
                     listTitle={list.data.title}
                     list={list}
                   />
-                  <div className="mx-2 overflow-y-auto overflow-x-hidden">
+                  <div className='mx-2 overflow-y-auto overflow-x-hidden'>
                     {/* Consumer will receive dragEnd result object from Parent */}
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
@@ -51,4 +57,5 @@ export default observer(class List extends React.Component {
         </Draggable>
       );
     }
-  });
+  }
+);

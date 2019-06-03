@@ -127,6 +127,7 @@ export default observer(
                   {/* eslint-enable */}
                   {(card.data.assignee ||
                     card.data.date ||
+                    card.data.tags ||
                     checkboxes.total > 0) &&
                     'badges' && (
                       <CardBadges
