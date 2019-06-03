@@ -3,13 +3,17 @@ import { memo } from 'react';
 interface AvatarProps {
   imgUrl: string;
   username: string;
+  className?: string;
 }
 
-export const Avatar = memo(({ imgUrl, username }: AvatarProps) => (
-  <img
-    src={imgUrl}
-    alt={username}
-    className='user-thumbnail'
-    title={username}
-  />
-));
+export const Avatar = memo(
+  ({ imgUrl, username, className, ...props }: AvatarProps) => (
+    <img
+      src={imgUrl}
+      alt={username}
+      className={`h-10 rounded-full ${className}`}
+      title={username}
+      {...props}
+    />
+  )
+);

@@ -1,26 +1,18 @@
 import { observer } from 'mobx-react-lite';
 
-import WithRouter from '../WithRouter';
-import BoardAdder from './BoardAdder';
 import { useSession } from '../../hooks/useSession';
-
-const BoardLink = WithRouter(({ board, ...props }) => {
-  return (
-    <a className='board-link' {...props}>
-      <span className='board-link-title'>{board.title}</span>
-    </a>
-  );
-});
+import BoardAdder from './BoardAdder';
+import BoardLink from './BoardLink';
 
 export const Boards = observer(() => {
   const { userDoc, user } = useSession();
 
-  if (!userDoc || !user) return <div>'Loading...'</div>;
+  if (!userDoc || !user) return null;
 
   const { boards } = userDoc;
 
   return (
-    <div className='boards'>
+    <div className='inline-flex flex-wrap w-full'>
       {boards.docs &&
         boards.docs.map(board => (
           <BoardLink

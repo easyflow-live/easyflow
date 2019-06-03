@@ -1,9 +1,9 @@
 import React from 'react';
 import BoardTitle from './BoardTitle';
-// import ColorPicker from './ColorPicker';
 import BoardDeleter from './BoardDeleter';
 import BoardAddMember from './BoardAddMember';
-import './BoardHeader.scss';
+import BoardAddTags from './BoardAddTags';
+import './BoardHeader.css';
 
 interface BoardHeaderProps {
   boardTitle: string;
@@ -11,10 +11,10 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader = ({ boardTitle, boardId }: BoardHeaderProps) => (
-  <div className='board-header'>
+  <div className='flex justify-between items-center'>
     <BoardTitle boardTitle={boardTitle} boardId={boardId} />
-    <div className='board-header-right'>
-      {/* <ColorPicker /> */}
+    <div className='flex items-center'>
+      <BoardAddTags boardId={boardId} />
       <BoardAddMember boardId={boardId} />
       <div className='vertical-line' />
       <BoardDeleter boardId={boardId} />

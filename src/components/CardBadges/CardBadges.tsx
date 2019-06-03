@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
-import { MdAlarm } from 'react-icons/md';
-import { MdDoneAll } from 'react-icons/md';
+import { MdAlarm, MdDoneAll } from 'react-icons/md';
 import { FaUserSecret } from 'react-icons/fa';
+import firebase from 'firebase';
 
+import CardDocument from '../../documents/card.doc';
 import { Avatar } from '../Avatar/Avatar';
+import BadgeTags from './BadgeTags';
 import './CardBadges.scss';
 
 interface CardBadges {
+  card: CardDocument;
   user: any;
   date: Date | string;
   checkboxes: { total: number; checked: number };
 }
 
 class CardBadges extends Component<CardBadges, {}> {
-  componentDidMount() {
-    console.log(this.props.user);
-  }
   renderDueDate = () => {
     const { date } = this.props;
     if (!date) {
@@ -41,15 +40,15 @@ class CardBadges extends Component<CardBadges, {}> {
 
     let dueDateColor;
     if (dueDateFromToday < 0) {
-      dueDateColor = 'red';
+      dueDateColor = 'bg-red-500';
     } else if (dueDateFromToday === 0) {
-      dueDateColor = '#d60';
+      dueDateColor = 'bg-orange-500';
     } else {
-      dueDateColor = 'green';
+      dueDateColor = 'bg-green-500';
     }
 
     return (
-      <div className='badge' style={{ background: dueDateColor }}>
+      <div className={`badge ${dueDateColor}`}>
         <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
@@ -65,8 +64,9 @@ class CardBadges extends Component<CardBadges, {}> {
     }
     return (
       <div
-        className='badge'
-        style={{ background: checked === total ? 'green' : '#444' }}
+        className={`badge ${
+          checked === total ? 'bg-green-600' : 'bg-gray-600'
+        }`}
       >
         <MdDoneAll className='badge-icon' />
         &nbsp;
@@ -75,18 +75,24 @@ class CardBadges extends Component<CardBadges, {}> {
     );
   };
 
+  handleTagClick = tag => {
+    const { card } = this.props;
+    card.update({ tags: firebase.firestore.FieldValue.arrayRemove(tag) });
+  };
+
   render() {
-    const { user } = this.props;
+    const { user, card } = this.props;
 
     return (
       <div className='card-badges'>
-        {this.renderDueDate()}
-        {this.renderTaskProgress()}
         {user ? (
           <Avatar imgUrl={user.photo} username={user.username} />
         ) : (
-          <FaUserSecret className='guest-icon' />
+          <FaUserSecret className='guest-icon h-10 rounded-full' />
         )}
+        <BadgeTags tags={card.data.tags} onTagClick={this.handleTagClick} />
+        {this.renderDueDate()}
+        {this.renderTaskProgress()}
       </div>
     );
   }

@@ -88,13 +88,14 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { isLoading, data } = board;
 
     return (
-      <div className={`board ${kioskMode ? 'kiosk' : ''}`}>
+      <div className={`m-6 ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
-        {!kioskMode && <Header />}
-        <BoardHeader boardTitle={data.title} boardId={board.id} />
+        {!kioskMode && (
+          <BoardHeader boardTitle={data.title} boardId={board.id} />
+        )}
 
         <div
-          className='lists-wrapper'
+          className='inline-flex mt-5'
           onMouseDown={this.handleMouseDown}
           onWheel={this.handleWheel}
         >

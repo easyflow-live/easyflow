@@ -103,7 +103,7 @@ class AddMemberModal extends Component {
         top: Math.min(
           boundingRect.top,
           window.innerHeight - boundingRect.height - 18
-        ),
+        ) - 14,
         left: isCardNearRightBorder ? null : boundingRect.left,
         right: isCardNearRightBorder
           ? window.innerWidth - boundingRect.right
@@ -135,13 +135,9 @@ class AddMemberModal extends Component {
         onClick={this.handleRequestClose}
       >
         <div
-          className="modal-wrapper"
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
             width: isThinDisplay ? '100%' : '350px',
-            boxShadow: isTextareaFocused
-              ? '0px 0px 3px 2px rgb(0, 180, 255)'
-              : null,
           }}
         >
           <input
@@ -150,7 +146,7 @@ class AddMemberModal extends Component {
             type="email"
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
-            className="add-member-input"
+            className="shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             spellCheck={false}
           />
         </div>

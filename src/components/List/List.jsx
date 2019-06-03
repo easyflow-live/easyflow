@@ -8,7 +8,7 @@ import CardAdder from '../CardAdder/CardAdder';
 import ListHeader from './ListHeader';
 import Cards from '../Card/Cards';
 import DragEndContext from '../context/DragEndContext';
-import './List.scss';
+import './List.css';
 
 export default observer(class List extends React.Component {
     constructor(props) {
@@ -31,25 +31,19 @@ export default observer(class List extends React.Component {
         >
           {(provided, snapshot) => (
             <>
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                className="list-wrapper"
-              >
-                <div
-                  className={`list ${snapshot.isDragging ? 'list--drag' : ''}`}
-                >
+              <div ref={provided.innerRef} {...provided.draggableProps}>
+                <div className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${snapshot.isDragging ? 'list--drag' : ''}`}>
                   <ListHeader
                     dragHandleProps={provided.dragHandleProps}
                     listTitle={list.data.title}
                     list={list}
                   />
-                  <div className="cards-wrapper">
+                  <div className="mx-2 overflow-y-auto overflow-x-hidden">
                     {/* Consumer will receive dragEnd result object from Parent */}
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
+                  {!kioskMode && <CardAdder cards={list.cards} />}
                 </div>
-                {!kioskMode && <CardAdder cards={list.cards} />}
               </div>
               {provided.placeholder}
             </>

@@ -27,6 +27,18 @@
 .card-title-html {
   padding: 6px 8px;
 
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3 {
+    font-size: 1.16rem !important;
+  }
+
   h1,
   h2,
   h3,
@@ -34,6 +46,7 @@
   h5,
   h6 {
     margin: 8px 0;
+    font-weight: bold !important;
   }
 
   img {
@@ -52,5 +65,17 @@
     margin: 4px 0;
     padding: 4px 2px;
     background: rgba(100, 100, 100, 0.08);
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  & > ul {
+    margin-left: 1.2rem;
+  }
+
+  a {
+    text-decoration: underline;
   }
 }

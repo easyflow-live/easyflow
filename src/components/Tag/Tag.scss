@@ -1,0 +1,19 @@
+.tag {
+  padding: 3px 5px;
+  border-radius: 3px;
+  margin: 2px 5px;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+// Only shows in modal mode
+.tag__close {
+  display: none;
+  transition: all 0.5s;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 6px;
+}
+.modal-textarea-wrapper .tag__close {
+  display: inline;
+}

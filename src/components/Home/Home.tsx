@@ -1,7 +1,7 @@
 import React from 'react';
 import { Title } from 'react-head';
 
-import Header from '../Header/Header';
+import PageTitle from '../PageTitle/PageTitle';
 import { Boards } from '../Board/Boards';
 
 import './Home.scss';
@@ -10,12 +10,10 @@ const Home = () => {
   return (
     <>
       <Title>Home | Easy Flow</Title>
-      <Header />
-      <div className='home'>
-        <div className='main-content'>
-          <h1>Boards</h1>
-          <Boards />
-        </div>
+
+      <div className='m-6'>
+        <PageTitle text={'Boards'} />
+        <Boards />
       </div>
     </>
   );

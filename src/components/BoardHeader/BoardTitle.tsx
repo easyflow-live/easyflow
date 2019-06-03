@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 
 import './BoardTitle.scss';
+import PageTitle from '../PageTitle/PageTitle';
 
 interface BoardTitleProps {
   boardTitle: string;
@@ -80,7 +81,7 @@ class BoardTitle extends Component<BoardTitleProps, State> {
       />
     ) : (
       <button className='board-title-button' onClick={this.handleClick}>
-        <h1 className='board-title-text'>{boardTitle}</h1>
+        <PageTitle text={boardTitle} />
       </button>
     );
   }
