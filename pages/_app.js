@@ -64,7 +64,7 @@ export default observer(
         <HeadProvider headTags={[]}>
           <Container>
             <SessionProvider value={{ user, userDoc, initializing }}>
-              <Link rel='shortcut icon' href='/static/images/icone.png' />
+              <Link rel='shortcut icon' href='/static/images/icon.png' />
               <Header />
               <Component {...pageProps} />
             </SessionProvider>
