@@ -8,10 +8,18 @@
   color: #fff;
 }
 
+.kiosk > .board-header {
+  top: 25px;
+}
+
 .board-header-right {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+}
+
+.kiosk .board-header-right {
+  display: none;
 }
 
 .vertical-line {
