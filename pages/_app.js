@@ -2,13 +2,15 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import { observer } from 'mobx-react';
 import { HeadProvider, Style, Link } from 'react-head';
-import app from 'firebase/app';
-import '../src/styles/style.css';
+import * as app from 'firebase/app';
+import Router from 'next/router';
 
+import '../src/styles/style.css';
 import { SessionProvider } from '../src/hooks/useSession';
 import UserDocument from '../src/documents/user.doc';
 import firebaseService from '../src/firebase.service';
 import Header from '../src/components/Header/Header';
+import { initGA, logPageView } from '../src/analytics';
 
 export default observer(
   class MyApp extends App {
@@ -35,6 +37,10 @@ export default observer(
       this.unsubscribe = app.auth().onAuthStateChanged(user => {
         this.setState({ user, initializing: false });
       });
+
+      initGA();
+      logPageView();
+      Router.router.events.on('routeChangeComplete', logPageView);
     }
 
     componentDidUpdate(prevProps, prevState) {
