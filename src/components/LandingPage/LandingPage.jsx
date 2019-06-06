@@ -13,7 +13,7 @@ const LandingPage = () => {
     <div>
       <Title>Easy Flow</Title>
 
-      <div className='fixed z-100 bg-gray-800 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
+      <div className='z-100 bg-gray-800 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
         <div
           className='w-full max-w-screen-xl relative mx-auto px-6'
           style={{ maxWidth: '1280px' }}
@@ -35,7 +35,7 @@ const LandingPage = () => {
       </div>
 
       <div
-        className='w-full relative mx-auto px-6 pt-16 pb-40 md:pb-24'
+        className='w-full relative mx-auto px-6 mt-16'
         style={{ maxWidth: '1280px' }}
       >
         <div className='xl:flex -mx-6'>
@@ -52,10 +52,13 @@ const LandingPage = () => {
               can focus on complete tasks and ship great products.
             </p>
             <div className='flex mt-6 justify-start md:justify-center xl:justify-start'>
-              <CallToActionButton onClick={login}> Get Started </CallToActionButton>
+              <CallToActionButton onClick={login}>
+                {' '}
+                Get Started{' '}
+              </CallToActionButton>
             </div>
           </div>
-          <div className='mt-12 xl:mt-0 px-6 flex-shrink-0 hidden md:block'>
+          <div className='mt-20 xl:mt-0 px-6 flex-shrink-0 hidden md:block'>
             <svg
               id='effd0595-b14c-4c7e-b56f-e463e9379f7d'
               data-name='Layer 1'
