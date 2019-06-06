@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import ClickOutside from '../ClickOutside/ClickOutside';
 import firebase from 'firebase';
 import shortid from 'shortid';
 
+import ClickOutside from '../ClickOutside/ClickOutside';
 import { useSession } from '../../hooks/useSession';
 import CallToActionButton from '../Buttons/CallToActionButton';
+import './BoardAdder.css';
 
-const BoardAdder = props => {
+const BoardAdder = ({ style }) => {
   const { user } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -80,8 +81,8 @@ const BoardAdder = props => {
     <button
       title='Add a new board'
       onClick={toggleOpen}
-      className='bg-pink-500 hover:bg-pink-600 text-4xl shadow-lg rounded-lg p-4 m-2 w-32 cursor-pointer text-white'
-      {...props}
+      className='board-adder bg-pink-500 hover:bg-pink-600 text-4xl shadow-lg rounded-lg p-4 m-2 w-32 cursor-pointer text-white'
+      style={style}
     >
       +
     </button>
