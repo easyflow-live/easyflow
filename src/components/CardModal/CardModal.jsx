@@ -155,9 +155,8 @@ class CardModal extends Component {
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
             width: isThinDisplay ? '100%' : boundingRect.width,
-            boxShadow: isTextareaFocused
-              ? '0px 0px 3px 2px rgb(0, 180, 255)'
-              : null,
+            outlineColor: isTextareaFocused ? '#ed64a6' : null,
+            outlineWidth: isTextareaFocused ? '5px' : null,
             background: card.data.color
           }}
         >

@@ -66,7 +66,7 @@ const BoardAdder = ({ style }) => {
             onChange={handleChange}
             spellCheck={false}
             placeholder='Board name'
-            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight'
           />
         </div>
 
