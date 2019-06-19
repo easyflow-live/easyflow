@@ -9,14 +9,14 @@ import './ListHeader.scss';
 class ListTitle extends Component {
   static propTypes = {
     listTitle: PropTypes.string.isRequired,
-    dragHandleProps: PropTypes.object.isRequired,
+    dragHandleProps: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
-      newTitle: props.listTitle,
+      newTitle: props.listTitle
     };
   }
 
@@ -67,15 +67,15 @@ class ListTitle extends Component {
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
     return (
-      <div className="flex inline-flex text-lg mx-1">
+      <div className='flex inline-flex text-lg p-1'>
         {isOpen ? (
-          <div className="p-1">
+          <div className='p-1'>
             <input
               autoFocus
               value={newTitle}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
-              className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className='shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight'
               onBlur={this.handleSubmit}
               spellCheck={false}
             />
@@ -83,25 +83,25 @@ class ListTitle extends Component {
         ) : (
           <div
             {...dragHandleProps}
-            role="button"
+            role='button'
             tabIndex={0}
             onClick={this.openTitleEditor}
             onKeyDown={event => {
               this.handleButtonKeyDown(event);
               dragHandleProps.onKeyDown(event);
             }}
-              className="text-white font-semibold p-2 w-full cursor-pointer break-words flex-grow"
+            className='text-white font-semibold p-2 w-full cursor-pointer break-words flex-grow'
           >
             {listTitle}
           </div>
         )}
-        <Wrapper className="delete-list-wrapper" onSelection={this.deleteList}>
-          <Button className="delete-list-button">
+        <Wrapper className='delete-list-wrapper' onSelection={this.deleteList}>
+          <Button className='delete-list-button'>
             <FaTrash />
           </Button>
-          <Menu className="delete-list-menu">
-            <div className="delete-list-header">Are you sure?</div>
-            <MenuItem className="delete-list-confirm">Delete</MenuItem>
+          <Menu className='delete-list-menu'>
+            <div className='delete-list-header'>Are you sure?</div>
+            <MenuItem className='delete-list-confirm'>Delete</MenuItem>
           </Menu>
         </Wrapper>
       </div>

@@ -4,6 +4,10 @@
   min-height: 1px;
 }
 
+.cards > .card-title:first-child {
+  margin-top: 0;
+}
+
 .card-title {
   position: relative;
   box-sizing: border-box;
@@ -17,10 +21,6 @@
   transition: box-shadow 0.15s;
   user-select: none;
   cursor: pointer !important;
-}
-
-.card-title:focus {
-  box-shadow: 0px 0px 1px 3px rgb(0, 180, 255);
 }
 
 .card-title--drag {

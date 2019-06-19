@@ -44,8 +44,7 @@ export default observer(
                     listTitle={list.data.title}
                     list={list}
                   />
-                  <div className='mx-2 overflow-y-auto overflow-x-hidden'>
-                    {/* Consumer will receive dragEnd result object from Parent */}
+                  <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
                   {!kioskMode && <CardAdder cards={list.cards} />}
