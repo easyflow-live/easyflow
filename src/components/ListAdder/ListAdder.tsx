@@ -76,7 +76,7 @@ class ListAdder extends Component<ListAdderProps, State> {
           value={listTitle}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          className='shadow appearance-none border rounded w-full py-2 px-3 my-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+          className='shadow appearance-none border rounded w-full py-2 px-3 my-2 text-gray-700 leading-tight'
           onBlur={this.handleBlur}
           spellCheck={false}
         />

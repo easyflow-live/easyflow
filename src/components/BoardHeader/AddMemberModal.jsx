@@ -9,10 +9,10 @@ class AddMemberModal extends Component {
   static propTypes = {
     boardId: PropTypes.string.isRequired,
     buttonElement: PropTypes.shape({
-      getBoundingClientRect: PropTypes.func.isRequired,
+      getBoundingClientRect: PropTypes.func.isRequired
     }),
     isOpen: PropTypes.bool.isRequired,
-    toggleCardEditor: PropTypes.func.isRequired,
+    toggleCardEditor: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -20,7 +20,7 @@ class AddMemberModal extends Component {
     this.state = {
       email: '',
       isColorPickerOpen: false,
-      isTextareaFocused: true,
+      isTextareaFocused: true
     };
     if (typeof document !== 'undefined') {
       Modal.setAppElement('#__next');
@@ -33,7 +33,7 @@ class AddMemberModal extends Component {
 
   handleKeyDown = event => {
     if (event.keyCode === 13) {
-      console.log('enter')
+      console.log('enter');
       this.submitAddMember();
     }
   };
@@ -53,7 +53,7 @@ class AddMemberModal extends Component {
         .collection('users')
         .doc(email);
     } catch (error) {
-      console.log(`User ${email} does not exists!`)
+      console.log(`User ${email} does not exists!`);
     }
 
     await firebase
@@ -61,7 +61,7 @@ class AddMemberModal extends Component {
       .collection('boards')
       .doc(boardId)
       .update({
-        users: firebase.firestore.FieldValue.arrayUnion(user),
+        users: firebase.firestore.FieldValue.arrayUnion(user)
       });
 
     toggleCardEditor();
@@ -100,16 +100,17 @@ class AddMemberModal extends Component {
     // Position textarea at the same place as the card and position everything else away from closest edge
     const style = {
       content: {
-        top: Math.min(
-          boundingRect.top,
-          window.innerHeight - boundingRect.height - 18
-        ) - 14,
+        top:
+          Math.min(
+            boundingRect.top,
+            window.innerHeight - boundingRect.height - 18
+          ) - 14,
         left: isCardNearRightBorder ? null : boundingRect.left,
         right: isCardNearRightBorder
           ? window.innerWidth - boundingRect.right
           : null,
-        flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row',
-      },
+        flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row'
+      }
     };
 
     // For layouts that are less wide than 550px, let the modal take up the entire width at the top of the screen
@@ -118,8 +119,8 @@ class AddMemberModal extends Component {
         flexDirection: 'column',
         top: 3,
         left: 3,
-        right: 3,
-      },
+        right: 3
+      }
     };
 
     return (
@@ -127,9 +128,9 @@ class AddMemberModal extends Component {
         closeTimeoutMS={150}
         isOpen={isOpen}
         onRequestClose={this.handleRequestClose}
-        contentLabel="Add new member to board"
-        overlayClassName="modal-underlay"
-        className="modal"
+        contentLabel='Add new member to board'
+        overlayClassName='modal-underlay'
+        className='modal'
         style={isThinDisplay ? mobileStyle : style}
         includeDefaultStyles={false}
         onClick={this.handleRequestClose}
@@ -137,16 +138,16 @@ class AddMemberModal extends Component {
         <div
           style={{
             minHeight: isThinDisplay ? 'none' : boundingRect.height,
-            width: isThinDisplay ? '100%' : '350px',
+            width: isThinDisplay ? '100%' : '350px'
           }}
         >
           <input
             autoFocus
             value={email}
-            type="email"
+            type='email'
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight'
             spellCheck={false}
           />
         </div>
