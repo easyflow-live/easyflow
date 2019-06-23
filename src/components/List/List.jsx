@@ -47,7 +47,12 @@ export default observer(
                   <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
-                  {!kioskMode && <CardAdder cards={list.cards} />}
+                  {!kioskMode && (
+                    <CardAdder
+                      limit={list.data.cardsLimit}
+                      cards={list.cards}
+                    />
+                  )}
                 </div>
               </div>
               {provided.placeholder}
