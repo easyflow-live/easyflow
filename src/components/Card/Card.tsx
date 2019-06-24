@@ -17,7 +17,6 @@ interface CardProps {
 
 interface State {
   isModalOpen: boolean;
-  assigneeUser: any;
 }
 
 export default observer(
@@ -26,20 +25,7 @@ export default observer(
       super(props);
       this.state = {
         isModalOpen: false,
-        assigneeUser: null,
       };
-    }
-
-    async componentDidMount() {
-      if (this.props.card.data.assignee) {
-        const assigneeUser = (await this.props.card.data.assignee.get()).data();
-        this.setState({
-          assigneeUser: {
-            photo: assigneeUser.photo,
-            username: assigneeUser.username,
-          },
-        });
-      }
     }
 
     toggleCardEditor = () => {
@@ -86,7 +72,7 @@ export default observer(
     render() {
       const { card, index, isDraggingOver } = this.props;
 
-      const { isModalOpen, assigneeUser } = this.state;
+      const { isModalOpen } = this.state;
       const checkboxes = findCheckboxes(card.data.text);
 
       return (
@@ -124,7 +110,7 @@ export default observer(
                       __html: formatMarkdown(card.data.text),
                     }}
                   />
-                  {/* eslint-enable */}
+
                   {(card.data.assignee ||
                     card.data.date ||
                     card.data.tags ||
@@ -137,7 +123,6 @@ export default observer(
                             : ''
                         }
                         checkboxes={checkboxes}
-                        user={assigneeUser}
                         card={card}
                       />
                     )}
