@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-
-import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useState } from 'react';
 
+import { useKeySubmit } from '../../hooks/use-key-submit';
+
 const MAX_DEFAULT_VALUE = 0;
+const ENTER_CODE = 13;
 
 interface CardCounterProps {
   counter: number;
@@ -16,17 +17,27 @@ const CardCounter = observer(
     const [isEditing, setIsEditing] = useState(false);
     const [maxValue, setMaxValue] = useState(max);
 
-    const handleChange = e =>
-      setMaxValue(e.target.value >= 0 ? e.target.value : 0);
+    const handleChange = ({
+      target: { value },
+    }: React.ChangeEvent<HTMLInputElement>) =>
+      setMaxValue(parseInt(value, 10) >= 0 ? parseInt(value, 10) : 0);
+
+    const handleOnClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleEditing();
+    };
+
     const toggleEditing = () => setIsEditing(!isEditing);
+
     const handleSubmit = () => {
       onChange(maxValue);
       toggleEditing();
     };
 
-    const handleButtonKeyDown = event => {
-      if (event.keyCode === 13) {
-        event.preventDefault();
+    const handleButtonKeyDown = (e: React.KeyboardEvent) => {
+      if (e.keyCode === ENTER_CODE) {
+        e.preventDefault();
         toggleEditing();
       }
     };
@@ -37,21 +48,24 @@ const CardCounter = observer(
     // @ts-ignore
     const reachedLimit = parseInt(counter, 10) > parseInt(max, 10);
 
+    // if number type is used here, the click button stops work ib Firefox
+    // https://github.com/facebook/react/issues/6556
     return (
-      <div>
+      <div className='p-1'>
         {isEditing ? (
           <input
             min={MAX_DEFAULT_VALUE}
-            type='number'
+            type='tel'
+            inputMode='numeric'
             autoFocus
             value={maxValue}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700'
+            className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight'
             onBlur={handleSubmit}
           />
         ) : (
-          <span
+          <div
             role='button'
             tabIndex={0}
             onKeyDown={handleButtonKeyDown}
@@ -60,10 +74,10 @@ const CardCounter = observer(
               text-white text-sm rounded-full h-8 w-10 flex items-center justify-center cursor-pointer
               ${reachedLimit && !isDefault ? 'bg-red-500' : 'bg-teal-500 '}
             `}
-            onClick={toggleEditing}
+            onClick={handleOnClick}
           >
             {counter}/{max}
-          </span>
+          </div>
         )}
       </div>
     );
