@@ -14,22 +14,31 @@ interface AssigneeProps {
 }
 
 const Assignee = observer(({ card, className, style }: AssigneeProps) => {
-  const [assignee, setAssignee] = useState(null);
+  const [assignees, setAssignee] = useState([]);
   const [loading, setLoading] = useState(false);
   const isMounted = useIsMounted();
 
   async function getAssigneeData() {
     if (!card.data.assignee) {
-      setAssignee(null); // clear state to update the UI
+      setAssignee([]); // clear state to update the UI
       return;
     }
 
     setLoading(true);
-    const assigneeUser = (await card.data.assignee.get()).data();
+
+    let assigneeUsers;
+
+    if (Array.isArray(card.data.assignee)) {
+      assigneeUsers = await Promise.all(
+        card.data.assignee.map(async a => (await a.get()).data())
+      );
+    } else {
+      assigneeUsers = [(await card.data.assignee.get()).data()];
+    }
 
     // we should update the component state only if it is mounted still
     if (isMounted) {
-      setAssignee(assigneeUser);
+      setAssignee(assigneeUsers);
       setLoading(false);
     }
   }
@@ -49,14 +58,16 @@ const Assignee = observer(({ card, className, style }: AssigneeProps) => {
   }
 
   return (
-    assignee && (
+    assignees.length > 0 &&
+    assignees.map(a => (
       <Avatar
-        imgUrl={assignee.photo}
-        username={assignee.username}
+        key={a.username}
+        imgUrl={a.photo}
+        username={a.username}
         className={className}
         style={style}
       />
-    )
+    ))
   );
 });
 
