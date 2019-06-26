@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/useSession';
 import CardDocument from '../../documents/card.doc';
+import { emitter } from '../../libs/emitter';
 
 interface Props {
   card: CardDocument;
@@ -17,6 +18,8 @@ const CardOptionAssignToMe = observer(({ card }: Props) => {
     } else {
       await card.update({ assignee: userDoc.ref });
     }
+
+    emitter.emit('ASSIGNEE_UPDATED', { cardId: card.id });
   };
 
   return (

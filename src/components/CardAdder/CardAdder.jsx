@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import { observer } from 'mobx-react';
 
 import ClickOutside from '../ClickOutside/ClickOutside';
 import './CardAdder.css';
@@ -31,8 +33,17 @@ class CardAdder extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { newText } = this.state;
-    const { cards } = this.props;
+    const { cards, limit } = this.props;
     if (newText === '') return;
+
+    //current size plus 1
+    const amount = cards.docs.length + 1;
+    const hasLimit = parseInt(limit) !== 0;
+    const greaterThanLimit = amount > parseInt(limit);
+
+    if (hasLimit && greaterThanLimit) {
+      toast('Cards limit reached!');
+    }
 
     const index = (await cards.ref.get()).size;
     cards.add({ text: newText, color: 'white', date: '', index });
@@ -69,4 +80,4 @@ class CardAdder extends Component {
   }
 }
 
-export default CardAdder;
+export default observer(CardAdder);

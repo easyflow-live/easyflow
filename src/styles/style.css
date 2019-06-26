@@ -42,3 +42,12 @@
 *:active {
   outline-color: #ed64a6 !important;
 }
+
+.Toast-background {
+  background: #2d3748;
+  color: #fff;
+}
+
+.Toast-progress {
+  background: #ed64a6;
+}

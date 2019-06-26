@@ -25,23 +25,10 @@ class CardModal extends Component {
     this.state = {
       newText: props.card.data.text,
       isColorPickerOpen: false,
-      isTextareaFocused: true,
-      assigneeUser: null
+      isTextareaFocused: true
     };
     if (typeof document !== 'undefined') {
       Modal.setAppElement('#__next');
-    }
-  }
-
-  async componentDidMount() {
-    if (this.props.card.data.assignee) {
-      const assigneeUser = (await this.props.card.data.assignee.get()).data();
-      this.setState({
-        assigneeUser: {
-          photo: assigneeUser.photo,
-          username: assigneeUser.username
-        }
-      });
     }
   }
 
@@ -84,12 +71,7 @@ class CardModal extends Component {
   };
 
   render() {
-    const {
-      newText,
-      isColorPickerOpen,
-      isTextareaFocused,
-      assigneeUser
-    } = this.state;
+    const { newText, isColorPickerOpen, isTextareaFocused } = this.state;
     const { cardElement, card, isOpen } = this.props;
     if (!cardElement) {
       return null;
@@ -180,7 +162,6 @@ class CardModal extends Component {
                 card.data.date ? new Date(card.data.date.seconds * 1000) : ''
               }
               checkboxes={checkboxes}
-              user={assigneeUser}
               card={card}
             />
           )}

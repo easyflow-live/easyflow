@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, CSSProperties } from 'react';
 
 interface AvatarProps {
   imgUrl: string;
   username: string;
   className?: string;
+  style?: CSSProperties;
 }
 
 export const Avatar = memo(

@@ -4,6 +4,8 @@ import { observer } from 'mobx-react';
 import { HeadProvider, Style, Link } from 'react-head';
 import * as app from 'firebase/app';
 import Router from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import '../src/styles/style.css';
 import { SessionProvider } from '../src/hooks/useSession';
@@ -67,6 +69,10 @@ export default observer(
               <Link rel='shortcut icon' href='/static/images/icon.png' />
               <Header />
               <Component {...pageProps} />
+              <ToastContainer
+                toastClassName='Toast-background'
+                progressClassName='Toast-progress'
+              />
             </SessionProvider>
           </Container>
         </HeadProvider>

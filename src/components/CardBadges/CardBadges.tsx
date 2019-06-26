@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import { MdAlarm, MdDoneAll } from 'react-icons/md';
-import { FaUserSecret } from 'react-icons/fa';
 import firebase from 'firebase';
+import { observer } from 'mobx-react';
 
 import CardDocument from '../../documents/card.doc';
-import { Avatar } from '../Avatar/Avatar';
 import BadgeTags from './BadgeTags';
+import Assignee from '../Card/Assignee';
 import './CardBadges.scss';
 
 interface CardBadges {
   card: CardDocument;
-  user: any;
   date: Date | string;
   checkboxes: { total: number; checked: number };
 }
@@ -81,17 +80,11 @@ class CardBadges extends Component<CardBadges, {}> {
   };
 
   render() {
-    const { user, card } = this.props;
+    const { card } = this.props;
 
     return (
       <div className='card-badges'>
-        {user && (
-          <Avatar
-            imgUrl={user.photo}
-            username={user.username}
-            style={{ marginRight: '6px' }}
-          />
-        )}
+        <Assignee card={card} className='mr-2' />
         <BadgeTags tags={card.data.tags} onTagClick={this.handleTagClick} />
         {this.renderDueDate()}
         {this.renderTaskProgress()}
@@ -100,4 +93,4 @@ class CardBadges extends Component<CardBadges, {}> {
   }
 }
 
-export default CardBadges;
+export default observer(CardBadges);

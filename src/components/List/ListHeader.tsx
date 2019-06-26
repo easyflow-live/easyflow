@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Textarea from 'react-textarea-autosize';
+import { observer } from 'mobx-react';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
-import firebase from 'firebase';
+
+import ListDocument from '../../documents/list.doc';
+import CardCounter from './CardCounter';
 import './ListHeader.scss';
 
-class ListTitle extends Component {
-  static propTypes = {
-    listTitle: PropTypes.string.isRequired,
-    dragHandleProps: PropTypes.object.isRequired
-  };
+interface ListTitleProps {
+  listTitle: string;
+  dragHandleProps: any;
+  list: ListDocument;
+}
 
+interface State {
+  isOpen: boolean;
+  newTitle: string;
+}
+
+class ListTitle extends Component<ListTitleProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,11 +54,6 @@ class ListTitle extends Component {
     this.setState({ newTitle: this.props.listTitle, isOpen: false });
   };
 
-  deleteList = () => {
-    const { list } = this.props;
-    list.ref.delete();
-  };
-
   openTitleEditor = () => {
     this.setState({ isOpen: true });
   };
@@ -63,11 +65,18 @@ class ListTitle extends Component {
     }
   };
 
+  handleCounterSubmit = (value: number) => {
+    const { list } = this.props;
+    list.ref.update({ cardsLimit: value });
+  };
+
+  deleteList = () => this.props.list.ref.delete();
+
   render() {
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
     return (
-      <div className='flex inline-flex text-lg p-1'>
+      <div className='flex inline-flex items-center text-lg p-1'>
         {isOpen ? (
           <div className='p-1'>
             <input
@@ -95,18 +104,29 @@ class ListTitle extends Component {
             {listTitle}
           </div>
         )}
-        <Wrapper className='delete-list-wrapper' onSelection={this.deleteList}>
+
+        <CardCounter
+          counter={this.props.list.cards.docs.length}
+          max={this.props.list.data.cardsLimit}
+          onChange={this.handleCounterSubmit}
+        />
+
+        <Wrapper
+          className='delete-list-wrapper ml-2'
+          onSelection={this.deleteList}
+        >
           <Button className='delete-list-button'>
             <FaTrash />
           </Button>
-          <Menu className='delete-list-menu'>
+          <Menu className='delete-list-menu relative'>
             <div className='delete-list-header'>Are you sure?</div>
             <MenuItem className='delete-list-confirm'>Delete</MenuItem>
           </Menu>
+          <div className='popover-arrow' />
         </Wrapper>
       </div>
     );
   }
 }
 
-export default ListTitle;
+export default observer(ListTitle);
