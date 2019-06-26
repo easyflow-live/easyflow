@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
+import * as firebase from 'firebase';
 
 import { useSession } from '../../hooks/useSession';
 import CardDocument from '../../documents/card.doc';
@@ -13,10 +14,38 @@ const CardOptionAssignToMe = observer(({ card }: Props) => {
   const { userDoc } = useSession();
 
   const toggleAssignment = async () => {
-    if (card.data.assignee && card.data.assignee.id === userDoc.ref.id) {
-      await card.update({ assignee: null });
+    if (!card.data.assignee) {
+      await card.update({
+        assignee: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
+      });
+      return;
+    }
+
+    const ids =
+      card.data.assignee && card.data.assignee.length
+        ? card.data.assignee.map(a => a.id)
+        : [card.data.assignee.id];
+
+    if (ids.includes(userDoc.ref.id)) {
+      // Toggle if the user is already an assignee
+      await card.update({
+        assignee: firebase.firestore.FieldValue.arrayRemove(userDoc.ref),
+      });
     } else {
-      await card.update({ assignee: userDoc.ref });
+      // If is not an array, we need to keep the old assigne to save with the new one,
+      // otherwise, the old assigne will be cleanned. (backwards compatibility)
+      if (!Array.isArray(card.data.assignee)) {
+        const oldAssignee = card.data.assignee;
+        await card.update({
+          assignee: firebase.firestore.FieldValue.arrayUnion(
+            ...[oldAssignee, userDoc.ref]
+          ),
+        });
+      } else {
+        await card.update({
+          assignee: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
+        });
+      }
     }
 
     emitter.emit('ASSIGNEE_UPDATED', { cardId: card.id });
