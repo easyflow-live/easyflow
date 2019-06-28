@@ -12,8 +12,27 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html className='bg-gray-800'>
+      <Html className='bg-gray-800' lang='en'>
         <Head>
+          <meta
+            name='description'
+            content='Easy Flow is a real time collaborative project manager based on
+              Kanban methodology. We make everything easier so you and your team
+              can focus on complete tasks and ship great products.'
+          />
+
+          {/* <!-- Google / Search Engine Tags --> */}
+          <meta
+            itemProp='name'
+            content='Easyflow - Everything a project manager should be.'
+          />
+          <meta
+            itemProp='description'
+            content='Easy Flow is a real time collaborative project manager based on
+              Kanban methodology. We make everything easier so you and your team
+              can focus on complete tasks and ship great products.'
+          />
+
           <style>{`html, body { height: 100% } /* custom! */`}</style>
         </Head>
         <body>
