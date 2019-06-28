@@ -3,6 +3,7 @@ const withCSS = require('@zeit/next-css');
 const withSASS = require('@zeit/next-sass');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = withTypescript(
   withSASS(
@@ -19,6 +20,12 @@ module.exports = withTypescript(
             systemvars: true
           })
         ];
+
+        if (config.mode === 'production') {
+          if (Array.isArray(config.optimization.minimizer)) {
+            config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
+          }
+        }
 
         return config;
       }
