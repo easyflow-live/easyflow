@@ -1,8 +1,9 @@
 import React from 'react';
 import BoardTitle from './BoardTitle';
 import BoardDeleter from './BoardDeleter';
-import BoardAddMember from './BoardAddMember';
-import BoardAddTags from './BoardAddTags';
+import BoardAddMemberButton from './BoardAddMemberButton';
+import BoardAddTagsButton from './BoardAddTagsButton';
+import BoardAddListButton from './BoardAddListButton';
 import './BoardHeader.css';
 
 interface BoardHeaderProps {
@@ -14,8 +15,9 @@ const BoardHeader = ({ boardTitle, boardId }: BoardHeaderProps) => (
   <div className='flex justify-between items-center'>
     <BoardTitle boardTitle={boardTitle} boardId={boardId} />
     <div className='flex items-center'>
-      <BoardAddTags boardId={boardId} />
-      <BoardAddMember boardId={boardId} />
+      <BoardAddListButton boardId={boardId} />
+      <BoardAddMemberButton boardId={boardId} />
+      <BoardAddTagsButton boardId={boardId} />
       <div className='vertical-line' />
       <BoardDeleter boardId={boardId} />
     </div>

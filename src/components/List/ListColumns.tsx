@@ -5,7 +5,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import ListDocument from '../../documents/list.doc';
 import BoardDocument from '../../documents/board.doc';
-import ListAdder from '../ListAdder/ListAdder';
 import List from './List';
 
 interface ListsProps {
@@ -128,7 +127,6 @@ export default observer(
                   />
                 ))}
                 {provided.placeholder}
-                {!kioskMode && <ListAdder boardId={board.id} />}
               </div>
             )}
           </Droppable>
