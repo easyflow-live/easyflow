@@ -1,74 +1,53 @@
-import { useEffect, useState, CSSProperties } from 'react';
+import { useLayoutEffect, CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTransition, animated } from 'react-spring';
 
-import CardDocument from '../../documents/card.doc';
 import { Avatar } from '../Avatar/Avatar';
-import AvatarLoader from '../Avatar/AvatarLoader';
-import { useEmitter } from '../../hooks/use-emitter';
-import { useIsMounted } from '../../hooks/use-is-mounted';
+
+import './Assignee.css';
+import { useCardContext } from './CardProvider';
 
 interface AssigneeProps {
-  card: CardDocument;
+  cardColor: string;
   style?: CSSProperties;
   className?: string;
 }
 
-const Assignee = observer(({ card, className, style }: AssigneeProps) => {
-  const [assignees, setAssignee] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const isMounted = useIsMounted();
+const Assignee = ({ cardColor }: AssigneeProps) => {
+  const { assignees } = useCardContext();
 
-  async function getAssigneeData() {
-    if (!card.data.assignee) {
-      setAssignee([]); // clear state to update the UI
-      return;
-    }
+  const transitions = useTransition(assignees, item => item.username, {
+    from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
+    enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
+    leave: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
+  });
 
-    setLoading(true);
-
-    let assigneeUsers;
-
-    if (Array.isArray(card.data.assignee)) {
-      assigneeUsers = await Promise.all(
-        card.data.assignee.map(async a => (await a.get()).data())
-      );
-    } else {
-      assigneeUsers = [(await card.data.assignee.get()).data()];
-    }
-
-    // we should update the component state only if it is mounted still
-    if (isMounted) {
-      setAssignee(assigneeUsers);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getAssigneeData();
-  }, [card]);
-
-  useEmitter(
-    'ASSIGNEE_UPDATED',
-    ({ cardId }) => card.id === cardId && getAssigneeData(),
-    [card]
-  );
-
-  if (loading) {
-    return <AvatarLoader className={className} style={style} />;
-  }
+  useLayoutEffect(() => {
+    // We should change this to react-spring
+    setTimeout(() => {
+      document
+        .querySelectorAll('.assignee')
+        .forEach(e => e.classList.add('assignee--effect'));
+    }, 1000);
+  }, [assignees]);
 
   return (
-    assignees.length > 0 &&
-    assignees.map(a => (
-      <Avatar
-        key={a.username}
-        imgUrl={a.photo}
-        username={a.username}
-        className={className}
-        style={style}
-      />
-    ))
+    <div className='assignees'>
+      {transitions.map(
+        ({ item, key, props: tprops }) =>
+          item && (
+            <animated.div key={key} style={tprops} className='assignee mr-1'>
+              <Avatar
+                key={item.username}
+                imgUrl={item.photo}
+                username={item.username}
+                boxShadowColor={cardColor}
+              />
+            </animated.div>
+          )
+      )}
+    </div>
   );
-});
+};
 
-export default Assignee;
+export default observer(Assignee);
