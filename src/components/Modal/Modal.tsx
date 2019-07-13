@@ -1,32 +1,53 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  MutableRefObject,
+  useRef,
+} from 'react';
 import Modal from 'react-modal';
 import { observer } from 'mobx-react-lite';
 import { useRect } from '../../hooks/use-rect';
 import { useThinDisplay } from '../../hooks/use-thin-display';
 
-const useModalPositionStyle = buttonRect => {
-  const [modalStyle, setModalStyle] = useState({});
+const useModalPositionStyle = (targetRect, modalRect) => {
+  const [modalStyle, setModalStyle] = useState(null);
   const isThinDisplay = useThinDisplay();
 
   useLayoutEffect(() => {
-    if (!buttonRect) return;
+    if (!targetRect || !modalRect) return;
     // Returns true if card is closer to right border than to the left
     const isCardNearRightBorder =
-      window.innerWidth - buttonRect.right < buttonRect.left;
+      window.innerWidth - targetRect.right < targetRect.left;
+
+    const freeSpace = window.innerHeight - targetRect.top;
+
+    const hasSpace = modalRect.height <= freeSpace;
 
     // Check if the display is so thin that we need to trigger a centered, vertical layout
     // DO NOT CHANGE the number 550 without also changing related media-query in CardOptions.scss
     // const isThinDisplay = window.innerWidth < 550;
     // Position textarea at the same place as the card and position everything else away from closest edge
+    const height = Math.min(
+      targetRect.top,
+      window.innerHeight - targetRect.height - 18
+    );
+
+    const awayFromScreen = height < 0;
+
+    const SCREEN_PADDING = 26;
+    const diff = modalRect.height - freeSpace - SCREEN_PADDING;
+
     const style = {
       content: {
-        top: Math.min(
-          buttonRect.top,
-          window.innerHeight - buttonRect.height - 18
-        ),
-        left: isCardNearRightBorder ? null : buttonRect.left,
+        top: awayFromScreen
+          ? SCREEN_PADDING
+          : hasSpace
+          ? height
+          : height - diff,
+        left: isCardNearRightBorder ? null : targetRect.left,
         right: isCardNearRightBorder
-          ? window.innerWidth - buttonRect.right + 11
+          ? window.innerWidth - targetRect.right
           : null,
         flexDirection: isCardNearRightBorder ? 'row-reverse' : 'row',
       },
@@ -43,13 +64,13 @@ const useModalPositionStyle = buttonRect => {
     };
 
     setModalStyle(isThinDisplay ? mobileStyle : style);
-  }, [buttonRect, isThinDisplay]);
+  }, [targetRect, modalRect, isThinDisplay]);
 
   return modalStyle;
 };
 
 interface MyModalProps {
-  targetElement?: HTMLButtonElement;
+  targetElement?: MutableRefObject<HTMLElement>;
   isOpen?: boolean;
   toggleIsOpen?(): void;
   children: React.ReactChild;
@@ -65,24 +86,39 @@ const MyModal = ({
     Modal.setAppElement('#__next');
   }, []);
 
+  const modalRef = useRef(null);
+  useEffect(() => {
+    modalRef.current = document.querySelector(
+      '.ReactModalPortal > .ReactModal__Overlay > .modal'
+    );
+  });
+  const [modalRect, refreshModalRect] = useRect(modalRef);
+  const [targetRect, refreshRect] = useRect(targetElement);
+
+  useEffect(() => {
+    refreshRect();
+    refreshModalRect();
+  }, [isOpen]);
+  const style = useModalPositionStyle(targetRect, modalRect);
+  console.log(style);
+
   const handleRequestClose = () => toggleIsOpen();
 
-  const targetRect = useRect(targetElement);
-  const style = useModalPositionStyle(targetRect);
-
   return (
-    <Modal
-      closeTimeoutMS={150}
-      isOpen={isOpen}
-      onRequestClose={handleRequestClose}
-      overlayClassName='modal-underlay'
-      className='modal'
-      style={style}
-      includeDefaultStyles={false}
-      onClick={handleRequestClose}
-    >
-      {children}
-    </Modal>
+    style && (
+      <Modal
+        closeTimeoutMS={150}
+        isOpen={isOpen}
+        onRequestClose={handleRequestClose}
+        overlayClassName='modal-underlay'
+        className='modal'
+        style={style}
+        includeDefaultStyles={false}
+        onClick={handleRequestClose}
+      >
+        {children}
+      </Modal>
+    )
   );
 };
 

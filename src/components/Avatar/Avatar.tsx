@@ -5,16 +5,17 @@ interface AvatarProps {
   username: string;
   className?: string;
   style?: CSSProperties;
+  boxShadowColor?: string;
 }
 
 export const Avatar = memo(
-  ({ imgUrl, username, className, ...props }: AvatarProps) => (
+  ({ imgUrl, username, boxShadowColor, className = '' }: AvatarProps) => (
     <img
       src={imgUrl}
       alt={username}
-      className={`h-10 rounded-full ${className}`}
+      className={`avatar h-8 rounded-full ${className}`}
+      style={{ boxShadow: `0px 0px 0px 2px ${boxShadowColor}` }}
       title={username}
-      {...props}
     />
   )
 );
