@@ -23,7 +23,7 @@ class ListTitle extends Component<ListTitleProps, State> {
     super(props);
     this.state = {
       isOpen: false,
-      newTitle: props.listTitle,
+      newTitle: props.listTitle
     };
   }
 
