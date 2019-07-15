@@ -1,5 +1,6 @@
 import React from 'react';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import Autosuggest from 'react-autosuggest';
 import { observer } from 'mobx-react';
 

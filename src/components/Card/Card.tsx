@@ -30,7 +30,7 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
 
   const handleClick = event => {
     const { tagName, checked, id } = event.target;
-    console.log(tagName);
+
     if (tagName.toLowerCase() === 'input') {
       // The id is a string that describes which number in the order of checkboxes this particular checkbox has
       const newText = toggleCheckbox({

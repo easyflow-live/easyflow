@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import './BoardTitle.scss';
 import PageTitle from '../PageTitle/PageTitle';

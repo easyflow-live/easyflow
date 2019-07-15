@@ -1,5 +1,4 @@
-import firebase from 'firebase';
-import app from 'firebase/app';
+import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { initFirestorter, Collection } from 'firestorter';
 import SessionStore from './session.store';
@@ -18,7 +17,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 try {
-  initFirestorter({ firebase: firebase });
+  initFirestorter({ firebase });
 } catch (error) {}
 
 const boards = new Collection('boards');

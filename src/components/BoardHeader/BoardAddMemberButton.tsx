@@ -2,6 +2,7 @@ import React from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import InputModal from './InputModal';
 import BoardButton from './BoardButton';

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Router from 'next/router';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
-import firebase from 'firebase';
 import './BoardButton.scss';
 
 class BoardDeleter extends Component {
@@ -14,27 +15,24 @@ class BoardDeleter extends Component {
       .firestore()
       .collection('boards')
       .doc(boardId)
-      .delete()
-    
+      .delete();
+
     Router.push('/');
     return;
   };
 
-  render(){
+  render() {
     return (
-      <Wrapper
-        className="board-wrapper"
-        onSelection={this.handleSelection}
-      >
-        <Button className="board-button">
-          <div className="modal-icon">
+      <Wrapper className='board-wrapper' onSelection={this.handleSelection}>
+        <Button className='board-button'>
+          <div className='modal-icon'>
             <FaTrash />
           </div>
-          <div className="board-header-right-text">&nbsp;Delete board</div>
+          <div className='board-header-right-text'>&nbsp;Delete board</div>
         </Button>
-        <Menu className="board-deleter-menu">
-          <div className="board-deleter-header">Are you sure?</div>
-          <MenuItem className="board-deleter-confirm">Delete</MenuItem>
+        <Menu className='board-deleter-menu'>
+          <div className='board-deleter-header'>Are you sure?</div>
+          <MenuItem className='board-deleter-confirm'>Delete</MenuItem>
         </Menu>
       </Wrapper>
     );

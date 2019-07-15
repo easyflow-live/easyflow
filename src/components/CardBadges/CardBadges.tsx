@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import format from 'date-fns/format';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import { MdAlarm, MdDoneAll } from 'react-icons/md';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import { observer } from 'mobx-react';
 
 import CardDocument from '../../documents/card.doc';
