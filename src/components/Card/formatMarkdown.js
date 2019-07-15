@@ -1,4 +1,4 @@
-import marked from "marked";
+import marked from 'marked';
 
 // Create HTML string from user generated markdown.
 // There is some serious hacks going on here with regards to checkboxes.
@@ -9,9 +9,10 @@ const formatMarkdown = markdown => {
   let i = 0;
   return marked(markdown, { sanitize: true, gfm: true, breaks: true })
     .replace(/<a/g, '<a target="_blank"')
+    .replace(/\n/g, '<br>')
     .replace(/\[(\s|x)\]/g, match => {
       let newString;
-      if (match === "[ ]") {
+      if (match === '[ ]') {
         newString = `<input id=${i} onclick="return false" type="checkbox">`;
       } else {
         newString = `<input id=${i} checked onclick="return false" type="checkbox">`;

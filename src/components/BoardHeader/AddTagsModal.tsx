@@ -23,7 +23,7 @@ const AddTagsModal = ({
   buttonElement,
 }: AddTagsModalProps) => {
   const boardRef = useRef(null);
-  const buttonRect = useRect(buttonElement);
+  const [buttonRect] = useRect(buttonElement);
   const isThinDisplay = useThinDisplay();
 
   useEffect(() => {

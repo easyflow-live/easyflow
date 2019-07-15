@@ -1,29 +1,38 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Modal from 'react-modal';
+import React, { Component, createRef, RefObject } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm } from 'react-icons/md';
-import firebase from 'firebase';
 
-import Calendar from './Calendar';
-import ClickOutside from '../ClickOutside/ClickOutside';
-import CardOptionAssignToMe from './CardOptionAssignToMe';
+import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
+import ClickOutside from '../ClickOutside/ClickOutside';
+import Modal from '../Modal/Modal';
+import Calendar from './Calendar';
+import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 
-class CardOptions extends Component {
-  static propTypes = {
-    isColorPickerOpen: PropTypes.bool.isRequired,
-    card: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
-    isCardNearRightBorder: PropTypes.bool.isRequired,
-    isThinDisplay: PropTypes.bool.isRequired,
-    boundingRect: PropTypes.object.isRequired,
-    toggleColorPicker: PropTypes.func.isRequired
-  };
+interface CardOptionsProps {
+  isColorPickerOpen: boolean;
+  card: CardDocument;
+  isCardNearRightBorder: boolean;
+  isThinDisplay: boolean;
+  boundingRect: object;
+  toggleColorPicker: () => void;
+}
 
-  constructor() {
-    super();
+interface State {
+  isCalendarOpen: boolean;
+}
+
+class CardOptions extends Component<CardOptionsProps, State> {
+  calendaButtonRef: RefObject<HTMLButtonElement>;
+  colorPickerButton: RefObject<HTMLButtonElement>;
+
+  constructor(props) {
+    super(props);
     this.state = { isCalendarOpen: false };
+
+    this.calendaButtonRef = createRef();
+    this.colorPickerButton = createRef();
   }
 
   deleteCard = () => {
@@ -63,30 +72,14 @@ class CardOptions extends Component {
       isColorPickerOpen,
       toggleColorPicker,
       card,
-      isThinDisplay,
-      boundingRect
     } = this.props;
     const { isCalendarOpen } = this.state;
 
-    const calendarStyle = {
-      content: {
-        top: Math.min(boundingRect.bottom + 10, window.innerHeight - 300),
-        left: boundingRect.left
-      }
-    };
-
-    const calendarMobileStyle = {
-      content: {
-        top: 110,
-        left: '50%',
-        transform: 'translateX(-50%)'
-      }
-    };
     return (
       <div
         className='options-list'
         style={{
-          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start'
+          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
         }}
       >
         <div>
@@ -102,9 +95,7 @@ class CardOptions extends Component {
             className='options-list-button'
             onClick={toggleColorPicker}
             onKeyDown={this.handleKeyDown}
-            ref={ref => {
-              this.colorPickerButton = ref;
-            }}
+            ref={this.colorPickerButton}
             aria-haspopup
             aria-expanded={isColorPickerOpen}
           >
@@ -125,7 +116,6 @@ class CardOptions extends Component {
                 className='modal-color-picker'
                 onKeyDown={this.handleKeyDown}
               >
-                {/* eslint-enable */}
                 {['white', '#6df', '#6f6', '#ff6', '#fa4', '#f66'].map(
                   color => (
                     <button
@@ -141,7 +131,11 @@ class CardOptions extends Component {
           )}
         </div>
         <div>
-          <button onClick={this.toggleCalendar} className='options-list-button'>
+          <button
+            onClick={this.toggleCalendar}
+            className='options-list-button'
+            ref={this.calendaButtonRef}
+          >
             <div className='modal-icon'>
               <MdAlarm />
             </div>
@@ -151,11 +145,9 @@ class CardOptions extends Component {
         <CardOptionAssignToMe card={card} />
         <AddTagsWithAutocomplete card={card} />
         <Modal
+          targetElement={this.calendaButtonRef}
           isOpen={isCalendarOpen}
-          onRequestClose={this.toggleCalendar}
-          overlayClassName='calendar-underlay'
-          className='calendar-modal'
-          style={isThinDisplay ? calendarMobileStyle : calendarStyle}
+          toggleIsOpen={this.toggleCalendar}
         >
           <Calendar
             card={card}

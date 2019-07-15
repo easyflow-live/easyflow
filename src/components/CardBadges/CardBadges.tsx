@@ -63,7 +63,7 @@ class CardBadges extends Component<CardBadges, {}> {
     }
     return (
       <div
-        className={`badge ${
+        className={`badge badge-tasks ${
           checked === total ? 'bg-green-600' : 'bg-gray-600'
         }`}
       >
@@ -84,10 +84,12 @@ class CardBadges extends Component<CardBadges, {}> {
 
     return (
       <div className='card-badges'>
-        <Assignee card={card} className='mr-2' />
+        <div className='first-row'>
+          {this.renderDueDate()}
+          <Assignee cardColor={card.data.color} />
+        </div>
         <BadgeTags tags={card.data.tags} onTagClick={this.handleTagClick} />
-        {this.renderDueDate()}
-        {this.renderTaskProgress()}
+        <div>{this.renderTaskProgress()}</div>
       </div>
     );
   }
