@@ -23,7 +23,7 @@ const InputModal = ({
   onSubmit,
 }: InputModalProps) => {
   const [value, setValue] = useState('');
-  const buttonRect = useRect(buttonElement);
+  const [buttonRect] = useRect(buttonElement);
   const isThinDisplay = useThinDisplay();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

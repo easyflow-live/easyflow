@@ -1,8 +1,8 @@
 .tag {
   padding: 3px 5px;
   border-radius: 3px;
-  margin: 2px 5px;
-  font-size: 1.1rem;
+  margin: 2px 2px;
+  font-size: 1rem;
   position: relative;
 }
 .tag:first-child {

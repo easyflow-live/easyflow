@@ -10,7 +10,7 @@ export const useKeySubmit = (
 ): ((event: React.KeyboardEvent) => void) => {
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.keyCode === ENTER_CODE) {
+      if (event.keyCode === ENTER_CODE && !event.shiftKey) {
         event.preventDefault();
         onEnter && onEnter();
       } else if (event.keyCode === ESCAPE_CODE) {
