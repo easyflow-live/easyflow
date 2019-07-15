@@ -76,7 +76,7 @@ class ListTitle extends Component<ListTitleProps, State> {
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
     return (
-      <div className='flex inline-flex items-center text-lg p-1'>
+      <div className='flex inline-flex items-center flex-shrink-0 text-lg p-1'>
         {isOpen ? (
           <div className='p-1'>
             <input
