@@ -1,5 +1,6 @@
 import { FaList } from 'react-icons/fa';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import shortid from 'shortid';
 
 import InputModal from './InputModal';

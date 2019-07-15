@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Document } from 'firestorter';
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import TagsInput from 'react-tagsinput';
 import './AddTags.scss';

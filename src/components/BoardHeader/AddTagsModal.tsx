@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
