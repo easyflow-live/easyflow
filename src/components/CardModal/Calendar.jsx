@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import DayPicker from 'react-day-picker';
 import './ReactDayPicker.scss';

@@ -100,7 +100,6 @@ const MyModal = ({
     refreshModalRect();
   }, [isOpen]);
   const style = useModalPositionStyle(targetRect, modalRect);
-  console.log(style);
 
   const handleRequestClose = () => toggleIsOpen();
 
