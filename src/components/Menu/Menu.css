@@ -1,6 +1,6 @@
 .menu__menu {
   position: absolute;
-  top: 114%;
+  top: 126%;
   right: 0;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   position: absolute;
   left: 50%;
   margin-left: -7px;
-  top: 90%;
+  top: 93%;
   clip: rect(0 18px 14px -4px);
 }
 
@@ -21,7 +21,7 @@
   display: block;
   width: 14px;
   height: 14px;
-  background: #2d3748;
+  background: #4a5568;
   transform: rotate(45deg) translate(6px, 6px);
   box-shadow: -1px -1px 1px -1px rgba(0, 0, 0, 0.54);
 }

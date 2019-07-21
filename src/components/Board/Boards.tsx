@@ -5,7 +5,11 @@ import { useSession } from '../../hooks/useSession';
 import BoardAdder from './BoardAdder';
 import BoardLink from './BoardLink';
 
-export const Boards = observer(() => {
+interface BoardsProps {
+  className: string;
+}
+
+export const Boards = observer(({ className }: BoardsProps) => {
   const { userDoc, user } = useSession();
 
   if (!userDoc || !user) return null;
@@ -13,7 +17,7 @@ export const Boards = observer(() => {
   const { boards } = userDoc;
 
   return (
-    <TransitionGroup className='inline-flex flex-wrap w-full'>
+    <TransitionGroup className={`inline-flex flex-wrap w-full ${className}`}>
       <BoardAdder style={{ minHeight: '140px', marginLeft: 0 }} />
       {boards.docs &&
         boards.docs.map(board => (

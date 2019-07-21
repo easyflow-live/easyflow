@@ -1,28 +1,23 @@
 import Tag from './Tag';
 
+import './TagList.scss';
+
 interface TagListProps {
   tags: string[];
   onRemoveTag(tag: string): void;
+  className?: string;
+  removable?: boolean;
 }
 
-const TagList = ({ tags, onRemoveTag }: TagListProps) =>
-  tags && (
-    <ul className='mt-2 text-white bg-gray-800 p-6 shadow-lg rounded-sm min-w-full'>
-      {tags.map((tag: string, index: number) => (
-        <div
-          key={index}
-          className='flex justify-between items-center mb-3 px-25 py-7'
-        >
-          <Tag title={tag} />
-          <button
-            className='text-red-500 hover:text-red-600'
-            onClick={() => onRemoveTag(tag)}
-          >
-            Remove
-          </button>
-        </div>
+const TagList = ({ tags, onRemoveTag, className, removable }: TagListProps) => (
+  <ul className={`text-white flex flex-wrap ${className}`}>
+    {tags &&
+      tags.map((tag: string, index: number) => (
+        <li key={index} className='mr-3 mb-3'>
+          <Tag title={tag} removable={removable} onClick={onRemoveTag} />
+        </li>
       ))}
-    </ul>
-  );
+  </ul>
+);
 
 export default TagList;

@@ -16,15 +16,12 @@
   transition: background 0.1s;
   cursor: pointer;
   margin-left: 5px;
+  min-height: 40px;
 }
 
 .board-button:hover,
 .board-button:focus {
   background: $transparent-black;
-}
-
-.board-button {
-  cursor: pointer;
 }
 
 .board-deleter-menu {

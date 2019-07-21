@@ -5,6 +5,7 @@ export type EventSubscription = EventSubscription;
 
 export interface EmitterTypes {
   ASSIGNEE_UPDATED: { cardId: string };
+  TEAM_MEMBER_UPDATED: {};
 }
 
 const _emitter = new EventEmitter();

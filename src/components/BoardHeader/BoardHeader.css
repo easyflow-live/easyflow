@@ -22,19 +22,9 @@
   display: none;
 }
 
-.vertical-line {
-  width: 1px;
-  height: 16px;
-  margin: 0 12px;
-  background: rgba(255, 255, 255, 0.4);
-}
-
 @media (max-width: 700px) {
   .board-header-right-text {
     display: none;
-  }
-  .vertical-line {
-    margin: 0 4px;
   }
   .board-header {
     padding-left: 4px;
