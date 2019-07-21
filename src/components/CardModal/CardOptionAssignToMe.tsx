@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import { useSession } from '../../hooks/useSession';
 import CardDocument from '../../documents/card.doc';
 import { emitter } from '../../libs/emitter';
+import { FaUser } from 'react-icons/fa';
 
 interface Props {
   card: CardDocument;
@@ -55,7 +56,9 @@ const CardOptionAssignToMe = observer(({ card }: Props) => {
   return (
     <div>
       <button onClick={toggleAssignment} className='options-list-button'>
-        <div className='modal-icon' />
+        <div className='modal-icon'>
+          <FaUser />
+        </div>
         &nbsp;Toggle assignment
       </button>
     </div>

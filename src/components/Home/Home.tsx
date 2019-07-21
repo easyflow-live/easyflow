@@ -13,7 +13,7 @@ const Home = () => {
 
       <div className='m-6'>
         <PageTitle text={'Boards'} />
-        <Boards />
+        <Boards className='mt-5' />
       </div>
     </>
   );

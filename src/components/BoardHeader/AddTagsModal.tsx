@@ -4,28 +4,18 @@ import 'firebase/firestore';
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
-import { useRect } from '../../hooks/use-rect';
-import { useThinDisplay } from '../../hooks/use-thin-display';
 import TagList from '../Tag/TagList';
 import AddTags from '../Tag/AddTags';
-import Modal from '../Modal/Modal';
+import Dialog from '../Dialog/Dialog';
 
 interface AddTagsModalProps {
   boardId?: string;
-  buttonElement?: HTMLButtonElement;
   isOpen?: boolean;
   toggleIsOpen?(): void;
 }
 
-const AddTagsModal = ({
-  boardId,
-  toggleIsOpen,
-  isOpen,
-  buttonElement,
-}: AddTagsModalProps) => {
+const AddTagsModal = ({ boardId, toggleIsOpen, isOpen }: AddTagsModalProps) => {
   const boardRef = useRef(null);
-  const [buttonRect] = useRect(buttonElement);
-  const isThinDisplay = useThinDisplay();
 
   useEffect(() => {
     boardRef.current = new BoardDocument(`boards/${boardId}`);
@@ -38,30 +28,20 @@ const AddTagsModal = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      targetElement={buttonElement}
-      toggleIsOpen={toggleIsOpen}
-    >
-      <div
-        className='tags-modal'
-        style={{
-          minHeight: isThinDisplay ? 'none' : buttonRect.height,
-          width: isThinDisplay ? '100%' : '290px',
-        }}
-      >
+    <Dialog title='Tags' isOpen={isOpen} onClose={toggleIsOpen}>
+      <div className='m-8 mt-0'>
         <AddTags document={boardRef.current} />
 
-        {boardRef.current &&
-          boardRef.current.data.tags &&
-          boardRef.current.data.tags.length && (
-            <TagList
-              tags={boardRef.current.data.tags}
-              onRemoveTag={handleRemoveClick}
-            />
-          )}
+        {boardRef.current && boardRef.current.data.tags && (
+          <TagList
+            removable
+            className='mt-10'
+            tags={boardRef.current.data.tags}
+            onRemoveTag={handleRemoveClick}
+          />
+        )}
       </div>
-    </Modal>
+    </Dialog>
   );
 };
 

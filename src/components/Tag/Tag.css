@@ -1,10 +1,10 @@
 .tag {
   padding: 3px 5px;
   border-radius: 3px;
-  margin: 2px 2px;
   font-size: 1rem;
   position: relative;
 }
+
 .tag:first-child {
   margin-left: 0;
 }
@@ -17,6 +17,7 @@
   font-size: 14px;
   margin-left: 6px;
 }
-.modal-textarea-wrapper .tag__close {
+.modal-textarea-wrapper .tag__close,
+.tag--removable .tag__close {
   display: inline;
 }

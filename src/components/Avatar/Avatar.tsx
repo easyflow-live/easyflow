@@ -12,7 +12,7 @@ export const Avatar = memo(
   ({ imgUrl, username, boxShadowColor, className = '' }: AvatarProps) => (
     <img
       src={imgUrl}
-      alt={username}
+      alt={`Avatar image of ${username}`}
       className={`avatar h-8 rounded-full ${className}`}
       style={{ boxShadow: `0px 0px 0px 2px ${boxShadowColor}` }}
       title={username}

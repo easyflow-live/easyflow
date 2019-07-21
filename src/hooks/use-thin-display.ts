@@ -8,7 +8,6 @@ const useResizeObserver = (element, callback) => {
 
     if (typeof ResizeObserver === 'function') {
       let resizeObserver = new ResizeObserver(() => callback());
-      console.log(element);
       resizeObserver.observe(element.current);
 
       return () => {
@@ -33,11 +32,11 @@ const useResizeObserver = (element, callback) => {
 export const useThinDisplay = () => {
   const [isThin, setIsThin] = useState(false);
 
-  // useResizeObserver({ current: window.document.scrollingElement }, () =>
-  //   setIsThin(window.innerWidth < 550)
-  // );
+  useResizeObserver({ current: window.document.scrollingElement }, () =>
+    setIsThin(window.innerWidth < 550)
+  );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setIsThin(window.innerWidth < 550);
   }, []);
 

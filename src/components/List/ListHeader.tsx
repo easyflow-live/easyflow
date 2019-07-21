@@ -23,7 +23,7 @@ class ListTitle extends Component<ListTitleProps, State> {
     super(props);
     this.state = {
       isOpen: false,
-      newTitle: props.listTitle
+      newTitle: props.listTitle,
     };
   }
 
@@ -120,7 +120,9 @@ class ListTitle extends Component<ListTitleProps, State> {
           </Button>
           <Menu className='delete-list-menu relative'>
             <div className='delete-list-header'>Are you sure?</div>
-            <MenuItem className='delete-list-confirm'>Delete</MenuItem>
+            <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
+              Delete
+            </MenuItem>
           </Menu>
           <div className='popover-arrow' />
         </Wrapper>
