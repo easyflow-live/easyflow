@@ -24,6 +24,7 @@ const Header = observer(() => {
                 <Link href='/'>
                   <a className='text-2xl text-white'>
                     <span className='text-teal-500'>easy</span>flow
+                    <small className='text-pink-500 text-xs ml-2'>beta</small>
                   </a>
                 </Link>
               </div>
