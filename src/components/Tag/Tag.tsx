@@ -30,7 +30,7 @@ const Tag = ({
   return (
     <span
       style={style}
-      className={`tag ${removable && 'tag--removable'}`}
+      className={`tag ${removable ? 'tag--removable' : ''}`}
       {...otherProps}
     >
       {title}
