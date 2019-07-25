@@ -11,15 +11,13 @@ import TeamListModal from './TeamListModal';
 import { VerticalLine } from '../layout/VerticalLine';
 
 interface BoardHeaderProps {
-  boardTitle: string;
-  boardId: string;
   board: BoardDocument;
 }
 
-const BoardHeader = ({ boardTitle, boardId, board }: BoardHeaderProps) => {
+const BoardHeader = ({ board }: BoardHeaderProps) => {
   return (
     <div className='flex justify-between items-center'>
-      <BoardTitle boardTitle={boardTitle} boardId={boardId} />
+      <BoardTitle boardTitle={board.data.title} boardId={board.id} />
       <div className='flex items-center'>
         <BoardButton
           style={{ paddingLeft: '18px' }}

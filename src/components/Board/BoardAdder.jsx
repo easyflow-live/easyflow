@@ -9,7 +9,7 @@ import CallToActionButton from '../Buttons/CallToActionButton';
 import './BoardAdder.css';
 
 const BoardAdder = ({ style }) => {
-  const { user } = useSession();
+  const { userDoc } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
 
@@ -25,20 +25,15 @@ const BoardAdder = ({ style }) => {
     event.preventDefault();
     if (title === '') return;
 
-    const userDocRef = await firebase
-      .firestore()
-      .collection(`users`)
-      .doc(user.email);
-
     await firebase
       .firestore()
       .collection('boards')
       .add({
         uid: shortid.generate(),
-        owner: userDocRef,
+        owner: userDoc.ref,
         title,
         color: '',
-        users: firebase.firestore.FieldValue.arrayUnion(userDocRef),
+        users: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
         lists: []
       });
 
