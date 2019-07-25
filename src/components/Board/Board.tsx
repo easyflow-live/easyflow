@@ -86,14 +86,18 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { kioskMode, board } = this.props;
 
     if (!board) return null;
-    const { isLoading, data } = board;
+
+    const { data, lists } = board;
+    const { isLoading, docs } = lists;
+
+    const showEmpty = !docs.length && !isLoading;
 
     return (
       <div className={`m-4 ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <BoardHeader board={board} />}
 
-        {board.lists.docs.length && !isLoading ? (
+        {docs.length && !isLoading && (
           <div
             className='inline-flex mt-5 overflow-x-auto'
             style={{ width: 'calc(100vw - 3rem)' }}
@@ -102,13 +106,10 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
           >
             <ListColumns board={board} kioskMode={kioskMode} />
           </div>
-        ) : (
-          <div className='flex flex-col justify-center items-center h-full'>
-            <AnimatedOpacity show={true}>
-              <CreateContentEmpty boardId={board.id} />
-            </AnimatedOpacity>
-          </div>
         )}
+        <AnimatedOpacity show={showEmpty}>
+          <CreateContentEmpty boardId={board.id} />
+        </AnimatedOpacity>
         <div className='board-underlay' />
       </div>
     );
