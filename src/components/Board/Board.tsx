@@ -6,6 +6,8 @@ import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
+import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
+import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 
 interface BoardProps {
   board: BoardDocument;
@@ -89,22 +91,24 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     return (
       <div className={`m-4 ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
-        {!kioskMode && (
-          <BoardHeader
-            boardTitle={data.title}
-            boardId={board.id}
-            board={board}
-          />
-        )}
+        {!kioskMode && <BoardHeader board={board} />}
 
-        <div
-          className='inline-flex mt-5 overflow-x-auto'
-          style={{ width: 'calc(100vw - 3rem)' }}
-          onMouseDown={this.handleMouseDown}
-          onWheel={this.handleWheel}
-        >
-          <ListColumns board={board} kioskMode={kioskMode} />
-        </div>
+        {board.lists.docs.length && !isLoading ? (
+          <div
+            className='inline-flex mt-5 overflow-x-auto'
+            style={{ width: 'calc(100vw - 3rem)' }}
+            onMouseDown={this.handleMouseDown}
+            onWheel={this.handleWheel}
+          >
+            <ListColumns board={board} kioskMode={kioskMode} />
+          </div>
+        ) : (
+          <div className='flex flex-col justify-center items-center h-full'>
+            <AnimatedOpacity show={true}>
+              <CreateContentEmpty boardId={board.id} />
+            </AnimatedOpacity>
+          </div>
+        )}
         <div className='board-underlay' />
       </div>
     );
