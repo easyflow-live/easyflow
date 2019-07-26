@@ -14,8 +14,9 @@ interface BoardPageProps {
 const Board = ({ query }: BoardPageProps) => {
   const { userDoc } = useSession();
   const boards = userDoc ? userDoc.boards.docs : [];
+  const isLoading = boards && boards.isLoading ? boards.isLoading : true;
 
-  if (!boards.length) return null;
+  if (!boards.length && isLoading) return null;
 
   const board: BoardDocument = boards.find(d => d.id === query.uid);
 
