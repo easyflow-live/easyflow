@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import Error from 'next/error';
 
 import BoardComponent from '../src/components/Board/Board';
 import { useSession } from '../src/hooks/useSession';
@@ -17,6 +18,9 @@ const Board = ({ query }: BoardPageProps) => {
   if (!boards.length) return null;
 
   const board: BoardDocument = boards.find(d => d.id === query.uid);
+
+  if (!board) return <Error statusCode={404} />;
+
   return (
     <div>
       <BoardComponent board={board} kioskMode={query.kiosk} />

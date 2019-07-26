@@ -97,7 +97,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
         <Title>{data.title} | Easy Flow</Title>
         {!kioskMode && <BoardHeader board={board} />}
 
-        {docs.length && !isLoading && (
+        {docs.length > 0 && !isLoading && (
           <div
             className='inline-flex mt-5 overflow-x-auto'
             style={{ width: 'calc(100vw - 3rem)' }}
