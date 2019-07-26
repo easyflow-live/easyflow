@@ -48,20 +48,20 @@ class CardOptions extends Component<CardOptionsProps, State> {
       card.ref.update({ color });
     }
     toggleColorPicker();
-    this.colorPickerButton.focus();
+    this.colorPickerButton.current.focus();
   };
 
   handleKeyDown = event => {
     if (event.keyCode === 27) {
       this.props.toggleColorPicker();
-      this.colorPickerButton.focus();
+      this.colorPickerButton.current.focus();
     }
   };
 
   handleClickOutside = () => {
     const { toggleColorPicker } = this.props;
     toggleColorPicker();
-    this.colorPickerButton.focus();
+    this.colorPickerButton.current.focus();
   };
 
   toggleCalendar = () => {
