@@ -44,7 +44,7 @@ export default observer(
                     listTitle={list.data.title}
                     list={list}
                   />
-                  <div className='px-2 mt-3 overflow-y-auto overflow-x-hidden'>
+                  <div className='px-3 mt-3 overflow-y-auto overflow-x-hidden'>
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
                   {!kioskMode && (
