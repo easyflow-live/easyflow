@@ -1,18 +1,16 @@
 import { Document } from 'firestorter';
+import UserDocument from './user.doc';
 
-// class CardSchema {
-//   text: string;
-//   index: number;
-//   color: string;
-//   date: string;
-//   assigne: any;
-// }
+interface Card {
+  text: string;
+  index: number;
+  color: string;
+  date: string;
+  assigne: UserDocument;
+}
 
-export default class CardDocument extends Document {
+export default class CardDocument extends Document<Card> {
   constructor(source, options = {}) {
-    super(source, {
-      // schema: CardSchema,
-      ...options,
-    });
+    super(source, { ...options });
   }
 }
