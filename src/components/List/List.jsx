@@ -35,7 +35,7 @@ export default observer(
               <div ref={provided.innerRef} {...provided.draggableProps}>
                 <div
                   tabIndex={0}
-                  className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${
+                  className={`list relative bg-gray-700 shadow-lg rounded-lg m-2 cursor-pointer ${
                     snapshot.isDragging ? 'list--drag' : ''
                   }`}
                 >
@@ -44,7 +44,7 @@ export default observer(
                     listTitle={list.data.title}
                     list={list}
                   />
-                  <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
+                  <div className='px-2 mt-3 overflow-y-auto overflow-x-hidden'>
                     <Cards list={list} cards={list.cards.docs} />
                   </div>
                   {!kioskMode && (

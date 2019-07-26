@@ -76,15 +76,15 @@ class ListTitle extends Component<ListTitleProps, State> {
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
     return (
-      <div className='flex inline-flex items-center flex-shrink-0 text-lg p-1'>
+      <div className='flex inline-flex items-center flex-shrink-0 text-lg p-2'>
         {isOpen ? (
-          <div className='p-1'>
+          <div>
             <input
               autoFocus
               value={newTitle}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
-              className='shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight'
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
               onBlur={this.handleSubmit}
               spellCheck={false}
             />
@@ -99,9 +99,14 @@ class ListTitle extends Component<ListTitleProps, State> {
               this.handleButtonKeyDown(event);
               dragHandleProps.onKeyDown(event);
             }}
-            className='text-white font-semibold p-2 w-full cursor-pointer break-words flex-grow'
+            className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
           >
-            {listTitle}
+            <span
+              title='Click to change the list title'
+              className='cursor-pointer'
+            >
+              {listTitle}
+            </span>
           </div>
         )}
 
