@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import Tag from '../Tag/Tag';
+import './BadgeTags.css';
 
 interface BadgeTags {
   tags: string[];
@@ -15,7 +16,7 @@ const style = {
 const BadgeTags = observer(
   ({ tags, onTagClick }: BadgeTags) =>
     tags && (
-      <div style={style}>
+      <div className='badge-tags' style={style}>
         {tags.map((t, index) => (
           <Tag key={index} title={t} onClick={onTagClick} />
         ))}

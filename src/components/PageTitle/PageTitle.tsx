@@ -1,1 +1,1 @@
-export default ({ text }) => <h2 className='text-white text-2xl'>{text}</h2>;
+export default ({ text }) => <h2 className='text-white text-xl'>{text}</h2>;

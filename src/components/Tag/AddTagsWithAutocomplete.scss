@@ -1,5 +1,6 @@
 .react-autosuggest__container {
   position: relative;
+  margin: 0 3px;
 }
 
 .react-autosuggest__input {
@@ -10,7 +11,6 @@
   font-size: 16px;
   border: 0;
   border-radius: 3px;
-  margin-left: 3px;
 }
 
 .react-autosuggest__input--open {

@@ -6,6 +6,8 @@ import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
+import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
+import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 
 interface BoardProps {
   board: BoardDocument;
@@ -84,23 +86,30 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { kioskMode, board } = this.props;
 
     if (!board) return null;
-    const { isLoading, data } = board;
+
+    const { data, lists } = board;
+    const { isLoading, docs } = lists;
+
+    const showEmpty = !docs.length && !isLoading;
 
     return (
-      <div className={`m-6 ${kioskMode ? 'kiosk' : ''}`}>
+      <div className={`m-4 ${kioskMode ? 'kiosk' : ''}`}>
         <Title>{data.title} | Easy Flow</Title>
-        {!kioskMode && (
-          <BoardHeader boardTitle={data.title} boardId={board.id} />
-        )}
+        {!kioskMode && <BoardHeader board={board} />}
 
-        <div
-          className='inline-flex mt-5 overflow-x-auto'
-          style={{ width: 'calc(100vw - 3rem)' }}
-          onMouseDown={this.handleMouseDown}
-          onWheel={this.handleWheel}
-        >
-          <ListColumns board={board} kioskMode={kioskMode} />
-        </div>
+        {docs.length > 0 && !isLoading && (
+          <div
+            className='inline-flex mt-5 overflow-x-auto'
+            style={{ width: 'calc(100vw - 3rem)' }}
+            onMouseDown={this.handleMouseDown}
+            onWheel={this.handleWheel}
+          >
+            <ListColumns board={board} kioskMode={kioskMode} />
+          </div>
+        )}
+        <AnimatedOpacity show={showEmpty}>
+          <CreateContentEmpty boardId={board.id} />
+        </AnimatedOpacity>
         <div className='board-underlay' />
       </div>
     );

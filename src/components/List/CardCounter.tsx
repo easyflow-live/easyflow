@@ -51,7 +51,7 @@ const CardCounter = observer(
     // if number type is used here, the click button stops work ib Firefox
     // https://github.com/facebook/react/issues/6556
     return (
-      <div className='p-1'>
+      <div className='pl-2'>
         {isEditing ? (
           <input
             min={MAX_DEFAULT_VALUE}

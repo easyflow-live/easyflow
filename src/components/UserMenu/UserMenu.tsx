@@ -3,7 +3,6 @@ import Router from 'next/router';
 
 import { useGoogleLogin } from '../../hooks/useLogin';
 import Menu, { MenuItem, Button } from '../Menu';
-import './UserMenu.css';
 
 interface UserMenuProps {
   trigger: React.ReactChild;

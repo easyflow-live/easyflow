@@ -6,6 +6,7 @@ interface TagProps {
   color?: string;
   bgcolor?: string;
   tagStyle?: CSSProperties;
+  removable?: boolean;
   onClick?(tag: string): void;
 }
 
@@ -15,6 +16,7 @@ const Tag = ({
   bgcolor,
   tagStyle,
   onClick,
+  removable,
   ...otherProps
 }: TagProps) => {
   const style = {
@@ -26,7 +28,11 @@ const Tag = ({
   const handleClick = () => onClick(title);
 
   return (
-    <span style={style} className='tag' {...otherProps}>
+    <span
+      style={style}
+      className={`tag ${removable ? 'tag--removable' : ''}`}
+      {...otherProps}
+    >
       {title}
       <span className='tag__close' onClick={handleClick}>
         x

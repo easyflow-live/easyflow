@@ -14,7 +14,5 @@ export default class CardDocument extends Document {
       // schema: CardSchema,
       ...options,
     });
-
-    this.assigneeDoc = new Document(() => this.data.assigne);
   }
 }

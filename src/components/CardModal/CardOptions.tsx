@@ -1,6 +1,7 @@
 import React, { Component, createRef, RefObject } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
@@ -35,9 +36,10 @@ class CardOptions extends Component<CardOptionsProps, State> {
     this.colorPickerButton = createRef();
   }
 
-  deleteCard = () => {
+  deleteCard = async () => {
     const { card } = this.props;
-    card.ref.delete();
+    await card.ref.delete();
+    toast('Card was removed.');
   };
 
   changeColor = color => {
