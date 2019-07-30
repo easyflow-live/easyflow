@@ -9,7 +9,6 @@ import List from './List';
 
 interface ListsProps {
   board: BoardDocument;
-  kioskMode: boolean;
 }
 
 interface State {
@@ -105,7 +104,7 @@ export default observer(
     };
 
     render() {
-      const { board, kioskMode } = this.props;
+      const { board } = this.props;
       const { isLoading, docs } = board.lists;
 
       return (
@@ -119,12 +118,7 @@ export default observer(
               <div className='lists flex justify-start' ref={provided.innerRef}>
                 {/*Context Provider will update all droppable childs */}
                 {docs.map((list, index) => (
-                  <List
-                    key={list.id}
-                    list={list}
-                    index={index}
-                    kioskMode={kioskMode}
-                  />
+                  <List key={list.id} list={list} index={index} />
                 ))}
                 {provided.placeholder}
               </div>

@@ -8,6 +8,7 @@ import PageTitle from '../PageTitle/PageTitle';
 interface BoardTitleProps {
   boardTitle: string;
   boardId: string;
+  editable?: boolean;
 }
 
 interface State {
@@ -67,8 +68,9 @@ class BoardTitle extends Component<BoardTitleProps, State> {
 
   render() {
     const { isOpen, newTitle } = this.state;
-    const { boardTitle } = this.props;
-    return isOpen ? (
+    const { boardTitle, editable } = this.props;
+
+    return isOpen && editable ? (
       <input
         autoFocus
         value={newTitle}

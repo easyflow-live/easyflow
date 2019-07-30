@@ -6,6 +6,7 @@ import { FaTrash } from 'react-icons/fa';
 import ListDocument from '../../documents/list.doc';
 import CardCounter from './CardCounter';
 import './ListHeader.scss';
+import { InterfaceContext } from '../providers/InterfaceProvider';
 
 interface ListTitleProps {
   listTitle: string;
@@ -73,65 +74,76 @@ class ListTitle extends Component<ListTitleProps, State> {
   deleteList = () => this.props.list.ref.delete();
 
   render() {
+    const { isLoading } = this.props.list.cards;
     const { isOpen, newTitle } = this.state;
     const { dragHandleProps, listTitle } = this.props;
+
     return (
-      <div className='flex inline-flex items-center flex-shrink-0 text-lg p-3'>
-        {isOpen ? (
-          <div>
-            <input
-              autoFocus
-              value={newTitle}
-              onChange={this.handleChange}
-              onKeyDown={this.handleKeyDown}
-              className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
-              onBlur={this.handleSubmit}
-              spellCheck={false}
+      <InterfaceContext.Consumer>
+        {({ isEditable }) => (
+          <div className='flex inline-flex items-center flex-shrink-0 text-lg p-3'>
+            {isOpen && isEditable ? (
+              <div>
+                <input
+                  autoFocus
+                  value={newTitle}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
+                  className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
+                  onBlur={this.handleSubmit}
+                  spellCheck={false}
+                />
+              </div>
+            ) : (
+              <div
+                {...isEditable && dragHandleProps}
+                role='button'
+                tabIndex={0}
+                onClick={this.openTitleEditor}
+                onKeyDown={event => {
+                  if (!isEditable) return;
+
+                  this.handleButtonKeyDown(event);
+                  dragHandleProps.onKeyDown(event);
+                }}
+                className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
+              >
+                <span
+                  title='Click to change the list title'
+                  className={isEditable ? 'cursor-pointer' : ''}
+                >
+                  {listTitle}
+                </span>
+              </div>
+            )}
+
+            <CardCounter
+              counter={this.props.list.cards.docs.length}
+              max={this.props.list.data.cardsLimit}
+              onChange={this.handleCounterSubmit}
+              editable={isEditable}
             />
-          </div>
-        ) : (
-          <div
-            {...dragHandleProps}
-            role='button'
-            tabIndex={0}
-            onClick={this.openTitleEditor}
-            onKeyDown={event => {
-              this.handleButtonKeyDown(event);
-              dragHandleProps.onKeyDown(event);
-            }}
-            className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
-          >
-            <span
-              title='Click to change the list title'
-              className='cursor-pointer'
-            >
-              {listTitle}
-            </span>
+
+            {isEditable && (
+              <Wrapper
+                className='delete-list-wrapper ml-2'
+                onSelection={this.deleteList}
+              >
+                <Button className='delete-list-button'>
+                  <FaTrash />
+                </Button>
+                <Menu className='delete-list-menu'>
+                  <div className='delete-list-header'>Are you sure?</div>
+                  <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
+                    Delete
+                  </MenuItem>
+                </Menu>
+                <div className='popover-arrow' />
+              </Wrapper>
+            )}
           </div>
         )}
-
-        <CardCounter
-          counter={this.props.list.cards.docs.length}
-          max={this.props.list.data.cardsLimit}
-          onChange={this.handleCounterSubmit}
-        />
-
-        <Wrapper
-          className='delete-list-wrapper ml-2'
-          onSelection={this.deleteList}
-        >
-          <Button className='delete-list-button'>
-            <FaTrash />
-          </Button>
-          <Menu className='delete-list-menu relative'>
-            <div className='delete-list-header'>Are you sure?</div>
-            <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
-              Delete
-            </MenuItem>
-          </Menu>
-          <div className='popover-arrow' />
-        </Wrapper>
-      </div>
+      </InterfaceContext.Consumer>
     );
   }
 }

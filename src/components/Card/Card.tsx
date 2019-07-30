@@ -12,6 +12,7 @@ import formatMarkdown from './formatMarkdown';
 import { CardProvider } from './CardProvider';
 
 import './Card.scss';
+import { useSession } from '../../hooks/useSession';
 
 interface CardProps {
   card: CardDocument;
@@ -20,6 +21,7 @@ interface CardProps {
 }
 
 const Card = ({ card, index, isDraggingOver }: CardProps) => {
+  const { user } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef(null);
   const [cardRect] = useRect(cardRef);
@@ -29,6 +31,8 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
   const toggleCardModal = () => setIsModalOpen(!isModalOpen);
 
   const handleClick = event => {
+    if (!user) return;
+
     const { tagName, checked, id } = event.target;
 
     if (tagName.toLowerCase() === 'input') {
@@ -44,6 +48,8 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
   };
 
   const handleKeyDown = event => {
+    if (!user) return;
+
     // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
     if (event.keyCode === 13 && event.target.tagName.toLowerCase() !== 'a') {
       event.preventDefault();
@@ -64,8 +70,10 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
                 provided.innerRef(ref);
                 cardRef.current = ref;
               }}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
+              // Enable draggable to authenticated users
+              {...(user
+                ? { ...provided.draggableProps, ...provided.dragHandleProps }
+                : {})}
               onClick={event => {
                 provided.dragHandleProps.onClick(event);
                 handleClick(event);

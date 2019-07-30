@@ -8,8 +8,8 @@ interface Board {
   title: string;
   uid: string;
   color: string;
-  owner: UserDocument;
-  users: UserDocument[];
+  owner: UserDocument['ref'];
+  users: UserDocument['ref'][];
 }
 
 export default class BoardDocument extends Document<Board> {

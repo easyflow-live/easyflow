@@ -8,10 +8,10 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import './Board.scss';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
+import { InterfaceContext } from '../providers/InterfaceProvider';
 
 interface BoardProps {
   board: BoardDocument;
-  kioskMode: boolean;
 }
 
 interface State {
@@ -83,8 +83,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
   };
 
   render() {
-    const { kioskMode, board } = this.props;
-
+    const { board } = this.props;
     if (!board) return null;
 
     const { data, lists } = board;
@@ -93,25 +92,31 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const showEmpty = !docs.length && !isLoading;
 
     return (
-      <div className={`m-4 ${kioskMode ? 'kiosk' : ''}`}>
-        <Title>{data.title} | Easy Flow</Title>
-        {!kioskMode && <BoardHeader board={board} />}
+      <InterfaceContext.Consumer>
+        {({ isKioskMode, isEditable }) => (
+          <div className={`m-4 ${isKioskMode ? 'kiosk' : ''}`}>
+            <Title>{data.title} | Easy Flow</Title>
+            <BoardHeader board={board} />
 
-        {docs.length > 0 && !isLoading && (
-          <div
-            className='inline-flex mt-5 overflow-x-auto'
-            style={{ width: 'calc(100vw - 3rem)' }}
-            onMouseDown={this.handleMouseDown}
-            onWheel={this.handleWheel}
-          >
-            <ListColumns board={board} kioskMode={kioskMode} />
+            {docs.length > 0 && !isLoading && (
+              <div
+                className='inline-flex mt-5 overflow-x-auto'
+                style={{ width: 'calc(100vw - 3rem)' }}
+                onMouseDown={this.handleMouseDown}
+                onWheel={this.handleWheel}
+              >
+                <ListColumns board={board} />
+              </div>
+            )}
+            {isEditable && (
+              <AnimatedOpacity show={showEmpty}>
+                <CreateContentEmpty boardId={board.id} />
+              </AnimatedOpacity>
+            )}
+            <div className='board-underlay' />
           </div>
         )}
-        <AnimatedOpacity show={showEmpty}>
-          <CreateContentEmpty boardId={board.id} />
-        </AnimatedOpacity>
-        <div className='board-underlay' />
-      </div>
+      </InterfaceContext.Consumer>
     );
   }
 };

@@ -7,12 +7,13 @@ import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import '../src/styles/style.css';
 import { SessionProvider } from '../src/hooks/useSession';
 import UserDocument from '../src/documents/user.doc';
 import firebaseService from '../src/firebase.service';
 import Header from '../src/components/Header/Header';
 import { initGA, logPageView } from '../src/analytics';
+import { InterfaceProvider } from '../src/components/providers/InterfaceProvider';
+import '../src/styles/style.css';
 
 export default observer(
   class MyApp extends App {
@@ -66,13 +67,15 @@ export default observer(
         <HeadProvider headTags={[]}>
           <Container>
             <SessionProvider value={{ user, userDoc, initializing }}>
-              <Link rel='shortcut icon' href='/static/images/icon.png' />
-              <Header />
-              <Component {...pageProps} />
-              <ToastContainer
-                toastClassName='Toast-background'
-                progressClassName='Toast-progress'
-              />
+              <InterfaceProvider>
+                <Link rel='shortcut icon' href='/static/images/icon.png' />
+                <Header />
+                <Component {...pageProps} />
+                <ToastContainer
+                  toastClassName='Toast-background'
+                  progressClassName='Toast-progress'
+                />
+              </InterfaceProvider>
             </SessionProvider>
           </Container>
         </HeadProvider>

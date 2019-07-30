@@ -6,7 +6,7 @@ interface Card {
   index: number;
   color: string;
   date: string;
-  assigne: UserDocument;
+  assigne: UserDocument['ref'];
 }
 
 export default class CardDocument extends Document<Card> {
