@@ -9,33 +9,47 @@ import BoardButton from './BoardButton';
 import AddNewListModal from './AddNewListModal';
 import TeamListModal from './TeamListModal';
 import { VerticalLine } from '../layout/VerticalLine';
+import { observer } from 'mobx-react-lite';
+import { useInterface } from '../providers/InterfaceProvider';
 
 interface BoardHeaderProps {
   board: BoardDocument;
 }
 
 const BoardHeader = ({ board }: BoardHeaderProps) => {
+  const { isEditable, isKioskMode } = useInterface();
+
   return (
     <div className='flex justify-between items-center'>
-      <BoardTitle boardTitle={board.data.title} boardId={board.id} />
+      <BoardTitle
+        boardTitle={board.data.title}
+        boardId={board.id}
+        editable={isEditable}
+      />
       <div className='flex items-center'>
         <BoardButton
           style={{ paddingLeft: '18px' }}
           icon={<Team board={board} />}
-          renderModal={props => <TeamListModal board={board} {...props} />}
+          renderModal={props =>
+            isEditable && <TeamListModal board={board} {...props} />
+          }
         />
-        <VerticalLine />
-        <BoardButton
-          icon={<FaList />}
-          text='Add list'
-          renderModal={props => (
-            <AddNewListModal boardId={board.id} {...props} />
-          )}
-        />
-        <BoardMenu className='ml-2' board={board} />
+        {isEditable && !isKioskMode && (
+          <>
+            <VerticalLine />
+            <BoardButton
+              icon={<FaList />}
+              text='Add list'
+              renderModal={props => (
+                <AddNewListModal boardId={board.id} {...props} />
+              )}
+            />
+            <BoardMenu className='ml-2' board={board} />
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default BoardHeader;
+export default observer(BoardHeader);

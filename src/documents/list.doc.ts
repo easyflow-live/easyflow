@@ -8,10 +8,10 @@ interface List {
   index: number;
   uid: string;
   color: string;
-  owner: UserDocument;
+  owner: UserDocument['ref'];
   public: boolean;
   tags: string[];
-  users: UserDocument[];
+  users: UserDocument['ref'][];
   cardsLimit: number;
 }
 

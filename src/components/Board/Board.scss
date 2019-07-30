@@ -28,13 +28,6 @@
   background: $pink;
 }
 
-.lists-wrapper {
-  display: inline-flex;
-  box-sizing: border-box;
-  height: 100%;
-  padding: 150px 30px 8px 30px;
-}
-
 .lists {
   display: inline-flex;
   align-items: flex-start;
@@ -42,6 +35,6 @@
   user-select: none;
 }
 
-.kiosk > .lists-wrapper {
-  padding-top: 80px;
+.kiosk > div:first-child {
+  padding-top: 20px;
 }
