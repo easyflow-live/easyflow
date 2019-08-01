@@ -94,7 +94,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     return (
       <InterfaceContext.Consumer>
         {({ isKioskMode, isEditable }) => (
-          <div className={`m-4 ${isKioskMode ? 'kiosk' : ''}`}>
+          <div className={`m-6 ${isKioskMode ? 'kiosk' : ''}`}>
             <Title>{data.title} | Easy Flow</Title>
             <BoardHeader board={board} />
 
