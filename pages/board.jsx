@@ -6,8 +6,7 @@ import { useSession } from '../src/hooks/useSession';
 import boardStore from '../src/board-store';
 
 const Board = props => {
-  const boards = boardStore.boards
-  console.log(boards)
+  const boards = boardStore.boards;
   const { uid, kiosk } = props.query;
   const { lists } = useLists(props.query.uid);
   const board = useMemo(

@@ -1,0 +1,24 @@
+.PricingCard {
+  -ms-flex-align: start;
+  align-items: start;
+  display: grid;
+  grid-gap: 2.5rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content auto;
+  min-height: 415px;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+}
+
+.PricingCard button:hover {
+  transition: transform 0.3s;
+  transform: translate3d(0, -5px, 0);
+}
+
+.PricingCard button {
+  transition: all 0.3s;
+}
+
+.PricingCard.PricingCard--disabled:hover {
+  transform: translate3d(0, 0, 0);
+}

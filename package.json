@@ -44,6 +44,7 @@
     "react-ga": "^2.5.7",
     "react-head": "^3.1.1",
     "react-icons": "^3.6.1",
+    "react-intersection-observer": "^8.24.1",
     "react-modal": "^3.8.1",
     "react-onclickoutside": "^6.8.0",
     "react-spring": "^8.0.27",
