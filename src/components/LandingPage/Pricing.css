@@ -1,0 +1,23 @@
+.PricingCards {
+  display: flex;
+}
+
+.PricingCards .PricingCard:not(:nth-child(1)) {
+  margin-left: 24px;
+}
+
+@media (max-width: 640px) {
+  .PricingCards {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .PricingCards .PricingCard:nth-child(n) {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .PricingCards .PricingCard:not(:nth-child(1)) {
+    margin-top: 1rem;
+  }
+}

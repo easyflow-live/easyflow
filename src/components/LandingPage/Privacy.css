@@ -1,0 +1,27 @@
+.Privacy {
+  color: white;
+}
+
+.Privacy a:hover {
+  color: #ed64a6;
+}
+
+.Privacy h1 {
+  font-size: 2.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.Privacy h2 {
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+}
+
+.Privacy p {
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.Privacy ul {
+  margin-left: 1.5rem;
+  list-style-type: disc;
+}
