@@ -30,8 +30,10 @@ const BoardHeader = ({ board }: BoardHeaderProps) => {
         <BoardButton
           style={{ paddingLeft: '18px' }}
           icon={<Team board={board} />}
-          renderModal={props =>
-            isEditable && <TeamListModal board={board} {...props} />
+          renderModal={
+            isEditable
+              ? props => <TeamListModal board={board} {...props} />
+              : () => null
           }
         />
         {isEditable && !isKioskMode && (
