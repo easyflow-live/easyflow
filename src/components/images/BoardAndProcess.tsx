@@ -8,7 +8,6 @@ export const BoardAndProcess = props => (
     className='mx-auto'
     {...props}
   >
-    <title>process</title>
     <circle cx='748.16555' cy='49.47737' r='14.75556' fill='#f1f1f1' />
     <circle cx='661.16555' cy='620.47737' r='14.75556' fill='#f1f1f1' />
     <circle cx='294.16555' cy='191.47737' r='14.75556' fill='#f1f1f1' />

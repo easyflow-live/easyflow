@@ -9,7 +9,7 @@ import './Home.scss';
 const Home = () => {
   return (
     <>
-      <Title>Home | Easy Flow</Title>
+      <Title>Boards | Easy Flow</Title>
 
       <div className='m-6'>
         <PageTitle text={'Boards'} />

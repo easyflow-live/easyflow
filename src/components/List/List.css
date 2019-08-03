@@ -1,5 +1,5 @@
 .list {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   box-sizing: border-box;
   width: 300px;

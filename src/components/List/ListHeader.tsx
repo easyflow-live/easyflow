@@ -1,151 +1,126 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FaTrash } from 'react-icons/fa';
 
 import ListDocument from '../../documents/list.doc';
+import { useKeySubmit } from '../../hooks/use-key-submit';
+import { useInterface } from '../providers/InterfaceProvider';
 import CardCounter from './CardCounter';
 import './ListHeader.scss';
-import { InterfaceContext } from '../providers/InterfaceProvider';
 
-interface ListTitleProps {
+interface ListHeaderProps {
   listTitle: string;
   dragHandleProps: any;
   list: ListDocument;
+  isDragging: boolean;
 }
 
-interface State {
-  isOpen: boolean;
-  newTitle: string;
-}
+const ListHeader = ({
+  listTitle,
+  dragHandleProps,
+  list,
+  isDragging,
+}: ListHeaderProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState(listTitle);
+  const { isEditable } = useInterface();
 
-class ListTitle extends Component<ListTitleProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false,
-      newTitle: props.listTitle,
-    };
-  }
+  const handleChange = event => setNewTitle(event.target.value);
 
-  handleChange = event => {
-    this.setState({ newTitle: event.target.value });
-  };
-
-  handleKeyDown = event => {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      this.handleSubmit();
-    } else if (event.keyCode === 27) {
-      this.revertTitle();
-    }
-  };
-
-  handleSubmit = () => {
-    const { newTitle } = this.state;
-    const { listTitle, list } = this.props;
+  const handleSubmit = () => {
     if (newTitle === '') return;
+
     if (newTitle !== listTitle) {
       list.ref.update({ title: newTitle });
     }
-    this.setState({ isOpen: false });
+    setIsOpen(false);
   };
 
-  revertTitle = () => {
-    this.setState({ newTitle: this.props.listTitle, isOpen: false });
+  const revertTitle = () => {
+    setIsOpen(false);
+    setNewTitle(listTitle);
   };
 
-  openTitleEditor = () => {
-    this.setState({ isOpen: true });
-  };
+  const handleKeyDown = useKeySubmit(handleSubmit, revertTitle);
 
-  handleButtonKeyDown = event => {
+  const openTitleEditor = () => setIsOpen(true);
+
+  const handleButtonKeyDown = event => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      this.openTitleEditor();
+      openTitleEditor();
     }
   };
 
-  handleCounterSubmit = (value: number) => {
-    const { list } = this.props;
+  const handleCounterSubmit = (value: number) => {
     list.ref.update({ cardsLimit: value });
   };
 
-  deleteList = () => this.props.list.ref.delete();
+  const deleteList = () => list.ref.delete();
 
-  render() {
-    const { isLoading } = this.props.list.cards;
-    const { isOpen, newTitle } = this.state;
-    const { dragHandleProps, listTitle } = this.props;
+  return (
+    <div
+      className={`flex inline-flex items-center flex-shrink-0 text-lg p-3 hover:bg-gray-600 rounded-lg ${
+        isDragging ? 'bg-gray-600' : ''
+      }`}
+      {...isEditable && dragHandleProps}
+    >
+      {isOpen && isEditable ? (
+        <div>
+          <input
+            autoFocus
+            value={newTitle}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
+            onBlur={handleSubmit}
+            spellCheck={false}
+          />
+        </div>
+      ) : (
+        <div
+          role='button'
+          tabIndex={0}
+          onClick={openTitleEditor}
+          onKeyDown={event => {
+            handleButtonKeyDown(event);
+            dragHandleProps.onKeyDown(event);
+          }}
+          className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
+        >
+          <span
+            title='Click to change the list title'
+            className={isEditable ? 'cursor-pointer' : ''}
+          >
+            {listTitle}
+          </span>
+        </div>
+      )}
 
-    return (
-      <InterfaceContext.Consumer>
-        {({ isEditable }) => (
-          <div className='flex inline-flex items-center flex-shrink-0 text-lg p-3'>
-            {isOpen && isEditable ? (
-              <div>
-                <input
-                  autoFocus
-                  value={newTitle}
-                  onChange={this.handleChange}
-                  onKeyDown={this.handleKeyDown}
-                  className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
-                  onBlur={this.handleSubmit}
-                  spellCheck={false}
-                />
-              </div>
-            ) : (
-              <div
-                {...isEditable && dragHandleProps}
-                role='button'
-                tabIndex={0}
-                onClick={this.openTitleEditor}
-                onKeyDown={event => {
-                  if (!isEditable) return;
+      <CardCounter
+        counter={list.cards.docs.length}
+        max={list.data.cardsLimit}
+        onChange={handleCounterSubmit}
+        editable={isEditable}
+      />
 
-                  this.handleButtonKeyDown(event);
-                  dragHandleProps.onKeyDown(event);
-                }}
-                className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
-              >
-                <span
-                  title='Click to change the list title'
-                  className={isEditable ? 'cursor-pointer' : ''}
-                >
-                  {listTitle}
-                </span>
-              </div>
-            )}
+      {isEditable && (
+        <Wrapper className='delete-list-wrapper ml-2' onSelection={deleteList}>
+          <Button className='delete-list-button'>
+            <FaTrash />
+          </Button>
+          <Menu className='delete-list-menu'>
+            <div className='delete-list-header'>Are you sure?</div>
+            <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
+              Delete
+            </MenuItem>
+          </Menu>
+          <div className='popover-arrow' />
+        </Wrapper>
+      )}
+    </div>
+  );
+};
 
-            <CardCounter
-              counter={this.props.list.cards.docs.length}
-              max={this.props.list.data.cardsLimit}
-              onChange={this.handleCounterSubmit}
-              editable={isEditable}
-            />
-
-            {isEditable && (
-              <Wrapper
-                className='delete-list-wrapper ml-2'
-                onSelection={this.deleteList}
-              >
-                <Button className='delete-list-button'>
-                  <FaTrash />
-                </Button>
-                <Menu className='delete-list-menu'>
-                  <div className='delete-list-header'>Are you sure?</div>
-                  <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
-                    Delete
-                  </MenuItem>
-                </Menu>
-                <div className='popover-arrow' />
-              </Wrapper>
-            )}
-          </div>
-        )}
-      </InterfaceContext.Consumer>
-    );
-  }
-}
-
-export default observer(ListTitle);
+export default observer(ListHeader);

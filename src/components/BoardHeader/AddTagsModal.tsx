@@ -1,6 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
@@ -15,16 +13,14 @@ interface AddTagsModalProps {
 }
 
 const AddTagsModal = ({ boardId, toggleIsOpen, isOpen }: AddTagsModalProps) => {
-  const boardRef = useRef(null);
+  const boardRef = useRef<BoardDocument>(null);
 
   useEffect(() => {
     boardRef.current = new BoardDocument(`boards/${boardId}`);
   }, [boardId]);
 
   const handleRemoveClick = (tag: string) => {
-    boardRef.current.update({
-      tags: firebase.firestore.FieldValue.arrayRemove(tag),
-    });
+    boardRef.current.removeTag(tag);
   };
 
   return (

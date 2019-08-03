@@ -97,18 +97,9 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
               {(card.data.assignee ||
                 card.data.date ||
                 card.data.tags ||
-                checkboxes.total > 0) &&
-                'badges' && (
-                  <CardBadges
-                    date={
-                      card.data.date
-                        ? new Date(card.data.date.seconds * 1000)
-                        : undefined
-                    }
-                    checkboxes={checkboxes}
-                    card={card}
-                  />
-                )}
+                checkboxes.total > 0) && (
+                <CardBadges checkboxes={checkboxes} card={card} />
+              )}
             </div>
             {/* Remove placeholder when not dragging over to reduce snapping */}
             {isDraggingOver && provided.placeholder}

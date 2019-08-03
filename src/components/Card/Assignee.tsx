@@ -1,11 +1,10 @@
 import { useLayoutEffect, CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useTransition, animated } from 'react-spring';
+import { useTransition, animated, useSpring, config } from 'react-spring';
 
 import { Avatar } from '../Avatar/Avatar';
-
-import './Assignee.css';
 import { useCardContext } from './CardProvider';
+import './Assignee.css';
 
 interface AssigneeProps {
   cardColor: string;
@@ -22,21 +21,31 @@ const Assignee = ({ cardColor }: AssigneeProps) => {
     leave: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
   });
 
+  const [spring, setSpring] = useSpring(() => ({
+    marginLeft: '0px',
+    immediate: true,
+    config: config.stiff,
+  }));
+
   useLayoutEffect(() => {
-    // We should change this to react-spring
     setTimeout(() => {
-      document
-        .querySelectorAll('.assignee')
-        .forEach(e => e.classList.add('assignee--effect'));
+      setSpring({ marginLeft: '-8px' }); //
     }, 1000);
-  }, [assignees]);
+  }, [assignees.length]);
 
   return (
     <div className='assignees'>
       {transitions.map(
-        ({ item, key, props: tprops }) =>
+        ({ item, key, props: tprops }, index) =>
           item && (
-            <animated.div key={key} style={tprops} className='assignee mr-1'>
+            <animated.div
+              key={key}
+              style={{
+                ...tprops,
+                ...(index !== 0 && { marginLeft: spring.marginLeft }),
+              }}
+              className='assignee mr-1'
+            >
               <Avatar
                 key={item.username}
                 imgUrl={item.photo}

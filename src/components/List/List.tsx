@@ -3,7 +3,6 @@ import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
 
 import ListDocument from '../../documents/list.doc';
-import { useSession } from '../../hooks/useSession';
 import CardAdder from '../CardAdder/CardAdder';
 import ListHeader from './ListHeader';
 import Cards from '../Card/Cards';
@@ -16,7 +15,6 @@ interface ListProps {
 }
 
 const List = ({ index, list }: ListProps) => {
-  const { user } = useSession();
   const { isEditable } = useInterface();
   const { isLoading } = list;
 
@@ -36,12 +34,13 @@ const List = ({ index, list }: ListProps) => {
               }`}
             >
               <ListHeader
-                {...user && provided.dragHandleProps}
+                dragHandleProps={provided.dragHandleProps}
                 listTitle={list.data.title}
                 list={list}
+                isDragging={snapshot.isDragging}
               />
               <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
-                <Cards list={list} cards={list.cards.docs} />
+                <Cards list={list} />
               </div>
               {isEditable && (
                 <CardAdder limit={list.data.cardsLimit} cards={list.cards} />
