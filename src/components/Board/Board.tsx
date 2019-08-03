@@ -5,10 +5,10 @@ import { observer } from 'mobx-react';
 import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
-import './Board.scss';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
+import './Board.scss';
 
 interface BoardProps {
   board: BoardDocument;
@@ -86,16 +86,16 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const { board } = this.props;
     if (!board) return null;
 
-    const { data, lists } = board;
+    const { data, lists, isLoading: isLoadingBoard } = board;
     const { isLoading, docs } = lists;
 
-    const showEmpty = !docs.length && !isLoading;
+    const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
 
     return (
       <InterfaceContext.Consumer>
         {({ isKioskMode, isEditable }) => (
           <div className={`m-6 ${isKioskMode ? 'kiosk' : ''}`}>
-            <Title>{data.title} | Easy Flow</Title>
+            <Title>{board.data.title} | Easy Flow</Title>
             <BoardHeader board={board} />
 
             {docs.length > 0 && !isLoading && (

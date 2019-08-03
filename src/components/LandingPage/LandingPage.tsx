@@ -4,7 +4,6 @@ import { Title } from 'react-head';
 import { useGoogleLogin } from '../../hooks/useLogin';
 import CallToActionButton from '../Buttons/CallToActionButton';
 import Pricing from './Pricing';
-import './LandingPage.scss';
 import Header from './Header';
 import Footer from './Footer';
 import { useTrail, animated } from 'react-spring';
@@ -12,6 +11,8 @@ import { AnimatedSlideUp } from '../Animated/AnimatedSlideUp';
 import { BoardAndProcess } from '../images/BoardAndProcess';
 import Article from './Article';
 import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
+import './LandingPage.scss';
+
 const items = ['Simple.', 'Beautiful.', 'Darker.'];
 const config = { mass: 5, tension: 2000, friction: 800 };
 

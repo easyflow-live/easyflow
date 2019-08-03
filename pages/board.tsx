@@ -16,7 +16,7 @@ interface BoardPageProps {
 
 const Board: NextFunctionComponent = ({ query }: BoardPageProps) => {
   const { userDoc, initializing } = useSession();
-  const board = useBoard(query.uid);
+  const [board, isBoardLoading] = useBoard(query.uid);
   const { setIsEditable, setIsKioskMode } = useInterface();
 
   if (initializing) return null;
@@ -31,7 +31,7 @@ const Board: NextFunctionComponent = ({ query }: BoardPageProps) => {
 
   if (!board && isLoading) return null;
   if (!board) return <Error statusCode={404} />;
-  if (!userDoc && !query.kiosk) Router.push('/');
+  if (!userDoc && !query.kiosk && !isBoardLoading) Router.push('/');
 
   return <BoardComponent board={board} />;
 };

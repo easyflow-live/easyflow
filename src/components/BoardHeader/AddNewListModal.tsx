@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import shortid from 'shortid';
+import { toast } from 'react-toastify';
 
 import BoardDocument from '../../documents/board.doc';
-import Dialog from '../Dialog/Dialog';
 import { useKeySubmit } from '../../hooks/use-key-submit';
-import { toast } from 'react-toastify';
+import Dialog from '../Dialog/Dialog';
 
 interface AddNewListModalProps {
   boardId?: string;

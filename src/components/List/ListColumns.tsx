@@ -37,22 +37,33 @@ export default observer(
 
     handleDragEnd = result => {
       const { source, destination, type } = result;
+
       // dropped outside the list
       if (!destination) {
+        return;
+      }
+
+      // did not move anywhere
+      if (
+        source.droppableId === destination.droppableId &&
+        source.index === destination.index
+      ) {
         return;
       }
 
       const isMovingAList = type === 'COLUMN';
 
       if (isMovingAList) {
-        if (source.index !== destination.index) {
-          const [removed] = this.props.board.lists.docs.splice(source.index, 1);
-          this.props.board.lists.docs.splice(destination.index, 0, removed);
+        const [removed] = this.props.board.lists.docs.splice(source.index, 1);
+        this.props.board.lists.docs.splice(destination.index, 0, removed);
 
-          this.props.board.lists.docs.forEach((doc, index) =>
-            doc.update({ ...doc.data, index })
-          );
-        }
+        this.props.board.lists.docs.forEach((doc, index) =>
+          doc.update({
+            ...doc.data,
+            index,
+          })
+        );
+
         return;
       }
 
@@ -107,23 +118,26 @@ export default observer(
       const { board } = this.props;
       const { isLoading, docs } = board.lists;
 
+      const columns = (
+        <Droppable droppableId={'board'} type='COLUMN' direction='horizontal'>
+          {provided => (
+            <div
+              className='lists'
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {docs.map((list: ListDocument, index: number) => (
+                <List key={list.id} list={list} index={index} />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      );
+
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>
-          <Droppable
-            droppableId={board.id}
-            type='COLUMN'
-            direction='horizontal'
-          >
-            {provided => (
-              <div className='lists flex justify-start' ref={provided.innerRef}>
-                {/*Context Provider will update all droppable childs */}
-                {docs.map((list, index) => (
-                  <List key={list.id} list={list} index={index} />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          {columns}
         </DragDropContext>
       );
     }

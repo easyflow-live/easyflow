@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, memo } from 'react';
 import './Tag.css';
 
 interface TagProps {
@@ -41,4 +41,4 @@ const Tag = ({
   );
 };
 
-export default Tag;
+export default memo(Tag);

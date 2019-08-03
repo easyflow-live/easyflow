@@ -1,62 +1,45 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { Observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
-import Card from './Card';
 import ListDocument from '../../documents/list.doc';
-import CardDocument from '../../documents/card.doc';
+import Card from './Card';
 
 interface CardProps {
   list: ListDocument;
-  cards: CardDocument[];
 }
 
-export default class Cards extends Component<CardProps, {}> {
-  listEnd: any;
+const Cards = ({ list }: CardProps) => {
+  const listEndRef = useRef<HTMLDivElement>();
 
-  componentDidUpdate = prevProps => {
+  useEffect(() => {
     // Scroll to bottom of list if a new card has been added
-    if (
-      this.props.cards[this.props.cards.length - 2] ===
-      prevProps.cards[prevProps.cards.length - 1]
-    ) {
-      this.scrollToBottom();
+    if (listEndRef && listEndRef.current) {
+      listEndRef.current.scrollIntoView();
     }
-  };
+  }, [list.cards.docs.length]);
 
-  scrollToBottom = () => {
-    this.listEnd.scrollIntoView();
-  };
+  const { isLoading } = list;
 
-  render() {
-    const { list, cards } = this.props;
+  return (
+    <Droppable droppableId={list.id} direction='vertical' isCombineEnabled>
+      {(provided, { isDraggingOver }) => (
+        <div className='cards' ref={provided.innerRef}>
+          {Array.isArray(list.cards.docs) &&
+            list.cards.docs.map((card, index) => (
+              <Card
+                key={card.id}
+                isDraggingOver={isDraggingOver}
+                card={card}
+                index={index}
+              />
+            ))}
+          {provided.placeholder}
+          <div style={{ float: 'left', clear: 'both' }} ref={listEndRef} />
+        </div>
+      )}
+    </Droppable>
+  );
+};
 
-    return (
-      <Droppable droppableId={list.id} direction='vertical' isCombineEnabled>
-        {(provided, { isDraggingOver }) => (
-          <div className='cards' ref={provided.innerRef}>
-            <Observer>
-              {() =>
-                cards.map((card, index) => (
-                  <Card
-                    isDraggingOver={isDraggingOver}
-                    key={card.id}
-                    card={card}
-                    index={index}
-                  />
-                ))
-              }
-            </Observer>
-            {provided.placeholder}
-            <div
-              style={{ float: 'left', clear: 'both' }}
-              ref={el => {
-                this.listEnd = el;
-              }}
-            />
-          </div>
-        )}
-      </Droppable>
-    );
-  }
-}
+export default observer(Cards);
