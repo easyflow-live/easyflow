@@ -10,7 +10,7 @@
 }
 
 .list:first-child {
-  margin-left: 0;
+  margin-left: 0.2rem;
 }
 
 .list--drag {
