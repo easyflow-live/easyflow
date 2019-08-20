@@ -23,6 +23,10 @@
   cursor: pointer !important;
 }
 
+.card-title:last-child {
+  margin-bottom: 0;
+}
+
 .card-title--drag {
   box-shadow: 1px 9px 8px 1px rgba(0, 0, 0, 0.3) !important;
   opacity: 1 !important;
