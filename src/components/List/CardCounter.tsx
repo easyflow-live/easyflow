@@ -69,7 +69,7 @@ const CardCounter = ({
           value={maxValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-gray-700 leading-tight'
+          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-transparent leading-tight'
           onBlur={handleSubmit}
         />
       ) : (

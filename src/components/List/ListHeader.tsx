@@ -70,7 +70,7 @@ const ListHeader = ({
             value={newTitle}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-gray-700 leading-tight'
+            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-transparent leading-tight'
             onBlur={handleSubmit}
             spellCheck={false}
           />
