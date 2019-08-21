@@ -29,7 +29,7 @@ const List = ({ index, list }: ListProps) => {
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <div
               tabIndex={0}
-              className={`list relative bg-gray-700 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${
+              className={`list relative bg-gray-750 shadow-lg rounded-lg p-1 m-2 cursor-pointer ${
                 snapshot.isDragging ? 'list--drag' : ''
               }`}
             >
