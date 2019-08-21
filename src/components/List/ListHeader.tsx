@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Wrapper, Menu, MenuItem } from 'react-aria-menubutton';
-import { FaTrash } from 'react-icons/fa';
 
 import ListDocument from '../../documents/list.doc';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useInterface } from '../providers/InterfaceProvider';
 import CardCounter from './CardCounter';
+import ListMenu from './ListMenu';
 import './ListHeader.scss';
 
 interface ListHeaderProps {
@@ -57,11 +56,9 @@ const ListHeader = ({
     list.ref.update({ cardsLimit: value });
   };
 
-  const deleteList = () => list.ref.delete();
-
   return (
     <div
-      className={`flex inline-flex items-center flex-shrink-0 text-lg p-3 hover:bg-gray-600 rounded-lg ${
+      className={`flex inline-flex items-center flex-shrink-0 p-3 rounded-lg ${
         isDragging ? 'bg-gray-600' : ''
       }`}
       {...isEditable && dragHandleProps}
@@ -73,7 +70,7 @@ const ListHeader = ({
             value={newTitle}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
+            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-gray-700 leading-tight'
             onBlur={handleSubmit}
             spellCheck={false}
           />
@@ -105,20 +102,7 @@ const ListHeader = ({
         editable={isEditable}
       />
 
-      {isEditable && (
-        <Wrapper className='delete-list-wrapper ml-2' onSelection={deleteList}>
-          <Button className='delete-list-button'>
-            <FaTrash />
-          </Button>
-          <Menu className='delete-list-menu'>
-            <div className='delete-list-header'>Are you sure?</div>
-            <MenuItem className='delete-list-confirm bg-red-500 hover:bg-red-600'>
-              Delete
-            </MenuItem>
-          </Menu>
-          <div className='popover-arrow' />
-        </Wrapper>
-      )}
+      {isEditable && <ListMenu list={list} />}
     </div>
   );
 };
