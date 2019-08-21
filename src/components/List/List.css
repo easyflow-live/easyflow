@@ -6,7 +6,7 @@
   /*fix flexbox browser incostiency */
   min-height: 0px;
   max-height: 100%;
-  height: calc(100vh - 216px);
+  height: calc(100vh - 188px);
 }
 
 .list:first-child {

@@ -94,13 +94,13 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     return (
       <InterfaceContext.Consumer>
         {({ isKioskMode, isEditable }) => (
-          <div className={`m-6 ${isKioskMode ? 'kiosk' : ''}`}>
+          <div className={`m-6 mt-4 ${isKioskMode ? 'kiosk' : ''}`}>
             <Title>{board.data.title} | Easy Flow</Title>
             <BoardHeader board={board} />
 
             {docs.length > 0 && !isLoading && (
               <div
-                className='inline-flex mt-5 overflow-x-auto'
+                className='inline-flex mt-4 overflow-x-auto'
                 style={{ width: 'calc(100vw - 3rem)' }}
                 onMouseDown={this.handleMouseDown}
                 onWheel={this.handleWheel}
