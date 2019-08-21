@@ -69,7 +69,7 @@ const CardCounter = ({
           value={maxValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight'
+          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-gray-700 leading-tight'
           onBlur={handleSubmit}
         />
       ) : (
@@ -80,7 +80,7 @@ const CardCounter = ({
           title='Click to change the cards limit. Use 0 (zero) to remove the limit.'
           className={`
               text-white text-sm rounded-full h-8 w-10 flex items-center justify-center
-              ${reachedLimit && !isDefault ? 'bg-red-500' : 'bg-teal-500 '}
+              ${reachedLimit && !isDefault && 'bg-red-500'}
               ${editable ? 'cursor-pointer' : ''}
             `}
           onClick={handleOnClick}
