@@ -111,8 +111,7 @@ const LandingPage = () => {
 
       <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'>
         <path
-          fill='rgba(74, 85, 104, 0.458824)'
-          fillOpacity='1'
+          fill='rgb(58, 68, 86)'
           d='M0,32L80,69.3C160,107,320,181,480,192C640,203,800,149,960,122.7C1120,96,1280,96,1360,96L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'
           data-darkreader-inline-fill=''
         />
@@ -120,7 +119,9 @@ const LandingPage = () => {
 
       <section
         className='w-full md:pb-32'
-        style={{ backgroundColor: 'rgb(58, 68, 86)' }}
+        style={{
+          backgroundColor: 'rgb(58, 68, 86)',
+        }}
       >
         <div className='px-6 py-16 mx-auto' style={{ maxWidth: '1280px' }}>
           <AnimateSlideUpinView>
@@ -169,8 +170,7 @@ const LandingPage = () => {
 
       <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'>
         <path
-          fill='#4a556875'
-          fillOpacity='1'
+          fill='rgb(58, 68, 86)'
           d='M0,96L80,112C160,128,320,160,480,154.7C640,149,800,107,960,74.7C1120,43,1280,21,1360,10.7L1440,0L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z'
           data-darkreader-inline-fill=''
         />
