@@ -1,9 +1,9 @@
 {
-  "name": "react-kanban",
+  "name": "easy-flow",
   "version": "0.1.0",
   "description": "An open source kanban application created with React and Redux.",
   "scripts": {
-    "dev": "next",
+    "dev": "next -H 0.0.0.0",
     "build": "next build",
     "start": "next start -p 8080",
     "deploy": "next build; gcloud app deploy",

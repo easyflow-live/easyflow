@@ -1,6 +1,7 @@
 import React from 'react';
+
 import BoardDocument from '../documents/board.doc';
-import { useSession } from './useSession';
+import { useSession } from './use-session';
 
 export const useBoard = (boardUid: string): [BoardDocument, boolean] => {
   const { userDoc } = useSession();

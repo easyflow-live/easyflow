@@ -1,6 +1,6 @@
 import LandingPage from '../src/components/LandingPage/LandingPage';
 import Home from '../src/components/Home/Home';
-import { useSession } from '../src/hooks/useSession';
+import { useSession } from '../src/hooks/use-session';
 import { useInterface } from '../src/components/providers/InterfaceProvider';
 
 export default () => {

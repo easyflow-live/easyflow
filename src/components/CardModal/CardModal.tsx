@@ -2,11 +2,11 @@ import React, { useState, useMemo, MutableRefObject } from 'react';
 import Textarea from 'react-textarea-autosize';
 
 import CardDocument from '../../documents/card.doc';
+import { findCheckboxes } from '../../helpers/find-check-boxes';
 import { useThinDisplay } from '../../hooks/use-thin-display';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import CardBadges from '../CardBadges/CardBadges';
 import Modal from '../Modal/Modal';
-import { findCheckboxes } from '../utils';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
 

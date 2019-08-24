@@ -58,11 +58,6 @@ class FirebaseService {
   getUser = email => this.getUsers().doc(email);
 
   doSignOut = () => this.auth.signOut();
-
-  onAuthUserListener = onAuthChange =>
-    this.auth.onAuthStateChanged(
-      authUser => onAuthChange && onAuthChange(authUser)
-    );
 }
 
 export default new FirebaseService();

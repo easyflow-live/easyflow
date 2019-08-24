@@ -5,9 +5,9 @@ import { NextFunctionComponent } from 'next';
 import Router from 'next/router';
 
 import BoardComponent from '../src/components/Board/Board';
-import { useSession } from '../src/hooks/useSession';
+import { useSession } from '../src/hooks/use-session';
 import { useInterface } from '../src/components/providers/InterfaceProvider';
-import { useBoard } from '../src/hooks/useBoard';
+import { useBoard } from '../src/hooks/use-board';
 
 interface BoardPageProps {
   query: { uid: string; kiosk: boolean };

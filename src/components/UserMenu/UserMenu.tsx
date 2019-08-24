@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-import { useGoogleLogin } from '../../hooks/useLogin';
+import { useGoogleLogin } from '../../hooks/use-google-login';
 import Menu, { MenuItem, Button } from '../Menu';
 
 interface UserMenuProps {

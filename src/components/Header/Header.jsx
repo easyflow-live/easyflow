@@ -4,7 +4,7 @@ import { FaUserSecret } from 'react-icons/fa';
 import { Style } from 'react-head';
 import { observer } from 'mobx-react-lite';
 
-import { useSession } from '../../hooks/useSession';
+import { useSession } from '../../hooks/use-session';
 
 import { Avatar } from '../Avatar/Avatar';
 import UserMenu from '../UserMenu/UserMenu';

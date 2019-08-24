@@ -7,11 +7,11 @@ import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { SessionProvider } from '../src/hooks/useSession';
+import { SessionProvider } from '../src/hooks/use-session';
 import UserDocument from '../src/documents/user.doc';
-import firebaseService from '../src/firebase.service';
+import firebaseService from '../src/services/firebase.service';
 import Header from '../src/components/Header/Header';
-import { initGA, logPageView } from '../src/analytics';
+import { initGA, logPageView } from '../src/libs/analytics';
 import { InterfaceProvider } from '../src/components/providers/InterfaceProvider';
 import '../src/styles/style.css';
 

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import { FaUser } from 'react-icons/fa';
 
-import { useSession } from '../../hooks/useSession';
+import { useSession } from '../../hooks/use-session';
 import CardDocument from '../../documents/card.doc';
 import { emitter } from '../../libs/emitter';
-import { FaUser } from 'react-icons/fa';
 
 interface Props {
   card: CardDocument;

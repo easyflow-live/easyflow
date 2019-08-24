@@ -1,17 +1,17 @@
 import React from 'react';
 import { Title } from 'react-head';
 import { FaExclamationTriangle } from 'react-icons/fa';
-
-import { useGoogleLogin } from '../../hooks/useLogin';
-import { useIsMobileSafari } from '../../hooks/useIsMobileSafari';
-import CallToActionButton from '../Buttons/CallToActionButton';
-import Header from './Header';
-import Footer from './Footer';
 import { useTrail, animated } from 'react-spring';
+
+import { useGoogleLogin } from '../../hooks/use-google-login';
+import { useIsMobileSafari } from '../../hooks/use-is-mobile-safari';
+import CallToActionButton from '../Buttons/CallToActionButton';
 import { AnimatedSlideUp } from '../Animated/AnimatedSlideUp';
 import { BoardAndProcess } from '../images/BoardAndProcess';
-import Article from './Article';
 import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
+import Footer from './Footer';
+import Header from './Header';
+import Article from './Article';
 import './LandingPage.scss';
 
 const items = ['Simple.', 'Beautiful.', 'Darker.'];

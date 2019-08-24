@@ -4,15 +4,15 @@ import { observer } from 'mobx-react-lite';
 
 import CardDocument from '../../documents/card.doc';
 import { useMarkdownCheckbox } from '../../hooks/use-markdown-checkbox';
+import { useSession } from '../../hooks/use-session';
 import { useRect } from '../../hooks/use-rect';
+import { findCheckboxes } from '../../helpers/find-check-boxes';
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
-import { findCheckboxes } from '../utils';
 import formatMarkdown from './formatMarkdown';
 import { CardProvider } from './CardProvider';
 
 import './Card.scss';
-import { useSession } from '../../hooks/useSession';
 
 interface CardProps {
   card: CardDocument;

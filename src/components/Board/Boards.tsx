@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { useSession } from '../../hooks/useSession';
+import { useSession } from '../../hooks/use-session';
 import { StartProjectEmpty } from '../Empty/StartBoardEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import BoardAdder from './BoardAdder';
