@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
 
@@ -26,7 +26,9 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
   const cardRef = useRef(null);
   const [cardRect] = useRect(cardRef);
   const toggleCheckbox = useMarkdownCheckbox(card.data.text);
-  const checkboxes = findCheckboxes(card.data.text);
+  const checkboxes = useMemo(() => findCheckboxes(card.data.text), [
+    card.data.text,
+  ]);
 
   const toggleCardModal = () => setIsModalOpen(!isModalOpen);
 

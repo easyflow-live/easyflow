@@ -5,18 +5,22 @@ import PageTitle from '../PageTitle/PageTitle';
 import { Boards } from '../Board/Boards';
 
 import './Home.scss';
+import UserDocument from 'src/documents/user.doc';
+import { observer } from 'mobx-react-lite';
 
-const Home = () => {
+const Home = ({ userDoc }: { userDoc: UserDocument }) => {
+  if (!userDoc) return null;
+
   return (
     <>
       <Title>Boards | Easy Flow</Title>
 
       <div className='m-6'>
         <PageTitle text={'Boards'} />
-        <Boards className='mt-5' />
+        <Boards boards={userDoc.boards} />
       </div>
     </>
   );
 };
 
-export default Home;
+export default observer(Home);
