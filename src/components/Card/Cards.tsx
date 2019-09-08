@@ -1,28 +1,28 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
+import { Collection } from 'firestorter';
 
-import ListDocument from '../../documents/list.doc';
-import Card from './Card';
+import CardDocument from '../../documents/card.doc';
 import CardPlaceholder from './CardPlaceholder';
+import Card from './Card';
 
 interface CardProps {
-  list: ListDocument;
+  cards: Collection<CardDocument>;
+  listId: string;
 }
 
-const Cards = ({ list }: CardProps) => {
-  const { cards } = list;
+const Cards = ({ cards, listId }: CardProps) => {
   const { isLoading } = cards;
 
   return (
-    <Droppable droppableId={list.id} direction='vertical' isCombineEnabled>
+    <Droppable droppableId={listId} direction='vertical' isCombineEnabled>
       {(provided, { isDraggingOver }) => (
         <div className='cards' ref={provided.innerRef}>
           {isLoading ? (
             <CardPlaceholder />
           ) : (
-            Array.isArray(list.cards.docs) &&
-            list.cards.docs.map((card, index) => (
+            cards.docs.map((card, index) => (
               <Card
                 key={card.id}
                 isDraggingOver={isDraggingOver}

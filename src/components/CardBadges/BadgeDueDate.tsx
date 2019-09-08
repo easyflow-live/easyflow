@@ -49,11 +49,13 @@ const BadgeDueDate = ({ date }: BadgeDueDateProps) => {
   }, [dueDateFromToday]);
 
   return (
-    <div className={`badge ${dueDateColor}`}>
-      <MdAlarm className='badge-icon' />
-      &nbsp;
-      {dueDateString}
-    </div>
+    date && (
+      <div className={`badge ${dueDateColor}`}>
+        <MdAlarm className='badge-icon' />
+        &nbsp;
+        {dueDateString}
+      </div>
+    )
   );
 };
 

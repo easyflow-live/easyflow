@@ -18,6 +18,8 @@ const List = ({ index, list }: ListProps) => {
   const { isEditable } = useInterface();
   const { isLoading } = list;
 
+  if (isLoading) return null;
+
   return (
     <Draggable
       draggableId={list.id}
@@ -40,8 +42,9 @@ const List = ({ index, list }: ListProps) => {
                 isDragging={snapshot.isDragging}
               />
               <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
-                <Cards list={list} />
+                <Cards cards={list.cards} listId={list.id} />
               </div>
+
               {isEditable && (
                 <CardAdder limit={list.data.cardsLimit} cards={list.cards} />
               )}

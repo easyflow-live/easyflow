@@ -92,31 +92,32 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
 
     return (
-      <InterfaceContext.Consumer>
-        {({ isKioskMode, isEditable }) => (
-          <div className={`m-6 mt-4 ${isKioskMode ? 'kiosk' : ''}`}>
-            <Title>{board.data.title} | Easy Flow</Title>
-            <BoardHeader board={board} />
+      <>
+        <Title>{data.title} | Easy Flow</Title>
+        <InterfaceContext.Consumer>
+          {({ isKioskMode, isEditable }) => (
+            <div className={`m-6 mt-4 ${isKioskMode ? 'kiosk' : ''}`}>
+              <BoardHeader board={board} />
 
-            {docs.length > 0 && !isLoading && (
               <div
                 className='inline-flex mt-4 overflow-x-auto'
                 style={{ width: 'calc(100vw - 3rem)' }}
                 onMouseDown={this.handleMouseDown}
                 onWheel={this.handleWheel}
               >
-                <ListColumns board={board} />
+                <ListColumns lists={lists} />
               </div>
-            )}
-            {isEditable && (
-              <AnimatedOpacity show={showEmpty}>
-                <CreateContentEmpty boardId={board.id} />
-              </AnimatedOpacity>
-            )}
-            <div className='board-underlay' />
-          </div>
-        )}
-      </InterfaceContext.Consumer>
+
+              {isEditable && (
+                <AnimatedOpacity show={showEmpty}>
+                  <CreateContentEmpty boardId={board.id} />
+                </AnimatedOpacity>
+              )}
+              <div className='board-underlay' />
+            </div>
+          )}
+        </InterfaceContext.Consumer>
+      </>
     );
   }
 };
