@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import shortid from 'shortid';
 
 import ClickOutside from '../ClickOutside/ClickOutside';
-import { useSession } from '../../hooks/useSession';
+import { useSession } from '../../hooks/use-session';
 import CallToActionButton from '../Buttons/CallToActionButton';
 import './BoardAdder.css';
 

@@ -4,15 +4,17 @@ import { FaUserSecret } from 'react-icons/fa';
 import { Style } from 'react-head';
 import { observer } from 'mobx-react-lite';
 
-import { useSession } from '../../hooks/useSession';
+import { useSession } from '../../hooks/use-session';
 
 import { Avatar } from '../Avatar/Avatar';
 import UserMenu from '../UserMenu/UserMenu';
+import { useInterface } from '../providers/InterfaceProvider';
 
 const Header = observer(() => {
   const { user } = useSession();
+  const { isKioskMode } = useInterface();
 
-  if (!user) return null;
+  if (!user || isKioskMode) return null;
 
   return (
     <header className='z-100 bg-gray-900 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
@@ -55,24 +57,3 @@ const Header = observer(() => {
 });
 
 export default Header;
-
-{
-  /* <Link href='/'>
-        <a>Easy Flow</a>
-      </Link>
-
-      <div className='header-right-side'>
-        {user && (
-          <Avatar imgUrl={user.photoURL} username={user.displayName} />
-        )}
-        {user ? (
-          <a className='signout-link' onClick={logout}>
-            Sign out
-          </a>
-        ) : (
-          <a className='signout-link' href='/'>
-            Sign in
-          </a>
-        )}
-      </div> */
-}

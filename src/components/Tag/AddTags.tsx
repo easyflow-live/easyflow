@@ -12,19 +12,26 @@ interface AddTagsProps {
 
 const AddTags = ({ document }: AddTagsProps) => {
   const [tags, setTags] = useState<string[]>([]);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const splitTags = tagsSet => tagsSet.join(',').split(',');
 
-  const handleChange = newTags => {
+  const handleChange = async newTags => {
     setTags(newTags);
-
-    document.update({
+    setIsSubmit(true);
+    await document.update({
       tags: firebase.firestore.FieldValue.arrayUnion(...splitTags(newTags)),
     });
+    setIsSubmit(false);
   };
 
   return (
-    <TagsInput value={tags} onChange={handleChange} renderTag={() => null} />
+    <TagsInput
+      value={tags}
+      onChange={handleChange}
+      renderTag={() => null}
+      disabled={isSubmit}
+    />
   );
 };
 

@@ -1,25 +1,23 @@
 import { Document, Collection } from 'firestorter';
+import { DocumentSource, IDocumentOptions } from 'firestorter/lib/Types';
 
 import BoardDocument from './board.doc';
 
-// class UserSchema {
-//   email: string;
-//   photo: string;
-//   token: string;
-//   username: string;
-//   roles: object;
-// }
+interface User {
+  email: string;
+  photo: string;
+  token: string;
+  username: string;
+  roles: { admin: boolean };
+}
 
-export default class UserDocument extends Document {
+export default class UserDocument extends Document<User> {
   boards: Collection<BoardDocument>;
 
-  constructor(source, options = {}) {
-    super(source, {
-      // schema: UserSchema,
-      ...options,
-    });
+  constructor(source: DocumentSource, options: IDocumentOptions = {}) {
+    super(source, { ...options });
 
-    this.boards = new Collection(() => 'boards', {
+    this.boards = new Collection<BoardDocument>(() => 'boards', {
       createDocument: (src, opts) => new BoardDocument(src, opts),
       query: ref => ref.where('users', 'array-contains', this.ref),
     });

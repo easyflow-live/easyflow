@@ -8,10 +8,6 @@
   transition: margin 0.3s;
 }
 
-.assignees .assignee--effect:not(:first-child) {
-  margin-left: -0.8rem;
-}
-
-.assignees:hover .assignee--effect:not(:first-child) {
-  margin-left: 0;
+.assignees:hover .assignee:not(:first-child) {
+  margin-left: 0 !important;
 }
