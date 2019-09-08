@@ -5,13 +5,13 @@ import { observer } from 'mobx-react';
 import BoardDocument from '../../documents/board.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
-import './Board.scss';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
+import { InterfaceContext } from '../providers/InterfaceProvider';
+import './Board.scss';
 
 interface BoardProps {
   board: BoardDocument;
-  kioskMode: boolean;
 }
 
 interface State {
@@ -83,35 +83,41 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
   };
 
   render() {
-    const { kioskMode, board } = this.props;
-
+    const { board } = this.props;
     if (!board) return null;
 
-    const { data, lists } = board;
+    const { data, lists, isLoading: isLoadingBoard } = board;
     const { isLoading, docs } = lists;
 
-    const showEmpty = !docs.length && !isLoading;
+    const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
 
     return (
-      <div className={`m-4 ${kioskMode ? 'kiosk' : ''}`}>
+      <>
         <Title>{data.title} | Easy Flow</Title>
-        {!kioskMode && <BoardHeader board={board} />}
+        <InterfaceContext.Consumer>
+          {({ isKioskMode, isEditable }) => (
+            <div className={`m-6 mt-4 ${isKioskMode ? 'kiosk' : ''}`}>
+              <BoardHeader board={board} />
 
-        {docs.length > 0 && !isLoading && (
-          <div
-            className='inline-flex mt-5 overflow-x-auto'
-            style={{ width: 'calc(100vw - 3rem)' }}
-            onMouseDown={this.handleMouseDown}
-            onWheel={this.handleWheel}
-          >
-            <ListColumns board={board} kioskMode={kioskMode} />
-          </div>
-        )}
-        <AnimatedOpacity show={showEmpty}>
-          <CreateContentEmpty boardId={board.id} />
-        </AnimatedOpacity>
-        <div className='board-underlay' />
-      </div>
+              <div
+                className='inline-flex mt-4 overflow-x-auto'
+                style={{ width: 'calc(100vw - 3rem)' }}
+                onMouseDown={this.handleMouseDown}
+                onWheel={this.handleWheel}
+              >
+                <ListColumns lists={lists} />
+              </div>
+
+              {isEditable && (
+                <AnimatedOpacity show={showEmpty}>
+                  <CreateContentEmpty boardId={board.id} />
+                </AnimatedOpacity>
+              )}
+              <div className='board-underlay' />
+            </div>
+          )}
+        </InterfaceContext.Consumer>
+      </>
     );
   }
 };

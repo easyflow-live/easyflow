@@ -11,6 +11,10 @@ export const useBoardTeam = (board: BoardDocument) => {
   const isMounted = useIsMounted();
 
   async function getAssigneeData() {
+    if (!board.data.owner) {
+      return;
+    }
+
     if (!board.data.users) {
       ownerRef.current = (await board.data.owner.get()).data();
       setAssignees([]); // clear state to update the UI
@@ -39,7 +43,7 @@ export const useBoardTeam = (board: BoardDocument) => {
 
   useEffect(() => {
     getAssigneeData();
-  }, []);
+  }, [board.data.owner]);
 
   useEmitter('TEAM_MEMBER_UPDATED', () => getAssigneeData(), [board]);
 

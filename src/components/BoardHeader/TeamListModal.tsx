@@ -92,7 +92,6 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
   const handleSubmit = async () => {
     await save(value);
     setValue('');
-    toggleIsOpen();
   };
 
   const handleKeyDown = useKeySubmit(handleSubmit, () => {

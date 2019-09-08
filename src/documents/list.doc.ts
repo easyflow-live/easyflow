@@ -1,23 +1,27 @@
 import { Document, Collection } from 'firestorter';
 
 import CardDocument from './card.doc';
+import UserDocument from './user.doc';
 
-// class ListSchema {
-//   title: string;
-//   index: number;
-//   uid: string;
-// }
+interface List {
+  title: string;
+  index: number;
+  uid: string;
+  color: string;
+  owner: UserDocument['ref'];
+  public: boolean;
+  tags: string[];
+  users: UserDocument['ref'][];
+  cardsLimit: number;
+}
 
-export default class ListDocument extends Document {
+export default class ListDocument extends Document<List> {
   cards: Collection<CardDocument>;
 
   constructor(source, options = {}) {
-    super(source, {
-      // schema: ListSchema,
-      ...options,
-    });
+    super(source, { ...options });
 
-    this.cards = new Collection(() => `${this.path}/cards`, {
+    this.cards = new Collection<CardDocument>(() => `${this.path}/cards`, {
       createDocument: (src, opts) => new CardDocument(src, opts),
       query: ref => ref.orderBy('index'),
     });

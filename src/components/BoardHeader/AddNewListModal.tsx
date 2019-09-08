@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import shortid from 'shortid';
+import { toast } from 'react-toastify';
 
 import BoardDocument from '../../documents/board.doc';
-import Dialog from '../Dialog/Dialog';
 import { useKeySubmit } from '../../hooks/use-key-submit';
-import { toast } from 'react-toastify';
+import Dialog from '../Dialog/Dialog';
 
 interface AddNewListModalProps {
   boardId?: string;
@@ -22,6 +22,7 @@ const AddNewListModal = ({
 }: AddNewListModalProps) => {
   const boardRef = useRef(null);
   const [value, setValue] = useState('');
+  const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
     boardRef.current = new BoardDocument(`boards/${boardId}`);
@@ -31,8 +32,8 @@ const AddNewListModal = ({
     setValue(event.target.value);
   };
 
-  const save = async value => {
-    if (!value) return;
+  const save = async newValue => {
+    if (!newValue) return;
 
     const lists = firebase
       .firestore()
@@ -42,14 +43,17 @@ const AddNewListModal = ({
 
     const index = (await lists.get()).size;
 
+    setIsSubmit(true);
+
     return lists
       .add({
         uid: shortid.generate(),
-        title: value,
+        title: newValue,
         index,
       })
       .then(() => {
         toast(`A new list was created!`);
+        setIsSubmit(false);
       });
   };
 
@@ -75,6 +79,7 @@ const AddNewListModal = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           className='bg-gray-700 shadow appearance-none rounded w-full py-2 px-3 text-white leading-tight'
+          disabled={isSubmit}
         />
       </div>
     </Dialog>

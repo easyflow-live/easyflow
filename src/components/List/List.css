@@ -1,16 +1,16 @@
 .list {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   box-sizing: border-box;
   width: 300px;
   /*fix flexbox browser incostiency */
   min-height: 0px;
   max-height: 100%;
-  height: calc(100vh - 248px);
+  height: calc(100vh - 188px);
 }
 
 .list:first-child {
-  margin-left: 0;
+  margin-left: 0.2rem;
 }
 
 .list--drag {
