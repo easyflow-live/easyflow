@@ -4,9 +4,9 @@ export const initGA = () => {
   ReactGA.initialize('UA-141378639-1');
 };
 
-export const logPageView = () => {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+export const logPageView = url => {
+  ReactGA.set({ page: url });
+  ReactGA.pageview(url);
 };
 
 export const logEvent = (category = '', action = '') => {

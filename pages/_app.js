@@ -42,8 +42,7 @@ export default observer(
       });
 
       initGA();
-      logPageView();
-      Router.router.events.on('routeChangeComplete', logPageView);
+      Router.router.events.on('routeChangeComplete', url => logPageView(url));
     }
 
     componentDidUpdate(prevProps, prevState) {
