@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from 'react';
+import React, { useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { toast } from 'react-toastify';

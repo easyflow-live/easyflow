@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState, useEffect } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
 const useResizeObserver = (element, callback) => {
   useLayoutEffect(() => {
@@ -6,26 +7,17 @@ const useResizeObserver = (element, callback) => {
       return;
     }
 
-    if (typeof ResizeObserver === 'function') {
-      let resizeObserver = new ResizeObserver(() => callback());
-      resizeObserver.observe(element.current);
+    let resizeObserver = new ResizeObserver(() => callback());
+    resizeObserver.observe(element.current);
 
-      return () => {
-        if (!resizeObserver) {
-          return;
-        }
+    return () => {
+      if (!resizeObserver) {
+        return;
+      }
 
-        resizeObserver.disconnect();
-        resizeObserver = null;
-      };
-    } else {
-      // Browser support, remove freely
-      window.addEventListener('resize', callback);
-
-      return () => {
-        window.removeEventListener('resize', callback);
-      };
-    }
+      resizeObserver.disconnect();
+      resizeObserver = null;
+    };
   }, [element, callback]);
 };
 

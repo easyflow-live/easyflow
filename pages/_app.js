@@ -1,10 +1,10 @@
 import React from 'react';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import { observer } from 'mobx-react';
-import { HeadProvider, Style, Link } from 'react-head';
+import { HeadProvider, Link } from 'react-head';
 import * as app from 'firebase/app';
 import Router from 'next/router';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { SessionProvider } from '../src/hooks/use-session';
@@ -64,19 +64,17 @@ export default observer(
 
       return (
         <HeadProvider headTags={[]}>
-          <Container>
-            <SessionProvider value={{ user, userDoc, initializing }}>
-              <InterfaceProvider>
-                <Link rel='shortcut icon' href='/static/images/icon.png' />
-                <Header />
-                <Component {...pageProps} />
-                <ToastContainer
-                  toastClassName='Toast-background'
-                  progressClassName='Toast-progress'
-                />
-              </InterfaceProvider>
-            </SessionProvider>
-          </Container>
+          <SessionProvider value={{ user, userDoc, initializing }}>
+            <InterfaceProvider>
+              <Link rel='shortcut icon' href='/static/images/icon.png' />
+              <Header />
+              <Component {...pageProps} />
+              <ToastContainer
+                toastClassName='Toast-background'
+                progressClassName='Toast-progress'
+              />
+            </InterfaceProvider>
+          </SessionProvider>
         </HeadProvider>
       );
     }

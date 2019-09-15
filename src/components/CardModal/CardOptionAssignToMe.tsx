@@ -23,10 +23,7 @@ const CardOptionAssignToMe = observer(({ card }: Props) => {
       return;
     }
 
-    const ids =
-      card.data.assignee && card.data.assignee.length
-        ? card.data.assignee.map(a => a.id)
-        : [card.data.assignee.id];
+    const ids = card.data.assignee && [card.data.assignee.id];
 
     if (ids.includes(userDoc.ref.id)) {
       // Toggle if the user is already an assignee
