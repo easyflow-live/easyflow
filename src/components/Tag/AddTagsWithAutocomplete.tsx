@@ -14,7 +14,7 @@ interface AddTagsWithAutocompleteProps {
 interface State {
   suggestions: string[];
   cachedSuggestions: string[];
-  tags: [];
+  tags: string[];
   value: string;
 }
 
@@ -101,7 +101,7 @@ class AddTagsWithAutocomplete extends React.Component<
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
-        onSuggestionSelected={(e, { suggestion }) => {
+        onSuggestionSelected={(_e, { suggestion }) => {
           this.handleSelection(suggestion);
         }}
       />

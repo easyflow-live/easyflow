@@ -5,6 +5,7 @@ export const ScrumBoard = props => (
     viewBox='0 0 460 327'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
+    {...props}
   >
     <g clipPath='url(#clip0)'>
       <path

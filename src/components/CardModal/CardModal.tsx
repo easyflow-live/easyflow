@@ -80,13 +80,7 @@ const CardModal = ({
             card.data.date ||
             card.data.tags ||
             checkboxes.total > 0) && (
-            <CardBadges
-              date={
-                card.data.date ? new Date(card.data.date.seconds * 1000) : ''
-              }
-              checkboxes={checkboxes}
-              card={card}
-            />
+            <CardBadges checkboxes={checkboxes} card={card} />
           )}
         </div>
         <CardOptions
