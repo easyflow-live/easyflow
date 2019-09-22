@@ -1,19 +1,29 @@
-import { useLayoutEffect, CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTransition, animated, useSpring, config } from 'react-spring';
 
+import CardDocument from '../../../src/documents/card.doc';
+import { useCardAssignees } from '../../../src/hooks/use-card-assignees';
+import { useFirstRender } from '../../../src/hooks/use-first-render';
+
 import { Avatar } from '../Avatar/Avatar';
-import { useCardContext } from './CardProvider';
 import './Assignee.css';
 
 interface AssigneeProps {
-  cardColor: string;
+  card: CardDocument;
   style?: CSSProperties;
   className?: string;
 }
 
-const Assignee = ({ cardColor }: AssigneeProps) => {
-  const { assignees } = useCardContext();
+const Assignee = ({ card }: AssigneeProps) => {
+  const { assignees } = useCardAssignees(card);
+
+  const initAnimation = () =>
+    setTimeout(() => {
+      setSpring({ marginLeft: '-8px' });
+    }, 1000);
+
+  useFirstRender(initAnimation);
 
   const transitions = useTransition(assignees, item => item.username, {
     from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
@@ -26,12 +36,6 @@ const Assignee = ({ cardColor }: AssigneeProps) => {
     immediate: true,
     config: config.stiff,
   }));
-
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      setSpring({ marginLeft: '-8px' }); //
-    }, 1000);
-  }, [assignees.length]);
 
   return (
     <div className='assignees'>
@@ -50,7 +54,7 @@ const Assignee = ({ cardColor }: AssigneeProps) => {
                 key={item.username}
                 imgUrl={item.photo}
                 username={item.username}
-                boxShadowColor={cardColor}
+                boxShadowColor={card.data.color}
               />
             </animated.div>
           )

@@ -20,7 +20,7 @@ const CardBadges = ({ card, checkboxes }: CardBadgesProps) => {
     <div className='card-badges'>
       <div className='first-row'>
         <BadgeDueDate date={card.data.date} />
-        <Assignee cardColor={card.data.color} />
+        <Assignee card={card} />
       </div>
       <BadgeTags tags={card.data.tags} onTagClick={handleTagClick} />
       <div>
