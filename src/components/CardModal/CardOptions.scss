@@ -58,14 +58,9 @@
   display: flex;
   flex-direction: column;
   border-radius: 3px;
-  background: white;
 }
 
 .calendar-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 8px;
-
   button {
     width: 120px;
     height: 30px;
@@ -75,10 +70,6 @@
     font-weight: 700;
     transition: background 0.2s;
     cursor: pointer;
-  }
-
-  button:hover {
-    background: #bbb;
   }
 
   .calendar-save-button {
