@@ -9,7 +9,7 @@ export interface Card {
   index: number;
   color: string;
   date: string;
-  assignee: UserDocument['ref'];
+  assignee: UserDocument['ref'][];
   tags: string[];
 }
 
