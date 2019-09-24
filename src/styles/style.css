@@ -51,3 +51,7 @@
 .Toast-progress {
   background: #ed64a6;
 }
+
+.ReactModal__Body--open {
+  overflow-y: hidden;
+}

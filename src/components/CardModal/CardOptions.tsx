@@ -84,7 +84,10 @@ class CardOptions extends Component<CardOptionsProps, State> {
           alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
         }}
       >
-        <div>
+        <div className='mb-1'>
+          <AddTagsWithAutocomplete card={card} />
+        </div>
+        <div className='mt-xs'>
           <button onClick={this.deleteCard} className='options-list-button'>
             <div className='modal-icon'>
               <FaTrash />
@@ -145,7 +148,6 @@ class CardOptions extends Component<CardOptionsProps, State> {
           </button>
         </div>
         <CardOptionAssignToMe card={card} />
-        <AddTagsWithAutocomplete card={card} />
         <Modal
           targetElement={this.calendaButtonRef}
           isOpen={isCalendarOpen}
