@@ -1,8 +1,8 @@
-import { useLayoutEffect, useCallback, useState, DependencyList } from 'react';
+import { useLayoutEffect, useCallback, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 
-export const useRect = (ref, deps: DependencyList = []) => {
-  const [rect, setRect] = useState(
+export const useRect = (ref): [ClientRect, () => void] => {
+  const [rect, setRect] = useState<ClientRect>(
     getRect(ref && ref.current ? ref.current : undefined)
   );
 
@@ -10,10 +10,11 @@ export const useRect = (ref, deps: DependencyList = []) => {
     if (!(ref && ref.current)) {
       return;
     }
+    console.log('resized', ref.current);
 
     // Update client rect
     setRect(getRect(ref.current));
-  }, [ref, ...deps]);
+  }, [ref]);
 
   useLayoutEffect(() => {
     if (!ref || !ref.current) {
@@ -33,7 +34,7 @@ export const useRect = (ref, deps: DependencyList = []) => {
       resizeObserver.disconnect();
       resizeObserver = null;
     };
-  }, [ref, ...deps]);
+  }, [ref]);
 
   return [rect, refreshRect];
 };
