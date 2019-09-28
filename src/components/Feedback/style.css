@@ -1,0 +1,175 @@
+.main {
+  display: inline-block;
+  position: relative;
+  width: 110px;
+  margin-right: 1.5rem;
+  z-index: 10;
+  color: #fff;
+}
+
+.textarea {
+  appearance: none;
+  background-color: #2d3748;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  color: #fff;
+  cursor: text;
+  height: 32px;
+  overflow: hidden;
+  padding: 4px 8px;
+  position: absolute;
+  resize: none;
+  right: 0;
+  top: -16px;
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+  user-select: none;
+  width: 110px;
+}
+
+.textarea:placeholder {
+  color: #fff;
+}
+
+.textarea:hover {
+  background-color: rgb(77, 92, 117);
+}
+
+.main.focused .textarea {
+  background-color: #3d495d;
+  background-image: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-repeat: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  height: 150px;
+  overflow-y: hidden;
+  padding-bottom: 40px;
+  user-select: initial;
+  width: 300px;
+}
+
+.error-message,
+.success-message {
+  border-radius: 5px;
+  position: absolute;
+  top: -15px;
+  z-index: 3;
+  width: 300px;
+  max-width: 86vw;
+  font-size: 14px;
+  height: 150px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  flex-direction: column;
+  background: #3d495d;
+  right: 0;
+  color: #fff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.error-message span {
+  color: var(--geist-error);
+  margin-bottom: 20px;
+}
+
+.success-message p {
+  opacity: 0;
+}
+
+.success-message p:first-child {
+  animation: appear 500ms ease;
+  animation-delay: 100ms;
+  animation-fill-mode: forwards;
+}
+
+.success-message p:last-child {
+  animation: appear 500ms ease;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+}
+
+.error-message a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.controls {
+  align-items: center;
+  background-color: #3d495d;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  pointer-events: none;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 86px;
+  transition: box-shadow 0.3s;
+  visibility: hidden;
+  width: 300px;
+}
+
+.controls {
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+  transition-delay: initial;
+  transition-property: opacity;
+}
+
+.main.focused .controls {
+  animation-name: appear;
+  animation-delay: 200ms;
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  pointer-events: inherit;
+  padding: 8px;
+  visibility: visible;
+  z-index: 2;
+}
+
+.controls .buttons {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+  text-align: right;
+}
+
+.main.error .textarea,
+.main.loading .textarea,
+.main.success .textarea,
+.main.loading .controls {
+  pointer-events: none;
+}
+
+.main.error .textarea,
+.main.success .textarea {
+  color: transparent;
+  user-select: none;
+}
+
+.main.loading .textarea {
+  color: #2d3748;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

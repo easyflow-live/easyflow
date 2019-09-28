@@ -1,7 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { FaUserSecret } from 'react-icons/fa';
-import { Style } from 'react-head';
 import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/use-session';
@@ -9,9 +7,10 @@ import { useSession } from '../../hooks/use-session';
 import { Avatar } from '../Avatar/Avatar';
 import UserMenu from '../UserMenu/UserMenu';
 import { useInterface } from '../providers/InterfaceProvider';
+import { GiveFeedback } from '../Feedback/GiveFeedback';
 
 const Header = observer(() => {
-  const { user } = useSession();
+  const { user, userDoc } = useSession();
   const { isKioskMode } = useInterface();
 
   if (!user || isKioskMode) return null;
@@ -35,17 +34,20 @@ const Header = observer(() => {
             <div className='lg:w-1/4 xl:w-1/5 pl-6 pr-6'>
               <div className='flex items-center justify-end'>
                 {user && (
-                  <UserMenu
-                    userName={user.displayName}
-                    userEmail={user.email}
-                    trigger={
-                      <Avatar
-                        imgUrl={user.photoURL}
-                        username={user.displayName}
-                        className='cursor-pointer'
-                      />
-                    }
-                  />
+                  <>
+                    <GiveFeedback user={userDoc} />
+                    <UserMenu
+                      userName={user.displayName}
+                      userEmail={user.email}
+                      trigger={
+                        <Avatar
+                          imgUrl={user.photoURL}
+                          username={user.displayName}
+                          className='cursor-pointer'
+                        />
+                      }
+                    />
+                  </>
                 )}
               </div>
             </div>
