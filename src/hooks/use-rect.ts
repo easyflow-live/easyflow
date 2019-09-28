@@ -10,7 +10,6 @@ export const useRect = (ref): [ClientRect, () => void] => {
     if (!(ref && ref.current)) {
       return;
     }
-    console.log('resized', ref.current);
 
     // Update client rect
     setRect(getRect(ref.current));
