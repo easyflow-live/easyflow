@@ -75,11 +75,12 @@ const CardModal = ({
         <div
           className='modal-textarea-wrapper'
           style={{
-            minHeight: isThinDisplay ? 'none' : cardRect.height,
+            height: isThinDisplay ? 'none' : cardRect.height,
             width: isThinDisplay ? '100%' : cardRect.width,
             outlineColor: isTextareaFocused ? '#ed64a6' : null,
             outlineWidth: isTextareaFocused ? '5px' : null,
             background: card.data.color,
+            maxHeight: '95vh',
           }}
         >
           <Textarea
