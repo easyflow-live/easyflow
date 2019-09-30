@@ -46,7 +46,11 @@ const List = ({ index, list }: ListProps) => {
               </div>
 
               {isEditable && (
-                <CardAdder limit={list.data.cardsLimit} cards={list.cards} />
+                <CardAdder
+                  limit={list.data.cardsLimit}
+                  cards={list.cards}
+                  list={list}
+                />
               )}
             </div>
           </div>

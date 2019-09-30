@@ -1,6 +1,9 @@
 import React, { useState, useMemo, MutableRefObject } from 'react';
 import Textarea from 'react-textarea-autosize';
 
+import { cards as cardsActions } from '../../core/actions';
+import boardsStore from '../../store/boards';
+import userStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
 import { useThinDisplay } from '../../hooks/use-thin-display';
@@ -15,6 +18,7 @@ interface CardModalProps {
   cardElement: MutableRefObject<HTMLDivElement>;
   cardRect: any;
   isOpen: boolean;
+  listId: string;
   toggleCardModal: () => void;
 }
 const CardModal = ({
@@ -22,6 +26,7 @@ const CardModal = ({
   cardElement,
   cardRect,
   isOpen,
+  listId,
   toggleCardModal,
 }: CardModalProps) => {
   const [newText, setNewText] = useState(card.data.text);
@@ -32,8 +37,20 @@ const CardModal = ({
   const checkboxes = useMemo(() => findCheckboxes(newText), [newText]);
 
   const submitCard = () => {
-    if (newText !== card.data.text) {
-      card.ref.update({ text: newText });
+    const oldText = card.data.text;
+    if (newText !== oldText) {
+      card.ref.update({ text: newText }).then(() =>
+        cardsActions.editCardAction({
+          memberCreator: userStore.currentUser.ref,
+          data: {
+            card: card.ref,
+            list: boardsStore.getList(listId).ref,
+            board: boardsStore.currentBoard.ref,
+            oldText,
+            newText,
+          },
+        })
+      );
     }
     toggleCardModal();
   };
@@ -92,6 +109,7 @@ const CardModal = ({
           }
           isThinDisplay={isThinDisplay}
           toggleColorPicker={toggleColorPicker}
+          listId={listId}
         />
       </>
     </Modal>

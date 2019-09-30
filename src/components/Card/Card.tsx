@@ -17,9 +17,10 @@ interface CardProps {
   card: CardDocument;
   isDraggingOver: boolean;
   index: number;
+  listId: string;
 }
 
-const Card = ({ card, index, isDraggingOver }: CardProps) => {
+const Card = ({ card, index, isDraggingOver, listId }: CardProps) => {
   const { user } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef(null);
@@ -109,6 +110,7 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
             cardRect={cardRect}
             card={card}
             toggleCardModal={toggleCardModal}
+            listId={listId}
           />
         </>
       )}
