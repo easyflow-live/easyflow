@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
 import CardDocument from '../../src/documents/card.doc';
-import { useCachedUsers } from '../store/users';
+import { useUsersData } from '../store';
 
 export const useCardAssignees = (card: CardDocument) => {
-  const store = useCachedUsers();
+  const store = useUsersData(s => s);
 
   // (backwards compatibility)
   if (card.data.assignee && !Array.isArray(card.data.assignee)) {

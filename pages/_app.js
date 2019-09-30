@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { SessionProvider } from '../src/hooks/use-session';
 import UserDocument from '../src/documents/user.doc';
 import firebaseService from '../src/services/firebase.service';
+import userStore from '../src/store/users';
 import Header from '../src/components/Header/Header';
 import { initGA, logPageView } from '../src/libs/analytics';
 import { InterfaceProvider } from '../src/components/providers/InterfaceProvider';
@@ -41,6 +42,7 @@ export default observer(
         if (this.state.user) {
           const userDoc = new UserDocument(`users/${this.state.user.email}`);
           this.setState({ userDoc });
+          userStore.setCurrentUser(userDoc);
         }
       }
     }

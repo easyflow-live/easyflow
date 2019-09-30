@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { observer } from 'mobx-react';
 
+import { cards as cardsActions } from '../../core/actions';
+import boardsStore from '../../store/boards';
+import userStore from '../../store/users';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import './CardAdder.css';
 
@@ -33,7 +36,7 @@ class CardAdder extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { newText } = this.state;
-    const { cards, limit } = this.props;
+    const { cards, limit, list } = this.props;
     if (newText === '') return;
 
     //current size plus 1
@@ -46,10 +49,26 @@ class CardAdder extends Component {
     }
 
     const index = (await cards.ref.get()).size;
-    cards.add({ text: newText, color: 'white', date: '', index });
+    const createdCard = await cards.add({
+      text: newText,
+      color: 'white',
+      date: '',
+      index,
+      createdAt: Date.now(),
+      listBefore: this.props.list.ref
+    });
 
     this.toggleCardComposer();
     this.setState({ newText: '' });
+
+    cardsActions.newCardAction({
+      memberCreator: userStore.currentUser.ref,
+      data: {
+        card: createdCard.ref,
+        list: list.ref,
+        board: boardsStore.currentBoard.ref
+      }
+    });
   };
 
   render() {

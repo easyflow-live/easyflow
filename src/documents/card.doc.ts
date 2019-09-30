@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import UserDocument from './user.doc';
+import ListDocument from './list.doc';
 
 export interface Card {
   text: string;
@@ -11,6 +12,9 @@ export interface Card {
   date: string;
   assignee: UserDocument['ref'][];
   tags: string[];
+  createdAt: number;
+  listBefore: ListDocument['ref'];
+  listAfter: ListDocument['ref'];
 }
 
 export default class CardDocument extends Document<Card> {

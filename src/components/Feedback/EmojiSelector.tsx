@@ -173,12 +173,12 @@ interface EmojiIconProps {
 const EmojiIcon = memo(({ height, width, label }: EmojiIconProps) => {
   return (
     <svg width={width} height={height} viewBox='0 0 14 14' aria-label={label}>
-      <g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+      <g stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>
         <path
           d='M3.3 8.1c0-.4.4-.3.7-.4h1l.3-.1h4.3l.7.2c.2 0 .4 0 .5.3v.4c0 1.2-1 2.3-2.4 2.7h-.6l-.2.1a2 2 0 0 1-1 0h-.3c-1.6-.3-2.7-1.3-3-2.6V8m6.4-3.7c.4.1.7.3.8.8v.5c-.1.5-.6.8-1 .8-.6 0-1-.5-1.1-1 0-.5.3-1 .8-1.1h.5m-4.2.9c.1.4-.2 1-.6 1.1-.6.2-1.1 0-1.4-.5V5c0-.5.3-.7.7-.8h.5c.4 0 .7.3.8.8v.1'
           fill='#fff'
-          fill-rule='nonzero'
-          stroke-width='0'
+          fillRule='nonzero'
+          strokeWidth='0'
         />
         <circle stroke='#fff' cx='7' cy='7' r='6.5' />
       </g>

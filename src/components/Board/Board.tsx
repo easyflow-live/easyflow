@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react';
 
+import { cards } from '../../core/actions';
+import boardsStore from '../../store/boards';
 import BoardDocument from '../../documents/board.doc';
+import CardDocument from '../../documents/card.doc';
+import ListDocument from '../../documents/list.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
@@ -27,6 +31,31 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
       startX: null,
       startScrollX: null,
     };
+
+    this.handeCardMoveAction = this.handeCardMoveAction.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.board) {
+      boardsStore.setCurrentBoard(this.props.board);
+      boardsStore.setListsFromCurrentBoard(this.props.board.lists.docs);
+    }
+  }
+
+  handeCardMoveAction(
+    card: CardDocument['ref'],
+    listBefore: ListDocument['ref'],
+    listAfter: ListDocument['ref']
+  ) {
+    cards.moveCardAction({
+      memberCreator: this.props.board.data.owner,
+      data: {
+        card,
+        listBefore,
+        listAfter,
+        board: this.props.board.ref,
+      },
+    });
   }
 
   // The following three methods implement dragging of the board by holding down the mouse
@@ -105,7 +134,10 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
                 onMouseDown={this.handleMouseDown}
                 onWheel={this.handleWheel}
               >
-                <ListColumns lists={lists} />
+                <ListColumns
+                  lists={lists}
+                  onCardMove={this.handeCardMoveAction}
+                />
               </div>
 
               {isEditable && (

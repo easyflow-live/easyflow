@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-import { useCachedUsers } from '../store/users';
 import BoardDocument from '../../src/documents/board.doc';
+import { useUsersData } from '../../src/store';
 
 export const useBoardTeam = (board: BoardDocument) => {
   const ownerRef = useRef(null);
 
-  const store = useCachedUsers();
+  const store = useUsersData(s => s);
 
   useEffect(() => {
     store.loadUsers(board.data.users);

@@ -1,7 +1,9 @@
 import { observable, computed, runInAction, action } from 'mobx';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+
+import UserDocument from '..//documents/user.doc';
 
 interface IUser {
   id: string;
@@ -10,9 +12,10 @@ interface IUser {
   email: string;
 }
 
-export class UsersStore {
+class UsersStore {
   @observable users: User[] = [];
   @observable isLoading: boolean = false;
+  @observable currentUser: UserDocument = null;
 
   @action
   createTodo(data: IUser) {
@@ -30,6 +33,11 @@ export class UsersStore {
   @action
   remove(user: User) {
     this.users.splice(this.users.indexOf(user), 1);
+  }
+
+  @action
+  setCurrentUser(user: UserDocument) {
+    this.currentUser = user;
   }
 
   getUser(id: string) {
@@ -61,7 +69,7 @@ export class UsersStore {
   }
 }
 
-export class User implements IUser {
+class User implements IUser {
   id: string;
   username: string;
   photo: string;
@@ -95,11 +103,11 @@ interface UsersContextProp {
   store: UsersStore;
 }
 
+const userStore = new UsersStore();
+
 const UsersContext = createContext<UsersContextProp>({
-  store: new UsersStore(),
+  store: userStore,
 });
 
-export const useCachedUsers = () => {
-  const context = useContext(UsersContext);
-  return context.store;
-};
+export default userStore;
+export { UsersStore, UsersContext, User };

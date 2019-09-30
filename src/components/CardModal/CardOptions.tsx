@@ -3,6 +3,9 @@ import { FaTrash } from 'react-icons/fa';
 import { MdAlarm } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
+import { cards } from '../../core/actions';
+import boardsStore from '../../store/boards';
+import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
 import ClickOutside from '../ClickOutside/ClickOutside';
@@ -17,6 +20,7 @@ interface CardOptionsProps {
   isCardNearRightBorder: boolean;
   isThinDisplay: boolean;
   boundingRect: object;
+  listId: string;
   toggleColorPicker: () => void;
 }
 
@@ -38,7 +42,18 @@ class CardOptions extends Component<CardOptionsProps, State> {
 
   deleteCard = async () => {
     const { card } = this.props;
-    await card.ref.delete();
+    const textBackup = card.data.text;
+
+    await card.ref.delete().then(() =>
+      cards.removeCardAction({
+        memberCreator: usersStore.currentUser.ref,
+        data: {
+          board: boardsStore.currentBoard.ref,
+          list: boardsStore.getList(this.props.listId).ref,
+          text: textBackup,
+        },
+      })
+    );
     toast('Card was removed.');
   };
 
@@ -147,7 +162,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
             &nbsp;Due date
           </button>
         </div>
-        <CardOptionAssignToMe card={card} />
+        <CardOptionAssignToMe card={card} listId={this.props.listId} />
         <Modal
           targetElement={this.calendaButtonRef}
           isOpen={isCalendarOpen}
