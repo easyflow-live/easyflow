@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, RefObject, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';

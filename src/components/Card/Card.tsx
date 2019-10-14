@@ -10,7 +10,6 @@ import { findCheckboxes } from '../../helpers/find-check-boxes';
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
 import formatMarkdown from './formatMarkdown';
-import { CardProvider } from './CardProvider';
 
 import './Card.scss';
 
@@ -18,9 +17,10 @@ interface CardProps {
   card: CardDocument;
   isDraggingOver: boolean;
   index: number;
+  listId: string;
 }
 
-const Card = ({ card, index, isDraggingOver }: CardProps) => {
+const Card = ({ card, index, isDraggingOver, listId }: CardProps) => {
   const { user } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef(null);
@@ -62,58 +62,57 @@ const Card = ({ card, index, isDraggingOver }: CardProps) => {
   return (
     <Draggable draggableId={card.id} index={index}>
       {(provided, snapshot) => (
-        <CardProvider card={card}>
-          <>
+        <>
+          <div
+            className={`card-title ${
+              snapshot.isDragging ? 'card-title--drag' : ''
+            }`}
+            ref={ref => {
+              provided.innerRef(ref);
+              cardRef.current = ref;
+            }}
+            // Enable draggable to authenticated users
+            {...(user
+              ? { ...provided.draggableProps, ...provided.dragHandleProps }
+              : {})}
+            onClick={event => {
+              provided.dragHandleProps.onClick(event);
+              handleClick(event);
+            }}
+            onKeyDown={event => {
+              provided.dragHandleProps.onKeyDown(event);
+              handleKeyDown(event);
+            }}
+            style={{
+              ...provided.draggableProps.style,
+              background: card.data.color,
+            }}
+          >
             <div
-              className={`card-title ${
-                snapshot.isDragging ? 'card-title--drag' : ''
-              }`}
-              ref={ref => {
-                provided.innerRef(ref);
-                cardRef.current = ref;
+              className='card-title-html'
+              dangerouslySetInnerHTML={{
+                __html: formatMarkdown(card.data.text),
               }}
-              // Enable draggable to authenticated users
-              {...(user
-                ? { ...provided.draggableProps, ...provided.dragHandleProps }
-                : {})}
-              onClick={event => {
-                provided.dragHandleProps.onClick(event);
-                handleClick(event);
-              }}
-              onKeyDown={event => {
-                provided.dragHandleProps.onKeyDown(event);
-                handleKeyDown(event);
-              }}
-              style={{
-                ...provided.draggableProps.style,
-                background: card.data.color,
-              }}
-            >
-              <div
-                className='card-title-html'
-                dangerouslySetInnerHTML={{
-                  __html: formatMarkdown(card.data.text),
-                }}
-              />
-
-              {(card.data.assignee ||
-                card.data.date ||
-                card.data.tags ||
-                checkboxes.total > 0) && (
-                <CardBadges checkboxes={checkboxes} card={card} />
-              )}
-            </div>
-            {/* Remove placeholder when not dragging over to reduce snapping */}
-            {isDraggingOver && provided.placeholder}
-            <CardModal
-              isOpen={isModalOpen}
-              cardElement={cardRef}
-              cardRect={cardRect}
-              card={card}
-              toggleCardModal={toggleCardModal}
             />
-          </>
-        </CardProvider>
+
+            {(card.data.assignee ||
+              card.data.date ||
+              card.data.tags ||
+              checkboxes.total > 0) && (
+              <CardBadges checkboxes={checkboxes} card={card} />
+            )}
+          </div>
+          {/* Remove placeholder when not dragging over to reduce snapping */}
+          {isDraggingOver && provided.placeholder}
+          <CardModal
+            isOpen={isModalOpen}
+            cardElement={cardRef}
+            cardRect={cardRect}
+            card={card}
+            toggleCardModal={toggleCardModal}
+            listId={listId}
+          />
+        </>
       )}
     </Draggable>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Error from 'next/error';
-import { NextFunctionComponent } from 'next';
+import { NextPage } from 'next';
 import Router from 'next/router';
 
 import BoardComponent from '../src/components/Board/Board';
@@ -9,12 +9,12 @@ import { useSession } from '../src/hooks/use-session';
 import { useInterface } from '../src/components/providers/InterfaceProvider';
 import { useBoard } from '../src/hooks/use-board';
 
-interface BoardPageProps {
+interface BoardPageProps extends NextPage {
   query: { uid: string; kiosk: boolean };
   children: React.ReactChildren;
 }
 
-const Board: NextFunctionComponent = ({ query }: BoardPageProps) => {
+const Board = ({ query }: BoardPageProps) => {
   const { userDoc, initializing } = useSession();
   const [board, isBoardLoading] = useBoard(query.uid);
   const { setIsEditable, setIsKioskMode } = useInterface();

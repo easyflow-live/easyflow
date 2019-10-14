@@ -1,0 +1,82 @@
+.geist-emoji-selector {
+  display: flex;
+  width: 210px;
+  pointer-events: none;
+}
+.geist-emoji-selector.loading {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  cursor: default;
+  pointer-events: none;
+}
+.geist-emoji-selector > button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.geist-emoji-selector > button,
+.geist-emoji-selector > button .inner {
+  display: inline-flex;
+}
+.geist-emoji-selector > button {
+  cursor: pointer;
+  text-align: center;
+}
+.geist-emoji-selector > button:not(:last-child) {
+  padding-right: 2px;
+}
+.geist-emoji-selector > button:not(:first-child) {
+  padding-left: 2px;
+}
+.geist-emoji-selector.loading > button {
+  cursor: default;
+}
+.geist-emoji-selector > button:first-child {
+  outline: none;
+  pointer-events: all;
+}
+.geist-emoji-selector.loading > button:first-child {
+  outline: none;
+  pointer-events: none;
+}
+.geist-emoji-selector > button .inner {
+  height: 24px;
+  width: 24px;
+  border-radius: 4px;
+  border: 1px solid #2d3748;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+}
+.geist-emoji-selector > button .inner.icon {
+  padding: 3px 3px 4px 2px;
+}
+.geist-emoji-selector.dark {
+  background: transparent;
+}
+.geist-emoji-selector.dark > button .inner {
+  border-color: #000000;
+  background-color: #000000;
+}
+.geist-emoji-selector.dark.loading > button .inner {
+  border-color: #666666;
+  background-color: #666666;
+}
+.geist-emoji-selector > button.active .inner,
+.geist-emoji-selector > button:hover .inner {
+  border-color: #ed64a6;
+}
+.geist-emoji-selector > button.option {
+  opacity: 0;
+  transform: translate3d(-10px, 0px, 0px);
+  transition: all ease 100ms;
+  pointer-events: none;
+}
+.geist-emoji-selector.shown > button.option {
+  pointer-events: all;
+}
+.geist-emoji-selector.shown > button.option {
+  opacity: 1;
+  transform: translate3d(0, 0px, 0px);
+}

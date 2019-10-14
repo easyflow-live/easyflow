@@ -1,34 +1,31 @@
-const withTypescript = require('@zeit/next-typescript');
 const withCSS = require('@zeit/next-css');
 const withSASS = require('@zeit/next-sass');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-module.exports = withTypescript(
-  withSASS(
-    withCSS({
-      webpack: config => {
-        config.plugins = config.plugins || [];
+module.exports = withSASS(
+  withCSS({
+    webpack: config => {
+      config.plugins = config.plugins || [];
 
-        config.plugins = [
-          ...config.plugins,
+      config.plugins = [
+        ...config.plugins,
 
-          // Read the .env file
-          new Dotenv({
-            path: path.join(__dirname, '.env'),
-            systemvars: true
-          })
-        ];
+        // Read the .env file
+        new Dotenv({
+          path: path.join(__dirname, '.env'),
+          systemvars: true
+        })
+      ];
 
-        if (config.mode === 'production') {
-          if (Array.isArray(config.optimization.minimizer)) {
-            config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
-          }
+      if (config.mode === 'production') {
+        if (Array.isArray(config.optimization.minimizer)) {
+          config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
         }
-
-        return config;
       }
-    })
-  )
+
+      return config;
+    }
+  })
 );

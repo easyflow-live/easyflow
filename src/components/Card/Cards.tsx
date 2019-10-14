@@ -28,6 +28,7 @@ const Cards = ({ cards, listId }: CardProps) => {
                 isDraggingOver={isDraggingOver}
                 card={card}
                 index={index}
+                listId={listId}
               />
             ))
           )}

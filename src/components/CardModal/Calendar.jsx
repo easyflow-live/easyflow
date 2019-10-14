@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DayPicker from 'react-day-picker';
 import './ReactDayPicker.scss';
+import { MdClose } from 'react-icons/md';
 
 class Calendar extends Component {
   static propTypes = {
@@ -39,21 +40,42 @@ class Calendar extends Component {
     toggleCalendar();
   };
 
+  handleRemove = () => {
+    const { card, toggleCalendar } = this.props;
+
+    card.update({ date: '' });
+
+    toggleCalendar();
+  };
+
   render() {
     const { selectedDay } = this.state;
     const { toggleCalendar } = this.props;
     return (
-      <div className='calendar'>
+      <div className='calendar bg-gray-700'>
+        <div className='flex justify-end mt-3 mr-3'>
+          <button title='Close modal' onClick={toggleCalendar}>
+            <MdClose color='white' />
+          </button>
+        </div>
         <DayPicker
           onDayClick={this.handleDayClick}
           selectedDays={selectedDay}
           disabledDays={{ before: new Date() }}
         />
-        <div className='calendar-buttons'>
-          <button onClick={this.handleSave} className='calendar-save-button'>
+        <div className='flex justify-around mb-3 calendar-buttons'>
+          <button
+            onClick={this.handleSave}
+            className='bg-pink-500 text-white hover:bg-pink-700'
+          >
             Save
           </button>
-          <button onClick={toggleCalendar}>Cancel</button>
+          <button
+            className='bg-transparent text-red-500 hover:bg-red-500 hover:text-white'
+            onClick={this.handleRemove}
+          >
+            Remove
+          </button>
         </div>
       </div>
     );

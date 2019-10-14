@@ -1,48 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import CardDocument from 'src/documents/card.doc';
-import { useEmitter } from './use-emitter';
-import { useIsMounted } from './use-is-mounted';
+import CardDocument from '../../src/documents/card.doc';
+import { useUsersData } from '../store';
 
 export const useCardAssignees = (card: CardDocument) => {
-  const [assignees, setAssignees] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const isMounted = useIsMounted();
+  const store = useUsersData(s => s);
 
-  async function getAssigneeData() {
-    if (!card.data.assignee) {
-      setAssignees([]); // clear state to update the UI
-      return;
-    }
-
-    setLoading(true);
-
-    let assigneeUsers = [];
-
-    if (Array.isArray(card.data.assignee)) {
-      assigneeUsers = await Promise.all(
-        card.data.assignee.map(async a => (await a.get()).data())
-      );
-    } else {
-      assigneeUsers = [(await card.data.assignee.get()).data()];
-    }
-
-    // we should update the component state only if it is mounted still
-    if (isMounted) {
-      setAssignees(assigneeUsers);
-      setLoading(false);
-    }
+  // (backwards compatibility)
+  if (card.data.assignee && !Array.isArray(card.data.assignee)) {
+    card.data.assignee = [card.data.assignee];
   }
 
+  const ids = (card.data.assignee && card.data.assignee.map(a => a.id)) || [];
+  const assignees = store.users.filter(u => ids.includes(u.id));
+
   useEffect(() => {
-    getAssigneeData();
-  }, []);
+    if (card.data.assignee) {
+      store.loadUsers(card.data.assignee);
+    }
+  }, [card.data.assignee && card.data.assignee.length]);
 
-  useEmitter(
-    'ASSIGNEE_UPDATED',
-    ({ cardId }) => card.id === cardId && getAssigneeData(),
-    [card]
-  );
-
-  return { assignees, isLoading };
+  return { assignees };
 };

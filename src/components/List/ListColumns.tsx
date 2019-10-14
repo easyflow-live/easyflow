@@ -7,16 +7,23 @@ import { toast } from 'react-toastify';
 import ListDocument from '../../documents/list.doc';
 import firebaseService from '../../services/firebase.service';
 import List from './List';
+import CardDocument from 'src/documents/card.doc';
 
 interface ListsProps {
   lists: Collection<ListDocument>;
+  onCardMove: (
+    card: CardDocument['ref'],
+    listBefore: ListDocument['ref'],
+    listAfter: ListDocument['ref'],
+    cardTitle: string
+  ) => void;
 }
 
 interface UpdatedHash {
   [id: string]: number;
 }
 
-const ListColumns = ({ lists }: ListsProps) => {
+const ListColumns = ({ lists, onCardMove }: ListsProps) => {
   const [localLists, setLocalLists] = useState([]);
 
   useEffect(() => {
@@ -122,12 +129,25 @@ const ListColumns = ({ lists }: ListsProps) => {
           ? destListDocument.cards.add({
               ...doc.data,
               index,
+              listBefore: sourceListDocument.ref,
+              listAfter: destListDocument.ref,
             })
           : batch.update(doc.ref, { index });
       });
       batch
         .commit()
-        .catch(() => toast(`An error occurred. Please, try again.`));
+        .then(() =>
+          onCardMove(
+            removedCard.ref,
+            sourceListDocument.ref,
+            destListDocument.ref,
+            removedCard.data.title
+          )
+        )
+        .catch(e => {
+          toast(`An error occurred. Please, try again.`);
+          console.log(e);
+        });
     } else {
       // Handle change cards in the same list
 

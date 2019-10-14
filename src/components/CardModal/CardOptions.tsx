@@ -3,6 +3,9 @@ import { FaTrash } from 'react-icons/fa';
 import { MdAlarm } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
+import { cards } from '../../core/actions';
+import boardsStore from '../../store/boards';
+import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
 import ClickOutside from '../ClickOutside/ClickOutside';
@@ -17,6 +20,7 @@ interface CardOptionsProps {
   isCardNearRightBorder: boolean;
   isThinDisplay: boolean;
   boundingRect: object;
+  listId: string;
   toggleColorPicker: () => void;
 }
 
@@ -38,7 +42,19 @@ class CardOptions extends Component<CardOptionsProps, State> {
 
   deleteCard = async () => {
     const { card } = this.props;
-    await card.ref.delete();
+    const textBackup = card.data.text;
+
+    await card.ref.delete().then(() =>
+      cards.removeCardAction({
+        memberCreator: usersStore.currentUser.ref,
+        data: {
+          board: boardsStore.currentBoard.ref,
+          list: boardsStore.getList(this.props.listId).ref,
+          text: textBackup,
+          title: card.data.title || '',
+        },
+      })
+    );
     toast('Card was removed.');
   };
 
@@ -84,7 +100,10 @@ class CardOptions extends Component<CardOptionsProps, State> {
           alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
         }}
       >
-        <div>
+        <div className='mb-1'>
+          <AddTagsWithAutocomplete card={card} />
+        </div>
+        <div className='mt-xs'>
           <button onClick={this.deleteCard} className='options-list-button'>
             <div className='modal-icon'>
               <FaTrash />
@@ -144,8 +163,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
             &nbsp;Due date
           </button>
         </div>
-        <CardOptionAssignToMe card={card} />
-        <AddTagsWithAutocomplete card={card} />
+        <CardOptionAssignToMe card={card} listId={this.props.listId} />
         <Modal
           targetElement={this.calendaButtonRef}
           isOpen={isCalendarOpen}

@@ -3,6 +3,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import { initFirestorter } from 'firestorter';
 
+import { IAction } from '../core/actions/types';
+
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -58,6 +60,10 @@ class FirebaseService {
   getUser = email => this.getUsers().doc(email);
 
   doSignOut = () => this.auth.signOut();
+
+  createAction = (action: IAction) => {
+    return this.db.collection('actions').add(action);
+  };
 }
 
 export default new FirebaseService();

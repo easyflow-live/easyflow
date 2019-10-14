@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react';
+import classNames from 'classnames';
 
+import { cards } from '../../core/actions';
+import boardsStore from '../../store/boards';
 import BoardDocument from '../../documents/board.doc';
+import CardDocument from '../../documents/card.doc';
+import ListDocument from '../../documents/list.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
 import './Board.scss';
+import BoardMenu from './BoardMenu';
 
 interface BoardProps {
   board: BoardDocument;
@@ -27,6 +33,33 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
       startX: null,
       startScrollX: null,
     };
+
+    this.handeCardMoveAction = this.handeCardMoveAction.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.board) {
+      boardsStore.setCurrentBoard(this.props.board);
+      boardsStore.setListsFromCurrentBoard(this.props.board.lists.docs);
+    }
+  }
+
+  handeCardMoveAction(
+    card: CardDocument['ref'],
+    listBefore: ListDocument['ref'],
+    listAfter: ListDocument['ref'],
+    cardTitle: string
+  ) {
+    cards.moveCardAction({
+      memberCreator: this.props.board.data.owner,
+      data: {
+        card,
+        listBefore,
+        listAfter,
+        board: this.props.board.ref,
+        title: cardTitle || '',
+      },
+    });
   }
 
   // The following three methods implement dragging of the board by holding down the mouse
@@ -96,24 +129,34 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
         <Title>{data.title} | Easy Flow</Title>
         <InterfaceContext.Consumer>
           {({ isKioskMode, isEditable }) => (
-            <div className={`m-6 mt-4 ${isKioskMode ? 'kiosk' : ''}`}>
-              <BoardHeader board={board} />
-
+            <div className='relative overflow-hidden'>
               <div
-                className='inline-flex mt-4 overflow-x-auto'
-                style={{ width: 'calc(100vw - 3rem)' }}
-                onMouseDown={this.handleMouseDown}
-                onWheel={this.handleWheel}
+                className={classNames('relative m-6 mt-4', {
+                  kiosk: isKioskMode,
+                })}
               >
-                <ListColumns lists={lists} />
-              </div>
+                <BoardHeader board={board} />
 
-              {isEditable && (
-                <AnimatedOpacity show={showEmpty}>
-                  <CreateContentEmpty boardId={board.id} />
-                </AnimatedOpacity>
-              )}
-              <div className='board-underlay' />
+                <div
+                  className='inline-flex mt-4 overflow-x-auto'
+                  style={{ width: 'calc(100vw - 3rem)' }}
+                  onMouseDown={this.handleMouseDown}
+                  onWheel={this.handleWheel}
+                >
+                  <ListColumns
+                    lists={lists}
+                    onCardMove={this.handeCardMoveAction}
+                  />
+                </div>
+
+                {isEditable && (
+                  <AnimatedOpacity show={showEmpty}>
+                    <CreateContentEmpty boardId={board.id} />
+                  </AnimatedOpacity>
+                )}
+                <div className='board-underlay' />
+              </div>
+              <BoardMenu board={board} />
             </div>
           )}
         </InterfaceContext.Consumer>
