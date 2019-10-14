@@ -46,7 +46,6 @@ const Team = ({ board }: TeamProps) => {
                 imgUrl={item.photo}
                 username={item.username}
                 boxShadowColor={'#2d3748'}
-                style={{ marginRight: '-.5rem' }}
               />
             </animated.div>
           )

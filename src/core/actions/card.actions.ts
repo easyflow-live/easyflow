@@ -5,7 +5,7 @@ import CardDocument from '../../documents/card.doc';
 import firebaseService from '../../services/firebase.service';
 import { Actions } from './types';
 
-enum CardActions {
+export enum CardActions {
   MOVE = 'move',
   EDIT = 'edit',
   NEW = 'new',
@@ -18,10 +18,11 @@ interface BaseCardData {
   board: BoardDocument['ref'];
 }
 
-interface MoveCardData extends BaseCardData {
+export interface MoveCardData extends BaseCardData {
   listBefore: ListDocument['ref'];
   listAfter: ListDocument['ref'];
   action: CardActions.MOVE;
+  title: string;
 }
 
 const createAction = (
@@ -48,11 +49,12 @@ export const moveCardAction = ({
     action: CardActions.MOVE,
   });
 
-interface EditCardData extends BaseCardData {
+export interface EditCardData extends BaseCardData {
   list: ListDocument['ref'];
   action: CardActions.MOVE;
   oldText: string;
   newText: string;
+  title: string;
 }
 
 export const editCardAction = ({
@@ -67,9 +69,10 @@ export const editCardAction = ({
     action: CardActions.EDIT,
   });
 
-interface NewCardData extends BaseCardData {
+export interface NewCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.MOVE;
+  action: CardActions.NEW;
+  title: string;
 }
 
 export const newCardAction = ({
@@ -84,10 +87,11 @@ export const newCardAction = ({
     action: CardActions.NEW,
   });
 
-interface RemoveCardData extends Omit<BaseCardData, 'card'> {
+export interface RemoveCardData extends Omit<BaseCardData, 'card'> {
   text: string;
   list: ListDocument['ref'];
   action: CardActions.REMOVE;
+  title: string;
 }
 
 export const removeCardAction = ({
@@ -102,10 +106,11 @@ export const removeCardAction = ({
     action: CardActions.REMOVE,
   });
 
-interface AssigneeCardData extends BaseCardData {
+export interface AssigneeCardData extends BaseCardData {
   list: ListDocument['ref'];
   action: CardActions.ASSIGNEE;
   assignee: UserDocument['ref'];
+  title: string;
 }
 
 export const assigneeCardAction = ({

@@ -51,6 +51,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
           board: boardsStore.currentBoard.ref,
           list: boardsStore.getList(this.props.listId).ref,
           text: textBackup,
+          title: card.data.title || '',
         },
       })
     );

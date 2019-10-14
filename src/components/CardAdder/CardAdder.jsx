@@ -55,7 +55,8 @@ class CardAdder extends Component {
       date: '',
       index,
       createdAt: Date.now(),
-      listBefore: this.props.list.ref
+      listBefore: this.props.list.ref,
+      title: newText
     });
 
     this.toggleCardComposer();
@@ -66,7 +67,8 @@ class CardAdder extends Component {
       data: {
         card: createdCard.ref,
         list: list.ref,
-        board: boardsStore.currentBoard.ref
+        board: boardsStore.currentBoard.ref,
+        title: newText
       }
     });
   };

@@ -6,6 +6,7 @@ import UserDocument from './user.doc';
 import ListDocument from './list.doc';
 
 export interface Card {
+  title?: string;
   text: string;
   index: number;
   color: string;

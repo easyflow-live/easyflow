@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import { FaTrash, FaHashtag, FaCog } from 'react-icons/fa';
+import { FaTrash, FaHashtag } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import BoardDocument from '../../documents/board.doc';
 import Menu, { MenuItem, Button, Divider } from '../Menu';
 import AddTagsModal from './AddTagsModal';
+import { MdSettings } from 'react-icons/md';
 
 interface BoardMenuProps {
   board: BoardDocument;
@@ -49,7 +50,7 @@ const BoardMenu = ({ board, className }: BoardMenuProps) => {
         className={`w-56 px-0 py-2 ${className}`}
         trigger={
           <Button className='board-button' tag='button'>
-            <FaCog />
+            <MdSettings size='16px' />
           </Button>
         }
         items={

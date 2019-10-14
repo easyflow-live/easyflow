@@ -5,10 +5,17 @@ interface BoardButtonProps {
   icon: React.ReactChild;
   text?: string;
   renderModal?: ({ isOpen, originRef, toggleIsOpen }) => React.ReactChild;
+  onClick?: () => void;
   style?: CSSProperties;
 }
 
-const BoardButton = ({ icon, text, renderModal, style }: BoardButtonProps) => {
+const BoardButton = ({
+  icon,
+  text,
+  renderModal,
+  onClick,
+  style,
+}: BoardButtonProps) => {
   const buttonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -17,7 +24,12 @@ const BoardButton = ({ icon, text, renderModal, style }: BoardButtonProps) => {
       <button
         className='board-button'
         ref={buttonRef}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          if (onClick) {
+            onClick();
+          }
+          setIsOpen(true);
+        }}
         style={style}
       >
         <div className='modal-icon'>{icon}</div>

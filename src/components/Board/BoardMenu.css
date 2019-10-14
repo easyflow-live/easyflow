@@ -1,0 +1,13 @@
+.BoardMenu-container {
+  transition: all 0.3s;
+  transform: translateX(339px);
+  width: 339px;
+}
+
+.BoardMenu-container--open {
+  transform: translateX(0);
+}
+
+.BoardMenu {
+  height: 100%;
+}
