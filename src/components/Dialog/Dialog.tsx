@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-modal';
 
 import './Dialog.css';
+import { MdClose } from 'react-icons/md';
 
 if (typeof window !== 'undefined') {
   Modal.setAppElement('#__next');
@@ -64,10 +65,10 @@ const Dialog = ({
             <h1 className='text-white text-xl'>{title}</h1>
             <button
               aria-label='Close'
-              className='text-gray-400 hover:text-white'
+              className='text-gray-500 hover:text-gray-100'
               onClick={onClose}
             >
-              X
+              <MdClose size='25' />
             </button>
           </div>
 
