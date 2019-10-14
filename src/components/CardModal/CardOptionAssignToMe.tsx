@@ -31,6 +31,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
               card: card.ref,
               board: boardsStore.currentBoard.ref,
               list: boardsStore.getList(listId).ref,
+              title: card.data.title || '',
             },
           })
         );
@@ -51,6 +52,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
                 card: card.ref,
                 board: boardsStore.currentBoard.ref,
                 list: boardsStore.getList(listId).ref,
+                title: card.data.title || '',
               },
             })
           );
@@ -73,6 +75,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
                   card: card.ref,
                   board: boardsStore.currentBoard.ref,
                   list: boardsStore.getList(listId).ref,
+                  title: card.data.title || '',
                 },
               })
             );
@@ -89,6 +92,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
                   card: card.ref,
                   board: boardsStore.currentBoard.ref,
                   list: boardsStore.getList(listId).ref,
+                  title: card.data.title || '',
                 },
               })
             );

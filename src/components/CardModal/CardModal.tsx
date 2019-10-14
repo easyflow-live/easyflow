@@ -48,6 +48,7 @@ const CardModal = ({
             board: boardsStore.currentBoard.ref,
             oldText,
             newText,
+            title: card.data.title || '',
           },
         })
       );

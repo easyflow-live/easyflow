@@ -1,23 +1,25 @@
 import React from 'react';
+import { MdTimeline, MdViewColumn } from 'react-icons/md';
+import { observer } from 'mobx-react-lite';
+
+import BoardDocument from '../../documents/board.doc';
+import { useInterface } from '../providers/InterfaceProvider';
+import AddNewListModal from './AddNewListModal';
+import TeamListModal from './TeamListModal';
+import BoardButton from './BoardButton';
+import BoardMenu from './BoardMenu';
 import BoardTitle from './BoardTitle';
 import Team from './Team';
 import './BoardHeader.css';
-import BoardDocument from '../../documents/board.doc';
-import BoardMenu from './BoardMenu';
-import { FaList } from 'react-icons/fa';
-import BoardButton from './BoardButton';
-import AddNewListModal from './AddNewListModal';
-import TeamListModal from './TeamListModal';
-import { VerticalLine } from '../layout/VerticalLine';
-import { observer } from 'mobx-react-lite';
-import { useInterface } from '../providers/InterfaceProvider';
 
 interface BoardHeaderProps {
   board: BoardDocument;
 }
 
 const BoardHeader = ({ board }: BoardHeaderProps) => {
-  const { isEditable, isKioskMode } = useInterface();
+  const { isEditable, isKioskMode, setMenu } = useInterface();
+
+  const toggleMenu = () => setMenu(true);
 
   return (
     <div className='flex justify-between items-center'>
@@ -38,14 +40,19 @@ const BoardHeader = ({ board }: BoardHeaderProps) => {
         />
         {isEditable && !isKioskMode && (
           <>
-            <VerticalLine />
             <BoardButton
-              icon={<FaList />}
-              text='Add list'
+              icon={<MdViewColumn size='16px' />}
+              text='Add column'
               renderModal={props => (
                 <AddNewListModal boardId={board.id} {...props} />
               )}
             />
+            <BoardButton
+              icon={<MdTimeline size='16px' />}
+              text='Activity'
+              onClick={toggleMenu}
+            />
+
             <BoardMenu className='ml-2' board={board} />
           </>
         )}

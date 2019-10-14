@@ -14,7 +14,8 @@ interface ListsProps {
   onCardMove: (
     card: CardDocument['ref'],
     listBefore: ListDocument['ref'],
-    listAfter: ListDocument['ref']
+    listAfter: ListDocument['ref'],
+    cardTitle: string
   ) => void;
 }
 
@@ -139,7 +140,8 @@ const ListColumns = ({ lists, onCardMove }: ListsProps) => {
           onCardMove(
             removedCard.ref,
             sourceListDocument.ref,
-            destListDocument.ref
+            destListDocument.ref,
+            removedCard.data.title
           )
         )
         .catch(e => {

@@ -14,7 +14,7 @@ function useStoreData<Selection, ContextData, Store>(
 ) {
   const value = useContext(context);
   if (!value) {
-    throw new Error();
+    throw new Error('useStoreData error');
   }
   const store = storeSelector(value);
   return useObserver(() => dataSelector(store));

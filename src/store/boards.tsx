@@ -9,18 +9,18 @@ class BoardsStore {
   @observable lists: ListDocument[] = [];
 
   @action
-  setCurrentBoard(board: BoardDocument) {
+  setCurrentBoard = (board: BoardDocument) => {
     this.currentBoard = board;
-  }
+  };
 
   @action
-  setListsFromCurrentBoard(lists: ListDocument[]) {
+  setListsFromCurrentBoard = (lists: ListDocument[]) => {
     this.lists = lists;
-  }
+  };
 
-  getList(id: string) {
+  getList = (id: string) => {
     return this.lists.find(list => list.id === id);
-  }
+  };
 }
 
 interface BoardsContextProp {
