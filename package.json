@@ -1,7 +1,7 @@
 {
   "name": "easy-flow",
   "version": "0.1.0",
-  "description": "An open source kanban application created with React and Redux.",
+  "description": "A real tiime collaborative project manager based on Kanban methodology.",
   "scripts": {
     "dev": "next -H 0.0.0.0",
     "build": "next build",
@@ -12,7 +12,7 @@
     "tslint:check": "tslint-config-prettier-check ./tslint.json",
     "lint:fix": "tslint --fix -p . '{src/**,pages/**}/*.{ts,tsx}' -c ./tslint.json"
   },
-  "author": "Markus Englund <markus.s.englund@gmail.com>",
+  "author": "Fellipe Pinheiro <pinheiro.llip@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
