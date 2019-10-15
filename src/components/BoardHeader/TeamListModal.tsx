@@ -11,6 +11,7 @@ import { useKeySubmit } from '../../hooks/use-key-submit';
 import { emitter } from '../../libs/emitter';
 import Dialog from '../Dialog/Dialog';
 import { Avatar } from '../Avatar/Avatar';
+import Input from '../styled/Input';
 
 interface TeamListModalProps {
   board?: BoardDocument;
@@ -120,14 +121,13 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
       <>
         <div className='m-4 mt-0 sm:mt-0 sm:m-8'>
           <label className='text-white'>Add a new member</label>
-          <input
+          <Input
             placeholder='member@email.com'
             autoFocus
             type={'text'}
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='bg-gray-700 shadow appearance-none rounded w-full py-2 px-3 mt-5 text-white leading-tight'
           />
         </div>
         <ul>

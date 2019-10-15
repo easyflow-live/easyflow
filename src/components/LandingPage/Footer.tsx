@@ -8,7 +8,10 @@ const Footer = () => (
         Terms
       </a> */}
       <Link href='/privacy'>
-        <a className='hover:text-pink-500'>Privacy</a>
+        <a className='hover:text-pink-500 mr-2'>Privacy</a>
+      </Link>
+      <Link href='http://twitter.com/pinheirofellipe'>
+        <a className='hover:text-pink-500'>Twitter</a>
       </Link>
     </div>
   </footer>

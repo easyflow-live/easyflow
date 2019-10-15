@@ -6,7 +6,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = withSASS(
   withCSS({
-    webpack: config => {
+    webpack: (config, env) => {
       config.plugins = config.plugins || [];
 
       config.plugins = [
@@ -14,7 +14,10 @@ module.exports = withSASS(
 
         // Read the .env file
         new Dotenv({
-          path: path.join(__dirname, '.env'),
+          path: path.join(
+            __dirname,
+            env === 'production' ? '.env' : '.env-dev'
+          ),
           systemvars: true
         })
       ];
