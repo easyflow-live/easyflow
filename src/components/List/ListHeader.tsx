@@ -61,7 +61,7 @@ const ListHeader = ({
       className={`flex inline-flex items-center flex-shrink-0 p-3 rounded-lg ${
         isDragging ? 'bg-gray-600' : ''
       }`}
-      {...isEditable && dragHandleProps}
+      {...(isEditable && dragHandleProps)}
     >
       {isOpen && isEditable ? (
         <div>
@@ -70,7 +70,7 @@ const ListHeader = ({
             value={newTitle}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-transparent leading-tight'
+            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-gray-600 leading-tight'
             onBlur={handleSubmit}
             spellCheck={false}
           />
@@ -84,11 +84,11 @@ const ListHeader = ({
             handleButtonKeyDown(event);
             dragHandleProps.onKeyDown(event);
           }}
-          className='text-white font-semibold w-full cursor-pointer break-words flex-grow'
+          className='text-white font-semibold w-full cursor-text break-words flex-grow'
         >
           <span
             title='Click to change the list title'
-            className={isEditable ? 'cursor-pointer' : ''}
+            className={isEditable ? 'cursor-text' : ''}
           >
             {listTitle}
           </span>

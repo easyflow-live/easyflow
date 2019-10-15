@@ -79,7 +79,7 @@ class BoardTitle extends Component<BoardTitleProps, State> {
         onChange={this.handleChange}
         onBlur={this.revertTitle}
         onFocus={this.handleFocus}
-        className='text-xl shadow appearance-none rounded py-1 px-2 text-white bg-transparent leading-tight'
+        className='text-xl shadow appearance-none rounded py-1 px-2 text-white bg-gray-700 leading-tight'
         spellCheck={false}
       />
     ) : (

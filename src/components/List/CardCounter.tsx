@@ -69,7 +69,7 @@ const CardCounter = ({
           value={maxValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-transparent leading-tight'
+          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-gray-600 leading-tight'
           onBlur={handleSubmit}
         />
       ) : (
@@ -81,7 +81,7 @@ const CardCounter = ({
           className={`
               text-white text-sm rounded-full h-8 w-10 flex items-center justify-center
               ${reachedLimit && !isDefault && 'bg-red-500'}
-              ${editable ? 'cursor-pointer' : ''}
+              ${editable ? 'cursor-text' : ''}
             `}
           onClick={handleOnClick}
         >
