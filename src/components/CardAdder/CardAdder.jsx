@@ -51,7 +51,7 @@ class CardAdder extends Component {
     const index = (await cards.ref.get()).size;
     const createdCard = await cards.add({
       text: newText,
-      color: 'white',
+      color: '#a0aec0',
       date: '',
       index,
       createdAt: Date.now(),
@@ -83,7 +83,7 @@ class CardAdder extends Component {
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={newText}
-            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 leading-tight'
+            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 bg-gray-500 leading-tight'
             placeholder='Add a new card...'
             spellCheck={false}
             onBlur={this.toggleCardComposer}
