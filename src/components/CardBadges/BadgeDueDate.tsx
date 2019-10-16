@@ -4,6 +4,8 @@ import format from 'date-fns/format';
 import { useMemo } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 
+import Badge from './Badge';
+
 interface BadgeDueDateProps {
   date: any;
 }
@@ -50,11 +52,11 @@ const BadgeDueDate = ({ date }: BadgeDueDateProps) => {
 
   return (
     date && (
-      <div className={`badge ${dueDateColor}`}>
+      <Badge className={`${dueDateColor}`}>
         <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
-      </div>
+      </Badge>
     )
   );
 };
