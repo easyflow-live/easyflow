@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import classnames from 'classnames';
 
 const StyledInput = styled.input`
   &::placeholder {
@@ -8,8 +9,11 @@ const StyledInput = styled.input`
 
 const Input = props => (
   <StyledInput
-    className='bg-gray-600 shadow appearance-none rounded w-full py-2 px-3 text-white leading-tight'
     {...props}
+    className={classnames(
+      'bg-gray-600 shadow appearance-none rounded w-full py-2 px-3 text-white leading-tight',
+      props.className || ''
+    )}
   />
 );
 

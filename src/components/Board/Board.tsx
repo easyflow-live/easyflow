@@ -13,7 +13,7 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
-import './Board.scss';
+import './Board.css';
 import BoardMenu from './BoardMenu';
 
 interface BoardProps {
@@ -160,7 +160,6 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
                     <CreateContentEmpty boardId={board.id} />
                   </AnimatedOpacity>
                 )}
-                <div className='board-underlay' />
               </div>
               <BoardMenu board={board} />
             </div>

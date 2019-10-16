@@ -123,6 +123,7 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
           <label className='text-white'>Add a new member</label>
           <Input
             placeholder='member@email.com'
+            className='mt-4'
             autoFocus
             type={'text'}
             value={value}

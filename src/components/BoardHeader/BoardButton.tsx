@@ -1,5 +1,5 @@
 import React, { useRef, useState, CSSProperties } from 'react';
-import './BoardButton.scss';
+import styled from 'styled-components';
 
 interface BoardButtonProps {
   icon: React.ReactChild;
@@ -21,8 +21,7 @@ const BoardButton = ({
 
   return (
     <>
-      <button
-        className='board-button'
+      <StyledButton
         ref={buttonRef}
         onClick={() => {
           if (onClick) {
@@ -34,7 +33,7 @@ const BoardButton = ({
       >
         <div className='modal-icon'>{icon}</div>
         {text && <div className='board-header-right-text'>&nbsp;{text}</div>}
-      </button>
+      </StyledButton>
       {renderModal &&
         renderModal({
           isOpen,
@@ -46,3 +45,21 @@ const BoardButton = ({
 };
 
 export default BoardButton;
+
+const StyledButton = styled.button`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 10px 8px 10px;
+  border-radius: 3px;
+  color: #fff;
+  transition: background 0.1s;
+  cursor: pointer;
+  margin-left: 5px;
+  min-height: 40px;
+
+  &:hover,
+  &:focus {
+    background: rgba(0, 0, 0, 0.2);
+  }
+`;

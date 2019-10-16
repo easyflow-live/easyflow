@@ -6,7 +6,6 @@ import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useInterface } from '../providers/InterfaceProvider';
 import CardCounter from './CardCounter';
 import ListMenu from './ListMenu';
-import './ListHeader.scss';
 
 interface ListHeaderProps {
   listTitle: string;
