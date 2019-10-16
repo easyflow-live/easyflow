@@ -44,6 +44,12 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     }
   }
 
+  componentDidUpdate() {
+    if (this.props.board.data.title) {
+      window.document.title = `${this.props.board.data.title} | Easy Flow`;
+    }
+  }
+
   handeCardMoveAction(
     card: CardDocument['ref'],
     listBefore: ListDocument['ref'],
