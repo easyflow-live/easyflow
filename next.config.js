@@ -14,10 +14,7 @@ module.exports = withSASS(
 
         // Read the .env file
         new Dotenv({
-          path: path.join(
-            __dirname,
-            env === 'production' ? '.env' : '.env-dev'
-          ),
+          path: path.join(__dirname, env === 'production' ? '.env' : '.env'),
           systemvars: true
         })
       ];
