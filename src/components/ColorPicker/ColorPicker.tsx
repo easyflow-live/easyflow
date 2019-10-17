@@ -1,5 +1,6 @@
 import ClickOutside from '../ClickOutside/ClickOutside';
 import { useRef, useState } from 'react';
+import CardOptionButton from '../CardModal/CardOptionButton';
 
 interface PickerModalProps {
   isOpen: boolean;
@@ -60,8 +61,7 @@ const ColorPicker = ({ onChange }) => {
 
   return (
     <div>
-      <button
-        className='options-list-button'
+      <CardOptionButton
         onClick={() => setIsOpen(!isOpen)}
         ref={buttonRef}
         aria-haspopup
@@ -73,7 +73,7 @@ const ColorPicker = ({ onChange }) => {
           className='modal-icon'
         />
         &nbsp;Color
-      </button>
+      </CardOptionButton>
 
       <PickerModal
         isOpen={isOpen}

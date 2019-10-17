@@ -8,6 +8,7 @@ import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
 import { useSession } from '../../hooks/use-session';
 import CardDocument from '../../documents/card.doc';
+import CardOptionButton from './CardOptionButton';
 
 interface Props {
   card: CardDocument;
@@ -102,12 +103,12 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
   };
 
   return (
-    <button onClick={toggleAssignment} className='options-list-button'>
+    <CardOptionButton onClick={toggleAssignment}>
       <div className='modal-icon'>
         <FaUser />
       </div>
       &nbsp;Toggle assignment
-    </button>
+    </CardOptionButton>
   );
 });
 

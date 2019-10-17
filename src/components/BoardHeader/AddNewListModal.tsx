@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import BoardDocument from '../../documents/board.doc';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import Dialog from '../Dialog/Dialog';
+import Input from '../styled/Input';
 
 interface AddNewListModalProps {
   boardId?: string;
@@ -71,14 +72,13 @@ const AddNewListModal = ({
   return (
     <Dialog title='New list' isOpen={isOpen} onClose={toggleIsOpen}>
       <div className='m-4 sm:m-8 mt-0 sm:mt-0'>
-        <input
+        <Input
           placeholder='Type a name'
           autoFocus
           type={'text'}
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='bg-gray-700 shadow appearance-none rounded w-full py-2 px-3 text-white leading-tight'
           disabled={isSubmit}
         />
       </div>

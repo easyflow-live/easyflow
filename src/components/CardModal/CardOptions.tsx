@@ -1,6 +1,6 @@
 import React, { Component, createRef, RefObject } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { MdAlarm } from 'react-icons/md';
+import { MdAlarm, MdColorize } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
 import { cards } from '../../core/actions';
@@ -13,6 +13,9 @@ import Modal from '../Modal/Modal';
 import Calendar from './Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
+import CardOptionButton from './CardOptionButton';
+import CardOptionColors from './CardOptionColors';
+import { observer } from 'mobx-react';
 
 interface CardOptionsProps {
   isColorPickerOpen: boolean;
@@ -60,9 +63,11 @@ class CardOptions extends Component<CardOptionsProps, State> {
 
   changeColor = color => {
     const { card, toggleColorPicker } = this.props;
-    if (card.data.color !== color) {
-      card.ref.update({ color });
+
+    if (card.data.color !== color.code) {
+      card.ref.update({ colorRef: color.ref, color: color.code });
     }
+
     toggleColorPicker();
     this.colorPickerButton.current.focus();
   };
@@ -104,64 +109,49 @@ class CardOptions extends Component<CardOptionsProps, State> {
           <AddTagsWithAutocomplete card={card} />
         </div>
         <div className='mt-xs'>
-          <button onClick={this.deleteCard} className='options-list-button'>
+          <CardOptionButton
+            onClick={this.deleteCard}
+            className='hover:text-red-500'
+          >
             <div className='modal-icon'>
               <FaTrash />
             </div>
             &nbsp;Delete
-          </button>
+          </CardOptionButton>
         </div>
         <div className='modal-color-picker-wrapper'>
-          <button
-            className='options-list-button'
+          <CardOptionButton
             onClick={toggleColorPicker}
             onKeyDown={this.handleKeyDown}
             ref={this.colorPickerButton}
             aria-haspopup
             aria-expanded={isColorPickerOpen}
           >
-            <img
-              src={'/static/images/color-icon.png'}
-              alt='colorwheel'
-              className='modal-icon'
-            />
+            <MdColorize />
             &nbsp;Color
-          </button>
+          </CardOptionButton>
           {isColorPickerOpen && (
             <ClickOutside
               eventTypes='click'
               handleClickOutside={this.handleClickOutside}
             >
-              {/* eslint-disable */}
-              <div
-                className='modal-color-picker'
+              <CardOptionColors
                 onKeyDown={this.handleKeyDown}
-              >
-                {['white', '#6df', '#6f6', '#ff6', '#fa4', '#f66'].map(
-                  color => (
-                    <button
-                      key={color}
-                      style={{ background: color }}
-                      className='color-picker-color'
-                      onClick={() => this.changeColor(color)}
-                    />
-                  )
-                )}
-              </div>
+                onClick={this.changeColor}
+              />
             </ClickOutside>
           )}
         </div>
         <div>
-          <button
+          <CardOptionButton
             onClick={this.toggleCalendar}
-            className='options-list-button'
             ref={this.calendaButtonRef}
           >
             <div className='modal-icon'>
               <MdAlarm />
             </div>
             &nbsp;Due date
-          </button>
+          </CardOptionButton>
         </div>
         <CardOptionAssignToMe card={card} listId={this.props.listId} />
         <Modal
@@ -180,4 +170,4 @@ class CardOptions extends Component<CardOptionsProps, State> {
   }
 }
 
-export default CardOptions;
+export default observer(CardOptions);

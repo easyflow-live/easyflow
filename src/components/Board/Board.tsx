@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
+import { Collection } from 'firestorter';
 
 import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
+import ColorDocument from '../../documents/color.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
-import './Board.scss';
+import './Board.css';
 import BoardMenu from './BoardMenu';
 
 interface BoardProps {
@@ -41,6 +43,20 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     if (this.props.board) {
       boardsStore.setCurrentBoard(this.props.board);
       boardsStore.setListsFromCurrentBoard(this.props.board.lists.docs);
+
+      if (!boardsStore.colors.length) {
+        const colors = new Collection<ColorDocument>('colors', {
+          createDocument: (src, opts) => new ColorDocument(src, opts),
+        }).docs;
+
+        boardsStore.setColors(colors);
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.board.data.title) {
+      window.document.title = `${this.props.board.data.title} | Easy Flow`;
     }
   }
 
@@ -154,7 +170,6 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
                     <CreateContentEmpty boardId={board.id} />
                   </AnimatedOpacity>
                 )}
-                <div className='board-underlay' />
               </div>
               <BoardMenu board={board} />
             </div>

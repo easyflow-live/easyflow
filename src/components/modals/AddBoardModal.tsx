@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
 import Dialog from '../Dialog/Dialog';
+import Input from '../styled/Input';
 
 interface AddBoardModalProps {
   isOpen?: boolean;
@@ -56,14 +57,13 @@ const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
   return (
     <Dialog title='New board' isOpen={isOpen} onClose={toggleIsOpen}>
       <div className='m-4 sm:m-8 mt-0 sm:mt-0'>
-        <input
+        <Input
           placeholder='Type a name'
           autoFocus
           type={'text'}
           value={title}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='bg-gray-700 shadow appearance-none rounded w-full py-2 px-3 text-white leading-tight'
         />
       </div>
     </Dialog>

@@ -4,12 +4,14 @@ import 'firebase/firestore';
 
 import UserDocument from './user.doc';
 import ListDocument from './list.doc';
+import ColorDocument from './color.doc';
 
 export interface Card {
   title?: string;
   text: string;
   index: number;
   color: string;
+  colorRef: ColorDocument['ref'];
   date: string;
   assignee: UserDocument['ref'][];
   tags: string[];

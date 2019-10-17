@@ -1,0 +1,10 @@
+.lists {
+  display: inline-flex;
+  align-items: flex-start;
+  height: 100%;
+  user-select: none;
+}
+
+.kiosk > div:first-child {
+  padding-top: 20px;
+}

@@ -5,11 +5,17 @@
 
 .react-autosuggest__input {
   width: 100%;
-  padding: 10px 15px;
+  padding: 10px;
   font-family: inherit;
   font-size: 16px;
   border: 0;
   border-radius: 3px;
+  background-color: #718096;
+  color: #fff;
+
+  &::placeholder {
+    color: #1a202c; // bg-gray-900
+  }
 }
 
 .react-autosuggest__input--open {
@@ -23,12 +29,13 @@
 
 .react-autosuggest__suggestions-container--open {
   display: block;
+  color: #fff;
   position: absolute;
   top: 100%;
   width: 100%;
   margin-left: 0px;
   border: 0;
-  background-color: #fff;
+  background-color: #718096;
   font-family: inherit;
   font-size: 16px;
   border-bottom-left-radius: 3px;
@@ -40,17 +47,17 @@
 
 .react-autosuggest__suggestions-list {
   margin: 0;
-  padding: 0px 8px 8px;
+  padding: 0px 0px 8px 0px;
   list-style-type: none;
   margin-top: 8px;
 }
 
 .react-autosuggest__suggestion {
   cursor: pointer;
-  padding: 10px 8px;
+  padding: 10px;
 }
 
 .react-autosuggest__suggestion--highlighted {
   color: #fff;
-  background-color: #ed64a6;
+  background-color: #2d3748;
 }

@@ -5,7 +5,7 @@
 .react-tagsinput-input {
   width: 100%;
   color: white;
-  background-color: #4a5568;
+  background-color: #718096;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -14,4 +14,8 @@
   line-height: 1.25;
   border-width: 0px;
   border-radius: 0.25rem;
+}
+
+.react-tagsinput-input::placeholder {
+  color: #1a202c;
 }

@@ -11,7 +11,7 @@ class ColorPicker extends Component {
   static propTypes = {
     boardId: PropTypes.string.isRequired,
     boardColor: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired
   };
 
   handleSelection = color => {
@@ -27,20 +27,20 @@ class ColorPicker extends Component {
     const colors = ['blue', 'green', 'red', 'pink'];
     return (
       <Wrapper
-        className="color-picker-wrapper"
+        className='color-picker-wrapper'
         onSelection={this.handleSelection}
       >
-        <Button className="color-picker">
+        <Button className='color-picker'>
           <img
             src={'/static/images/color-icon.png'}
-            alt="colorwheel"
-            className="modal-icon"
+            alt='colorwheel'
+            className='modal-icon'
           />
-          <div className="board-header-right-text">
+          <div className='board-header-right-text'>
             &nbsp;Color &nbsp;&#9662;
           </div>
         </Button>
-        <Menu className="color-picker-menu">
+        <Menu className='color-picker-menu'>
           {colors.map(color => (
             <MenuItem
               value={color}
@@ -60,7 +60,7 @@ const mapStateToProps = (state, ownProps) => {
   const { boardId } = ownProps.match.params;
   return {
     boardColor: state.boardsById[boardId].color,
-    boardId,
+    boardId
   };
 };
 

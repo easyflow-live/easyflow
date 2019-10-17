@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { FaTrash, FaEllipsisH } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
 
 import Menu, { MenuItem, Button } from '../Menu';
 import ListDocument from 'src/documents/list.doc';
@@ -39,9 +40,9 @@ const ListMenu = ({ list, className }: ListMenuProps) => {
         onSelection={handleSelection}
         className={`w-56 px-0 py-2 ${className}`}
         trigger={
-          <Button className='board-button' tag='button'>
+          <StyledButton tag='button'>
             <FaEllipsisH />
-          </Button>
+          </StyledButton>
         }
         items={
           <>
@@ -58,3 +59,21 @@ const ListMenu = ({ list, className }: ListMenuProps) => {
 };
 
 export default ListMenu;
+
+const StyledButton = styled(Button)`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 10px 8px 10px;
+  border-radius: 3px;
+  color: #fff;
+  transition: background 0.1s;
+  cursor: pointer;
+  margin-left: 5px;
+  min-height: 40px;
+
+  &:hover,
+  &:focus {
+    background: rgba(0, 0, 0, 0.2);
+  }
+`;
