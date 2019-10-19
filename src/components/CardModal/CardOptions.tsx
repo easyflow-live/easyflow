@@ -2,6 +2,7 @@ import React, { Component, createRef, RefObject } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm, MdColorize } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import { observer } from 'mobx-react';
 
 import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
@@ -15,7 +16,7 @@ import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 import CardOptionButton from './CardOptionButton';
 import CardOptionColors from './CardOptionColors';
-import { observer } from 'mobx-react';
+import Divider from '../Divider/Divider';
 
 interface CardOptionsProps {
   isColorPickerOpen: boolean;
@@ -99,27 +100,17 @@ class CardOptions extends Component<CardOptionsProps, State> {
     const { isCalendarOpen } = this.state;
 
     return (
-      <div
-        className='options-list'
-        style={{
-          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
-        }}
-      >
-        <div className='mb-1'>
-          <AddTagsWithAutocomplete card={card} />
-        </div>
-        <div className='mt-xs'>
-          <CardOptionButton
-            onClick={this.deleteCard}
-            className='hover:text-red-500'
-          >
-            <div className='modal-icon'>
-              <FaTrash />
-            </div>
-            &nbsp;Delete
-          </CardOptionButton>
-        </div>
-        <div className='modal-color-picker-wrapper'>
+      <>
+        <div
+          className='options-list text-white bg-gray-700 px-0 py-2 ml-2 shadow-lg rounded'
+          style={{
+            alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
+          }}
+        >
+          <div className='mb-2 min-w-full px-2'>
+            <AddTagsWithAutocomplete card={card} />
+          </div>
+
           <CardOptionButton
             onClick={toggleColorPicker}
             onKeyDown={this.handleKeyDown}
@@ -127,22 +118,23 @@ class CardOptions extends Component<CardOptionsProps, State> {
             aria-haspopup
             aria-expanded={isColorPickerOpen}
           >
-            <MdColorize />
+            <div className='modal-icon'>
+              <MdColorize />
+            </div>
             &nbsp;Color
+            {isColorPickerOpen && (
+              <ClickOutside
+                eventTypes='click'
+                handleClickOutside={this.handleClickOutside}
+              >
+                <CardOptionColors
+                  onKeyDown={this.handleKeyDown}
+                  onClick={this.changeColor}
+                />
+              </ClickOutside>
+            )}
           </CardOptionButton>
-          {isColorPickerOpen && (
-            <ClickOutside
-              eventTypes='click'
-              handleClickOutside={this.handleClickOutside}
-            >
-              <CardOptionColors
-                onKeyDown={this.handleKeyDown}
-                onClick={this.changeColor}
-              />
-            </ClickOutside>
-          )}
-        </div>
-        <div>
+
           <CardOptionButton
             onClick={this.toggleCalendar}
             ref={this.calendaButtonRef}
@@ -152,8 +144,19 @@ class CardOptions extends Component<CardOptionsProps, State> {
             </div>
             &nbsp;Due date
           </CardOptionButton>
+
+          <CardOptionAssignToMe card={card} listId={this.props.listId} />
+
+          <Divider className='my-4' />
+
+          <CardOptionButton onClick={this.deleteCard} className='text-red-400'>
+            <div className='modal-icon'>
+              <FaTrash />
+            </div>
+            &nbsp;Delete
+          </CardOptionButton>
         </div>
-        <CardOptionAssignToMe card={card} listId={this.props.listId} />
+
         <Modal
           targetElement={this.calendaButtonRef}
           isOpen={isCalendarOpen}
@@ -165,7 +168,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
             toggleCalendar={this.toggleCalendar}
           />
         </Modal>
-      </div>
+      </>
     );
   }
 }
