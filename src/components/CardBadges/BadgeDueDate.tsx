@@ -29,7 +29,7 @@ const BadgeDueDate = ({ date }: BadgeDueDateProps) => {
         if (dueDateFromToday < -1) {
           return `${Math.abs(dueDateFromToday)} days ago`;
         } else {
-          return format(new Date(date.toDate()), 'D MMM');
+          return format(new Date(date.toDate()), 'd MMM');
         }
     }
   }, [dueDateFromToday]);
