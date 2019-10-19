@@ -31,7 +31,7 @@ const BoardButton = ({
         }}
         style={style}
       >
-        <div className='modal-icon'>{icon}</div>
+        <div className='btn-icon'>{icon}</div>
         {text && <div className='board-header-right-text'>&nbsp;{text}</div>}
       </StyledButton>
       {renderModal &&
@@ -61,5 +61,11 @@ const StyledButton = styled.button`
   &:hover,
   &:focus {
     background: rgba(0, 0, 0, 0.2);
+  }
+
+  & > .btn-icon {
+    flex-shrink: 0;
+
+    margin-bottom: 3px;
   }
 `;
