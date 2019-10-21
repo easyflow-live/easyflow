@@ -34,7 +34,8 @@ const BoardAdder = ({ style }) => {
         title,
         color: '',
         users: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
-        lists: []
+        lists: [],
+        completed: false
       });
 
     setIsOpen(false);

@@ -99,7 +99,7 @@ const Card = ({ card, index, isDraggingOver, listId }: CardProps) => {
               card.data.date ||
               card.data.tags ||
               checkboxes.total > 0) && (
-              <CardBadges checkboxes={checkboxes} card={card} />
+              <CardBadges checkboxes={checkboxes} card={card} listId={listId} />
             )}
           </div>
           {/* Remove placeholder when not dragging over to reduce snapping */}
