@@ -25,6 +25,9 @@
   background: white;
   transition: background 0.2s;
 }
+.modal-textarea-wrapper .DueComplete {
+  display: inline-block;
+}
 
 .modal-textarea {
   flex-grow: 1;

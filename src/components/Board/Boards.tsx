@@ -19,7 +19,7 @@ export const Boards = observer(({ boards }: BoardsProps) => {
     <div className='mt-5'>
       <TransitionGroup className={`inline-flex flex-wrap w-full`}>
         {boards.docs.length > 0 && (
-          <BoardAdder style={{ minHeight: '140px', marginLeft: 0 }} />
+          <BoardAdder style={{ minHeight: '140px' }} />
         )}
 
         {boards.docs.map(board => (

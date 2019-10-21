@@ -13,6 +13,7 @@ export interface Card {
   color: string;
   colorRef: ColorDocument['ref'];
   date: string;
+  completed: boolean;
   assignee: UserDocument['ref'][];
   tags: string[];
   createdAt: number;

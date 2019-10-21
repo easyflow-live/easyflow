@@ -8,6 +8,7 @@ import {
   MoveCardData,
   AssigneeCardData,
   EditCardData,
+  CompleteCardData,
 } from '../../core/actions/card.actions';
 import { Avatar } from '../Avatar/Avatar';
 
@@ -82,6 +83,21 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
   );
 };
 
+const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
+  const store = useBoardsData(s => s);
+
+  return (
+    <>
+      <span className='text-gray-400'> marked a card </span>
+      <span>{data.title}</span>
+      <span className='text-gray-400'> in </span>
+      <span>{store.getList(data.list.id).data.title}</span>
+      <span className='text-gray-400'> column as </span>
+      <span>{data.completed ? 'completed' : 'uncompleted'}</span>
+    </>
+  );
+};
+
 const CardsActions = ({ data }: { data: any }) => {
   switch (data.action) {
     case CardActions.NEW:
@@ -98,6 +114,9 @@ const CardsActions = ({ data }: { data: any }) => {
 
     case CardActions.EDIT:
       return <EditCardAction data={data} />;
+
+    case CardActions.COMPLETE:
+      return <CompleteCardAction data={data} />;
 
     default:
       return null;

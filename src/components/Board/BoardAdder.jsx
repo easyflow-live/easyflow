@@ -34,7 +34,8 @@ const BoardAdder = ({ style }) => {
         title,
         color: '',
         users: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
-        lists: []
+        lists: [],
+        completed: false
       });
 
     setIsOpen(false);
@@ -77,7 +78,7 @@ const BoardAdder = ({ style }) => {
     <button
       title='Add a new board'
       onClick={toggleOpen}
-      className='board-adder bg-pink-500 hover:bg-pink-600 text-4xl shadow-lg rounded-lg p-4 m-2 w-32 cursor-pointer text-white'
+      className='board-adder bg-pink-500 hover:bg-pink-600 text-4xl shadow-lg rounded-lg p-4 ml-0 mr-4 mb-4 w-32 cursor-pointer text-white'
       style={style}
     >
       +

@@ -147,7 +147,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
 
           <CardOptionAssignToMe card={card} listId={this.props.listId} />
 
-          <Divider className='my-4' />
+          <Divider />
 
           <CardOptionButton onClick={this.deleteCard} className='text-red-400'>
             <div className='modal-icon'>
