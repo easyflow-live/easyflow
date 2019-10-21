@@ -99,7 +99,7 @@ const CardModal = ({
             card.data.date ||
             card.data.tags ||
             checkboxes.total > 0) && (
-            <CardBadges checkboxes={checkboxes} card={card} />
+            <CardBadges checkboxes={checkboxes} card={card} listId={listId} />
           )}
         </div>
         <CardOptions
