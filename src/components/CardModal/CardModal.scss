@@ -4,7 +4,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .modal {
@@ -24,6 +24,9 @@
   border-radius: 3px;
   background: white;
   transition: background 0.2s;
+}
+.modal-textarea-wrapper .DueComplete {
+  display: inline-block;
 }
 
 .modal-textarea {

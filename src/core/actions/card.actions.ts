@@ -11,6 +11,7 @@ export enum CardActions {
   NEW = 'new',
   REMOVE = 'remove',
   ASSIGNEE = 'assignee',
+  COMPLETE = 'complete',
 }
 
 interface BaseCardData {
@@ -123,4 +124,23 @@ export const assigneeCardAction = ({
   createAction(Actions.UPDATE_CARD, memberCreator, {
     ...data,
     action: CardActions.ASSIGNEE,
+  });
+
+export interface CompleteCardData extends BaseCardData {
+  list: ListDocument['ref'];
+  action: CardActions.COMPLETE;
+  title: string;
+  completed: boolean;
+}
+
+export const completeCardAction = ({
+  memberCreator,
+  data,
+}: {
+  memberCreator: UserDocument['ref'];
+  data: Omit<CompleteCardData, 'action'>;
+}) =>
+  createAction(Actions.UPDATE_CARD, memberCreator, {
+    ...data,
+    action: CardActions.COMPLETE,
   });

@@ -6,6 +6,8 @@ import {
   MenuItem as AriaMenuItem,
 } from 'react-aria-menubutton';
 
+import Divider from '../Divider/Divider';
+
 import './Menu.css';
 
 interface MenuProps {
@@ -15,10 +17,6 @@ interface MenuProps {
   className?: string;
   onSelection?: (value: any, event: Event) => void;
 }
-
-const Divider = ({ className = '' }) => (
-  <div className={`my-2 border-b border-solid border-gray-600 ${className} `} />
-);
 
 const Menu = ({
   trigger,

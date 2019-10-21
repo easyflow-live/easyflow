@@ -18,6 +18,7 @@
 .modal-icon {
   flex-shrink: 0;
   margin-bottom: 3px;
+  margin-right: 0.75rem;
 }
 
 .calendar-modal {
@@ -63,17 +64,13 @@
   }
 }
 
-.modal-color-picker-wrapper {
-  position: relative;
-}
-
 .modal-color-picker {
   position: absolute;
   top: 100%;
   left: 5%;
   display: flex;
   flex-wrap: wrap;
-  width: 131px;
+  width: 90%;
   padding: 5px;
   border-radius: 3px;
   color: black;
@@ -91,4 +88,8 @@
   margin: 2px;
   border: 1px #999 solid;
   border-radius: 3px;
+}
+
+.color-picker-color:hover {
+  border: 1px #fff solid;
 }
