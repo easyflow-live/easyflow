@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import shortid from 'shortid';
 
 import ClickOutside from '../ClickOutside/ClickOutside';
 import { useSession } from '../../hooks/use-session';
@@ -29,7 +28,6 @@ const BoardAdder = ({ style }) => {
       .firestore()
       .collection('boards')
       .add({
-        uid: shortid.generate(),
         owner: userDoc.ref,
         title,
         color: '',

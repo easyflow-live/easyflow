@@ -44,7 +44,7 @@ const BoardHeader = ({ board }: BoardHeaderProps) => {
               icon={<MdViewColumn size='16px' />}
               text='Add column'
               renderModal={props => (
-                <AddNewListModal boardId={board.id} {...props} />
+                <AddNewListModal board={board} {...props} />
               )}
             />
             <BoardButton

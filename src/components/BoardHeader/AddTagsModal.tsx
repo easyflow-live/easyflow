@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
@@ -7,32 +7,26 @@ import AddTags from '../Tag/AddTags';
 import Dialog from '../Dialog/Dialog';
 
 interface AddTagsModalProps {
-  boardId?: string;
+  board: BoardDocument;
   isOpen?: boolean;
-  toggleIsOpen?(): void;
+  toggleIsOpen: () => void;
 }
 
-const AddTagsModal = ({ boardId, toggleIsOpen, isOpen }: AddTagsModalProps) => {
-  const boardRef = useRef<BoardDocument>(null);
-
-  useEffect(() => {
-    boardRef.current = new BoardDocument(`boards/${boardId}`);
-  }, [boardId]);
-
+const AddTagsModal = ({ board, toggleIsOpen, isOpen }: AddTagsModalProps) => {
   const handleRemoveClick = (tag: string) => {
-    boardRef.current.removeTag(tag);
+    board.removeTag(tag);
   };
 
   return (
     <Dialog title='Tags' isOpen={isOpen} onClose={toggleIsOpen}>
       <div className='m-8 mt-0'>
-        <AddTags document={boardRef.current} />
+        <AddTags document={board} />
 
-        {boardRef.current && boardRef.current.data.tags && (
+        {board && board.data.tags && (
           <TagList
             removable
             className='mt-10'
-            tags={boardRef.current.data.tags}
+            tags={board.data.tags}
             onRemoveTag={handleRemoveClick}
           />
         )}

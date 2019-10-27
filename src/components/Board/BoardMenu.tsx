@@ -60,7 +60,7 @@ const BoardMenu = ({ board }) => {
       </div>
 
       <AddTagsModal
-        boardId={board.id}
+        board={board}
         isOpen={isTagsModalOpen}
         toggleIsOpen={toggleTagsModal}
       />

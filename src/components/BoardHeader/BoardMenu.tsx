@@ -71,7 +71,7 @@ const BoardMenu = ({ board, className }: BoardMenuProps) => {
       />
 
       <AddTagsModal
-        boardId={board.id}
+        board={board}
         isOpen={isTagsModalOpen}
         toggleIsOpen={toggleTagsModal}
       />
