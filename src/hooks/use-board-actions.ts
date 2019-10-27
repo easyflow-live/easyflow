@@ -11,9 +11,16 @@ export const useBoardActions = (board: BoardDocument) => {
     if (actionsRef.current) return;
 
     actionsRef.current = new Collection<ActionDocument>(() => 'actions', {
-      createDocument: (src, opts) => new ActionDocument(src, opts),
+      createDocument: (src, opts) =>
+        new ActionDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'Action document',
+        }),
       query: ref =>
         ref.where('data.board', '==', board.ref).orderBy('date', 'desc'),
+      debug: __DEV__,
+      debugName: 'Action collection',
     });
   }, [board]);
 
