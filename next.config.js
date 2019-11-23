@@ -3,10 +3,11 @@ const withSASS = require('@zeit/next-sass');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = withSASS(
   withCSS({
-    webpack: (config, env) => {
+    webpack: (config, { dev }) => {
       config.plugins = config.plugins || [];
 
       config.plugins = [
@@ -14,7 +15,7 @@ module.exports = withSASS(
 
         // Read the .env file
         new Dotenv({
-          path: path.join(__dirname, env === 'production' ? '.env' : '.env'),
+          path: path.join(__dirname, dev ? '.env-dev' : '.env'),
           systemvars: true
         })
       ];
@@ -24,6 +25,8 @@ module.exports = withSASS(
           config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
         }
       }
+
+      config.plugins.push(new webpack.DefinePlugin({ __DEV__: dev }));
 
       return config;
     }

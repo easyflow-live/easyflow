@@ -22,8 +22,15 @@ export default class BoardDocument extends Document<Board> {
     super(source, { ...options });
 
     this.lists = new Collection<ListDocument>(() => `${this.path}/lists`, {
-      createDocument: (src, opts) => new ListDocument(src, opts),
+      createDocument: (src, opts) =>
+        new ListDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'List document',
+        }),
       query: ref => ref.orderBy('index'),
+      debug: __DEV__,
+      debugName: 'List collection',
     });
   }
 

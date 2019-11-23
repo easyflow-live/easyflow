@@ -18,8 +18,15 @@ export default class UserDocument extends Document<User> {
     super(source, { ...options });
 
     this.boards = new Collection<BoardDocument>(() => 'boards', {
-      createDocument: (src, opts) => new BoardDocument(src, opts),
+      createDocument: (src, opts) =>
+        new BoardDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'Board document',
+        }),
       query: ref => ref.where('users', 'array-contains', this.ref),
+      debug: __DEV__,
+      debugName: 'Board collection',
     });
   }
 }
