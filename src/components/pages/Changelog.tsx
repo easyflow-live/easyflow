@@ -102,7 +102,7 @@ export default () => (
       </LogCard>
 
       <LogCard>
-        <LogDate>Sunday, October 19, 2019</LogDate>
+        <LogDate>Saturday, October 19, 2019</LogDate>
 
         <LogList type={LogTypes.improvements}>
           {['Improved inputs contrast, making them lighter.'].map((item, i) => (
