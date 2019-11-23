@@ -1,5 +1,4 @@
 import React from 'react';
-import Router from 'next/router';
 import { FaTrash, FaEllipsisH } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -16,7 +15,6 @@ const ListMenu = ({ list, className }: ListMenuProps) => {
   const removeList = async () => {
     try {
       await list.delete();
-      Router.push('/');
       toast(`The list ${list.data.title} was removed!`);
     } catch (error) {
       toast(`An error occurred. Please, try again.`);

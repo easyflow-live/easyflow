@@ -1,10 +1,17 @@
-import { Empty } from './Empty';
-import { CreateContent } from '../images/CreateContent';
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+
+import BoardDocument from '../../documents/board.doc';
+import { CreateContent } from '../images/CreateContent';
 import CallToActionButton from '../Buttons/CallToActionButton';
 import AddNewListModal from '../BoardHeader/AddNewListModal';
+import { Empty } from './Empty';
 
-const AddNewListButton = ({ boardId }) => {
+interface AddNewListButtonProps {
+  board: BoardDocument;
+}
+
+const AddNewListButton = observer(({ board }: AddNewListButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -15,19 +22,21 @@ const AddNewListButton = ({ boardId }) => {
         Add new list
       </CallToActionButton>
 
-      <AddNewListModal
-        boardId={boardId}
-        isOpen={isOpen}
-        toggleIsOpen={toggle}
-      />
+      <AddNewListModal board={board} isOpen={isOpen} toggleIsOpen={toggle} />
     </>
   );
-};
+});
 
-export const CreateContentEmpty = ({ boardId }) => (
-  <Empty
-    image={<CreateContent />}
-    message={`Let's start a new board! Add a new list to continue.`}
-    button={<AddNewListButton boardId={boardId} />}
-  />
+interface CreateContentEmptyProps {
+  board: BoardDocument;
+}
+
+export const CreateContentEmpty = observer(
+  ({ board }: CreateContentEmptyProps) => (
+    <Empty
+      image={<CreateContent />}
+      message={`Let's start a new board! Add a new list to continue.`}
+      button={<AddNewListButton board={board} />}
+    />
+  )
 );

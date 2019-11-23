@@ -21,9 +21,18 @@ export default class ListDocument extends Document<List> {
   constructor(source, options = {}) {
     super(source, { ...options });
 
-    this.cards = new Collection<CardDocument>(() => `${this.path}/cards`, {
-      createDocument: (src, opts) => new CardDocument(src, opts),
-      query: ref => ref.orderBy('index'),
-    });
+    if (this.id) {
+      this.cards = new Collection<CardDocument>(() => `${this.path}/cards`, {
+        createDocument: (src, opts) =>
+          new CardDocument(src, {
+            ...opts,
+            debug: __DEV__,
+            debugName: 'Card document',
+          }),
+        query: ref => ref.orderBy('index'),
+        debug: __DEV__,
+        debugName: 'Card collection',
+      });
+    }
   }
 }

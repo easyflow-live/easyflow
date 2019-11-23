@@ -167,7 +167,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
 
                 {isEditable && (
                   <AnimatedOpacity show={showEmpty}>
-                    <CreateContentEmpty boardId={board.id} />
+                    <CreateContentEmpty board={board} />
                   </AnimatedOpacity>
                 )}
               </div>

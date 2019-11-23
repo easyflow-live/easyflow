@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 
-import { useBoardActions } from '../../hooks/use-board-actions';
-import { useUsersData } from '../../store';
 import AddTagsModal from '../BoardHeader/AddTagsModal';
 import { observer } from 'mobx-react-lite';
 import { useInterface } from '../providers/InterfaceProvider';
-import ActionCard from '../ActionCard';
 import './BoardMenu.css';
 
+const Actions = dynamic(() => import('./Actions'));
+
 const BoardMenu = ({ board }) => {
-  const actions = useBoardActions(board);
   const { isMenuOpen, setMenu } = useInterface();
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
-  const store = useUsersData(s => s);
 
   const onClose = () => setMenu(false);
 
@@ -48,19 +46,12 @@ const BoardMenu = ({ board }) => {
           className='max-w-full overflow-y-auto'
           style={{ height: 'calc(100% - 49px)' }}
         >
-          {actions &&
-            actions.docs.map(action => (
-              <ActionCard
-                key={action.id}
-                action={action}
-                user={store.getUser(action.data.memberCreator.id)}
-              />
-            ))}
+          {isMenuOpen && <Actions board={board} />}
         </div>
       </div>
 
       <AddTagsModal
-        boardId={board.id}
+        board={board}
         isOpen={isTagsModalOpen}
         toggleIsOpen={toggleTagsModal}
       />

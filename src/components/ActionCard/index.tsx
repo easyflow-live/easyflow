@@ -15,12 +15,15 @@ import { Avatar } from '../Avatar/Avatar';
 const NewCardAction = ({ data }: { data: NewCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listTitle =
+    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> added a new card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> to </span>
-      <span>{store.getList(data.list.id).data.title}</span>
+      <span>{listTitle}</span>
       <span className='text-gray-400'> column</span>
     </>
   );
@@ -29,12 +32,15 @@ const NewCardAction = ({ data }: { data: NewCardData }) => {
 const RemoveCardAction = ({ data }: { data: NewCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listTitle =
+    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> removed a card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> from </span>
-      <span>{store.getList(data.list.id).data.title}</span>
+      <span>{listTitle}</span>
       <span className='text-gray-400'> column</span>
     </>
   );
@@ -43,14 +49,22 @@ const RemoveCardAction = ({ data }: { data: NewCardData }) => {
 const MoveCardAction = ({ data }: { data: MoveCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listBeforeTitle =
+    store.getList(data.listBefore.id) &&
+    store.getList(data.listBefore.id).data.title;
+
+  const listAfterTitle =
+    store.getList(data.listAfter.id) &&
+    store.getList(data.listAfter.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> moved a card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> from </span>
-      <span>{store.getList(data.listBefore.id).data.title}</span>
+      <span>{listBeforeTitle}</span>
       <span className='text-gray-400'> column to </span>
-      <span>{store.getList(data.listAfter.id).data.title}</span>
+      <span>{listAfterTitle}</span>
     </>
   );
 };
@@ -58,12 +72,15 @@ const MoveCardAction = ({ data }: { data: MoveCardData }) => {
 const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listTitle =
+    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> assigneed to card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> in </span>
-      <span>{store.getList(data.list.id).data.title}</span>
+      <span>{listTitle}</span>
       <span className='text-gray-400'> column</span>
     </>
   );
@@ -72,12 +89,15 @@ const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
 const EditCardAction = ({ data }: { data: EditCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listTitle =
+    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> edited a card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> in </span>
-      <span>{store.getList(data.list.id).data.title}</span>
+      <span>{listTitle}</span>
       <span className='text-gray-400'> column</span>
     </>
   );
@@ -86,12 +106,15 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
 const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
   const store = useBoardsData(s => s);
 
+  const listTitle =
+    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+
   return (
     <>
       <span className='text-gray-400'> marked a card </span>
       <span>{data.title}</span>
       <span className='text-gray-400'> in </span>
-      <span>{store.getList(data.list.id).data.title}</span>
+      <span>{listTitle}</span>
       <span className='text-gray-400'> column as </span>
       <span>{data.completed ? 'completed' : 'uncompleted'}</span>
     </>
