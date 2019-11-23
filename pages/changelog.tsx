@@ -1,8 +1,8 @@
 import { Title } from 'react-head';
 
-import Privacy from '../src/components/LandingPage/Privacy';
-import Footer from '../src/components/LandingPage/Footer';
+import Changelog from '../src/components/pages/Changelog';
 import Header from '../src/components/LandingPage/Header';
+import Footer from '../src/components/LandingPage/Footer';
 import { useSession } from '../src/hooks/use-session';
 
 export default () => {
@@ -12,9 +12,9 @@ export default () => {
 
   return (
     <>
-      <Title>Easy Flow Privacy</Title>
+      <Title>Easy Flow Changelog</Title>
       {!user && <Header />}
-      <Privacy />
+      <Changelog />
       <Footer />
     </>
   );
