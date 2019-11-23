@@ -3,19 +3,19 @@ import { Title } from 'react-head';
 import Privacy from '../src/components/LandingPage/Privacy';
 import Footer from '../src/components/LandingPage/Footer';
 import Header from '../src/components/LandingPage/Header';
+import { useSession } from '../src/hooks/use-session';
 
-export default () => (
-  <div>
-    <Title>Easy Flow Privacy</Title>
+export default () => {
+  const { user, initializing } = useSession();
 
-    <Header />
+  if (initializing) return null;
 
-    <main
-      className='w-full relative mx-auto px-6 py-16'
-      style={{ maxWidth: '1280px' }}
-    >
+  return (
+    <>
+      <Title>Easy Flow Privacy</Title>
+      {!user && <Header />}
       <Privacy />
       <Footer />
-    </main>
-  </div>
-);
+    </>
+  );
+};
