@@ -3,11 +3,12 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
-import { FaUserMinus } from 'react-icons/fa';
+import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
 
 import BoardDocument from '../../documents/board.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
 import { useKeySubmit } from '../../hooks/use-key-submit';
+import { useSession } from '../../hooks/use-session';
 import { emitter } from '../../libs/emitter';
 import Dialog from '../Dialog/Dialog';
 import { Avatar } from '../Avatar/Avatar';
@@ -29,8 +30,19 @@ const UserEmail = ({ email }) => (
   <span className='text-gray-500 font-light'>{email}</span>
 );
 
+const sortAlpha = (a, b) => {
+  if (a.username < b.username) {
+    return -1;
+  }
+  if (a.username > b.username) {
+    return 1;
+  }
+  return 0;
+};
+
 const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
   let { assignees, owner } = useBoardTeam(board);
+  const { userDoc } = useSession();
   const [value, setValue] = useState('');
 
   const save = async (newValue: string) => {
@@ -64,7 +76,7 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
     const assignee = assignees[index];
     assignees = assignees.splice(index, 1);
 
-    const userRef = await firebase
+    const userRef = firebase
       .firestore()
       .collection('users')
       .doc(assignee.email);
@@ -86,6 +98,33 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
     }
   };
 
+  const giveOwnership = async index => {
+    const assignee = assignees[index];
+
+    const userRef = firebase
+      .firestore()
+      .collection('users')
+      .doc(assignee.email);
+
+    const user = await userRef.get();
+
+    if (user.exists) {
+      firebase
+        .firestore()
+        .collection('boards')
+        .doc(board.id)
+        .update({
+          owner: userRef,
+        })
+        .then(r => {
+          toast(
+            `User ${assignee.username} is the new owner of ${board.data.title}!`
+          );
+          return r;
+        });
+    }
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -100,15 +139,8 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
     toggleIsOpen();
   });
 
-  const sortAlpha = (a, b) => {
-    if (a.username < b.username) {
-      return -1;
-    }
-    if (a.username > b.username) {
-      return 1;
-    }
-    return 0;
-  };
+  const ownerEmail = owner ? owner.email : '';
+  const AmITheBoardOwner = userDoc.data.email === ownerEmail;
 
   return (
     <Dialog
@@ -157,14 +189,23 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
                       <UserEmail email={item.email} />
                     </div>
                   </div>
-                  {owner.email !== item.email && (
-                    <button
-                      className='text-red-500 h-4'
-                      title={`Remove ${item.username}`}
-                      onClick={() => remove(key)}
-                    >
-                      <FaUserMinus size='24px' />
-                    </button>
+                  {owner.email !== item.email && AmITheBoardOwner && (
+                    <div>
+                      <button
+                        className='text-gray-500 hover:text-gray-900 h-4'
+                        title={`Give ${item.username} the board ownership`}
+                        onClick={() => giveOwnership(key)}
+                      >
+                        <MdSupervisorAccount size='24px' />
+                      </button>
+                      <button
+                        className='text-red-500 hover:text-red-700  h-4 pl-4'
+                        title={`Remove ${item.username} from the board`}
+                        onClick={() => remove(key)}
+                      >
+                        <MdRemove size='24px' />
+                      </button>
+                    </div>
                   )}
                 </li>
               )

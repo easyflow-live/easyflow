@@ -1,14 +1,17 @@
-import { EventEmitter, EventSubscription } from 'fbemitter';
+import {
+  EventEmitter as Emitter,
+  EventSubscription as Susbcription,
+} from 'fbemitter';
 
-export type EventEmitter = EventEmitter;
-export type EventSubscription = EventSubscription;
+export type EventEmitter = Emitter;
+export type EventSubscription = Susbcription;
 
 export interface EmitterTypes {
   ASSIGNEE_UPDATED: { cardId: string };
   TEAM_MEMBER_UPDATED: {};
 }
 
-const _emitter = new EventEmitter();
+const _emitter = new Emitter();
 
 export const emitter = {
   addListener<K extends keyof EmitterTypes>(

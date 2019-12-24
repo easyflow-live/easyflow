@@ -6,6 +6,7 @@ import { Collection } from 'firestorter';
 
 import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
+import usersStore from '../../store/users';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
@@ -67,7 +68,7 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     cardTitle: string
   ) {
     cards.moveCardAction({
-      memberCreator: this.props.board.data.owner,
+      memberCreator: usersStore.currentUser.ref,
       data: {
         card,
         listBefore,
