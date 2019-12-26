@@ -75,6 +75,18 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Tuesday, December 24, 2019</LogDate>
+
+        <LogList type={LogTypes.bugfixes}>
+          {[
+            'Fixed the right activity assignee, when a card is moved between columns.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Monday, October 21, 2019</LogDate>
         <LogList type={LogTypes.feature}>
           {[
