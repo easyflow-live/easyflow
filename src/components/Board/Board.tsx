@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { Title } from 'react-head';
-import { observer } from 'mobx-react';
+import React, { useState, useEffect, useContext } from 'react';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Collection } from 'firestorter';
 
@@ -23,27 +22,16 @@ interface BoardProps {
   board: BoardDocument;
 }
 
-interface State {
-  startX: number;
-  startScrollX: number;
-}
+const Board = ({ board }: BoardProps) => {
+  const [startX, setStartX] = useState(null);
+  const [startScrollX, setStartScrollX] = useState(null);
 
-const Board = class BoardComponent extends Component<BoardProps, State> {
-  constructor(props) {
-    super(props);
+  const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
-    this.state = {
-      startX: null,
-      startScrollX: null,
-    };
-
-    this.handeCardMoveAction = this.handeCardMoveAction.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.board) {
-      boardsStore.setCurrentBoard(this.props.board);
-      boardsStore.setListsFromCurrentBoard(this.props.board.lists.docs);
+  useEffect(() => {
+    if (board) {
+      boardsStore.setCurrentBoard(board);
+      boardsStore.setListsFromCurrentBoard(board.lists.docs);
 
       if (!boardsStore.colors.length) {
         const colors = new Collection<ColorDocument>('colors', {
@@ -53,68 +41,65 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
         boardsStore.setColors(colors);
       }
     }
-  }
+  }, [board]);
 
-  componentDidUpdate() {
-    if (this.props.board.data.title) {
-      window.document.title = `${this.props.board.data.title} | Easy Flow`;
+  useEffect(() => {
+    if (board && board.data.title) {
+      window.document.title = `${board.data.title} | Easy Flow`;
     }
-  }
+  });
 
-  handeCardMoveAction(
+  const handeCardMoveAction = (
     card: CardDocument['ref'],
     listBefore: ListDocument['ref'],
     listAfter: ListDocument['ref'],
     cardTitle: string
-  ) {
+  ) => {
     cards.moveCardAction({
       memberCreator: usersStore.currentUser.ref,
       data: {
         card,
         listBefore,
         listAfter,
-        board: this.props.board.ref,
+        board: board.ref,
         title: cardTitle || '',
       },
     });
-  }
+  };
 
   // The following three methods implement dragging of the board by holding down the mouse
-  handleMouseDown = ({ target, clientX }) => {
+  const handleMouseDown = ({ target, clientX }) => {
     if (target.className !== 'list-wrapper' && target.className !== 'lists') {
       return;
     }
-    window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mouseup', this.handleMouseUp);
-    this.setState({
-      startX: clientX,
-      startScrollX: window.scrollX,
-    });
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    setStartX(clientX);
+    setStartScrollX(window.scrollX);
   };
 
   // Go to new scroll position every time the mouse moves while dragging is activated
-  handleMouseMove = ({ clientX }) => {
-    const { startX, startScrollX } = this.state;
+  const handleMouseMove = ({ clientX }) => {
     const scrollX = startScrollX - clientX + startX;
     window.scrollTo(scrollX, 0);
     const windowScrollX = window.scrollX;
+
     if (scrollX !== windowScrollX) {
-      this.setState({
-        startX: clientX + windowScrollX - startScrollX,
-      });
+      setStartX(clientX + windowScrollX - startScrollX);
     }
   };
 
   // Remove drag event listeners
-  handleMouseUp = () => {
-    if (this.state.startX) {
-      window.removeEventListener('mousemove', this.handleMouseMove);
-      window.removeEventListener('mouseup', this.handleMouseUp);
-      this.setState({ startX: null, startScrollX: null });
+  const handleMouseUp = () => {
+    if (startX) {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      setStartX(null);
+      setStartScrollX(null);
     }
   };
 
-  handleWheel = ({ target, deltaY }) => {
+  const handleWheel = ({ target, deltaY }) => {
     // Scroll page right or left as long as the mouse is not hovering a card-list (which could have vertical scroll)
     if (
       target.className !== 'list-wrapper' &&
@@ -132,53 +117,40 @@ const Board = class BoardComponent extends Component<BoardProps, State> {
     }
   };
 
-  render() {
-    const { board } = this.props;
-    if (!board) return null;
+  if (!board) return null;
 
-    const { data, lists, isLoading: isLoadingBoard } = board;
-    const { isLoading, docs } = lists;
+  const { lists, isLoading: isLoadingBoard } = board;
+  const { isLoading, docs } = lists;
 
-    const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
+  const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
 
-    return (
-      <>
-        <Title>{data.title} | Easy Flow</Title>
-        <InterfaceContext.Consumer>
-          {({ isKioskMode, isEditable }) => (
-            <div className='relative overflow-hidden'>
-              <div
-                className={classNames('relative m-6 mt-4', {
-                  kiosk: isKioskMode,
-                })}
-              >
-                <BoardHeader board={board} />
+  return (
+    <div className='relative overflow-hidden'>
+      <div
+        className={classNames('relative m-6 mt-4', {
+          kiosk: isKioskMode,
+        })}
+      >
+        <BoardHeader board={board} />
 
-                <div
-                  className='inline-flex mt-4 overflow-x-auto'
-                  style={{ width: 'calc(100vw - 3rem)' }}
-                  onMouseDown={this.handleMouseDown}
-                  onWheel={this.handleWheel}
-                >
-                  <ListColumns
-                    lists={lists}
-                    onCardMove={this.handeCardMoveAction}
-                  />
-                </div>
+        <div
+          className='inline-flex mt-4 overflow-x-auto'
+          style={{ width: 'calc(100vw - 3rem)' }}
+          onMouseDown={handleMouseDown}
+          onWheel={handleWheel}
+        >
+          <ListColumns lists={lists} onCardMove={handeCardMoveAction} />
+        </div>
 
-                {isEditable && (
-                  <AnimatedOpacity show={showEmpty}>
-                    <CreateContentEmpty board={board} />
-                  </AnimatedOpacity>
-                )}
-              </div>
-              <BoardMenu board={board} />
-            </div>
-          )}
-        </InterfaceContext.Consumer>
-      </>
-    );
-  }
+        {isEditable && (
+          <AnimatedOpacity show={showEmpty}>
+            <CreateContentEmpty board={board} />
+          </AnimatedOpacity>
+        )}
+      </div>
+      <BoardMenu board={board} />
+    </div>
+  );
 };
 
 export default observer(Board);
