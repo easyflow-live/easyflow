@@ -22,10 +22,6 @@ export interface Card {
 }
 
 export default class CardDocument extends Document<Card> {
-  constructor(source, options = {}) {
-    super(source, { ...options });
-  }
-
   removeTag(tag: string) {
     return this.update({
       tags: firebase.firestore.FieldValue.arrayRemove(tag),

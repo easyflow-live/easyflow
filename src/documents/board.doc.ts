@@ -1,5 +1,4 @@
 import { Document, Collection } from 'firestorter';
-import { DocumentSource, IDocumentOptions } from 'firestorter/lib/Types';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -16,12 +15,12 @@ interface Board {
 }
 
 export default class BoardDocument extends Document<Board> {
-  lists: Collection<ListDocument>;
+  private _lists: Collection<ListDocument>;
 
-  constructor(source: DocumentSource, options: IDocumentOptions = {}) {
-    super(source, { ...options });
+  get lists(): Collection<ListDocument> {
+    if (this._lists) return this._lists;
 
-    this.lists = new Collection<ListDocument>(() => `${this.path}/lists`, {
+    this._lists = new Collection<ListDocument>(() => `${this.path}/lists`, {
       createDocument: (src, opts) =>
         new ListDocument(src, {
           ...opts,
@@ -32,6 +31,8 @@ export default class BoardDocument extends Document<Board> {
       debug: __DEV__,
       debugName: 'List collection',
     });
+
+    return this._lists;
   }
 
   removeTag(tag: string) {

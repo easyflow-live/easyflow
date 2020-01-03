@@ -5,8 +5,4 @@ export interface Color {
   code: string;
 }
 
-export default class ColorDocument extends Document<Color> {
-  constructor(source, options = {}) {
-    super(source, { ...options });
-  }
-}
+export default class ColorDocument extends Document<Color> {}

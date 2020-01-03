@@ -16,23 +16,23 @@ interface List {
 }
 
 export default class ListDocument extends Document<List> {
-  cards: Collection<CardDocument>;
+  private _cards: Collection<CardDocument>;
 
-  constructor(source, options = {}) {
-    super(source, { ...options });
+  get cards(): Collection<CardDocument> {
+    if (this._cards) return this._cards;
 
-    if (this.id) {
-      this.cards = new Collection<CardDocument>(() => `${this.path}/cards`, {
-        createDocument: (src, opts) =>
-          new CardDocument(src, {
-            ...opts,
-            debug: __DEV__,
-            debugName: 'Card document',
-          }),
-        query: ref => ref.orderBy('index'),
-        debug: __DEV__,
-        debugName: 'Card collection',
-      });
-    }
+    this._cards = new Collection<CardDocument>(() => `${this.path}/cards`, {
+      createDocument: (src, opts) =>
+        new CardDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'Card document',
+        }),
+      query: ref => ref.orderBy('index'),
+      debug: __DEV__,
+      debugName: 'Card collection',
+    });
+
+    return this._cards;
   }
 }

@@ -1,5 +1,4 @@
 import { Document, Collection } from 'firestorter';
-import { DocumentSource, IDocumentOptions } from 'firestorter/lib/Types';
 
 import BoardDocument from './board.doc';
 
@@ -10,14 +9,13 @@ interface User {
   username: string;
   roles: { admin: boolean };
 }
-
 export default class UserDocument extends Document<User> {
-  boards: Collection<BoardDocument>;
+  private _boards: Collection<BoardDocument>;
 
-  constructor(source: DocumentSource, options: IDocumentOptions = {}) {
-    super(source, { ...options });
+  get boards(): Collection<BoardDocument> {
+    if (this._boards) return this._boards;
 
-    this.boards = new Collection<BoardDocument>(() => 'boards', {
+    this._boards = new Collection<BoardDocument>(() => 'boards', {
       createDocument: (src, opts) =>
         new BoardDocument(src, {
           ...opts,
@@ -28,5 +26,7 @@ export default class UserDocument extends Document<User> {
       debug: __DEV__,
       debugName: 'Board collection',
     });
+
+    return this._boards;
   }
 }
