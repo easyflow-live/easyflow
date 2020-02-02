@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { Collection } from 'firestorter';
 
 import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
@@ -9,7 +8,6 @@ import usersStore from '../../store/users';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
-import ColorDocument from '../../documents/color.doc';
 import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
@@ -22,23 +20,13 @@ interface BoardProps {
 }
 
 const Board = ({ board }: BoardProps) => {
-  const [startX, setStartX] = useState(null);
-  const [startScrollX, setStartScrollX] = useState(null);
-
   const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
   useEffect(() => {
     if (board) {
       boardsStore.setCurrentBoard(board);
       boardsStore.setListsFromCurrentBoard(board.lists.docs);
-
-      if (!boardsStore.colors.length) {
-        const colors = new Collection<ColorDocument>('colors', {
-          createDocument: (src, opts) => new ColorDocument(src, opts),
-        }).docs;
-
-        boardsStore.setColors(colors);
-      }
+      boardsStore.setColors(board.colors.docs);
     }
   }, [board]);
 
@@ -66,56 +54,6 @@ const Board = ({ board }: BoardProps) => {
     });
   };
 
-  // Go to new scroll position every time the mouse moves while dragging is activated
-  const handleMouseMove = ({ clientX }) => {
-    const scrollX = startScrollX - clientX + startX;
-    window.scrollTo(scrollX, 0);
-    const windowScrollX = window.scrollX;
-
-    if (scrollX !== windowScrollX) {
-      setStartX(clientX + windowScrollX - startScrollX);
-    }
-  };
-
-  // Remove drag event listeners
-  const handleMouseUp = () => {
-    if (startX) {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      setStartX(null);
-      setStartScrollX(null);
-    }
-  };
-
-  // The following three methods implement dragging of the board by holding down the mouse
-  const handleMouseDown = ({ target, clientX }) => {
-    if (target.className !== 'list-wrapper' && target.className !== 'lists') {
-      return;
-    }
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    setStartX(clientX);
-    setStartScrollX(window.scrollX);
-  };
-
-  const handleWheel = ({ target, deltaY }) => {
-    // Scroll page right or left as long as the mouse is not hovering a card-list (which could have vertical scroll)
-    if (
-      target.className !== 'list-wrapper' &&
-      target.className !== 'lists' &&
-      target.className !== 'open-composer-button' &&
-      target.className !== 'list-title-button'
-    ) {
-      return;
-    }
-    // Move the board 80 pixes on every wheel event
-    if (Math.sign(deltaY) === 1) {
-      window.scrollTo(window.scrollX + 80, 0);
-    } else if (Math.sign(deltaY) === -1) {
-      window.scrollTo(window.scrollX - 80, 0);
-    }
-  };
-
   if (!board) return null;
 
   const { lists, isLoading: isLoadingBoard } = board;
@@ -137,8 +75,6 @@ const Board = ({ board }: BoardProps) => {
           style={{
             width: 'calc(100vw - 3rem)',
           }}
-          onMouseDown={handleMouseDown}
-          onWheel={handleWheel}
         >
           <ListColumns lists={lists} onCardMove={handeCardMoveAction} />
         </div>

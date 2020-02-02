@@ -4,6 +4,7 @@ import 'firebase/firestore';
 
 import ListDocument from './list.doc';
 import UserDocument from './user.doc';
+import ColorDocument from './color.doc';
 
 interface Board {
   title: string;
@@ -16,6 +17,7 @@ interface Board {
 
 export default class BoardDocument extends Document<Board> {
   private _lists: Collection<ListDocument>;
+  private _colors: Collection<ColorDocument>;
 
   get lists(): Collection<ListDocument> {
     if (this._lists) return this._lists;
@@ -33,6 +35,23 @@ export default class BoardDocument extends Document<Board> {
     });
 
     return this._lists;
+  }
+
+  // We should probably remove this from here.
+  // As colors is a top level collection, we dont need to
+  // instantiate it every time a new board is created.
+  get colors(): Collection<ColorDocument> {
+    if (this._colors) return this._colors;
+
+    console.log('CREATE COLORS');
+
+    this._colors = new Collection<ColorDocument>(() => 'colors', {
+      createDocument: (src, opts) => new ColorDocument(src, opts),
+      debug: __DEV__,
+      debugName: 'Colors collection',
+    });
+
+    return this._colors;
   }
 
   removeTag(tag: string) {
