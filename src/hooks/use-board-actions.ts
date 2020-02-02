@@ -24,7 +24,7 @@ export const useBoardActions = (board: BoardDocument) => {
     });
 
     setAction(newAction);
-  }, [board]);
+  }, [action, board]);
 
   return action;
 };

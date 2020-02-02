@@ -1,6 +1,10 @@
 import classnames from 'classnames';
 
-const Divider = ({ className = '' }) => (
+interface DividerProps {
+  className?: string;
+}
+
+const Divider = ({ className = '' }: DividerProps) => (
   <div
     className={classnames(
       'my-2 border-b border-solid border-gray-600 min-w-full',

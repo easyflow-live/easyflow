@@ -10,7 +10,7 @@ export const useBoardTeam = (board: BoardDocument) => {
 
   useEffect(() => {
     store.loadUsers(board.data.users);
-  }, [board.data.users]);
+  }, [board.data.users, store]);
 
   if (!board.data.owner) {
     return {

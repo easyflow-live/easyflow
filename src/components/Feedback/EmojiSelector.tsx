@@ -30,6 +30,8 @@ interface EmojiSelectorProps {
 }
 
 export const EmojiSelector = (props: EmojiSelectorProps) => {
+  const { onShow, onHide, onSelect } = props;
+
   const [shown, setShown] = useState<boolean>();
   const [current, setCurrent] = useState(null);
   const [currentSetAt, setCurrentSetAt] = useState(null);
@@ -38,19 +40,19 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
 
   useEffect(() => {
     if (!previousShown && shown) {
-      props.onShow();
+      onShow();
     }
-  }, [previousShown, shown]);
+  }, [previousShown, shown, onShow]);
 
   useEffect(() => {
     if (previousShown && !shown) {
-      props.onHide();
+      onHide();
     }
-  }, [previousShown, shown]);
+  }, [previousShown, shown, onHide]);
 
   useEffect(() => {
-    props.onSelect(current);
-  }, [current]);
+    onSelect(current);
+  }, [current, onSelect]);
 
   const onMouseEnter = () => {
     if (!shown && Date.now() - (currentSetAt || 0) > 100) {
@@ -68,7 +70,7 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
     }
   };
 
-  const onSelect = item => {
+  const onSelectItem = item => {
     setCurrent(item);
     setCurrentSetAt(Date.now());
     setShown(false);
@@ -88,7 +90,7 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
         type='button'
         onClick={
           current !== null && shown
-            ? () => onSelect(null)
+            ? () => onSelectItem(null)
             : shown
             ? onMouseLeave
             : onMouseEnter
@@ -113,7 +115,7 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
           onMouseEnter={onMouseEnter}
           onTouchStart={onMouseEnter}
           onMouseLeave={onMouseLeave}
-          onClick={() => onSelect(emoji)}
+          onClick={() => onSelectItem(emoji)}
         >
           <span className='inner'>
             <Emoji code={emoji} />

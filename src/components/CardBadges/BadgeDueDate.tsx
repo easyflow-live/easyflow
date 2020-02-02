@@ -33,7 +33,7 @@ const BadgeDueDate = ({ date, completed }: BadgeDueDateProps) => {
           return format(new Date(date.toDate()), 'd MMM');
         }
     }
-  }, [dueDateFromToday]);
+  }, [dueDateFromToday, date]);
 
   const dueDateColor = useMemo(() => {
     if (!date) return;
@@ -50,7 +50,7 @@ const BadgeDueDate = ({ date, completed }: BadgeDueDateProps) => {
           return 'bg-green-500';
         }
     }
-  }, [dueDateFromToday, completed]);
+  }, [dueDateFromToday, completed, date]);
 
   const dueTitle = useMemo(() => {
     if (!date) return;
@@ -68,7 +68,7 @@ const BadgeDueDate = ({ date, completed }: BadgeDueDateProps) => {
           return 'This card is due later.';
         }
     }
-  }, [dueDateFromToday, completed]);
+  }, [dueDateFromToday, completed, date]);
 
   return (
     date && (

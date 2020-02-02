@@ -130,7 +130,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
         clearSuccessTimer.current = null;
       }
     };
-  }, [success, focused]);
+  }, [success, focused, previousFocused, previousSuccess]);
 
   return (
     <main

@@ -1,6 +1,21 @@
 import { useLayoutEffect, useCallback, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 
+function getRect(element) {
+  if (element && element.getBoundingClientRect) {
+    return element.getBoundingClientRect();
+  }
+
+  return {
+    bottom: 0,
+    height: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    width: 0,
+  };
+}
+
 export const useRect = (ref): [ClientRect, () => void] => {
   const [rect, setRect] = useState<ClientRect>(
     getRect(ref && ref.current ? ref.current : undefined)
@@ -33,22 +48,7 @@ export const useRect = (ref): [ClientRect, () => void] => {
       resizeObserver.disconnect();
       resizeObserver = null;
     };
-  }, [ref]);
+  }, [ref, refreshRect]);
 
   return [rect, refreshRect];
 };
-
-function getRect(element) {
-  if (element && element.getBoundingClientRect) {
-    return element.getBoundingClientRect();
-  }
-
-  return {
-    bottom: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-    width: 0,
-  };
-}

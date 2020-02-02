@@ -1,6 +1,12 @@
 import { animated, useTransition } from 'react-spring';
+import { ReactChild } from 'react';
 
-export const AnimatedOpacity = ({ show, children }) => {
+interface AnitedOpacityProps {
+  show: boolean;
+  children: ReactChild;
+}
+
+export const AnimatedOpacity = ({ show, children }: AnitedOpacityProps) => {
   const transitions = useTransition(show, null, {
     from: { opacity: 0 },
     enter: { opacity: 1 },

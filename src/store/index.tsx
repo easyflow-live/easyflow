@@ -1,8 +1,5 @@
 import { useContext } from 'react';
-import { useObserver, useStaticRendering } from 'mobx-react-lite';
-
-const isServer = typeof window === 'undefined';
-useStaticRendering(isServer);
+import { useObserver } from 'mobx-react-lite';
 
 import { UsersStore, UsersContext } from './users';
 import { BoardsStore, BoardsContext } from './boards';

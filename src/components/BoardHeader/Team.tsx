@@ -12,7 +12,12 @@ interface TeamProps {
   board: BoardDocument;
 }
 
-const Counter = ({ number, className }) => (
+interface CounterProps {
+  number: number;
+  className: string;
+}
+
+const Counter = ({ number, className }: CounterProps) => (
   <span className={`h-8 flex items-center text-gray-400 ${className}`}>
     +{number}
   </span>

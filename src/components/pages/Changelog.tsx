@@ -1,5 +1,11 @@
 import { ReactChild, ReactElement } from 'react';
 
+enum LogTypes {
+  feature = 'feature',
+  improvements = 'improvements',
+  bugfixes = 'bugfixes',
+}
+
 export default () => (
   <main className='w-full relative mx-auto px-6 py-16 max-w-4xl'>
     <div className='text-white antialiased'>
@@ -11,6 +17,7 @@ export default () => (
           <a
             href='https://easyflow.live'
             target='_blank'
+            rel='noopener noreferrer'
             className='text-teal-500 hover:underline hover:text-pink-500'
           >
             EasyFlow
@@ -26,6 +33,7 @@ export default () => (
           <a
             href='https://easyflow.live'
             target='_blank'
+            rel='noopener noreferrer'
             className='text-teal-500 hover:underline hover:text-pink-500'
           >
             EasyFlow
@@ -38,7 +46,7 @@ export default () => (
       <div className='mb-6'>
         <h3 className='font-bold my-3'>
           ✨ Have a feature request, a bug report, a suggestion or an
-          interesting use case? We'd love to hear it! Let us know at{' '}
+          interesting use case? We&apos;d love to hear it! Let us know at{' '}
           <a
             className='text-teal-500 hover:underline hover:text-pink-500'
             href='mailto:contact@easyflow.live'
@@ -194,12 +202,6 @@ export default () => (
   </main>
 );
 
-enum LogTypes {
-  feature = 'feature',
-  improvements = 'improvements',
-  bugfixes = 'bugfixes',
-}
-
 const LogCard = ({ children }: { children: ReactElement[] }) => (
   <div className='shadow-lg rounded bg-gray-750 p-5 mb-4'>{children}</div>
 );
@@ -239,4 +241,6 @@ const LogList = ({
   </div>
 );
 
-const LogListItem = ({ children }) => <li className='ml-8 mb-1'>{children}</li>;
+const LogListItem = ({ children }: { children: ReactChild }) => (
+  <li className='ml-8 mb-1'>{children}</li>
+);

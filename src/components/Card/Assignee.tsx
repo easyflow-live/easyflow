@@ -31,13 +31,6 @@ interface AssigneeProps {
 const Assignee = ({ card }: AssigneeProps) => {
   const { assignees } = useCardAssignees(card);
 
-  const initAnimation = () =>
-    setTimeout(() => {
-      setSpring({ marginLeft: '-8px' });
-    }, 1000);
-
-  useFirstRender(initAnimation);
-
   const transitions = useTransition(assignees, item => item.username, {
     from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
     enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
@@ -49,6 +42,13 @@ const Assignee = ({ card }: AssigneeProps) => {
     immediate: true,
     config: config.stiff,
   }));
+
+  const initAnimation = () =>
+    setTimeout(() => {
+      setSpring({ marginLeft: '-8px' });
+    }, 1000);
+
+  useFirstRender(initAnimation);
 
   return (
     <StyledAssignes>

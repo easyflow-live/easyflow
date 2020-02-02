@@ -15,6 +15,10 @@ const PickerModal = ({
   onChange,
   onClose,
 }: PickerModalProps) => {
+  const focusButtonAndCloseModal = () => {
+    buttonRef.current.focus();
+    onClose && onClose();
+  };
   const handleClickOutside = () => {
     focusButtonAndCloseModal();
   };
@@ -28,11 +32,6 @@ const PickerModal = ({
   const changeColor = color => {
     onChange(color);
     focusButtonAndCloseModal();
-  };
-
-  const focusButtonAndCloseModal = () => {
-    buttonRef.current.focus();
-    onClose && onClose();
   };
 
   return (
@@ -53,7 +52,11 @@ const PickerModal = ({
   );
 };
 
-const ColorPicker = ({ onChange }) => {
+interface ColorPickerProps {
+  onChange: (color: string) => void;
+}
+
+const ColorPicker = ({ onChange }: ColorPickerProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 

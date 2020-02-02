@@ -17,7 +17,12 @@ import './LandingPage.scss';
 const items = ['Simple.', 'Beautiful.', 'Darker.'];
 const config = { mass: 5, tension: 2000, friction: 800 };
 
-const SafariWarning = ({ isMobileSafari, onLogin }) =>
+interface SafariWarningProps {
+  isMobileSafari: boolean;
+  onLogin: () => void;
+}
+
+const SafariWarning = ({ isMobileSafari, onLogin }: SafariWarningProps) =>
   isMobileSafari ? (
     <p className='text-red-500 '>
       <FaExclamationTriangle className='inline mr-1' />

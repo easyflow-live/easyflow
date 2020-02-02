@@ -2,6 +2,8 @@ import { formatRelative } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 
 import { useBoardsData } from '../../store';
+import { User } from '../../store/users';
+import ActionDocument from '../../documents/action.doc';
 import {
   CardActions,
   NewCardData,
@@ -146,7 +148,12 @@ const CardsActions = ({ data }: { data: any }) => {
   }
 };
 
-const ActionCard = ({ action, user }) => {
+interface ActionCardProps {
+  action: ActionDocument;
+  user: User;
+}
+
+const ActionCard = ({ action, user }: ActionCardProps) => {
   return (
     user && (
       <div className='flex items-center p-3' key={action.id}>

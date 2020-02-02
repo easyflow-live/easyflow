@@ -18,7 +18,7 @@ export const useBoard = (boardUid: string): [BoardDocument, boolean] => {
     }
 
     board && setIsLoading(board.isLoading);
-  }, [boardUid]);
+  }, [board, boardUid, userDoc]);
 
   return [board, isLoading];
 };

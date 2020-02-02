@@ -1,10 +1,15 @@
 import { observer } from 'mobx-react-lite';
 
 import { useBoardActions } from '../../hooks/use-board-actions';
+import BoardDocument from '../../documents/board.doc';
 import { useUsersData } from '../../store';
 import ActionCard from '../ActionCard';
 
-const Actions = ({ board }) => {
+interface ActionsProps {
+  board: BoardDocument;
+}
+
+const Actions = ({ board }: ActionsProps) => {
   const actions = useBoardActions(board);
   const store = useUsersData(s => s);
 

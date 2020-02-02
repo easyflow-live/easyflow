@@ -14,8 +14,7 @@ import Header from '../src/components/Header/Header';
 import { initGA, logPageView } from '../src/libs/analytics';
 import { InterfaceProvider } from '../src/components/providers/InterfaceProvider';
 
-// @ts-ignore
-import firebaseService from '../src/services/firebase.service';
+import '../src/services/firebase.service';
 import '../src/styles/style.css';
 
 interface State {
@@ -30,13 +29,13 @@ class MyApp extends App<{}, State> {
   state = {
     user: null,
     userDoc: null,
-    initializing: true
+    initializing: true,
   };
 
   constructor(props) {
     super(props);
 
-    this.unsubscribe = () => {};
+    this.unsubscribe = () => null;
   }
 
   componentDidMount() {

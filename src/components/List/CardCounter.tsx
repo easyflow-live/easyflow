@@ -21,6 +21,8 @@ const CardCounter = ({
   const [isEditing, setIsEditing] = useState(false);
   const [maxValue, setMaxValue] = useState(max);
 
+  const toggleEditing = () => setIsEditing(!isEditing);
+
   const handleChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) =>
@@ -33,8 +35,6 @@ const CardCounter = ({
     e.stopPropagation();
     toggleEditing();
   };
-
-  const toggleEditing = () => setIsEditing(!isEditing);
 
   const handleSubmit = () => {
     onChange(maxValue);

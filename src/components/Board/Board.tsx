@@ -66,17 +66,6 @@ const Board = ({ board }: BoardProps) => {
     });
   };
 
-  // The following three methods implement dragging of the board by holding down the mouse
-  const handleMouseDown = ({ target, clientX }) => {
-    if (target.className !== 'list-wrapper' && target.className !== 'lists') {
-      return;
-    }
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    setStartX(clientX);
-    setStartScrollX(window.scrollX);
-  };
-
   // Go to new scroll position every time the mouse moves while dragging is activated
   const handleMouseMove = ({ clientX }) => {
     const scrollX = startScrollX - clientX + startX;
@@ -96,6 +85,17 @@ const Board = ({ board }: BoardProps) => {
       setStartX(null);
       setStartScrollX(null);
     }
+  };
+
+  // The following three methods implement dragging of the board by holding down the mouse
+  const handleMouseDown = ({ target, clientX }) => {
+    if (target.className !== 'list-wrapper' && target.className !== 'lists') {
+      return;
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    setStartX(clientX);
+    setStartScrollX(window.scrollX);
   };
 
   const handleWheel = ({ target, deltaY }) => {
@@ -134,7 +134,9 @@ const Board = ({ board }: BoardProps) => {
 
         <div
           className='inline-flex mt-4 overflow-x-auto'
-          style={{ width: 'calc(100vw - 3rem)' }}
+          style={{
+            width: 'calc(100vw - 3rem)',
+          }}
           onMouseDown={handleMouseDown}
           onWheel={handleWheel}
         >

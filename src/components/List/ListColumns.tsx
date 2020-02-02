@@ -28,18 +28,7 @@ const ListColumns = ({ lists, onCardMove }: ListsProps) => {
 
   useEffect(() => {
     setLocalLists(lists.docs);
-  }, [lists.docs.length]);
-
-  const updateLists = (updatedListHash: UpdatedHash) => {
-    updateDocs(lists.docs, updatedListHash);
-  };
-
-  const updateCards = (
-    listDocument: ListDocument,
-    updatedCardHash: UpdatedHash
-  ) => {
-    updateDocs(listDocument.cards.docs, updatedCardHash);
-  };
+  }, [lists.docs, lists.docs.length]);
 
   const updateDocs = (documents: Document[], updatedHashTable: UpdatedHash) => {
     const batch = firebaseService.db.batch();
@@ -56,6 +45,17 @@ const ListColumns = ({ lists, onCardMove }: ListsProps) => {
     });
 
     batch.commit().catch(() => toast(`An error occurred. Please, try again.`));
+  };
+
+  const updateLists = (updatedListHash: UpdatedHash) => {
+    updateDocs(lists.docs, updatedListHash);
+  };
+
+  const updateCards = (
+    listDocument: ListDocument,
+    updatedCardHash: UpdatedHash
+  ) => {
+    updateDocs(listDocument.cards.docs, updatedCardHash);
   };
 
   const handleDragEnd = result => {

@@ -27,7 +27,9 @@ class FirebaseService {
     }
     try {
       initFirestorter({ firebase });
-    } catch (error) {}
+    } catch (error) {
+      // do nothing
+    }
 
     /* Firebase APIs */
     this.auth = firebase.auth();

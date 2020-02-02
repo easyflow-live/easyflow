@@ -7,10 +7,15 @@ import AddTagsModal from '../BoardHeader/AddTagsModal';
 import { observer } from 'mobx-react-lite';
 import { useInterface } from '../providers/InterfaceProvider';
 import './BoardMenu.css';
+import BoardDocument from '../../documents/board.doc';
 
 const Actions = dynamic(() => import('./Actions'));
 
-const BoardMenu = ({ board }) => {
+interface BoardMenuProps {
+  board: BoardDocument;
+}
+
+const BoardMenu = ({ board }: BoardMenuProps) => {
   const { isMenuOpen, setMenu } = useInterface();
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
 

@@ -1,6 +1,14 @@
 import { useEffect } from 'react';
 import { usePrevious } from './use-previous';
 
+function isInDOM(obj) {
+  return Boolean(obj.closest('body'));
+}
+
+function hasParent(element, root) {
+  return root.contains(element) && isInDOM(element);
+}
+
 export const useClickOutside = ({ element, active, onClick }) => {
   const previousActive = usePrevious(active);
 
@@ -40,13 +48,5 @@ export const useClickOutside = ({ element, active, onClick }) => {
         document.removeEventListener('touchstart', handleClick);
       }
     };
-  }, [active, element && element.current]);
+  }, [active, element, onClick, previousActive]);
 };
-
-function hasParent(element, root) {
-  return root.contains(element) && isInDOM(element);
-}
-
-function isInDOM(obj) {
-  return Boolean(obj.closest('body'));
-}

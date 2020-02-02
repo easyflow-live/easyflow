@@ -12,9 +12,39 @@ interface IUser {
   email: string;
 }
 
+class User implements IUser {
+  id: string;
+  username: string;
+  photo: string;
+  email: string;
+
+  constructor(private store: UsersStore) {}
+
+  delete() {
+    this.store.remove(this);
+  }
+
+  @computed get asJson(): IUser {
+    return {
+      id: this.id,
+      username: this.username,
+      photo: this.photo,
+      email: this.email,
+    };
+  }
+
+  @action
+  updateFromJson(json: IUser) {
+    this.id = json.id;
+    this.username = json.username;
+    this.photo = json.photo;
+    this.email = json.email;
+  }
+}
+
 class UsersStore {
   @observable users: User[] = [];
-  @observable isLoading: boolean = false;
+  @observable isLoading = false;
   @observable currentUser: UserDocument = null;
 
   @action
@@ -66,36 +96,6 @@ class UsersStore {
       this.isLoading = false;
       this.users = [...new Set([...this.users, ...loadedUsers])];
     });
-  }
-}
-
-class User implements IUser {
-  id: string;
-  username: string;
-  photo: string;
-  email: string;
-
-  constructor(private store: UsersStore) {}
-
-  delete() {
-    this.store.remove(this);
-  }
-
-  @computed get asJson(): IUser {
-    return {
-      id: this.id,
-      username: this.username,
-      photo: this.photo,
-      email: this.email,
-    };
-  }
-
-  @action
-  updateFromJson(json: IUser) {
-    this.id = json.id;
-    this.username = json.username;
-    this.photo = json.photo;
-    this.email = json.email;
   }
 }
 

@@ -13,6 +13,7 @@ import { emitter } from '../../libs/emitter';
 import Dialog from '../Dialog/Dialog';
 import { Avatar } from '../Avatar/Avatar';
 import Input from '../styled/Input';
+import { User } from '../../store/users';
 
 interface TeamListModalProps {
   board?: BoardDocument;
@@ -20,17 +21,27 @@ interface TeamListModalProps {
   toggleIsOpen?(): void;
 }
 
-const UserName = ({ name, isOwner }) => (
+interface UserNameProps {
+  name: string;
+  isOwner: boolean;
+}
+
+const UserName = ({ name, isOwner }: UserNameProps) => (
   <div className='flex items-center'>
     <span className='text-white font-semibold'>{name}</span>{' '}
     {isOwner && <span className='text-pink-500 ml-4 font-bold'>Owner</span>}
   </div>
 );
-const UserEmail = ({ email }) => (
+
+interface UserEmailProps {
+  email: string;
+}
+
+const UserEmail = ({ email }: UserEmailProps) => (
   <span className='text-gray-500 font-light'>{email}</span>
 );
 
-const sortAlpha = (a, b) => {
+const sortAlpha = (a: User, b: User) => {
   if (a.username < b.username) {
     return -1;
   }
@@ -41,7 +52,8 @@ const sortAlpha = (a, b) => {
 };
 
 const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
-  let { assignees, owner } = useBoardTeam(board);
+  const { owner } = useBoardTeam(board);
+  let { assignees } = useBoardTeam(board);
   const { userDoc } = useSession();
   const [value, setValue] = useState('');
 
@@ -73,6 +85,7 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
   };
 
   const remove = async index => {
+    // TODO remove this mutability
     const assignee = assignees[index];
     assignees = assignees.splice(index, 1);
 

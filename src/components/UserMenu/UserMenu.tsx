@@ -10,8 +10,12 @@ interface UserMenuProps {
   userEmail: string;
 }
 
-const UserName = ({ name }) => <span className='font-semibold'>{name}</span>;
-const UserEmail = ({ email }) => <span className='font-light'>{email}</span>;
+const UserName = ({ name }: { name: string }) => (
+  <span className='font-semibold'>{name}</span>
+);
+const UserEmail = ({ email }: { email: string }) => (
+  <span className='font-light'>{email}</span>
+);
 
 const UserMenu = ({ trigger, userName, userEmail }: UserMenuProps) => {
   const { logout } = useGoogleLogin();

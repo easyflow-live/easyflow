@@ -30,7 +30,7 @@ const Menu = ({
       {trigger}
       <StyledMenu
         className={classNames(
-          'menu__menu flex flex-col mt-1 absolute z-10 right-0 text-white bg-gray-700 p-6 shadow-lg rounded min-w-full',
+          'menu__menu flex flex-col mt-3 absolute z-10 right-0 text-white bg-gray-700 p-6 shadow-lg rounded min-w-full',
           className
         )}
       >
@@ -48,13 +48,11 @@ const Menu = ({
   );
 };
 
-const MenuItem = ({ children, ...props }) => (
+const MenuItem = props => (
   <AriaMenuItem
     className='flex items-center cursor-pointer hover:bg-gray-800 p-3'
     {...props}
-  >
-    {children}
-  </AriaMenuItem>
+  />
 );
 
 export default Menu;

@@ -1,13 +1,20 @@
-import { useBoardsData } from '../../store';
 import { observer } from 'mobx-react-lite';
+import { KeyboardEvent } from 'react';
 
-const CardOptionColors = ({ onClick, onKeyDown }) => {
+import { useBoardsData } from '../../store';
+
+interface CardOptionColorsProps {
+  onClick: (props: any) => void;
+  onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void;
+}
+
+const CardOptionColors = ({ onClick, onKeyDown }: CardOptionColorsProps) => {
   const colors = useBoardsData(s => s.colors);
 
   return colors.length > 0 ? (
     <div className='modal-color-picker' onKeyDown={onKeyDown}>
       {colors.map(color => (
-        <button
+        <span
           key={color.id}
           style={{ background: color.data.code }}
           className='color-picker-color'

@@ -18,7 +18,7 @@ export const useCardAssignees = (card: CardDocument) => {
     if (card.data.assignee) {
       store.loadUsers(card.data.assignee);
     }
-  }, [card.data.assignee && card.data.assignee.length]);
+  }, [card.data.assignee, store]);
 
   return { assignees };
 };
