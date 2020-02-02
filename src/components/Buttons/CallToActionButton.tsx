@@ -1,24 +1,40 @@
 import React, { MouseEvent } from 'react';
+import classNames from 'classnames';
 
-import './CallToActionButton.css';
+type Size = 'small' | 'medium';
+
+const sizes = {
+  small: 'px-2 py-2 text-sm',
+  medium: 'px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 md:text-lg',
+};
 
 interface CallToActionButtonProps {
   children: React.ReactChild;
   className?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  size?: Size;
 }
 
 export default ({
-  children,
   className,
-  onClick,
+  size = 'medium',
   ...props
 }: CallToActionButtonProps) => (
   <button
-    className={`CallToActionButton rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-pink-500 hover:bg-pink-600 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md cursor-pointer ${className}`}
-    onClick={onClick}
+    className={classNames(
+      `transition-all
+      rounded-lg
+      bg-pink-500
+      hover:bg-pink-600
+      xl:text-base
+      text-white
+      font-semibold
+      leading-tight
+      shadow-md
+      cursor-pointer`,
+      sizes[size],
+      className
+    )}
     {...props}
-  >
-    {children}
-  </button>
+  />
 );

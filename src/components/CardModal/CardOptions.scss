@@ -1,5 +1,3 @@
-@import '../../app/variables.scss';
-
 .options-list {
   display: flex;
   flex-direction: column;
@@ -56,11 +54,11 @@
 
   .calendar-save-button {
     color: white;
-    background: $success-button-color;
+    background: #5aac44;
   }
 
   .calendar-save-button:hover {
-    background: $success-button-color-hover;
+    background: #3a8a24;
   }
 }
 

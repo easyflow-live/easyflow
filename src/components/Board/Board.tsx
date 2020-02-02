@@ -15,7 +15,6 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
-import './Board.css';
 import BoardMenu from './BoardMenu';
 
 interface BoardProps {

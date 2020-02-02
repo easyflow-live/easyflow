@@ -10,7 +10,6 @@ import BoardButton from './BoardButton';
 import BoardMenu from './BoardMenu';
 import BoardTitle from './BoardTitle';
 import Team from './Team';
-import './BoardHeader.css';
 
 interface BoardHeaderProps {
   board: BoardDocument;

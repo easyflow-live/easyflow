@@ -1,4 +1,6 @@
 import { CSSProperties, memo } from 'react';
+import classNames from 'classnames';
+import styled from 'styled-components';
 import './Tag.css';
 
 interface TagProps {
@@ -7,8 +9,11 @@ interface TagProps {
   bgcolor?: string;
   tagStyle?: CSSProperties;
   removable?: boolean;
+  className?: string;
   onClick?(tag: string): void;
 }
+
+// TODO: Pass a prop to show/hide close button
 
 const Tag = ({
   title,
@@ -17,6 +22,7 @@ const Tag = ({
   tagStyle,
   onClick,
   removable,
+  className,
   ...otherProps
 }: TagProps) => {
   const style = {
@@ -28,17 +34,40 @@ const Tag = ({
   const handleClick = () => onClick(title);
 
   return (
-    <span
+    <StyledTag
       style={style}
-      className={`tag ${removable ? 'tag--removable' : ''}`}
+      className={classNames(
+        'tag',
+        removable ? 'tag--removable' : '',
+        className
+      )}
       {...otherProps}
     >
       {title}
       <span className='tag__close' onClick={handleClick}>
         x
       </span>
-    </span>
+    </StyledTag>
   );
 };
 
 export default memo(Tag);
+
+const StyledTag = styled.span`
+  padding: 3px 5px;
+  border-radius: 3px;
+  font-size: 1rem;
+  position: relative;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  & > .tag__close {
+    display: none;
+    transition: all 0.5s;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 6px;
+  }
+`;

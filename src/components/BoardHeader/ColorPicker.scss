@@ -1,5 +1,3 @@
-@import '../../app/variables.scss';
-
 .color-picker-wrapper {
   position: relative;
   font-size: 16px;
@@ -11,14 +9,14 @@
   align-items: center;
   padding: 8px 10px 8px 10px;
   border-radius: 3px;
-  color: $white;
+  color: #fbfbfb;
   transition: background 0.1s;
   cursor: pointer;
 }
 
 .color-picker:hover,
 .color-picker:focus {
-  background: $transparent-black;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .color-picker-menu {
@@ -47,27 +45,27 @@
   cursor: pointer;
 
   &.blue {
-    background: $blue;
+    background: #06a;
     &:focus {
-      background: $dark-blue;
+      background: #059;
     }
   }
   &.green {
-    background: $green;
+    background: #032;
     &:focus {
-      background: $dark-green;
+      background: #021;
     }
   }
   &.red {
-    background: $red;
+    background: #831;
     &:focus {
-      background: $dark-red;
+      background: #720;
     }
   }
   &.pink {
-    background: $pink;
+    background: #b06;
     &:focus {
-      background: $dark-pink;
+      background: #a05;
     }
   }
 }

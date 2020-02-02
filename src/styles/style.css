@@ -55,3 +55,7 @@
 .ReactModal__Body--open {
   overflow-y: hidden;
 }
+
+.transition-all {
+  transition: all 0.3s;
+}

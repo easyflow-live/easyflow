@@ -32,7 +32,7 @@ const BoardButton = ({
         style={style}
       >
         <div className='btn-icon'>{icon}</div>
-        {text && <div className='board-header-right-text'>&nbsp;{text}</div>}
+        {text && <div className='hidden sm:block'>&nbsp;{text}</div>}
       </StyledButton>
       {renderModal &&
         renderModal({

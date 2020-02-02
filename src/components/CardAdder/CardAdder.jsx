@@ -6,14 +6,13 @@ import { cards as cardsActions } from '../../core/actions';
 import boardsStore from '../../store/boards';
 import userStore from '../../store/users';
 import ClickOutside from '../ClickOutside/ClickOutside';
-import './CardAdder.css';
 
 class CardAdder extends Component {
   constructor() {
     super();
     this.state = {
       newText: '',
-      isOpen: false
+      isOpen: false,
     };
   }
 
@@ -56,7 +55,7 @@ class CardAdder extends Component {
       index,
       createdAt: Date.now(),
       listBefore: this.props.list.ref,
-      title: newText
+      title: newText,
     });
 
     this.toggleCardComposer();
@@ -68,8 +67,8 @@ class CardAdder extends Component {
         card: createdCard.ref,
         list: list.ref,
         board: boardsStore.currentBoard.ref,
-        title: newText
-      }
+        title: newText,
+      },
     });
   };
 
@@ -83,7 +82,7 @@ class CardAdder extends Component {
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={newText}
-            className='shadow appearance-none border rounded w-full py-2 px-3 my-5 text-gray-700 bg-gray-500 leading-tight'
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-500 leading-tight'
             placeholder='Add a new card...'
             spellCheck={false}
             onBlur={this.toggleCardComposer}
@@ -93,7 +92,7 @@ class CardAdder extends Component {
     ) : (
       <button
         onClick={this.toggleCardComposer}
-        className='add-card-button flex justify-center bg-pink-500 hover:bg-pink-600 text-2xl shadow-lg rounded-lg cursor-pointer text-white opacity-0'
+        className='add-card-button h-10 w-10 flex justify-center self-center transition-all bg-pink-500 hover:bg-pink-600 text-2xl shadow-lg rounded-lg cursor-pointer text-white opacity-0 mt-2'
       >
         +
       </button>

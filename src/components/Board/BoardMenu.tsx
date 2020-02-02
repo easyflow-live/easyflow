@@ -21,16 +21,14 @@ const BoardMenu = ({ board }) => {
   return (
     <div
       className={classNames(
-        'BoardMenu-container block absolute bottom-0 right-0 z-50',
+        'BoardMenu-container transition-all block absolute bottom-0 right-0 z-50',
         {
           'BoardMenu-container--open': isMenuOpen,
         }
       )}
       style={{ top: '0' }}
     >
-      <div
-        className={`BoardMenu flex flex-col bg-gray-750 shadow-lg rounded-l text-white`}
-      >
+      <div className='h-full flex flex-col bg-gray-750 shadow-lg rounded-l text-white'>
         <div className='flex items-center justify-between'>
           <p className='p-3 text-gray-500 uppercase'>Activity</p>
           <button

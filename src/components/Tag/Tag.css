@@ -1,23 +1,5 @@
-.tag {
-  padding: 3px 5px;
-  border-radius: 3px;
-  font-size: 1rem;
-  position: relative;
-}
-
-.tag:first-child {
-  margin-left: 0;
-}
-
 /* Only shows in modal mode */
-.tag__close {
-  display: none;
-  transition: all 0.5s;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 6px;
-}
 .modal-textarea-wrapper .tag__close,
 .tag--removable .tag__close {
-  display: inline;
+  display: inline !important;
 }

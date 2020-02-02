@@ -11,7 +11,7 @@ class ColorPicker extends Component {
   static propTypes = {
     boardId: PropTypes.string.isRequired,
     boardColor: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
   };
 
   handleSelection = color => {
@@ -36,9 +36,7 @@ class ColorPicker extends Component {
             alt='colorwheel'
             className='modal-icon'
           />
-          <div className='board-header-right-text'>
-            &nbsp;Color &nbsp;&#9662;
-          </div>
+          <div className='hidden sm:block'>&nbsp;Color &nbsp;&#9662;</div>
         </Button>
         <Menu className='color-picker-menu'>
           {colors.map(color => (
@@ -60,7 +58,7 @@ const mapStateToProps = (state, ownProps) => {
   const { boardId } = ownProps.match.params;
   return {
     boardColor: state.boardsById[boardId].color,
-    boardId
+    boardId,
   };
 };
 

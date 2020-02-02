@@ -52,7 +52,7 @@ const BoardMenu = ({ board, className }: BoardMenuProps) => {
         trigger={
           <StyledButton tag='button'>
             <MdSettings size='16px' />
-            <div className='board-header-right-text'>&nbsp;Menu</div>
+            <div className='hidden sm:block'>&nbsp;Menu</div>
           </StyledButton>
         }
         items={

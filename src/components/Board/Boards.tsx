@@ -18,9 +18,7 @@ export const Boards = observer(({ boards }: BoardsProps) => {
   return (
     <div className='mt-5'>
       <TransitionGroup className={`inline-flex flex-wrap w-full`}>
-        {boards.docs.length > 0 && (
-          <BoardAdder style={{ minHeight: '140px' }} />
-        )}
+        {boards.docs.length > 0 && <BoardAdder />}
 
         {boards.docs.map(board => (
           <CSSTransition key={board.id} timeout={200} classNames='item'>

@@ -179,7 +179,7 @@ const ListColumns = ({ lists, onCardMove }: ListsProps) => {
       <Droppable droppableId={'board'} type='COLUMN' direction='horizontal'>
         {provided => (
           <div
-            className='lists'
+            className='inline-flex items-start h-full'
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

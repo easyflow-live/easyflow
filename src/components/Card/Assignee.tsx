@@ -1,13 +1,26 @@
 import { CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTransition, animated, useSpring, config } from 'react-spring';
+import styled from 'styled-components';
 
 import CardDocument from '../../../src/documents/card.doc';
 import { useCardAssignees } from '../../../src/hooks/use-card-assignees';
 import { useFirstRender } from '../../../src/hooks/use-first-render';
 
 import { Avatar } from '../Avatar/Avatar';
-import './Assignee.css';
+
+const StyledAssignes = styled.div`
+  display: flex;
+
+  & .assignee {
+    will-change: margin;
+    transition: margin 0.3s;
+  }
+
+  &:hover .assignee:not(:first-child) {
+    margin-left: 0 !important;
+  }
+`;
 
 interface AssigneeProps {
   card: CardDocument;
@@ -38,7 +51,7 @@ const Assignee = ({ card }: AssigneeProps) => {
   }));
 
   return (
-    <div className='assignees'>
+    <StyledAssignes>
       {transitions.map(
         ({ item, key, props: tprops }, index) =>
           item && (
@@ -59,7 +72,7 @@ const Assignee = ({ card }: AssigneeProps) => {
             </animated.div>
           )
       )}
-    </div>
+    </StyledAssignes>
   );
 };
 
