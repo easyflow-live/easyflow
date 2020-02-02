@@ -197,12 +197,12 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
                     <div className='flex flex-col'>
                       <UserName
                         name={item.username}
-                        isOwner={owner.email === item.email}
+                        isOwner={ownerEmail === item.email}
                       />
                       <UserEmail email={item.email} />
                     </div>
                   </div>
-                  {owner.email !== item.email && AmITheBoardOwner && (
+                  {ownerEmail !== item.email && AmITheBoardOwner && (
                     <div>
                       <button
                         className='text-gray-500 hover:text-gray-900 h-4'
