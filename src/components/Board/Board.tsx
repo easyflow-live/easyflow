@@ -133,7 +133,7 @@ const Board = ({ board }: BoardProps) => {
         <BoardHeader board={board} />
 
         <div
-          className='inline-flex mt-4 overflow-x-auto'
+          className='inline-flex mt-4 overflow-x-auto overflow-y-hidden'
           style={{
             width: 'calc(100vw - 3rem)',
           }}
