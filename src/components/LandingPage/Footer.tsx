@@ -13,9 +13,12 @@ const Footer = () => (
       <Link href='/changelog'>
         <a className='hover:text-pink-500 mr-2'>Changelog</a>
       </Link>
-      <Link href='http://twitter.com/pinheirofellipe'>
-        <a className='hover:text-pink-500'>Twitter</a>
-      </Link>
+      <a
+        href='http://twitter.com/pinheirofellipe'
+        className='hover:text-pink-500'
+      >
+        Twitter
+      </a>
     </div>
   </footer>
 );
