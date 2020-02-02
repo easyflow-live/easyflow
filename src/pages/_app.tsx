@@ -7,15 +7,15 @@ import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { SessionProvider } from '../src/hooks/use-session';
-import UserDocument from '../src/documents/user.doc';
-import userStore from '../src/store/users';
-import Header from '../src/components/Header/Header';
-import { initGA, logPageView } from '../src/libs/analytics';
-import { InterfaceProvider } from '../src/components/providers/InterfaceProvider';
+import { SessionProvider } from '../hooks/use-session';
+import UserDocument from '../documents/user.doc';
+import userStore from '../store/users';
+import Header from '../components/Header/Header';
+import { initGA, logPageView } from '../libs/analytics';
+import { InterfaceProvider } from '../components/providers/InterfaceProvider';
 
-import '../src/services/firebase.service';
-import '../src/styles/style.css';
+import '../services/firebase.service';
+import '../styles/style.css';
 
 interface State {
   user: app.User;

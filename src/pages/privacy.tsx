@@ -1,9 +1,9 @@
 import { Title } from 'react-head';
 
-import Privacy from '../src/components/LandingPage/Privacy';
-import Footer from '../src/components/LandingPage/Footer';
-import Header from '../src/components/LandingPage/Header';
-import { useSession } from '../src/hooks/use-session';
+import Privacy from '../components/LandingPage/Privacy';
+import Footer from '../components/LandingPage/Footer';
+import Header from '../components/LandingPage/Header';
+import { useSession } from '../hooks/use-session';
 
 export default () => {
   const { user, initializing } = useSession();

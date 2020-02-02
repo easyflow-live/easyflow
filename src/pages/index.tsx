@@ -1,7 +1,7 @@
-import LandingPage from '../src/components/LandingPage/LandingPage';
-import Home from '../src/components/Home/Home';
-import { useSession } from '../src/hooks/use-session';
-import { useInterface } from '../src/components/providers/InterfaceProvider';
+import LandingPage from '../components/LandingPage/LandingPage';
+import Home from '../components/Home/Home';
+import { useSession } from '../hooks/use-session';
+import { useInterface } from '../components/providers/InterfaceProvider';
 
 export default () => {
   const { user, userDoc, initializing } = useSession();

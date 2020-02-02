@@ -1,9 +1,9 @@
 import { Title } from 'react-head';
 
-import Changelog from '../src/components/pages/Changelog';
-import Header from '../src/components/LandingPage/Header';
-import Footer from '../src/components/LandingPage/Footer';
-import { useSession } from '../src/hooks/use-session';
+import Changelog from '../components/pages/Changelog';
+import Header from '../components/LandingPage/Header';
+import Footer from '../components/LandingPage/Footer';
+import { useSession } from '../hooks/use-session';
 
 export default () => {
   const { user, initializing } = useSession();

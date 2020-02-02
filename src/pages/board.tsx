@@ -1,15 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Error from 'next/error';
-import { NextPage } from 'next';
 import Router from 'next/router';
 
-import BoardComponent from '../src/components/Board/Board';
-import { useSession } from '../src/hooks/use-session';
-import { useInterface } from '../src/components/providers/InterfaceProvider';
-import { useBoard } from '../src/hooks/use-board';
+import BoardComponent from '../components/Board/Board';
+import { useSession } from '../hooks/use-session';
+import { useInterface } from '../components/providers/InterfaceProvider';
+import { useBoard } from '../hooks/use-board';
 
-interface BoardPageProps extends NextPage {
+interface BoardPageProps {
   query: { uid: string; kiosk: boolean };
   children: React.ReactChildren;
 }
