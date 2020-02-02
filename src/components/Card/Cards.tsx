@@ -2,8 +2,10 @@ import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
 import { Collection } from 'firestorter';
+import styled from 'styled-components';
 
 import CardDocument from '../../documents/card.doc';
+import { useSession } from '../../hooks/use-session';
 import CardPlaceholder from './CardPlaceholder';
 import Card from './Card';
 
@@ -13,12 +15,13 @@ interface CardProps {
 }
 
 const Cards = ({ cards, listId }: CardProps) => {
+  const { userDoc } = useSession();
   const { isLoading } = cards;
 
   return (
     <Droppable droppableId={listId} direction='vertical' isCombineEnabled>
       {(provided, { isDraggingOver }) => (
-        <div className='cards' ref={provided.innerRef}>
+        <StyledCards ref={provided.innerRef}>
           {isLoading ? (
             <CardPlaceholder />
           ) : (
@@ -29,15 +32,27 @@ const Cards = ({ cards, listId }: CardProps) => {
                 card={card}
                 index={index}
                 listId={listId}
+                draggable={!!userDoc}
               />
             ))
           )}
 
           {provided.placeholder}
-        </div>
+        </StyledCards>
       )}
     </Droppable>
   );
 };
 
 export default observer(Cards);
+
+const StyledCards = styled.div`
+  min-height: 1px;
+
+  & > .card:first-child {
+    margin-top: 0;
+  }
+  & > .card:last-child {
+    margin-bottom: 0;
+  }
+`;

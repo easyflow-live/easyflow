@@ -9,19 +9,6 @@ import { useFirstRender } from '../../../src/hooks/use-first-render';
 
 import { Avatar } from '../Avatar/Avatar';
 
-const StyledAssignes = styled.div`
-  display: flex;
-
-  & .assignee {
-    will-change: margin;
-    transition: margin 0.3s;
-  }
-
-  &:hover .assignee:not(:first-child) {
-    margin-left: 0 !important;
-  }
-`;
-
 interface AssigneeProps {
   card: CardDocument;
   style?: CSSProperties;
@@ -51,7 +38,7 @@ const Assignee = ({ card }: AssigneeProps) => {
   useFirstRender(initAnimation);
 
   return (
-    <StyledAssignes>
+    <StyledAssignes className='my-3'>
       {transitions.map(
         ({ item, key, props: tprops }, index) =>
           item && (
@@ -77,3 +64,16 @@ const Assignee = ({ card }: AssigneeProps) => {
 };
 
 export default observer(Assignee);
+
+const StyledAssignes = styled.div`
+  display: flex;
+
+  & .assignee {
+    will-change: margin;
+    transition: margin 0.3s;
+  }
+
+  &:hover .assignee:not(:first-child) {
+    margin-left: 0 !important;
+  }
+`;
