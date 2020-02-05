@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@types/classnames": "^2.2.9",
     "@types/fbemitter": "^2.0.32",
     "@types/next": "^8.0.7",
     "@types/react": "^16.9.19",
