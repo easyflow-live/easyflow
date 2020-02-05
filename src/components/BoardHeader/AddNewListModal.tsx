@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import BoardDocument from '../../documents/board.doc';
 import Dialog from '../Dialog/Dialog';
-import Input from '../styled/Input';
+import { Input } from '../shared';
 
 interface AddNewListModalProps {
   board: BoardDocument;

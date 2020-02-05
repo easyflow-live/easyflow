@@ -10,10 +10,10 @@ import { useBoardTeam } from '../../hooks/use-board-team';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
 import { emitter } from '../../libs/emitter';
+import { User } from '../../store/users';
 import Dialog from '../Dialog/Dialog';
 import { Avatar } from '../Avatar/Avatar';
-import Input from '../styled/Input';
-import { User } from '../../store/users';
+import { Input } from '../shared';
 
 interface TeamListModalProps {
   board?: BoardDocument;

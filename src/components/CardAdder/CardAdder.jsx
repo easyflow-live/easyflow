@@ -6,6 +6,7 @@ import { cards as cardsActions } from '../../core/actions';
 import boardsStore from '../../store/boards';
 import userStore from '../../store/users';
 import ClickOutside from '../ClickOutside/ClickOutside';
+import { Input } from '../shared';
 
 class CardAdder extends Component {
   constructor() {
@@ -77,12 +78,11 @@ class CardAdder extends Component {
     return isOpen ? (
       <ClickOutside handleClickOutside={this.toggleCardComposer}>
         <form onSubmit={this.handleSubmit} className='m-2'>
-          <input
+          <Input
             autoFocus
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={newText}
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-500 leading-tight'
             placeholder='Add a new card...'
             spellCheck={false}
             onBlur={this.toggleCardComposer}

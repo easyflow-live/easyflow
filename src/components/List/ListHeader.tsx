@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import ListDocument from '../../documents/list.doc';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useInterface } from '../providers/InterfaceProvider';
+import { Input } from '../shared';
 import CardCounter from './CardCounter';
 import ListMenu from './ListMenu';
 
@@ -64,12 +65,11 @@ const ListHeader = ({
     >
       {isOpen && isEditable ? (
         <div>
-          <input
+          <Input
             autoFocus
             value={newTitle}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='shadow appearance-none rounded w-full py-1 px-2 text-white bg-gray-600 leading-tight'
             onBlur={handleSubmit}
             spellCheck={false}
           />

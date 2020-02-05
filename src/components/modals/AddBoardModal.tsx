@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
 import Dialog from '../Dialog/Dialog';
-import Input from '../styled/Input';
+import { Input } from '../shared';
 
 interface AddBoardModalProps {
   isOpen?: boolean;

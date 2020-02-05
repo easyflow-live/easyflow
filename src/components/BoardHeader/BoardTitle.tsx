@@ -4,6 +4,7 @@ import 'firebase/firestore';
 
 import PageTitle from '../PageTitle/PageTitle';
 import styled from 'styled-components';
+import { Input } from '../shared';
 
 interface BoardTitleProps {
   boardTitle: string;
@@ -70,22 +71,25 @@ class BoardTitle extends Component<BoardTitleProps, State> {
     const { isOpen, newTitle } = this.state;
     const { boardTitle, editable } = this.props;
 
-    return isOpen && editable ? (
-      <input
-        autoFocus
-        value={newTitle}
-        type='text'
-        onKeyDown={this.handleKeyDown}
-        onChange={this.handleChange}
-        onBlur={this.revertTitle}
-        onFocus={this.handleFocus}
-        className='text-xl shadow appearance-none rounded py-1 px-2 text-white bg-gray-700 leading-tight'
-        spellCheck={false}
-      />
-    ) : (
-      <BoardTitleButton onClick={this.handleClick}>
-        <PageTitle text={boardTitle} />
-      </BoardTitleButton>
+    return (
+      <div>
+        {isOpen && editable ? (
+          <Input
+            type='text'
+            autoFocus
+            value={newTitle}
+            onKeyDown={this.handleKeyDown}
+            onChange={this.handleChange}
+            onBlur={this.revertTitle}
+            onFocus={this.handleFocus}
+            spellCheck={false}
+          />
+        ) : (
+          <BoardTitleButton onClick={this.handleClick}>
+            <PageTitle text={boardTitle} />
+          </BoardTitleButton>
+        )}
+      </div>
     );
   }
 }

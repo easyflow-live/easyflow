@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useKeySubmit } from '../../hooks/use-key-submit';
+import { Input } from '../shared';
 
 const MAX_DEFAULT_VALUE = 0;
 const ENTER_CODE = 13;
@@ -61,7 +62,7 @@ const CardCounter = ({
   return (
     <div className='pl-2'>
       {isEditing && editable ? (
-        <input
+        <Input
           min={MAX_DEFAULT_VALUE}
           type='tel'
           inputMode='numeric'
@@ -69,8 +70,9 @@ const CardCounter = ({
           value={maxValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          className='shadow appearance-none rounded w-10 py-1 px-2 text-white bg-gray-600 leading-tight'
           onBlur={handleSubmit}
+          full={false}
+          className='w-10'
         />
       ) : (
         <div

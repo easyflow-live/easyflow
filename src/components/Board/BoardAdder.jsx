@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import { useSession } from '../../hooks/use-session';
 import CallToActionButton from '../Buttons/CallToActionButton';
+import { Input } from '../shared';
 
 const BoardAdder = () => {
   const { userDoc } = useSession();
@@ -51,7 +52,7 @@ const BoardAdder = () => {
         onSubmit={handleSubmit}
         className='bg-gray-700 shadow-lg rounded-lg p-4 mr-4 mb-4 w-full sm:w-48 h-32'
       >
-        <input
+        <Input
           autoFocus
           type='text'
           value={title}
@@ -59,7 +60,7 @@ const BoardAdder = () => {
           onChange={handleChange}
           spellCheck={false}
           placeholder='Board name'
-          className='shadow appearance-none border rounded w-full py-2 px-3 my-3 text-gray-700 leading-tight'
+          className='my-3'
         />
 
         <CallToActionButton type='submit' disabled={title === ''} size='small'>
