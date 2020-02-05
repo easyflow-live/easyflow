@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 
 import { usePrevious } from '../../hooks/use-previous';
 import { useClickOutside } from '../../hooks/use-click-outside';
+import { Button } from '../shared';
 
 import { EmojiSelector, getEmoji } from './EmojiSelector';
 
@@ -166,12 +167,9 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
               </span>
 
               <span className='buttons'>
-                <button
-                  className='bg-pink-500 hover:bg-pink-600 text-white py-1 px-2 rounded-lg'
-                  onClick={onSubmit}
-                >
+                <Button size='small' onClick={onSubmit}>
                   Send
-                </button>
+                </Button>
               </span>
             </>
           )}

@@ -1,8 +1,8 @@
 import { Empty } from './Empty';
 import { ScrumBoard } from '../images/ScrumBoard';
 import AddBoardModal from '../modals/AddBoardModal';
-import CallToActionButton from '../Buttons/CallToActionButton';
 import { useState } from 'react';
+import { Button } from '../shared';
 
 const AddBoardButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +11,9 @@ const AddBoardButton = () => {
 
   return (
     <>
-      <CallToActionButton className='mt-5' onClick={toggle}>
+      <Button className='mt-5' onClick={toggle}>
         Add new board
-      </CallToActionButton>
+      </Button>
 
       <AddBoardModal isOpen={isOpen} toggleIsOpen={toggle} />
     </>

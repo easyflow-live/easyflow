@@ -4,8 +4,7 @@ import 'firebase/firestore';
 
 import ClickOutside from '../ClickOutside/ClickOutside';
 import { useSession } from '../../hooks/use-session';
-import CallToActionButton from '../Buttons/CallToActionButton';
-import { Input } from '../shared';
+import { Button, Input } from '../shared';
 
 const BoardAdder = () => {
   const { userDoc } = useSession();
@@ -63,9 +62,9 @@ const BoardAdder = () => {
           className='my-3'
         />
 
-        <CallToActionButton type='submit' disabled={title === ''} size='small'>
+        <Button type='submit' disabled={title === ''} size='small'>
           Create
-        </CallToActionButton>
+        </Button>
       </form>
     </ClickOutside>
   ) : (

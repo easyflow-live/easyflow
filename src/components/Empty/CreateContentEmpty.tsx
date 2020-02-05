@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
 import { CreateContent } from '../images/CreateContent';
-import CallToActionButton from '../Buttons/CallToActionButton';
 import AddNewListModal from '../BoardHeader/AddNewListModal';
 import { Empty } from './Empty';
+import { Button } from '../shared';
 
 interface AddNewListButtonProps {
   board: BoardDocument;
@@ -18,9 +18,9 @@ const AddNewListButton = observer(({ board }: AddNewListButtonProps) => {
 
   return (
     <>
-      <CallToActionButton className='mt-5' onClick={toggle}>
+      <Button className='mt-5' onClick={toggle}>
         Add new list
-      </CallToActionButton>
+      </Button>
 
       <AddNewListModal board={board} isOpen={isOpen} toggleIsOpen={toggle} />
     </>
