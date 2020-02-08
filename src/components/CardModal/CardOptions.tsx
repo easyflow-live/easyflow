@@ -16,7 +16,7 @@ import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 import CardOptionButton from './CardOptionButton';
 import CardOptionColors from './CardOptionColors';
-import Divider from '../Divider/Divider';
+import Divider from '../shared/Divider';
 
 interface CardOptionsProps {
   isColorPickerOpen: boolean;

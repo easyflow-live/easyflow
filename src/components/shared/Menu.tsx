@@ -8,7 +8,7 @@ import {
 import classNames from 'classnames';
 import styled from 'styled-components';
 
-import Divider from '../Divider/Divider';
+import Divider from './Divider';
 
 interface MenuProps {
   trigger: React.ReactChild;
