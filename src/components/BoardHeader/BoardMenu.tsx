@@ -4,7 +4,7 @@ import { FaTrash, FaHashtag } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import BoardDocument from '../../documents/board.doc';
-import Menu, { MenuItem, Button, Divider } from '../Menu';
+import Menu, { MenuItem, Button, Divider } from '../shared/Menu';
 import AddTagsModal from './AddTagsModal';
 import { MdSettings } from 'react-icons/md';
 import styled from 'styled-components';

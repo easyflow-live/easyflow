@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 
 import { useGoogleLogin } from '../../hooks/use-google-login';
-import Menu, { MenuItem, Button } from '../Menu';
+import Menu, { MenuItem, Button } from '../shared/Menu';
 
 interface UserMenuProps {
   trigger: React.ReactChild;

@@ -3,7 +3,7 @@ import { FaTrash, FaEllipsisH } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
-import Menu, { MenuItem, Button } from '../Menu';
+import Menu, { MenuItem, Button } from '../shared/Menu';
 import ListDocument from 'src/documents/list.doc';
 
 interface ListMenuProps {
