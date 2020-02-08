@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/use-session';
 
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '../shared/Avatar';
 import UserMenu from '../UserMenu/UserMenu';
 import { useInterface } from '../providers/InterfaceProvider';
 import { GiveFeedback } from '../Feedback/GiveFeedback';
@@ -43,7 +43,7 @@ const Header = observer(() => {
                       trigger={
                         <div className='flex items-center'>
                           <Avatar
-                            imgUrl={user.photoURL}
+                            src={user.photoURL}
                             username={user.displayName}
                             className='cursor-pointer'
                           />

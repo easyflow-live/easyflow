@@ -4,7 +4,7 @@ import { useTransition, animated } from 'react-spring';
 
 import BoardDocument from '../../documents/board.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '../shared/Avatar';
 
 interface TeamProps {
   style?: CSSProperties;
@@ -48,9 +48,9 @@ const Team = ({ board }: TeamProps) => {
             >
               <Avatar
                 key={item.username}
-                imgUrl={item.photo}
+                src={item.photo}
                 username={item.username}
-                boxShadowColor={'#2d3748'}
+                borderColor={'border-gray-800'}
               />
             </animated.div>
           )

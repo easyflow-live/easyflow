@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useBoardsData } from '../../store';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
+import { Avatar } from '../shared/Avatar';
 import {
   CardActions,
   NewCardData,
@@ -12,7 +13,6 @@ import {
   EditCardData,
   CompleteCardData,
 } from '../../core/actions/card.actions';
-import { Avatar } from '../Avatar/Avatar';
 
 const NewCardAction = ({ data }: { data: NewCardData }) => {
   const store = useBoardsData(s => s);
@@ -160,8 +160,8 @@ const ActionCard = ({ action, user }: ActionCardProps) => {
         <div className='mr-4 ml-2'>
           <Avatar
             username={user.username}
-            imgUrl={user.photo}
-            style={{ maxWidth: 'unset' }}
+            src={user.photo}
+            className='max-w-none'
           />
         </div>
         <div className='flex flex-col'>

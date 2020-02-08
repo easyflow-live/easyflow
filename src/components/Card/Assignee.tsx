@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import CardDocument from '../../../src/documents/card.doc';
 import { useCardAssignees } from '../../../src/hooks/use-card-assignees';
 import { useFirstRender } from '../../../src/hooks/use-first-render';
-
-import { Avatar } from '../Avatar/Avatar';
+import { Avatar } from '../shared/Avatar';
 
 interface AssigneeProps {
   card: CardDocument;
@@ -52,9 +51,10 @@ const Assignee = ({ card }: AssigneeProps) => {
             >
               <Avatar
                 key={item.username}
-                imgUrl={item.photo}
+                src={item.photo}
                 username={item.username}
-                boxShadowColor={card.data.color}
+                className='border'
+                style={{ borderColor: card.data.color }}
               />
             </animated.div>
           )

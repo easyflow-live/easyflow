@@ -12,8 +12,8 @@ import { useSession } from '../../hooks/use-session';
 import { emitter } from '../../libs/emitter';
 import { User } from '../../store/users';
 import Dialog from '../Dialog/Dialog';
-import { Avatar } from '../Avatar/Avatar';
 import { Input } from '../shared';
+import { Avatar } from '../shared/Avatar';
 
 interface TeamListModalProps {
   board?: BoardDocument;
@@ -188,9 +188,9 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
                   <div className='flex items-center'>
                     <div className='mr-4'>
                       <Avatar
-                        className='h-10'
+                        size='big'
                         key={item.username}
-                        imgUrl={item.photo}
+                        src={item.photo}
                         username={item.username}
                       />
                     </div>
