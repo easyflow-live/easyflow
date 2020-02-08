@@ -1,7 +1,7 @@
 import React from 'react';
 import { Title } from 'react-head';
 
-import PageTitle from '../PageTitle/PageTitle';
+import Heading from '../shared/Heading';
 import { Boards } from '../Board/Boards';
 
 import UserDocument from 'src/documents/user.doc';
@@ -15,7 +15,7 @@ const Home = ({ userDoc }: { userDoc: UserDocument }) => {
       <Title>Boards | Easy Flow</Title>
 
       <div className='m-6'>
-        <PageTitle text={'Boards'} />
+        <Heading text={'Boards'} />
         <Boards boards={userDoc.boards} />
       </div>
     </>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import PageTitle from '../PageTitle/PageTitle';
+import Heading from '../shared/Heading';
 import styled from 'styled-components';
 import { Input } from '../shared';
 
@@ -86,7 +86,7 @@ class BoardTitle extends Component<BoardTitleProps, State> {
           />
         ) : (
           <BoardTitleButton onClick={this.handleClick}>
-            <PageTitle text={boardTitle} />
+            <Heading text={boardTitle} />
           </BoardTitleButton>
         )}
       </div>
