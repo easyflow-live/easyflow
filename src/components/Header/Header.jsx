@@ -8,7 +8,6 @@ import { Avatar } from '../shared/Avatar';
 import UserMenu from '../UserMenu/UserMenu';
 import { useInterface } from '../providers/InterfaceProvider';
 import { GiveFeedback } from '../Feedback/GiveFeedback';
-import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const Header = observer(() => {
   const { user, userDoc } = useSession();
@@ -46,10 +45,6 @@ const Header = observer(() => {
                             src={user.photoURL}
                             username={user.displayName}
                             className='cursor-pointer'
-                          />
-                          <MdKeyboardArrowDown
-                            size='24'
-                            color='rgb(106, 118, 136)'
                           />
                         </div>
                       }
