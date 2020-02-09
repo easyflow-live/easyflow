@@ -1,0 +1,14 @@
+{
+  "build": {
+    "env": {
+      "REACT_APP_API_KEY": "@app_api_key",
+      "REACT_APP_AUTH_DOMAIN": "@app_auth_domain",
+      "REACT_APP_DATABASE_URL": "@app_database_url",
+      "REACT_APP_PROJECT_ID": "@app_project_id",
+      "REACT_APP_STORAGE_BUCKET": "@app_storage_bucket",
+      "REACT_APP_MESSAGING_SENDER_ID": "@app_messaging_sender_id",
+      "REACT_APP_ID": "@app_id",
+      "PORT": 3000
+    }
+  }
+}
