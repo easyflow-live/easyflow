@@ -5,6 +5,7 @@ import { useBoardsData } from '../../store';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
 import { Avatar } from '../shared/Avatar';
+import { ReactChild } from 'react';
 import {
   CardActions,
   NewCardData,
@@ -12,7 +13,12 @@ import {
   AssigneeCardData,
   EditCardData,
   CompleteCardData,
+  RemoveCardData,
 } from '../../core/actions/card.actions';
+
+const Text = ({ children }: { children: ReactChild }) => (
+  <span className='text-gray-400'> {children} </span>
+);
 
 const NewCardAction = ({ data }: { data: NewCardData }) => {
   const store = useBoardsData(s => s);
@@ -22,16 +28,16 @@ const NewCardAction = ({ data }: { data: NewCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> added a new card </span>
+      <Text> added a new card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> to </span>
+      <Text> to </Text>
       <span>{listTitle}</span>
-      <span className='text-gray-400'> column</span>
+      <Text> column</Text>
     </>
   );
 };
 
-const RemoveCardAction = ({ data }: { data: NewCardData }) => {
+const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
   const store = useBoardsData(s => s);
 
   const listTitle =
@@ -39,11 +45,11 @@ const RemoveCardAction = ({ data }: { data: NewCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> removed a card </span>
+      <Text> removed a card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> from </span>
+      <Text> from </Text>
       <span>{listTitle}</span>
-      <span className='text-gray-400'> column</span>
+      <Text> column</Text>
     </>
   );
 };
@@ -61,11 +67,11 @@ const MoveCardAction = ({ data }: { data: MoveCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> moved a card </span>
+      <Text> moved a card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> from </span>
+      <Text> from </Text>
       <span>{listBeforeTitle}</span>
-      <span className='text-gray-400'> column to </span>
+      <Text> column to </Text>
       <span>{listAfterTitle}</span>
     </>
   );
@@ -79,11 +85,11 @@ const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> assigneed to card </span>
+      <Text> assigneed to card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> in </span>
+      <Text> in </Text>
       <span>{listTitle}</span>
-      <span className='text-gray-400'> column</span>
+      <Text> column</Text>
     </>
   );
 };
@@ -96,11 +102,11 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> edited a card </span>
+      <Text> edited a card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> in </span>
+      <Text> in </Text>
       <span>{listTitle}</span>
-      <span className='text-gray-400'> column</span>
+      <Text> column</Text>
     </>
   );
 };
@@ -113,17 +119,25 @@ const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
 
   return (
     <>
-      <span className='text-gray-400'> marked a card </span>
+      <Text> marked a card </Text>
       <span>{data.title}</span>
-      <span className='text-gray-400'> in </span>
+      <Text> in </Text>
       <span>{listTitle}</span>
-      <span className='text-gray-400'> column as </span>
+      <Text> column as </Text>
       <span>{data.completed ? 'completed' : 'uncompleted'}</span>
     </>
   );
 };
 
-const CardsActions = ({ data }: { data: any }) => {
+type Data =
+  | NewCardData
+  | RemoveCardData
+  | MoveCardData
+  | AssigneeCardData
+  | EditCardData
+  | CompleteCardData;
+
+const CardsActions = ({ data }: { data: Data }) => {
   switch (data.action) {
     case CardActions.NEW:
       return <NewCardAction data={data} />;
@@ -167,7 +181,7 @@ const ActionCard = ({ action, user }: ActionCardProps) => {
         <div className='flex flex-col'>
           <p>
             {user.username}
-            <CardsActions data={action.data.data} />
+            <CardsActions data={action.data.data as Data} />
           </p>
           <p className='text-gray-600'>
             {formatRelative(new Date(action.data.date), new Date())}

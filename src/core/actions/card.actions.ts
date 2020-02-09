@@ -52,7 +52,7 @@ export const moveCardAction = ({
 
 export interface EditCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.MOVE;
+  action: CardActions.EDIT;
   oldText: string;
   newText: string;
   title: string;
