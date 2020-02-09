@@ -1,4 +1,4 @@
-import Tag from './Tag';
+import Tag from '../shared/Tag';
 
 interface TagListProps {
   tags: string[];

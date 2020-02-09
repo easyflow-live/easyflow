@@ -1,5 +1,0 @@
-/* Only shows in modal mode */
-.modal-textarea-wrapper .tag__close,
-.tag--removable .tag__close {
-  display: inline !important;
-}

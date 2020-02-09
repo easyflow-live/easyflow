@@ -2,8 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
-import TagList from '../Tag/TagList';
-import AddTags from '../Tag/AddTags';
+import TagList from '../TagList/TagList';
+import AddTags from '../TagList/AddTags';
 import Dialog from '../Dialog/Dialog';
 
 interface AddTagsModalProps {

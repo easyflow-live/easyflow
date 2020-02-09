@@ -16,9 +16,15 @@ interface CardBadgesProps {
   card: CardDocument;
   listId: string;
   checkboxes: { total: number; checked: number };
+  removableTags?: boolean;
 }
 
-const CardBadges = ({ card, listId, checkboxes }: CardBadgesProps) => {
+const CardBadges = ({
+  card,
+  listId,
+  checkboxes,
+  removableTags,
+}: CardBadgesProps) => {
   const handleTagClick = (tag: string) => card.removeTag(tag);
 
   const handleComplete = (state: boolean) => {
@@ -52,7 +58,11 @@ const CardBadges = ({ card, listId, checkboxes }: CardBadgesProps) => {
         </div>
         <Assignee card={card} />
       </div>
-      <BadgeTags tags={card.data.tags} onTagClick={handleTagClick} />
+      <BadgeTags
+        tags={card.data.tags}
+        onTagClick={handleTagClick}
+        removable={removableTags}
+      />
       <div>
         <BadgeTaskProgress
           total={checkboxes.total}

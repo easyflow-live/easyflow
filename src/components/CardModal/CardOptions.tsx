@@ -8,7 +8,7 @@ import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
 import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
-import AddTagsWithAutocomplete from '../Tag/AddTagsWithAutocomplete';
+import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
 import ClickOutside from '../ClickOutside/ClickOutside';
 import Modal from '../Modal/Modal';
 import Calendar from './Calendar';
