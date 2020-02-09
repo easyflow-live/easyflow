@@ -1,8 +1,9 @@
+import * as firebase from 'firebase/app';
 import { useContext, createContext } from 'react';
 import UserDocument from '../documents/user.doc';
 
 interface SessionContextProps {
-  user: null;
+  user: firebase.User;
   initializing: boolean;
   userDoc: UserDocument;
 }
