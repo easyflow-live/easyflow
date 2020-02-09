@@ -1,22 +1,17 @@
-# Easy Flow Project Manager
+# Easy Flow
 
-[Check out the live website](https://www.easyflow.com)
+[easyflow.live](https://www.easyflow.live)
 
 Easy Flow is a real time collaborative project manager based on Kanban methodology. We make everything easier so you and your team can focus on complete tasks and ship great products.
 
-### Features
-
-- It has most of the features available on Trello, like creating and editing new cards, dragging around cards and so on.
-- Supports GitHub flavored markdown, which enables stuff like headings and checklists on the cards.
-- Works great on touch devices.
-
 ### Tech stack
 
+- [Typescript](https://github.com/microsoft/TypeScript)
 - [React](https://github.com/facebook/react)
-- [React-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
-- [Sass](https://github.com/sass/sass)
-- [Webpack](https://github.com/webpack/webpack)
-- [Babel](https://github.com/babel/babel)
+- [Next.js](https://github.com/zeit/next.js/)
+- [TailwindCSS](https://github.com/tailwindcss/tailwindcss)
+- [MobX](https://github.com/mobxjs/mobx)
+- [Google Firebase](firebase.google.com/)
 
 ### Development
 
@@ -47,8 +42,37 @@ REACT_APP_ID =
 PORT = 3000
 ```
 
-For production deployment run:
+## Contributors ✨
 
-```shell
-npm run deploy
-```
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center">
+      <a href="http://twitter.com/piheirofellipe">
+        <img src="https://avatars2.githubusercontent.com/u/434694?s=460&v=4" width="70px;" alt="Fellipe Pinheiro"/>
+        <br />
+        <sub><b>Fellipe Pinheiro</b></sub>
+      </a>
+      <br />
+      <a href="#code-pinheirofellipe" title="Code">💻</a>
+      <a href="#design-pinheirofellipe" title="Code">🎨</a>
+      <a href="#code-review-pinheirofellipe" title="Code">👀</a>
+    </td>
+    <td align="center">
+      <a href="http://twitter.com/piheirofellipe">
+        <img src="https://avatars3.githubusercontent.com/u/1120412?s=460&v=4" width="70px;" alt="Erick Almeida"/>
+      <br /><sub><b>Erick Almeida</b></sub>
+      </a>
+      <br />
+      <a href="#code-pinheirofellipe" title="Code">💻</a>
+      <a href="#code-pinheirofellipe" title="Code">🤔</a>
+    </td>
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
