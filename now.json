@@ -1,4 +1,7 @@
 {
+  "name": "easyflow",
+  "alias": "easyflow.live",
+  "version": 2,
   "build": {
     "env": {
       "REACT_APP_API_KEY": "@app_api_key",
