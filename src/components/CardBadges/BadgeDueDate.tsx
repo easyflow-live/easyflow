@@ -4,7 +4,7 @@ import format from 'date-fns/format';
 import { useMemo } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 
-import Badge from './Badge';
+import Badge from '../shared/Badge';
 
 interface BadgeDueDateProps {
   date: any;

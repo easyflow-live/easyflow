@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { MdDoneAll } from 'react-icons/md';
 
-import Badge from './Badge';
+import Badge from '../shared/Badge';
 
 interface BadgeTaskProgressProps {
   total: number;
