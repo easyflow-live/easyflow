@@ -19,7 +19,7 @@ const BoardAdder = () => {
     setTitle(event.target.value);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (title === '') return;
 
@@ -39,7 +39,7 @@ const BoardAdder = () => {
     setTitle('');
   };
 
-  const handleKeyDown = event => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.keyCode === 27) {
       setIsOpen(false);
     }

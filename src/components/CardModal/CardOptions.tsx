@@ -90,6 +90,10 @@ class CardOptions extends Component<CardOptionsProps, State> {
     this.setState({ isCalendarOpen: !this.state.isCalendarOpen });
   };
 
+  saveCardCalendar = (date: Date) => this.props.card.update({ date });
+
+  removeCardCalendar = () => this.props.card.update({ date: '' });
+
   render() {
     const {
       isCardNearRightBorder,
@@ -163,9 +167,10 @@ class CardOptions extends Component<CardOptionsProps, State> {
           toggleIsOpen={this.toggleCalendar}
         >
           <Calendar
-            card={card}
-            date={new Date(card.data.date)}
+            initialDate={new Date(card.data.date || '')}
             toggleCalendar={this.toggleCalendar}
+            onSave={this.saveCardCalendar}
+            onRemove={this.removeCardCalendar}
           />
         </Modal>
       </>
