@@ -3,3 +3,4 @@ dist
 stats.json
 .next
 .env-dev
+.env
