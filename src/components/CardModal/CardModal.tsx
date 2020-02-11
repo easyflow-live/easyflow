@@ -9,7 +9,7 @@ import { findCheckboxes } from '../../helpers/find-check-boxes';
 import { useThinDisplay } from '../../hooks/use-thin-display';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import CardBadges from '../CardBadges/CardBadges';
-import Modal from '../Modal/Modal';
+import Modal from '../shared/Modal';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
 
