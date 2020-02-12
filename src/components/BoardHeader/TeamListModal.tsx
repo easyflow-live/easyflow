@@ -14,6 +14,7 @@ import { User } from '../../store/users';
 import Dialog from '../Dialog/Dialog';
 import { Input } from '../shared';
 import { Avatar } from '../shared/Avatar';
+import { List, ListItem } from '../shared/List';
 
 interface TeamListModalProps {
   board?: BoardDocument;
@@ -176,15 +177,11 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
             onKeyDown={handleKeyDown}
           />
         </div>
-        <ul>
+        <List>
           {assignees.sort(sortAlpha).map(
             (item, key) =>
               item && (
-                <li
-                  tabIndex={0}
-                  key={key}
-                  className='flex justify-between items-center py-2 px-4 sm:px-8 mb-5 hover:bg-gray-700'
-                >
+                <ListItem tabIndex={0} key={key}>
                   <div className='flex items-center'>
                     <div className='mr-4'>
                       <Avatar
@@ -220,10 +217,10 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
                       </button>
                     </div>
                   )}
-                </li>
+                </ListItem>
               )
           )}
-        </ul>
+        </List>
       </>
     </Dialog>
   );
