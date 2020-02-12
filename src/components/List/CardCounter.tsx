@@ -1,10 +1,6 @@
-import { useState } from 'react';
-
-import { useKeySubmit } from '../../hooks/use-key-submit';
-import { Input } from '../shared';
+import Editable from '../shared/Editable';
 
 const MAX_DEFAULT_VALUE = 0;
-const ENTER_CODE = 13;
 
 interface CardCounterProps {
   counter: number;
@@ -19,38 +15,10 @@ const CardCounter = ({
   onChange,
   editable,
 }: CardCounterProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [maxValue, setMaxValue] = useState(max);
-
-  const toggleEditing = () => setIsEditing(!isEditing);
-
-  const handleChange = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>) =>
-    setMaxValue(parseInt(value, 10) >= 0 ? parseInt(value, 10) : 0);
-
-  const handleOnClick = (e: React.MouseEvent) => {
-    if (!editable) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    toggleEditing();
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = (value: string) => {
+    const maxValue = parseInt(value, 10) >= 0 ? parseInt(value, 10) : 0;
     onChange(maxValue);
-    toggleEditing();
   };
-
-  const handleButtonKeyDown = (e: React.KeyboardEvent) => {
-    if (!editable) return;
-
-    if (e.keyCode === ENTER_CODE) {
-      e.preventDefault();
-      toggleEditing();
-    }
-  };
-  const handleKeyDown = useKeySubmit(handleSubmit, toggleEditing);
 
   // @ts-ignore
   const isDefault = parseInt(max, 10) === parseInt(MAX_DEFAULT_VALUE, 10);
@@ -61,35 +29,32 @@ const CardCounter = ({
   // https://github.com/facebook/react/issues/6556
   return (
     <div className='pl-2'>
-      {isEditing && editable ? (
-        <Input
-          min={MAX_DEFAULT_VALUE}
-          type='tel'
-          inputMode='numeric'
-          autoFocus
-          value={maxValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onBlur={handleSubmit}
-          full={false}
-          className='w-10'
-        />
-      ) : (
-        <div
-          role='button'
-          tabIndex={0}
-          onKeyDown={handleButtonKeyDown}
-          title='Click to change the cards limit. Use 0 (zero) to remove the limit.'
-          className={`
+      <Editable
+        value={max.toString()}
+        onSubmit={handleSubmit}
+        editable={editable}
+        inputProps={{
+          min: MAX_DEFAULT_VALUE,
+          type: 'tel',
+          inputMode: 'numeric',
+          full: false,
+          className: 'w-12',
+        }}
+      >
+        {({ value, onClick }) => (
+          <button
+            title='Click to change the cards limit. Use 0 (zero) to remove the limit.'
+            className={`
               text-white text-sm rounded-full h-8 w-10 flex items-center justify-center
               ${reachedLimit && !isDefault && 'bg-red-500'}
               ${editable ? 'cursor-text' : ''}
             `}
-          onClick={handleOnClick}
-        >
-          {counter}/{maxValue}
-        </div>
-      )}
+            onClick={onClick}
+          >
+            {counter}/{value}
+          </button>
+        )}
+      </Editable>
     </div>
   );
 };

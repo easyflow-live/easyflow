@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-
-import Heading from '../shared/Heading';
 import styled from 'styled-components';
-import { Input } from '../shared';
+
+import { Editable, Heading } from '../shared';
 
 interface BoardTitleProps {
   boardTitle: string;
@@ -12,87 +11,33 @@ interface BoardTitleProps {
   editable?: boolean;
 }
 
-interface State {
-  isOpen: boolean;
-  newTitle: string;
-}
+const BoardTitle = ({ boardId, boardTitle, editable }: BoardTitleProps) => {
+  const submitTitle = (value: string) => {
+    if (value === '') return;
 
-class BoardTitle extends Component<BoardTitleProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpen: false,
-      newTitle: props.boardTitle,
-    };
-  }
-
-  handleClick = () => {
-    this.setState({ isOpen: true });
-  };
-
-  handleChange = event => {
-    this.setState({ newTitle: event.target.value });
-  };
-
-  submitTitle = () => {
-    const { boardId, boardTitle } = this.props;
-    const { newTitle } = this.state;
-    if (newTitle === '') return;
-    if (boardTitle !== newTitle) {
+    if (boardTitle !== value) {
       firebase
         .firestore()
         .collection('boards')
         .doc(boardId)
         .update({
-          title: newTitle,
+          title: value,
         });
     }
-    this.setState({ isOpen: false });
   };
 
-  revertTitle = () => {
-    const { boardTitle } = this.props;
-    this.setState({ newTitle: boardTitle, isOpen: false });
-  };
-
-  handleKeyDown = event => {
-    if (event.keyCode === 13) {
-      this.submitTitle();
-    } else if (event.keyCode === 27) {
-      this.revertTitle();
-    }
-  };
-
-  handleFocus = event => {
-    event.target.select();
-  };
-
-  render() {
-    const { isOpen, newTitle } = this.state;
-    const { boardTitle, editable } = this.props;
-
-    return (
-      <div>
-        {isOpen && editable ? (
-          <Input
-            type='text'
-            autoFocus
-            value={newTitle}
-            onKeyDown={this.handleKeyDown}
-            onChange={this.handleChange}
-            onBlur={this.revertTitle}
-            onFocus={this.handleFocus}
-            spellCheck={false}
-          />
-        ) : (
-          <BoardTitleButton onClick={this.handleClick}>
-            <Heading text={boardTitle} />
+  return (
+    <div>
+      <Editable value={boardTitle} onSubmit={submitTitle} editable={editable}>
+        {({ value, onClick }) => (
+          <BoardTitleButton onClick={onClick}>
+            <Heading text={value} />
           </BoardTitleButton>
         )}
-      </div>
-    );
-  }
-}
+      </Editable>
+    </div>
+  );
+};
 
 export default BoardTitle;
 
