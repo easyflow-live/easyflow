@@ -1,7 +1,7 @@
 import React, { useState, ReactChild } from 'react';
 
-import { Input } from '../shared';
 import { useKeySubmit } from '../../hooks/use-key-submit';
+import { Input } from '../shared';
 import { InputProps } from './Input';
 
 interface EditableProps {
@@ -51,10 +51,8 @@ const Editable = ({
 
   const handleKeyDown = useKeySubmit(submitTitle, revertTitle);
 
-  const handleFocus = event => event.target.select();
-
   return (
-    <div>
+    <div className='flex-grow'>
       {isOpen && editable ? (
         <Input
           type='text'
@@ -63,7 +61,6 @@ const Editable = ({
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           onBlur={revertTitle}
-          onFocus={handleFocus}
           spellCheck={false}
           {...inputProps}
         />
