@@ -3,7 +3,7 @@
   <span><b>EasyFlow</b>: <span>Project Management Tool</span><br/>
 
   <p align="center">
-    <a href="https://www.easyflow.live" target="_blank">easyflow.live</a>
+    <a href="https://easyflow.live" target="_blank">easyflow.live</a>
   </p>
 </p>
 
