@@ -8,7 +8,7 @@ import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
 import boardsStore from '../../store/boards';
 import userStore from '../../store/users';
-import ClickOutside from '../ClickOutside/ClickOutside';
+import ClickOutside from '../shared/ClickOutside';
 import { Input } from '../shared';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 

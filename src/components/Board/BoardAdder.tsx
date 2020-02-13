@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import ClickOutside from '../ClickOutside/ClickOutside';
+import ClickOutside from '../shared/ClickOutside';
 import { useSession } from '../../hooks/use-session';
 import { Button, Input } from '../shared';
 

@@ -9,7 +9,7 @@ import boardsStore from '../../store/boards';
 import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
-import ClickOutside from '../ClickOutside/ClickOutside';
+import ClickOutside from '../shared/ClickOutside';
 import Modal from '../shared/Modal';
 import Calendar from './Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';

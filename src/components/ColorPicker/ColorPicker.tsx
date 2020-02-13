@@ -1,5 +1,6 @@
-import ClickOutside from '../ClickOutside/ClickOutside';
 import { useRef, useState } from 'react';
+
+import ClickOutside from '../shared/ClickOutside';
 import CardOptionButton from '../CardModal/CardOptionButton';
 
 interface PickerModalProps {
