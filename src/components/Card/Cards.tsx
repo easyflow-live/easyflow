@@ -21,7 +21,7 @@ const Cards = ({ cards, listId }: CardProps) => {
   return (
     <Droppable droppableId={listId} direction='vertical' isCombineEnabled>
       {(provided, { isDraggingOver }) => (
-        <StyledCards ref={provided.innerRef}>
+        <StyledCards className='px-2' ref={provided.innerRef}>
           {isLoading ? (
             <CardPlaceholder />
           ) : (

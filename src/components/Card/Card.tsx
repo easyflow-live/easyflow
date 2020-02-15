@@ -1,7 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import cn from 'classnames';
 
 import CardDocument from '../../documents/card.doc';
 import { useMarkdownCheckbox } from '../../hooks/use-markdown-checkbox';
@@ -76,11 +77,13 @@ const Card = ({
           >
             <StyledCard
               ref={cardRef}
-              className='card relative text-sm shadow select-none cursor-pointer rounded my-2 mx-0 text-gray-900 break-words'
+              className={cn(
+                'card relative text-sm select-none cursor-pointer rounded my-2 mx-0 text-gray-900 break-words',
+                isDragging && 'shadow-lg'
+              )}
               bg={card.data.color}
               onClick={handleClick}
               onKeyDown={handleKeyDown}
-              isDragging={isDragging}
             >
               <StyledCardHtml
                 dangerouslySetInnerHTML={{
@@ -115,16 +118,10 @@ const Card = ({
 
 export default observer(Card);
 
-const StyledCard = styled.div<{ isDragging: boolean; bg: string }>`
+const StyledCard = styled.div<{ bg: string }>`
   box-sizing: border-box;
   transition: box-shadow 0.15s;
   background-color: ${props => props.bg};
-
-  ${props =>
-    props.isDragging &&
-    css`
-      box-shadow: 1px 9px 8px 1px rgba(0, 0, 0, 0.3) !important;
-    `};
 `;
 
 const StyledCardHtml = styled.div`

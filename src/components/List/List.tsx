@@ -2,7 +2,7 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
-import classNames from 'classnames';
+import cn from 'classnames';
 
 import ListDocument from '../../documents/list.doc';
 import CardAdder from '../CardAdder/CardAdder';
@@ -32,9 +32,9 @@ const List = ({ index, list }: ListProps) => {
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <StyledList
               tabIndex={0}
-              className={classNames(
-                'flex flex-col relative max-h-full min-h-0 bg-gray-750 shadow-lg rounded-lg p-1 mx-2 cursor-pointer',
-                snapshot.isDragging ? 'list--drag' : ''
+              className={cn(
+                'flex flex-col relative max-h-full min-h-0 bg-gray-750 rounded-lg p-1 mx-2',
+                snapshot.isDragging && 'shadow-lg'
               )}
             >
               <ListHeader
@@ -43,7 +43,7 @@ const List = ({ index, list }: ListProps) => {
                 list={list}
                 isDragging={snapshot.isDragging}
               />
-              <div className='mx-2 mt-3 overflow-y-auto overflow-x-hidden'>
+              <div className='mt-3 overflow-y-auto overflow-x-hidden'>
                 <Cards cards={list.cards} listId={list.id} />
               </div>
 
@@ -66,16 +66,11 @@ const List = ({ index, list }: ListProps) => {
 export default observer(List);
 
 const StyledList = styled.div`
-  box-sizing: border-box;
   width: 300px;
   height: calc(100vh - 188px);
 
   &:first-child {
     margin-left: 0.2rem;
-  }
-
-  & .list--drag {
-    box-shadow: 1px 3px 8px 2px rgba(0, 0, 0, 0.3) !important;
   }
 
   &:hover .add-card-button,
