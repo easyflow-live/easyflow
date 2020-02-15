@@ -11,7 +11,7 @@ interface BadgeTags {
 const BadgeTags = observer(
   ({ tags, removable, onTagClick }: BadgeTags) =>
     tags && (
-      <div className='badge-tags flex items-center'>
+      <div className='flex items-center flex-wrap'>
         {tags.map((t, index) => (
           <Tag
             removable={removable}

@@ -23,7 +23,7 @@ const Tag = ({
   return (
     <div
       className={cn(
-        'tag px-3 h-6 rounded-full text-xs font-semibold flex items-center',
+        'tag px-2 h-6 rounded-full text-xs font-semibold flex items-center',
         removable ? 'tag--removable' : '',
         textColor,
         `bg-${color}-100`,

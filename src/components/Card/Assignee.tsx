@@ -37,7 +37,7 @@ const Assignee = ({ card }: AssigneeProps) => {
   useFirstRender(initAnimation);
 
   return (
-    <StyledAssignes className='my-3'>
+    <StyledAssignes>
       {transitions.map(
         ({ item, key, props: tprops }, index) =>
           item && (
@@ -54,6 +54,7 @@ const Assignee = ({ card }: AssigneeProps) => {
                 src={item.photo}
                 username={item.username}
                 className='border'
+                size='small'
                 style={{ borderColor: card.data.color }}
               />
             </animated.div>

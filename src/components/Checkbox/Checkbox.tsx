@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { ChangeEvent, CSSProperties } from 'react';
 
 interface CheckboxProps {
-  label: string;
+  label?: string;
   id?: string;
   checked: boolean;
-  containerClassName?: string;
   containerStyle?: CSSProperties;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -13,39 +12,36 @@ interface CheckboxProps {
 const Checkbox = ({
   id,
   label,
-  containerClassName,
   containerStyle,
   ...inputProps
 }: CheckboxProps) => {
   return (
-    <CheckBoxContainer
-      style={containerStyle}
-      className={containerClassName || ''}
-    >
+    <div style={containerStyle} className='flex items-center cursor-pointer'>
       <StyledInput type='checkbox' id={id} {...inputProps} />
-      <StyledLabel htmlFor={id}>{label}</StyledLabel>
-    </CheckBoxContainer>
+      {label && (
+        <StyledLabel className='cursor-pointer ml-2 flex-shrink-0' htmlFor={id}>
+          {label}
+        </StyledLabel>
+      )}
+    </div>
   );
 };
 
 export default Checkbox;
 
 const StyledLabel = styled.label`
-  flex-shrink: 0;
-  padding: 0 0.75rem;
   color: #252224;
-  cursor: pointer;
 `;
 
 const StyledInput = styled.input`
   position: relative;
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 12px;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-color: #718096;
+  background-color: #fff;
   cursor: pointer;
   border-radius: 3px;
   overflow: hidden;
@@ -63,28 +59,28 @@ const StyledInput = styled.input`
 
   &:checked {
     display: inline-block;
-    background: #ed64a6;
+    background: #fff;
 
     &::before {
       transform: rotate(45deg);
       content: '';
       position: absolute;
-      width: 3px;
-      height: 9px;
-      background-color: #fff;
-      left: 9px;
-      top: 5px;
+      width: 1px;
+      height: 6px;
+      background-color: #48bb78;
+      left: 7px;
+      top: 3px;
     }
 
     &::after {
       transform: rotate(45deg);
       content: '';
       position: absolute;
-      width: 5px;
-      height: 3px;
-      background-color: #fff;
-      left: 5px;
-      top: 9px;
+      width: 3px;
+      height: 1px;
+      background-color: #48bb78;
+      left: 3px;
+      top: 6px;
     }
   }
 
@@ -102,10 +98,4 @@ const StyledInput = styled.input`
       cursor: default;
     }
   }
-`;
-
-const CheckBoxContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
 `;

@@ -103,7 +103,7 @@ const CardModal = ({
               checkboxes={checkboxes}
               card={card}
               listId={listId}
-              removableTags
+              isModal
             />
           )}
         </div>

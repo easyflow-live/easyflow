@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import styled from 'styled-components';
 
 import { cards } from '../../core/actions';
 import boardsStore from '../../store/boards';
@@ -10,21 +9,15 @@ import BadgeTags from './BadgeTags';
 import Assignee from '../Card/Assignee';
 import BadgeDueDate from './BadgeDueDate';
 import BadgeTaskProgress from './BadgeTaskProgress';
-import DueComplete from './DueComplete';
 
 interface CardBadgesProps {
   card: CardDocument;
   listId: string;
   checkboxes: { total: number; checked: number };
-  removableTags?: boolean;
+  isModal?: boolean;
 }
 
-const CardBadges = ({
-  card,
-  listId,
-  checkboxes,
-  removableTags,
-}: CardBadgesProps) => {
+const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
   const handleTagClick = (tag: string) => card.removeTag(tag);
 
   const handleComplete = (state: boolean) => {
@@ -44,48 +37,38 @@ const CardBadges = ({
   };
 
   return (
-    <Container>
-      <div className='first-row'>
-        <div className='flex'>
-          <BadgeDueDate date={card.data.date} completed={card.data.completed} />
-          {card.data.date && (
-            <DueComplete
-              id={card.id}
-              completed={card.data.completed}
-              onComplete={handleComplete}
-            />
-          )}
-        </div>
-        <Assignee card={card} />
-      </div>
-      <BadgeTags
-        tags={card.data.tags}
-        onTagClick={handleTagClick}
-        removable={removableTags}
-      />
+    <div className='flex flex-col px-2 pb-2'>
       <div>
-        <BadgeTaskProgress
-          total={checkboxes.total}
-          checked={checkboxes.checked}
+        <BadgeTags
+          tags={card.data.tags}
+          onTagClick={handleTagClick}
+          removable={isModal}
         />
       </div>
-    </Container>
+
+      <div className='flex justify-between items-center mt-2'>
+        <div>
+          <Assignee card={card} />
+        </div>
+
+        <div className='flex items-center'>
+          <BadgeTaskProgress
+            className='mr-1'
+            total={checkboxes.total}
+            checked={checkboxes.checked}
+          />
+
+          <BadgeDueDate
+            date={card.data.date}
+            completed={card.data.completed}
+            id={card.id}
+            onComplete={handleComplete}
+            showCheckbox={isModal}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default observer(CardBadges);
-
-const Container = styled.div`
-  padding: 0px 8px 6px 8px;
-
-  & > div {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-  }
-
-  & > .first-row {
-    justify-content: space-between;
-  }
-`;

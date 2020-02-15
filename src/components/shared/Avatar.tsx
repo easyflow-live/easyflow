@@ -4,7 +4,7 @@ import cn from 'classnames';
 type Size = 'small' | 'medium' | 'big';
 
 const sizes = {
-  small: 'h-5 w-5',
+  small: 'h-6 w-6',
   medium: 'h-8 w-8',
   big: 'h-10 w-10',
 };
@@ -34,7 +34,7 @@ export const Avatar = memo(
     <img
       alt={`Avatar image of ${username}`}
       className={cn(
-        'avatar h-8 rounded-full',
+        'avatar rounded-full',
         getBorder(borderColor),
         sizes[size],
         className

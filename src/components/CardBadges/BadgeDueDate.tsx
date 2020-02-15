@@ -4,13 +4,24 @@ import format from 'date-fns/format';
 import { useMemo } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 
+import Checkbox from '../Checkbox/Checkbox';
+
 import Badge from '../shared/Badge';
 
 interface BadgeDueDateProps {
   date: any;
   completed?: boolean;
+  id: string;
+  showCheckbox?: boolean;
+  onComplete: (completed: boolean) => void;
 }
-const BadgeDueDate = ({ date, completed }: BadgeDueDateProps) => {
+const BadgeDueDate = ({
+  date,
+  completed,
+  id,
+  showCheckbox,
+  onComplete,
+}: BadgeDueDateProps) => {
   const dueDateFromToday = useMemo(
     () => date && differenceInCalendarDays(new Date(date.toDate()), new Date()),
     [date]
@@ -76,6 +87,14 @@ const BadgeDueDate = ({ date, completed }: BadgeDueDateProps) => {
         <MdAlarm className='badge-icon' />
         &nbsp;
         {dueDateString}
+        &nbsp;
+        {showCheckbox && (
+          <Checkbox
+            id={`due-complete-${id}`}
+            checked={completed}
+            onChange={e => onComplete(e.target.checked)}
+          />
+        )}
       </Badge>
     )
   );

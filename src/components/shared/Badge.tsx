@@ -7,7 +7,7 @@ interface BadgeProps
 const Badge = ({ className, ...props }: BadgeProps) => (
   <div
     className={cn(
-      'flex items-center mr-2 rounded text-white py-1 pr-2 pl-1',
+      'flex items-center rounded-full text-xs text-white py-1 px-2',
       className
     )}
     {...props}
