@@ -86,7 +86,7 @@ const StyledButton = styled(Button)`
   justify-content: space-around;
   align-items: center;
   padding: 8px 10px 8px 10px;
-  border-radius: 3px;
+  border-radius: 0.25rem;
   color: #fff;
   transition: background 0.1s;
   cursor: pointer;
