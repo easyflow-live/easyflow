@@ -62,13 +62,13 @@ const StyledButton = styled(Button)`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 8px 10px 8px 10px;
+  padding: 0px 10px;
   border-radius: 3px;
   color: #fff;
   transition: background 0.1s;
   cursor: pointer;
   margin-left: 5px;
-  min-height: 40px;
+  min-height: 37px;
 
   &:hover,
   &:focus {
