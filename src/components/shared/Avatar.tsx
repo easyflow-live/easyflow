@@ -23,7 +23,7 @@ interface AvatarProps
 const getBorder = (borderColor: string) =>
   borderColor ? `border-2 border-solid ${borderColor}` : '';
 
-export const Avatar = memo(
+const Avatar = memo(
   ({
     username,
     borderColor,
@@ -44,3 +44,5 @@ export const Avatar = memo(
     />
   )
 );
+
+export default Avatar;

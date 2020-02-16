@@ -1,11 +1,11 @@
 import { formatRelative } from 'date-fns';
 import { observer } from 'mobx-react-lite';
+import { ReactChild } from 'react';
 
 import { useBoardsData } from '../../store';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
-import { Avatar } from '../shared/Avatar';
-import { ReactChild } from 'react';
+import { Avatar } from '../shared';
 import {
   CardActions,
   NewCardData,

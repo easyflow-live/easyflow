@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/use-session';
 
-import { Avatar } from '../shared/Avatar';
+import { Avatar } from '../shared';
 import UserMenu from '../UserMenu/UserMenu';
 import { useInterface } from '../providers/InterfaceProvider';
 import { GiveFeedback } from '../Feedback/GiveFeedback';

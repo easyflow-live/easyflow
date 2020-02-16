@@ -12,8 +12,7 @@ import { useSession } from '../../hooks/use-session';
 import { emitter } from '../../libs/emitter';
 import { User } from '../../store/users';
 import Dialog from '../Dialog/Dialog';
-import { Input } from '../shared';
-import { Avatar } from '../shared/Avatar';
+import { Avatar, Input } from '../shared';
 import { List, ListItem } from '../shared/List';
 
 interface TeamListModalProps {

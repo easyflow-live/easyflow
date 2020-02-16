@@ -4,9 +4,7 @@ import format from 'date-fns/format';
 import { useMemo } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 
-import Checkbox from '../Checkbox/Checkbox';
-
-import Badge from '../shared/Badge';
+import { Badge, Checkbox } from '../shared';
 
 interface BadgeDueDateProps {
   date: any;

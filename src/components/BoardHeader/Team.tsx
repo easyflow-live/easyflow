@@ -4,7 +4,7 @@ import { useTransition, animated } from 'react-spring';
 
 import BoardDocument from '../../documents/board.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
-import { Avatar } from '../shared/Avatar';
+import { Avatar } from '../shared';
 
 interface TeamProps {
   style?: CSSProperties;

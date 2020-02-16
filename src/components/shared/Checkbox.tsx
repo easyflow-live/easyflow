@@ -1,37 +1,17 @@
 import styled from 'styled-components';
-import { ChangeEvent, CSSProperties } from 'react';
 
-interface CheckboxProps {
-  label?: string;
-  id?: string;
-  checked: boolean;
-  containerStyle?: CSSProperties;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+import {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  forwardRef,
+  RefObject,
+} from 'react';
 
-const Checkbox = ({
-  id,
-  label,
-  containerStyle,
-  ...inputProps
-}: CheckboxProps) => {
-  return (
-    <div style={containerStyle} className='flex items-center cursor-pointer'>
-      <StyledInput type='checkbox' id={id} {...inputProps} />
-      {label && (
-        <StyledLabel className='cursor-pointer ml-2 flex-shrink-0' htmlFor={id}>
-          {label}
-        </StyledLabel>
-      )}
-    </div>
-  );
-};
-
-export default Checkbox;
-
-const StyledLabel = styled.label`
-  color: #252224;
-`;
+export interface CheckboxProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {}
 
 const StyledInput = styled.input`
   position: relative;
@@ -93,9 +73,17 @@ const StyledInput = styled.input`
       background-color: hsla(320, 4.2%, 13.9%, 0.2);
     }
 
-    + ${StyledLabel} {
+    + label {
       color: hsla(320, 4.2%, 13.9%, 0.2);
       cursor: default;
     }
   }
 `;
+
+const Checkbox = forwardRef(
+  (props: CheckboxProps, ref: RefObject<HTMLInputElement>) => (
+    <StyledInput type='checkbox' {...props} ref={ref} />
+  )
+);
+
+export default Checkbox;

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import CardDocument from '../../../src/documents/card.doc';
 import { useCardAssignees } from '../../../src/hooks/use-card-assignees';
 import { useFirstRender } from '../../../src/hooks/use-first-render';
-import { Avatar } from '../shared/Avatar';
+import { Avatar } from '../shared';
 
 interface AssigneeProps {
   card: CardDocument;
