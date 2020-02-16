@@ -38,6 +38,11 @@
   background-color: #19202c;
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #4a5568 #2d3748;
+}
+
 *:focus,
 *:active {
   outline-color: #ed64a6 !important;
