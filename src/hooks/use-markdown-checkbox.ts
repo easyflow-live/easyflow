@@ -11,12 +11,15 @@ export const useMarkdownCheckbox = (
     ({ checked, index }) =>
       text.replace(/\[(\s|x)\]/g, match => {
         let newString: string;
+
         if (index === jRef.current) {
           newString = checked ? '[x]' : '[ ]';
+          jRef.current = 0;
         } else {
           newString = match;
+          jRef.current += 1;
         }
-        jRef.current += 1;
+
         return newString;
       }),
     [text]

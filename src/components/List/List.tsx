@@ -33,7 +33,7 @@ const List = ({ index, list }: ListProps) => {
             <StyledList
               tabIndex={0}
               className={cn(
-                'flex flex-col relative max-h-full min-h-0 bg-gray-750 rounded-lg p-1 mx-2',
+                'flex flex-col relative max-h-full min-h-0 bg-gray-750 rounded-lg p-1 mx-2 mt-px',
                 snapshot.isDragging && 'shadow-lg'
               )}
             >
@@ -67,7 +67,7 @@ export default observer(List);
 
 const StyledList = styled.div`
   width: 300px;
-  height: calc(100vh - 188px);
+  height: calc(100vh - 187px);
 
   &:first-child {
     margin-left: 0.2rem;
