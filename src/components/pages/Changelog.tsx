@@ -83,6 +83,33 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Tuesday, February 20, 2020</LogDate>
+
+        <LogList type={LogTypes.improvements}>
+          {[
+            'Improve card modal usability on mobile.',
+            'Migrate Markdown lib: from marked to react-markdown.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
+        <LogDate>Monday, February 17, 2020</LogDate>
+
+        <LogList type={LogTypes.improvements}>
+          {[
+            'Added style to scrollbar on Firefox.',
+            'Some inputs and buttons alignments.',
+            'Redesigned card badges.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Tuesday, December 24, 2019</LogDate>
 
         <LogList type={LogTypes.bugfixes}>
@@ -97,11 +124,11 @@ export default () => (
       <LogCard>
         <LogDate>Monday, October 21, 2019</LogDate>
         <LogList type={LogTypes.feature}>
-          {[
-            'You can now set a card as <strong>Done</strong> when it has a due date.',
-          ].map((item, i) => (
-            <LogListItem key={i}>{item}</LogListItem>
-          ))}
+          {['You can now set a card as "Done" when it has a due date.'].map(
+            (item, i) => (
+              <LogListItem key={i}>{item}</LogListItem>
+            )
+          )}
         </LogList>
 
         <LogList type={LogTypes.improvements}>
