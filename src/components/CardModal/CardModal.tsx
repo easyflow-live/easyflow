@@ -1,5 +1,6 @@
 import React, { useState, useMemo, MutableRefObject } from 'react';
 import Textarea from 'react-textarea-autosize';
+import { observer } from 'mobx-react-lite';
 
 import { cards as cardsActions } from '../../core/actions';
 import boardsStore from '../../store/boards';
@@ -31,13 +32,13 @@ const CardModal = ({
 }: CardModalProps) => {
   const [newText, setNewText] = useState(card.data.text);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [isTextareaFocused, setIsTextareaFocused] = useState(true);
   const isThinDisplay = useThinDisplay();
 
   const checkboxes = useMemo(() => findCheckboxes(newText), [newText]);
 
   const submitCard = () => {
     const oldText = card.data.text;
+
     if (newText !== oldText) {
       card.ref.update({ text: newText }).then(() =>
         cardsActions.editCardAction({
@@ -66,6 +67,12 @@ const CardModal = ({
     setIsColorPickerOpen(!isColorPickerOpen);
   };
 
+  const showBadges =
+    card.data.assignee ||
+    card.data.date ||
+    card.data.tags ||
+    checkboxes.total > 0;
+
   return (
     <Modal
       isOpen={isOpen}
@@ -74,31 +81,26 @@ const CardModal = ({
     >
       <>
         <div
-          className='modal-textarea-wrapper'
+          className='modal-textarea-wrapper mx-auto'
           style={{
+            marginTop: isThinDisplay && '2.5%',
             height: isThinDisplay ? 'none' : cardRect.height,
-            width: isThinDisplay ? '100%' : cardRect.width,
-            outlineColor: isTextareaFocused ? '#ed64a6' : null,
-            outlineWidth: isTextareaFocused ? '5px' : null,
+            width: isThinDisplay ? '95%' : cardRect.width,
             background: card.data.color,
-            maxHeight: '95vh',
+            maxHeight: isThinDisplay ? '55vh' : '95vh',
           }}
         >
           <Textarea
             autoFocus
-            useCacheForDOMMeasurements
             value={newText}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className='modal-textarea'
+            className='modal-textarea h-full'
+            style={{ minHeight: '60px' }}
             spellCheck={false}
-            onFocus={() => setIsTextareaFocused(true)}
-            onBlur={() => setIsTextareaFocused(false)}
           />
-          {(card.data.assignee ||
-            card.data.date ||
-            card.data.tags ||
-            checkboxes.total > 0) && (
+
+          {showBadges && (
             <CardBadges
               checkboxes={checkboxes}
               card={card}
@@ -123,4 +125,4 @@ const CardModal = ({
   );
 };
 
-export default CardModal;
+export default observer(CardModal);

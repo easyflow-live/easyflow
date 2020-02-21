@@ -106,7 +106,7 @@ class CardOptions extends Component<CardOptionsProps, State> {
     return (
       <>
         <div
-          className='options-list text-white bg-gray-700 px-0 py-2 ml-2 shadow-lg rounded'
+          className='flex flex-col flex-shrink-0 text-white bg-gray-700 px-0 py-2 my-0 mx-auto sm:mx-2 w-95 sm:w-auto shadow-lg rounded'
           style={{
             alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
           }}

@@ -1,18 +1,3 @@
-.options-list {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  margin: 0 8px;
-
-  @media (max-width: 550px) {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    flex-direction: row;
-    width: 100%;
-    margin: 0;
-  }
-}
-
 .modal-icon {
   flex-shrink: 0;
   margin-bottom: 3px;
