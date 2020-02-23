@@ -152,6 +152,8 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
     toggleIsOpen();
   });
 
+  if (!userDoc) return null;
+
   const ownerEmail = owner ? owner.email : '';
   const AmITheBoardOwner = userDoc.data.email === ownerEmail;
 
