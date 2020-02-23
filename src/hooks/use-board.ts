@@ -1,23 +1,24 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import BoardDocument from '../documents/board.doc';
 import { useSession } from './use-session';
 
 export const useBoard = (boardUid: string): [BoardDocument, boolean] => {
   const { userDoc } = useSession();
-  const [board, setBoard] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [board, setBoard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (board) return;
 
+    setIsLoading(true);
     if (!userDoc) {
       setBoard(new BoardDocument(`boards/${boardUid}`));
     } else if (userDoc && userDoc.boards) {
       setBoard(userDoc.boards.docs.find(d => d.id === boardUid));
     }
 
-    board && setIsLoading(board.isLoading);
+    setIsLoading(board && board.isLoading);
   }, [board, boardUid, userDoc]);
 
   return [board, isLoading];

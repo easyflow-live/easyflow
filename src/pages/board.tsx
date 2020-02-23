@@ -1,24 +1,27 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import Error from 'next/error';
-import Router from 'next/router';
 
-import BoardComponent from '../components/Board/Board';
 import { useSession } from '../hooks/use-session';
-import { useInterface } from '../components/providers/InterfaceProvider';
 import { useBoard } from '../hooks/use-board';
+import { useInterface } from '../components/providers/InterfaceProvider';
+import BoardComponent from '../components/Board/Board';
+import AuthenticatedPage from '../components/shared/AuthenticatedPage';
+import Loader from '../components/shared/Loader';
 
 interface BoardPageProps {
   query: { uid: string; kiosk: boolean };
   children: React.ReactChildren;
 }
 
+const error404 = {
+  statusCode: 404,
+  title: 'Board not found',
+};
+
 const Board = ({ query }: BoardPageProps) => {
-  const { userDoc, initializing } = useSession();
+  const { userDoc } = useSession();
   const [board, isBoardLoading] = useBoard(query.uid);
   const { setIsEditable, setIsKioskMode } = useInterface();
-
-  if (initializing) return null;
 
   const isKioskMode = Boolean(query.kiosk);
 
@@ -28,11 +31,19 @@ const Board = ({ query }: BoardPageProps) => {
 
   const isLoading = userDoc ? userDoc.boards.isLoading : true;
 
-  if (!board && isLoading) return null;
-  if (!board) return <Error statusCode={404} />;
-  if (!userDoc && !query.kiosk && !isBoardLoading) Router.push('/');
+  if (!board && isLoading) return <Loader />;
 
-  return <BoardComponent board={board} />;
+  const redirect = !userDoc && !query.kiosk && !isBoardLoading;
+
+  return (
+    <AuthenticatedPage
+      isAnonymous={isKioskMode}
+      redirect={redirect}
+      error={!board && error404}
+    >
+      <BoardComponent board={board} />
+    </AuthenticatedPage>
+  );
 };
 
 Board.getInitialProps = ({ query }) => ({ query });

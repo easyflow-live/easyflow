@@ -13,7 +13,7 @@ const Header = observer(() => {
   const { user, userDoc } = useSession();
   const { isKioskMode } = useInterface();
 
-  if (!user || isKioskMode) return null;
+  if (isKioskMode) return null;
 
   return (
     <header className='z-100 bg-gray-900 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
@@ -30,24 +30,25 @@ const Header = observer(() => {
                 </Link>
               </div>
             </div>
-
             <div className='lg:w-1/4 xl:w-1/5 pl-6 pr-6'>
-              <div className='flex items-center justify-end'>
-                <GiveFeedback user={userDoc} />
-                <UserMenu
-                  userName={user.displayName}
-                  userEmail={user.email}
-                  trigger={
-                    <div className='flex items-center'>
-                      <Avatar
-                        src={user.photoURL}
-                        username={user.displayName}
-                        className='cursor-pointer'
-                      />
-                    </div>
-                  }
-                />
-              </div>
+              {user && (
+                <div className='flex items-center justify-end'>
+                  <GiveFeedback user={userDoc} />
+                  <UserMenu
+                    userName={user.displayName}
+                    userEmail={user.email}
+                    trigger={
+                      <div className='flex items-center'>
+                        <Avatar
+                          src={user.photoURL}
+                          username={user.displayName}
+                          className='cursor-pointer'
+                        />
+                      </div>
+                    }
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
