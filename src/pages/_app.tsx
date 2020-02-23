@@ -2,73 +2,30 @@ import React from 'react';
 import App from 'next/app';
 import { observer } from 'mobx-react';
 import { HeadProvider, Link } from 'react-head';
-import * as app from 'firebase/app';
 import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { SessionProvider } from '../hooks/use-session';
-import UserDocument from '../documents/user.doc';
-import userStore from '../store/users';
 import Header from '../components/Header/Header';
 import { initGA, logPageView } from '../libs/analytics';
 import { InterfaceProvider } from '../components/providers/InterfaceProvider';
+import { SessionProvider } from '../components/providers/SessionProvider';
 
 import '../services/firebase.service';
 import '../styles/style.css';
 
-interface State {
-  user: app.User;
-  userDoc: UserDocument;
-  initializing: boolean;
-}
-
-class MyApp extends App<{}, State> {
-  private unsubscribe: () => void;
-
-  state = {
-    user: null,
-    userDoc: null,
-    initializing: true,
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.unsubscribe = () => null;
-  }
-
+class MyApp extends App<{}> {
   componentDidMount() {
-    this.unsubscribe = app.auth().onAuthStateChanged(user => {
-      this.setState({ user, initializing: false });
-    });
-
     initGA();
     Router.router.events.on('routeChangeComplete', url => logPageView(url));
   }
 
-  // @ts-ignore
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user) {
-      if (this.state.user) {
-        const userDoc = new UserDocument(`users/${this.state.user.email}`);
-        this.setState({ userDoc });
-        userStore.setCurrentUser(userDoc);
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   render() {
     const { Component, pageProps } = this.props;
-    const { user, userDoc, initializing } = this.state;
 
     return (
       <HeadProvider headTags={[]}>
-        <SessionProvider value={{ user, userDoc, initializing }}>
+        <SessionProvider>
           <InterfaceProvider>
             <Link rel='shortcut icon' href='/static/images/icon.png' />
             <Header />
