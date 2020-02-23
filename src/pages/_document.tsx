@@ -56,8 +56,6 @@ class MyDocument extends Document<DocumentProps> {
               Kanban methodology. We make everything easier so you and your team
               can focus on complete tasks and ship great products.'
           />
-
-          <style>{`html, body { height: 100% } /* custom! */`}</style>
         </Head>
         <body>
           <Main />

@@ -39,6 +39,7 @@
 }
 
 html {
+  height: 100%;
   scrollbar-width: thin;
   scrollbar-color: #4a5568 #2d3748;
 }
