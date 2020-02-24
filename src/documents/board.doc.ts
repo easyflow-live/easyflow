@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import ListDocument from './list.doc';
 import UserDocument from './user.doc';
 import ColorDocument from './color.doc';
+import ActionDocument from './action.doc';
 
 interface Board {
   title: string;
@@ -18,6 +19,7 @@ interface Board {
 export default class BoardDocument extends Document<Board> {
   private _lists: Collection<ListDocument>;
   private _colors: Collection<ColorDocument>;
+  private _actions: Collection<ActionDocument>;
 
   get lists(): Collection<ListDocument> {
     if (this._lists) return this._lists;
@@ -43,8 +45,6 @@ export default class BoardDocument extends Document<Board> {
   get colors(): Collection<ColorDocument> {
     if (this._colors) return this._colors;
 
-    console.log('CREATE COLORS');
-
     this._colors = new Collection<ColorDocument>(() => 'colors', {
       createDocument: (src, opts) => new ColorDocument(src, opts),
       debug: __DEV__,
@@ -58,5 +58,24 @@ export default class BoardDocument extends Document<Board> {
     return this.update({
       tags: firebase.firestore.FieldValue.arrayRemove(tag),
     });
+  }
+
+  get actions(): Collection<ActionDocument> {
+    if (this._actions) return this._actions;
+
+    this._actions = new Collection<ActionDocument>(() => 'actions', {
+      createDocument: (src, opts) =>
+        new ActionDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'Action document',
+        }),
+      query: ref =>
+        ref.where('data.board', '==', this.ref).orderBy('date', 'desc'),
+      debug: __DEV__,
+      debugName: 'Action collection',
+    });
+
+    return this._actions;
   }
 }

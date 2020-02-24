@@ -1,11 +1,12 @@
 import { formatRelative } from 'date-fns';
 import { observer } from 'mobx-react-lite';
-import { ReactChild } from 'react';
+import { PropsWithChildren } from 'react';
+import ContentLoader from 'react-content-loader';
 
 import { useBoardsData } from '../../store';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
-import { Avatar } from '../shared';
+import { Avatar, Truncate } from '../shared';
 import {
   CardActions,
   NewCardData,
@@ -16,8 +17,32 @@ import {
   RemoveCardData,
 } from '../../core/actions/card.actions';
 
-const Text = ({ children }: { children: ReactChild }) => (
+const Text = ({ children }: { children: PropsWithChildren<{}> }) => (
   <span className='text-gray-400'> {children} </span>
+);
+
+const TruncatedTitle = ({
+  children,
+  title,
+}: PropsWithChildren<{ title: string }>) => (
+  <Truncate title={title}>{children}</Truncate>
+);
+
+export const ActionCardPlaceholder = () => (
+  <ContentLoader
+    speed={2}
+    width={300}
+    height={60}
+    viewBox='0 0 300 60'
+    primaryColor='#cecece'
+    secondaryColor='#ecebeb'
+    className='p-3'
+  >
+    <rect x='60' y='8' rx='3' ry='3' width='88' height='6' />
+    <rect x='60' y='26' rx='3' ry='3' width='152' height='6' />
+    <rect x='60' y='48' rx='3' ry='3' width='202' height='6' />
+    <circle cx='21' cy='31' r='20' />
+  </ContentLoader>
 );
 
 const NewCardAction = ({ data }: { data: NewCardData }) => {
@@ -29,7 +54,7 @@ const NewCardAction = ({ data }: { data: NewCardData }) => {
   return (
     <>
       <Text> added a new card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> to </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -46,7 +71,7 @@ const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
   return (
     <>
       <Text> removed a card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> from </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -68,7 +93,7 @@ const MoveCardAction = ({ data }: { data: MoveCardData }) => {
   return (
     <>
       <Text> moved a card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> from </Text>
       <span>{listBeforeTitle}</span>
       <Text> column to </Text>
@@ -86,7 +111,7 @@ const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
   return (
     <>
       <Text> assigneed to card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -103,7 +128,7 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
   return (
     <>
       <Text> edited a card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -120,7 +145,7 @@ const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
   return (
     <>
       <Text> marked a card </Text>
-      <span>{data.title}</span>
+      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column as </Text>
@@ -178,7 +203,7 @@ const ActionCard = ({ action, user }: ActionCardProps) => {
             className='max-w-none'
           />
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col' style={{ maxWidth: '80%' }}>
           <p>
             {user.username}
             <CardsActions data={action.data.data as Data} />
