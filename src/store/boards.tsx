@@ -40,9 +40,7 @@ class BoardsStore {
   };
 }
 
-export const boardsStore = new BoardsStore();
-
-const createStore = () => boardsStore;
+const createStore = () => new BoardsStore();
 
 type TStore = ReturnType<typeof createStore>;
 
