@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { cards } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store/boards';
 import userStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import BadgeTags from './BadgeTags';
@@ -18,6 +18,8 @@ interface CardBadgesProps {
 }
 
 const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
+  const { currentBoard, getList } = useBoardsStore();
+
   const handleTagClick = (tag: string) => card.removeTag(tag);
 
   const handleComplete = (state: boolean) => {
@@ -27,8 +29,8 @@ const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
         memberCreator: userStore.currentUser.ref,
         data: {
           card: card.ref,
-          board: boardsStore.currentBoard.ref,
-          list: boardsStore.getList(listId).ref,
+          board: currentBoard.ref,
+          list: getList(listId).ref,
           title: card.data.title || '',
           completed: state,
         },

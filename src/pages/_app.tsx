@@ -13,6 +13,7 @@ import { SessionProvider } from '../components/providers/SessionProvider';
 
 import '../services/firebase.service';
 import '../styles/style.css';
+import { BoardsStoreProvider } from '../store';
 
 class MyApp extends App<{}> {
   componentDidMount() {
@@ -26,15 +27,17 @@ class MyApp extends App<{}> {
     return (
       <HeadProvider headTags={[]}>
         <SessionProvider>
-          <InterfaceProvider>
-            <Link rel='shortcut icon' href='/static/images/icon.png' />
-            <Header />
-            <Component {...pageProps} />
-            <ToastContainer
-              toastClassName='Toast-background'
-              progressClassName='Toast-progress'
-            />
-          </InterfaceProvider>
+          <BoardsStoreProvider>
+            <InterfaceProvider>
+              <Link rel='shortcut icon' href='/static/images/icon.png' />
+              <Header />
+              <Component {...pageProps} />
+              <ToastContainer
+                toastClassName='Toast-background'
+                progressClassName='Toast-progress'
+              />
+            </InterfaceProvider>
+          </BoardsStoreProvider>
         </SessionProvider>
       </HeadProvider>
     );

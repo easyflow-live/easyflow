@@ -3,7 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 
 import { cards as cardsActions } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store/boards';
 import userStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
@@ -30,6 +30,8 @@ const CardModal = ({
   listId,
   toggleCardModal,
 }: CardModalProps) => {
+  const { currentBoard, getList } = useBoardsStore();
+
   const [newText, setNewText] = useState(card.data.text);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const isThinDisplay = useThinDisplay();
@@ -45,8 +47,8 @@ const CardModal = ({
           memberCreator: userStore.currentUser.ref,
           data: {
             card: card.ref,
-            list: boardsStore.getList(listId).ref,
-            board: boardsStore.currentBoard.ref,
+            list: getList(listId).ref,
+            board: currentBoard.ref,
             oldText,
             newText,
             title: card.data.title || '',

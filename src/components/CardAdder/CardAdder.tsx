@@ -6,7 +6,7 @@ import { Collection } from 'firestorter';
 import { cards as cardsActions } from '../../core/actions';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store/boards';
 import userStore from '../../store/users';
 import ClickOutside from '../shared/ClickOutside';
 import { Input } from '../shared';
@@ -19,6 +19,7 @@ interface CardAdderProps {
 }
 
 const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
+  const { currentBoard } = useBoardsStore();
   const [newText, setNewText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -58,7 +59,7 @@ const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
       data: {
         card: createdCard.ref,
         list: list.ref,
-        board: boardsStore.currentBoard.ref,
+        board: currentBoard.ref,
         title: newText,
       },
     });

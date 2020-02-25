@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react';
 
 import { cards } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { boardsStore } from '../../store/boards';
 import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';

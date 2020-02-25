@@ -2,7 +2,9 @@ import { useContext } from 'react';
 import { useObserver } from 'mobx-react-lite';
 
 import { UsersStore, UsersContext } from './users';
-import { BoardsStore, BoardsContext } from './boards';
+import { useBoardsStore, BoardsStoreProvider } from './boards';
+
+export { useBoardsStore, BoardsStoreProvider };
 
 function useStoreData<Selection, ContextData, Store>(
   context: React.Context<ContextData>,
@@ -22,16 +24,6 @@ export function useUsersData<Selection>(
 ) {
   return useStoreData(
     UsersContext,
-    contextData => contextData.store,
-    dataSelector
-  );
-}
-
-export function useBoardsData<Selection>(
-  dataSelector: (store: BoardsStore) => Selection
-) {
-  return useStoreData(
-    BoardsContext,
     contextData => contextData.store,
     dataSelector
   );

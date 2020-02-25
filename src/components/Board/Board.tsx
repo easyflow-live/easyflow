@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import { cards } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store/boards';
 import usersStore from '../../store/users';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
@@ -20,15 +20,15 @@ interface BoardProps {
 }
 
 const Board = ({ board }: BoardProps) => {
+  const { setBoard, setColors } = useBoardsStore();
   const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
   useEffect(() => {
     if (board) {
-      boardsStore.setCurrentBoard(board);
-      boardsStore.setListsFromCurrentBoard(board.lists.docs);
-      boardsStore.setColors(board.colors.docs);
+      setBoard(board);
+      setColors(board.colors.docs);
     }
-  }, [board]);
+  }, [board, setBoard, setColors]);
 
   useEffect(() => {
     if (board && board.data.title) {

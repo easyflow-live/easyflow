@@ -1,9 +1,10 @@
-import { createContext } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
 import { observable, action } from 'mobx';
+import { useLocalStore } from 'mobx-react-lite';
 
-import BoardDocument from 'src/documents/board.doc';
-import ListDocument from 'src/documents/list.doc';
-import ColorDocument from 'src/documents/color.doc';
+import BoardDocument from '../../src/documents/board.doc';
+import ListDocument from '../../src/documents/list.doc';
+import ColorDocument from '../../src/documents/color.doc';
 
 class BoardsStore {
   @observable currentBoard: BoardDocument = null;
@@ -11,18 +12,23 @@ class BoardsStore {
   @observable colors: ColorDocument[] = [];
 
   @action
-  setCurrentBoard = (board: BoardDocument) => {
+  private setCurrentBoard = (board: BoardDocument) => {
     this.currentBoard = board;
   };
 
   @action
-  setListsFromCurrentBoard = (lists: ListDocument[]) => {
+  private setListsFromCurrentBoard = (lists: ListDocument[]) => {
     this.lists = lists;
   };
 
   @action
   setColors = (colors: ColorDocument[]) => {
     this.colors = colors;
+  };
+
+  setBoard = (board: BoardDocument) => {
+    this.setCurrentBoard(board);
+    this.setListsFromCurrentBoard(board.lists.docs);
   };
 
   getList = (id: string) => {
@@ -34,15 +40,30 @@ class BoardsStore {
   };
 }
 
-interface BoardsContextProp {
-  store: BoardsStore;
-}
+export const boardsStore = new BoardsStore();
 
-const boardsStore = new BoardsStore();
+const createStore = () => boardsStore;
 
-const BoardsContext = createContext<BoardsContextProp>({
-  store: boardsStore,
-});
+type TStore = ReturnType<typeof createStore>;
 
-export default boardsStore;
-export { BoardsStore, BoardsContext };
+const BoardsContext = createContext<TStore | null>(null);
+
+export const BoardsStoreProvider = ({ children }: PropsWithChildren<{}>) => {
+  const store = useLocalStore(createStore);
+
+  return (
+    <BoardsContext.Provider value={store}>{children}</BoardsContext.Provider>
+  );
+};
+
+export const useBoardsStore = () => {
+  const store = useContext(BoardsContext);
+
+  if (!store) {
+    throw new Error(
+      'useBoardsStore must be used within a BoardsStoreProvider.'
+    );
+  }
+
+  return store;
+};

@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import { FaUser } from 'react-icons/fa';
 
 import { cards } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store/boards';
 import { useSession } from '../../hooks/use-session';
 import CardDocument from '../../documents/card.doc';
 import CardOptionButton from './CardOptionButton';
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
+  const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
   const toggleAssignment = async () => {
@@ -30,8 +31,8 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
             data: {
               assignee: userDoc.ref,
               card: card.ref,
-              board: boardsStore.currentBoard.ref,
-              list: boardsStore.getList(listId).ref,
+              board: currentBoard.ref,
+              list: getList(listId).ref,
               title: card.data.title || '',
             },
           })
@@ -51,8 +52,8 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
               data: {
                 assignee: null,
                 card: card.ref,
-                board: boardsStore.currentBoard.ref,
-                list: boardsStore.getList(listId).ref,
+                board: currentBoard.ref,
+                list: getList(listId).ref,
                 title: card.data.title || '',
               },
             })
@@ -74,8 +75,8 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
                 data: {
                   assignee: userDoc.ref,
                   card: card.ref,
-                  board: boardsStore.currentBoard.ref,
-                  list: boardsStore.getList(listId).ref,
+                  board: currentBoard.ref,
+                  list: getList(listId).ref,
                   title: card.data.title || '',
                 },
               })
@@ -91,8 +92,8 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
                 data: {
                   assignee: userDoc.ref,
                   card: card.ref,
-                  board: boardsStore.currentBoard.ref,
-                  list: boardsStore.getList(listId).ref,
+                  board: currentBoard.ref,
+                  list: getList(listId).ref,
                   title: card.data.title || '',
                 },
               })

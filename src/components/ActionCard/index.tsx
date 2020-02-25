@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { PropsWithChildren } from 'react';
 import ContentLoader from 'react-content-loader';
 
-import { useBoardsData } from '../../store';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
 import { Avatar, Truncate } from '../shared';
+import { useBoardsStore } from '../../store/boards';
 import {
   CardActions,
   NewCardData,
@@ -46,10 +46,9 @@ export const ActionCardPlaceholder = () => (
 );
 
 const NewCardAction = ({ data }: { data: NewCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
-  const listTitle =
-    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+  const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
   return (
     <>
@@ -63,10 +62,9 @@ const NewCardAction = ({ data }: { data: NewCardData }) => {
 };
 
 const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
-  const listTitle =
-    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+  const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
   return (
     <>
@@ -80,15 +78,13 @@ const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
 };
 
 const MoveCardAction = ({ data }: { data: MoveCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
   const listBeforeTitle =
-    store.getList(data.listBefore.id) &&
-    store.getList(data.listBefore.id).data.title;
+    getList(data.listBefore.id) && getList(data.listBefore.id).data.title;
 
   const listAfterTitle =
-    store.getList(data.listAfter.id) &&
-    store.getList(data.listAfter.id).data.title;
+    getList(data.listAfter.id) && getList(data.listAfter.id).data.title;
 
   return (
     <>
@@ -103,10 +99,9 @@ const MoveCardAction = ({ data }: { data: MoveCardData }) => {
 };
 
 const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
-  const listTitle =
-    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+  const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
   return (
     <>
@@ -120,10 +115,9 @@ const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
 };
 
 const EditCardAction = ({ data }: { data: EditCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
-  const listTitle =
-    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+  const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
   return (
     <>
@@ -137,10 +131,9 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
 };
 
 const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
-  const store = useBoardsData(s => s);
+  const { getList } = useBoardsStore();
 
-  const listTitle =
-    store.getList(data.list.id) && store.getList(data.list.id).data.title;
+  const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
   return (
     <>
