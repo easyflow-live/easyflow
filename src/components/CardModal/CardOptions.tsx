@@ -1,59 +1,54 @@
-import React, { Component, createRef, RefObject } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm, MdColorize } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
 import { cards } from '../../core/actions';
-import { boardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
 import ClickOutside from '../shared/ClickOutside';
 import Modal from '../shared/Modal';
+import Divider from '../shared/Divider';
 import Calendar from './Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 import CardOptionButton from './CardOptionButton';
 import CardOptionColors from './CardOptionColors';
-import Divider from '../shared/Divider';
 
 interface CardOptionsProps {
   isColorPickerOpen: boolean;
   card: CardDocument;
   isCardNearRightBorder: boolean;
-  isThinDisplay: boolean;
-  boundingRect: object;
   listId: string;
   toggleColorPicker: () => void;
 }
 
-interface State {
-  isCalendarOpen: boolean;
-}
+const CardOptions = ({
+  card,
+  isColorPickerOpen,
+  isCardNearRightBorder,
+  listId,
+  toggleColorPicker,
+}: CardOptionsProps) => {
+  const { currentBoard, getList } = useBoardsStore();
 
-class CardOptions extends Component<CardOptionsProps, State> {
-  calendaButtonRef: RefObject<HTMLButtonElement>;
-  colorPickerButton: RefObject<HTMLButtonElement>;
+  const calendaButtonRef = useRef<HTMLButtonElement>();
+  const colorPickerButton = useRef<HTMLButtonElement>();
 
-  constructor(props) {
-    super(props);
-    this.state = { isCalendarOpen: false };
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-    this.calendaButtonRef = createRef();
-    this.colorPickerButton = createRef();
-  }
-
-  deleteCard = async () => {
-    const { card } = this.props;
+  const deleteCard = async () => {
     const textBackup = card.data.text;
 
     await card.ref.delete().then(() =>
       cards.removeCardAction({
         memberCreator: usersStore.currentUser.ref,
         data: {
-          board: boardsStore.currentBoard.ref,
-          list: boardsStore.getList(this.props.listId).ref,
+          board: currentBoard.ref,
+          list: getList(listId).ref,
           text: textBackup,
           title: card.data.title || '',
         },
@@ -62,120 +57,104 @@ class CardOptions extends Component<CardOptionsProps, State> {
     toast('Card was removed.');
   };
 
-  changeColor = color => {
-    const { card, toggleColorPicker } = this.props;
-
+  const changeColor = color => {
     if (card.data.color !== color.code) {
       card.ref.update({ colorRef: color.ref, color: color.code });
     }
 
     toggleColorPicker();
-    this.colorPickerButton.current.focus();
+    colorPickerButton.current.focus();
   };
 
-  handleKeyDown = event => {
+  const handleKeyDown = event => {
     if (event.keyCode === 27) {
-      this.props.toggleColorPicker();
-      this.colorPickerButton.current.focus();
+      toggleColorPicker();
+      colorPickerButton.current.focus();
     }
   };
 
-  handleClickOutside = () => {
-    const { toggleColorPicker } = this.props;
+  const handleClickOutside = () => {
     toggleColorPicker();
-    this.colorPickerButton.current.focus();
+    colorPickerButton.current.focus();
   };
 
-  toggleCalendar = () => {
-    this.setState({ isCalendarOpen: !this.state.isCalendarOpen });
+  const toggleCalendar = () => {
+    setIsCalendarOpen(!isCalendarOpen);
   };
 
-  saveCardCalendar = (date: Date) => this.props.card.update({ date });
+  const saveCardCalendar = (date: Date) => card.update({ date });
 
-  removeCardCalendar = () => this.props.card.update({ date: '' });
+  const removeCardCalendar = () => card.update({ date: '' });
 
-  render() {
-    const {
-      isCardNearRightBorder,
-      isColorPickerOpen,
-      toggleColorPicker,
-      card,
-    } = this.props;
-    const { isCalendarOpen } = this.state;
-
-    return (
-      <>
-        <div
-          className='flex flex-col flex-shrink-0 text-white bg-gray-700 px-0 py-2 my-0 mx-auto sm:mx-2 w-95 sm:w-auto shadow-lg rounded'
-          style={{
-            alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
-          }}
-        >
-          <div className='mb-2 min-w-full px-2'>
-            <AddTagsWithAutocomplete card={card} />
-          </div>
-
-          <CardOptionButton
-            onClick={toggleColorPicker}
-            onKeyDown={this.handleKeyDown}
-            ref={this.colorPickerButton}
-            aria-haspopup
-            aria-expanded={isColorPickerOpen}
-          >
-            <div className='modal-icon'>
-              <MdColorize />
-            </div>
-            &nbsp;Color
-            {isColorPickerOpen && (
-              <ClickOutside
-                eventTypes='click'
-                handleClickOutside={this.handleClickOutside}
-              >
-                <CardOptionColors
-                  onKeyDown={this.handleKeyDown}
-                  onClick={this.changeColor}
-                />
-              </ClickOutside>
-            )}
-          </CardOptionButton>
-
-          <CardOptionButton
-            onClick={this.toggleCalendar}
-            ref={this.calendaButtonRef}
-          >
-            <div className='modal-icon'>
-              <MdAlarm />
-            </div>
-            &nbsp;Due date
-          </CardOptionButton>
-
-          <CardOptionAssignToMe card={card} listId={this.props.listId} />
-
-          <Divider />
-
-          <CardOptionButton onClick={this.deleteCard} className='text-red-400'>
-            <div className='modal-icon'>
-              <FaTrash />
-            </div>
-            &nbsp;Delete
-          </CardOptionButton>
+  return (
+    <>
+      <div
+        className='flex flex-col flex-shrink-0 text-white bg-gray-700 px-0 py-2 my-0 mx-auto sm:mx-2 w-95 sm:w-auto shadow-lg rounded'
+        style={{
+          alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
+        }}
+      >
+        <div className='mb-2 min-w-full px-2'>
+          <AddTagsWithAutocomplete card={card} />
         </div>
 
-        <Modal
-          targetElement={this.calendaButtonRef}
-          isOpen={isCalendarOpen}
-          toggleIsOpen={this.toggleCalendar}
+        <CardOptionButton
+          onClick={toggleColorPicker}
+          onKeyDown={handleKeyDown}
+          ref={colorPickerButton}
+          aria-haspopup
+          aria-expanded={isColorPickerOpen}
         >
-          <Calendar
-            initialDate={new Date(card.data.date || '')}
-            toggleCalendar={this.toggleCalendar}
-            onSave={this.saveCardCalendar}
-            onRemove={this.removeCardCalendar}
-          />
-        </Modal>
-      </>
-    );
-  }
-}
+          <div className='modal-icon'>
+            <MdColorize />
+          </div>
+          &nbsp;Color
+          {isColorPickerOpen && (
+            <ClickOutside
+              eventTypes='click'
+              handleClickOutside={handleClickOutside}
+            >
+              <CardOptionColors
+                onKeyDown={handleKeyDown}
+                onClick={changeColor}
+              />
+            </ClickOutside>
+          )}
+        </CardOptionButton>
+
+        <CardOptionButton onClick={toggleCalendar} ref={calendaButtonRef}>
+          <div className='modal-icon'>
+            <MdAlarm />
+          </div>
+          &nbsp;Due date
+        </CardOptionButton>
+
+        <CardOptionAssignToMe card={card} listId={listId} />
+
+        <Divider />
+
+        <CardOptionButton onClick={deleteCard} className='text-red-400'>
+          <div className='modal-icon'>
+            <FaTrash />
+          </div>
+          &nbsp;Delete
+        </CardOptionButton>
+      </div>
+
+      <Modal
+        targetElement={calendaButtonRef}
+        isOpen={isCalendarOpen}
+        toggleIsOpen={toggleCalendar}
+      >
+        <Calendar
+          initialDate={new Date(card.data.date || '')}
+          toggleCalendar={toggleCalendar}
+          onSave={saveCardCalendar}
+          onRemove={removeCardCalendar}
+        />
+      </Modal>
+    </>
+  );
+};
 
 export default observer(CardOptions);

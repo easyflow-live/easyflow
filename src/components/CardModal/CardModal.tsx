@@ -114,11 +114,9 @@ const CardModal = ({
         <CardOptions
           isColorPickerOpen={isColorPickerOpen}
           card={card}
-          boundingRect={cardRect}
           isCardNearRightBorder={
             window.innerWidth - cardRect.right < cardRect.left
           }
-          isThinDisplay={isThinDisplay}
           toggleColorPicker={toggleColorPicker}
           listId={listId}
         />
