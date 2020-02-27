@@ -6,7 +6,7 @@ import { Collection } from 'firestorter';
 import { cards as cardsActions } from '../../core/actions';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import ClickOutside from '../shared/ClickOutside';
 import { Input } from '../shared';
 import { useSession } from '../providers/SessionProvider';

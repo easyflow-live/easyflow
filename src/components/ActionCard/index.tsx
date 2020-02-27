@@ -6,7 +6,7 @@ import ContentLoader from 'react-content-loader';
 import { User } from '../../store/users';
 import ActionDocument from '../../documents/action.doc';
 import { Avatar, Truncate } from '../shared';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import {
   CardActions,
   NewCardData,

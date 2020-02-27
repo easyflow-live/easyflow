@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import { cards } from '../../core/actions';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';

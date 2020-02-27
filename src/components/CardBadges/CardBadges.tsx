@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { cards } from '../../core/actions';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import CardDocument from '../../documents/card.doc';
 import BadgeTags from './BadgeTags';
 import Assignee from '../Card/Assignee';

@@ -3,7 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 
 import { cards as cardsActions } from '../../core/actions';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import CardDocument from '../../documents/card.doc';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
 import { useThinDisplay } from '../../hooks/use-thin-display';

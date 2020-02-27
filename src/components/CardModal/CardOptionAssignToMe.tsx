@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import { FaUser } from 'react-icons/fa';
 
 import { cards } from '../../core/actions';
-import { useBoardsStore } from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import { useSession } from '../../hooks/use-session';
 import CardDocument from '../../documents/card.doc';
 import CardOptionButton from './CardOptionButton';
