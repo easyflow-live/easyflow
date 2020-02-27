@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { observable, action } from 'mobx';
 import { useLocalStore } from 'mobx-react-lite';
+import { Collection, Mode } from 'firestorter';
 
 import BoardDocument from '../../src/documents/board.doc';
 import ListDocument from '../../src/documents/list.doc';
@@ -10,6 +11,22 @@ class BoardsStore {
   @observable currentBoard: BoardDocument = null;
   @observable lists: ListDocument[] = [];
   @observable colors: ColorDocument[] = [];
+
+  constructor() {
+    const colors = new Collection<ColorDocument>(() => 'colors', {
+      mode: Mode.Off,
+      createDocument: (src, opts) =>
+        new ColorDocument(src, {
+          ...opts,
+          debug: __DEV__,
+          debugName: 'Color document',
+        }),
+      debug: __DEV__,
+      debugName: 'Colors collection',
+    });
+
+    colors.fetch().then(data => this.setColors(data.docs));
+  }
 
   @action
   private setCurrentBoard = (board: BoardDocument) => {
@@ -22,7 +39,7 @@ class BoardsStore {
   };
 
   @action
-  setColors = (colors: ColorDocument[]) => {
+  private setColors = (colors: ColorDocument[]) => {
     this.colors = colors;
   };
 

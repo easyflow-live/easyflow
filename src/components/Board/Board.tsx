@@ -20,16 +20,15 @@ interface BoardProps {
 }
 
 const Board = ({ board }: BoardProps) => {
-  const { setBoard, setColors } = useBoardsStore();
+  const { setBoard } = useBoardsStore();
   const { userDoc } = useSession();
   const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
   useEffect(() => {
     if (board) {
       setBoard(board);
-      setColors(board.colors.docs);
     }
-  }, [board, setBoard, setColors]);
+  }, [board, setBoard]);
 
   useEffect(() => {
     if (board && board.data.title) {
