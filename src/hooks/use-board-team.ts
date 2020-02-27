@@ -15,7 +15,7 @@ export const useBoardTeam = (board: BoardDocument) => {
     return {
       assignees: [],
       owner: null,
-      isLoading: isLoading,
+      isLoading,
     };
   }
 
@@ -25,6 +25,6 @@ export const useBoardTeam = (board: BoardDocument) => {
   return {
     assignees: users.filter(u => ids.includes(u.id)),
     owner: ownerRef.current,
-    isLoading: isLoading,
+    isLoading,
   };
 };
