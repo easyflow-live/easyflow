@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import { cards } from '../../core/actions';
 import { useBoardsStore } from '../../store/boards';
-import usersStore from '../../store/users';
 import BoardDocument from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
@@ -13,6 +12,7 @@ import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
+import { useSession } from '../providers/SessionProvider';
 import BoardMenu from './BoardMenu';
 
 interface BoardProps {
@@ -21,6 +21,7 @@ interface BoardProps {
 
 const Board = ({ board }: BoardProps) => {
   const { setBoard, setColors } = useBoardsStore();
+  const { userDoc } = useSession();
   const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Board = ({ board }: BoardProps) => {
     cardTitle: string
   ) => {
     cards.moveCardAction({
-      memberCreator: usersStore.currentUser.ref,
+      memberCreator: userDoc.ref,
       data: {
         card,
         listBefore,

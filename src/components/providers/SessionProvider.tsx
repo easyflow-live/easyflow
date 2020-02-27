@@ -9,7 +9,6 @@ import {
 import { observer } from 'mobx-react-lite';
 
 import UserDocument from '../../documents/user.doc';
-import userStore from '../../store/users';
 
 interface SessionContextProps {
   user: firebase.User;
@@ -51,7 +50,6 @@ export const SessionProvider = observer(
       if (user) {
         const userDoc = new UserDocument(`users/${user.email}`);
         setUserDoc(userDoc);
-        userStore.setCurrentUser(userDoc);
       }
     }, [user]);
 

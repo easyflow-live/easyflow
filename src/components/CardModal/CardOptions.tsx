@@ -6,12 +6,12 @@ import { observer } from 'mobx-react-lite';
 
 import { cards } from '../../core/actions';
 import { useBoardsStore } from '../../store';
-import usersStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
 import ClickOutside from '../shared/ClickOutside';
 import Modal from '../shared/Modal';
 import Divider from '../shared/Divider';
+import { useSession } from '../providers/SessionProvider';
 import Calendar from './Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
@@ -34,6 +34,7 @@ const CardOptions = ({
   toggleColorPicker,
 }: CardOptionsProps) => {
   const { currentBoard, getList } = useBoardsStore();
+  const { userDoc } = useSession();
 
   const calendaButtonRef = useRef<HTMLButtonElement>();
   const colorPickerButton = useRef<HTMLButtonElement>();
@@ -45,7 +46,7 @@ const CardOptions = ({
 
     await card.ref.delete().then(() =>
       cards.removeCardAction({
-        memberCreator: usersStore.currentUser.ref,
+        memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
           list: getList(listId).ref,

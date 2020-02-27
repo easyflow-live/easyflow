@@ -3,12 +3,12 @@ import { observer } from 'mobx-react-lite';
 
 import { cards } from '../../core/actions';
 import { useBoardsStore } from '../../store/boards';
-import userStore from '../../store/users';
 import CardDocument from '../../documents/card.doc';
 import BadgeTags from './BadgeTags';
 import Assignee from '../Card/Assignee';
 import BadgeDueDate from './BadgeDueDate';
 import BadgeTaskProgress from './BadgeTaskProgress';
+import { useSession } from '../providers/SessionProvider';
 
 interface CardBadgesProps {
   card: CardDocument;
@@ -19,6 +19,7 @@ interface CardBadgesProps {
 
 const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
   const { currentBoard, getList } = useBoardsStore();
+  const { userDoc } = useSession();
 
   const handleTagClick = (tag: string) => card.removeTag(tag);
 
@@ -26,7 +27,7 @@ const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
     if (card.data.completed !== state) {
       card.ref.update({ completed: state });
       cards.completeCardAction({
-        memberCreator: userStore.currentUser.ref,
+        memberCreator: userDoc.ref,
         data: {
           card: card.ref,
           board: currentBoard.ref,
