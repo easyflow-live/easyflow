@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import { FaUser } from 'react-icons/fa';
 
 import { cards } from '../../core/actions';
-import boardsStore from '../../store/boards';
+import { useBoardsStore } from '../../store';
 import { useSession } from '../../hooks/use-session';
 import CardDocument from '../../documents/card.doc';
 import CardOptionButton from './CardOptionButton';
@@ -16,7 +16,16 @@ interface Props {
 }
 
 const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
+  const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
+
+  const actionData = {
+    assignee: userDoc.ref,
+    card: card.ref,
+    board: currentBoard.ref,
+    list: getList(listId).ref,
+    title: card.data.title || '',
+  };
 
   const toggleAssignment = async () => {
     if (!card.data.assignee || !card.data.assignee.length) {
@@ -27,13 +36,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
         .then(() =>
           cards.assigneeCardAction({
             memberCreator: userDoc.ref,
-            data: {
-              assignee: userDoc.ref,
-              card: card.ref,
-              board: boardsStore.currentBoard.ref,
-              list: boardsStore.getList(listId).ref,
-              title: card.data.title || '',
-            },
+            data: actionData,
           })
         );
     } else {
@@ -48,13 +51,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
           .then(() =>
             cards.assigneeCardAction({
               memberCreator: userDoc.ref,
-              data: {
-                assignee: null,
-                card: card.ref,
-                board: boardsStore.currentBoard.ref,
-                list: boardsStore.getList(listId).ref,
-                title: card.data.title || '',
-              },
+              data: { ...actionData, assignee: null },
             })
           );
       } else {
@@ -71,13 +68,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
             .then(() =>
               cards.assigneeCardAction({
                 memberCreator: userDoc.ref,
-                data: {
-                  assignee: userDoc.ref,
-                  card: card.ref,
-                  board: boardsStore.currentBoard.ref,
-                  list: boardsStore.getList(listId).ref,
-                  title: card.data.title || '',
-                },
+                data: actionData,
               })
             );
         } else {
@@ -88,13 +79,7 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
             .then(() =>
               cards.assigneeCardAction({
                 memberCreator: userDoc.ref,
-                data: {
-                  assignee: userDoc.ref,
-                  card: card.ref,
-                  board: boardsStore.currentBoard.ref,
-                  list: boardsStore.getList(listId).ref,
-                  title: card.data.title || '',
-                },
+                data: actionData,
               })
             );
         }

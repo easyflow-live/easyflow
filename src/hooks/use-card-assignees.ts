@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
 import CardDocument from '../../src/documents/card.doc';
-import { useUsersData } from '../store';
+import { useUsersStore } from '../store';
 
 export const useCardAssignees = (card: CardDocument) => {
-  const store = useUsersData(s => s);
+  const { users, loadUsers } = useUsersStore();
 
   // (backwards compatibility)
   if (card.data.assignee && !Array.isArray(card.data.assignee)) {
@@ -12,13 +12,13 @@ export const useCardAssignees = (card: CardDocument) => {
   }
 
   const ids = (card.data.assignee && card.data.assignee.map(a => a.id)) || [];
-  const assignees = store.users.filter(u => ids.includes(u.id));
+  const assignees = users.filter(u => ids.includes(u.id));
 
   useEffect(() => {
     if (card.data.assignee) {
-      store.loadUsers(card.data.assignee);
+      loadUsers(card.data.assignee);
     }
-  }, [card.data.assignee, store]);
+  }, [card.data.assignee, loadUsers]);
 
   return { assignees };
 };

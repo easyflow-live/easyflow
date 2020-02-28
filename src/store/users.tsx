@@ -1,9 +1,9 @@
-import { observable, computed, runInAction, action } from 'mobx';
-import { createContext } from 'react';
+import { observable, runInAction, action } from 'mobx';
+import { createContext, PropsWithChildren, useContext } from 'react';
+import { useLocalStore } from 'mobx-react-lite';
 import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 
-import UserDocument from '..//documents/user.doc';
+import UserDocument from '../documents/user.doc';
 
 interface IUser {
   id: string;
@@ -12,7 +12,7 @@ interface IUser {
   email: string;
 }
 
-class User implements IUser {
+export class User implements IUser {
   id: string;
   username: string;
   photo: string;
@@ -24,22 +24,13 @@ class User implements IUser {
     this.store.remove(this);
   }
 
-  @computed get asJson(): IUser {
-    return {
-      id: this.id,
-      username: this.username,
-      photo: this.photo,
-      email: this.email,
-    };
-  }
-
   @action
-  updateFromJson(json: IUser) {
+  updateFromJson = (json: IUser) => {
     this.id = json.id;
     this.username = json.username;
     this.photo = json.photo;
     this.email = json.email;
-  }
+  };
 }
 
 class UsersStore {
@@ -48,7 +39,7 @@ class UsersStore {
   @observable currentUser: UserDocument = null;
 
   @action
-  createTodo(data: IUser) {
+  createUser = (data: IUser) => {
     const { id, username, photo, email } = data;
 
     const u = this.getUser(id);
@@ -58,24 +49,19 @@ class UsersStore {
     user.updateFromJson({ id, username, photo, email });
     this.users.push(user);
     return user;
-  }
+  };
 
   @action
-  remove(user: User) {
+  remove = (user: User) => {
     this.users.splice(this.users.indexOf(user), 1);
-  }
+  };
 
-  @action
-  setCurrentUser(user: UserDocument) {
-    this.currentUser = user;
-  }
-
-  getUser(id: string) {
+  getUser = (id: string) => {
     return this.users.find(u => u.id === id);
-  }
+  };
 
   @action
-  async loadUsers(usersRef: firebase.firestore.DocumentReference[] = []) {
+  loadUsers = async (usersRef: firebase.firestore.DocumentReference[] = []) => {
     let loadedUsers = [];
     this.isLoading = true;
 
@@ -88,7 +74,7 @@ class UsersStore {
         const data = (await user.get()).data();
 
         // @ts-ignore
-        return this.createTodo({ ...data, id: user.id });
+        return this.createUser({ ...data, id: user.id });
       })
     );
 
@@ -96,18 +82,29 @@ class UsersStore {
       this.isLoading = false;
       this.users = [...new Set([...this.users, ...loadedUsers])];
     });
+  };
+}
+
+const createStore = () => new UsersStore();
+
+type TStore = ReturnType<typeof createStore>;
+
+const UsersContext = createContext<TStore | null>(null);
+
+export const UsersStoreProvider = ({ children }: PropsWithChildren<{}>) => {
+  const store = useLocalStore(createStore);
+
+  return (
+    <UsersContext.Provider value={store}>{children}</UsersContext.Provider>
+  );
+};
+
+export const useUsersStore = () => {
+  const store = useContext(UsersContext);
+
+  if (!store) {
+    throw new Error('useUsersStore must be used within a UsersStoreProvider.');
   }
-}
 
-interface UsersContextProp {
-  store: UsersStore;
-}
-
-const userStore = new UsersStore();
-
-const UsersContext = createContext<UsersContextProp>({
-  store: userStore,
-});
-
-export default userStore;
-export { UsersStore, UsersContext, User };
+  return store;
+};

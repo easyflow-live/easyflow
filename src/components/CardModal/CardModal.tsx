@@ -3,12 +3,12 @@ import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 
 import { cards as cardsActions } from '../../core/actions';
-import boardsStore from '../../store/boards';
-import userStore from '../../store/users';
+import { useBoardsStore } from '../../store';
 import CardDocument from '../../documents/card.doc';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
 import { useThinDisplay } from '../../hooks/use-thin-display';
 import { useKeySubmit } from '../../hooks/use-key-submit';
+import { useSession } from '../providers/SessionProvider';
 import CardBadges from '../CardBadges/CardBadges';
 import Modal from '../shared/Modal';
 import CardOptions from './CardOptions';
@@ -30,6 +30,9 @@ const CardModal = ({
   listId,
   toggleCardModal,
 }: CardModalProps) => {
+  const { currentBoard, getList } = useBoardsStore();
+  const { userDoc } = useSession();
+
   const [newText, setNewText] = useState(card.data.text);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const isThinDisplay = useThinDisplay();
@@ -42,11 +45,11 @@ const CardModal = ({
     if (newText !== oldText) {
       card.ref.update({ text: newText }).then(() =>
         cardsActions.editCardAction({
-          memberCreator: userStore.currentUser.ref,
+          memberCreator: userDoc.ref,
           data: {
             card: card.ref,
-            list: boardsStore.getList(listId).ref,
-            board: boardsStore.currentBoard.ref,
+            list: getList(listId).ref,
+            board: currentBoard.ref,
             oldText,
             newText,
             title: card.data.title || '',
@@ -112,11 +115,9 @@ const CardModal = ({
         <CardOptions
           isColorPickerOpen={isColorPickerOpen}
           card={card}
-          boundingRect={cardRect}
           isCardNearRightBorder={
             window.innerWidth - cardRect.right < cardRect.left
           }
-          isThinDisplay={isThinDisplay}
           toggleColorPicker={toggleColorPicker}
           listId={listId}
         />

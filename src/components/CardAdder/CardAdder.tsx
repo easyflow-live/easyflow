@@ -6,10 +6,10 @@ import { Collection } from 'firestorter';
 import { cards as cardsActions } from '../../core/actions';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
-import boardsStore from '../../store/boards';
-import userStore from '../../store/users';
+import { useBoardsStore } from '../../store';
 import ClickOutside from '../shared/ClickOutside';
 import { Input } from '../shared';
+import { useSession } from '../providers/SessionProvider';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 
 interface CardAdderProps {
@@ -19,6 +19,8 @@ interface CardAdderProps {
 }
 
 const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
+  const { currentBoard } = useBoardsStore();
+  const { userDoc } = useSession();
   const [newText, setNewText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,11 +56,11 @@ const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
     setNewText('');
 
     cardsActions.newCardAction({
-      memberCreator: userStore.currentUser.ref,
+      memberCreator: userDoc.ref,
       data: {
         card: createdCard.ref,
         list: list.ref,
-        board: boardsStore.currentBoard.ref,
+        board: currentBoard.ref,
         title: newText,
       },
     });

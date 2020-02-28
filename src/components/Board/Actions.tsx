@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import BoardDocument from '../../documents/board.doc';
-import { useUsersData } from '../../store';
+import { useUsersStore } from '../../store';
 import ActionCard, { ActionCardPlaceholder } from '../ActionCard';
 
 interface ActionsProps {
@@ -9,7 +9,7 @@ interface ActionsProps {
 }
 
 const Actions = ({ board }: ActionsProps) => {
-  const store = useUsersData(s => s);
+  const { getUser } = useUsersStore();
 
   return (
     <>
@@ -24,7 +24,7 @@ const Actions = ({ board }: ActionsProps) => {
           <ActionCard
             key={action.id}
             action={action}
-            user={store.getUser(action.data.memberCreator.id)}
+            user={getUser(action.data.memberCreator.id)}
           />
         ))
       )}
