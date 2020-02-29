@@ -12,7 +12,25 @@ class BoardsStore {
   @observable lists: ListDocument[] = [];
   @observable colors: ColorDocument[] = [];
 
-  constructor() {
+  @action
+  private setCurrentBoard = (board: BoardDocument) => {
+    this.currentBoard = board;
+    this.fetchColors();
+  };
+
+  @action
+  private setListsFromCurrentBoard = (lists: ListDocument[]) => {
+    this.lists = lists;
+  };
+
+  @action
+  private setColors = (colors: ColorDocument[]) => {
+    this.colors = colors;
+  };
+
+  private fetchColors = () => {
+    if (this.colors.length) return;
+
     const colors = new Collection<ColorDocument>(() => 'colors', {
       mode: Mode.Off,
       createDocument: (src, opts) =>
@@ -26,21 +44,6 @@ class BoardsStore {
     });
 
     colors.fetch().then(data => this.setColors(data.docs));
-  }
-
-  @action
-  private setCurrentBoard = (board: BoardDocument) => {
-    this.currentBoard = board;
-  };
-
-  @action
-  private setListsFromCurrentBoard = (lists: ListDocument[]) => {
-    this.lists = lists;
-  };
-
-  @action
-  private setColors = (colors: ColorDocument[]) => {
-    this.colors = colors;
   };
 
   setBoard = (board: BoardDocument) => {
