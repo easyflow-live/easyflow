@@ -1,6 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
+import { toast } from 'react-toastify';
 
+import { cards as cardsActions } from '../../core/actions';
 import CardDocument from '../../documents/card.doc';
 import { useMarkdownCheckbox } from '../../hooks/use-markdown-checkbox';
 import { useRect } from '../../hooks/use-rect';
@@ -9,6 +11,9 @@ import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
 import DraggableCard from './DraggableCard';
 import MarkdownText from '../shared/MarkdownText';
+import { Card as CardModel } from '../../documents/card.doc';
+import { useBoardsStore } from '../../store/boards';
+import { useSession } from '../providers/SessionProvider';
 
 interface CardProps {
   card: CardDocument;
@@ -22,13 +27,18 @@ const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
 const isInput = (tagName: string) => tagName.toLowerCase() === 'input';
 
 const Card = ({ card, index, listId, draggable = true }: CardProps) => {
+  const { currentBoard, getList } = useBoardsStore();
+  const { userDoc } = useSession();
+  const toggleCheckbox = useMarkdownCheckbox(card.data.text);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef(null);
   const [cardRect] = useRect(cardRef);
-  const toggleCheckbox = useMarkdownCheckbox(card.data.text);
   const checkboxes = useMemo(() => findCheckboxes(card.data.text), [
     card.data.text,
   ]);
+
+  const updateCard = (data: Partial<CardModel>) => card.ref.update(data);
 
   const toggleCardModal = () => setIsModalOpen(!isModalOpen);
 
@@ -37,7 +47,23 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
       checked,
       index,
     });
-    card.ref.update({ text: newText });
+    updateCard({ text: newText });
+  };
+
+  const deleteCard = async () => {
+    const textBackup = card.data.text;
+
+    await card.ref.delete();
+    await cardsActions.removeCardAction({
+      memberCreator: userDoc.ref,
+      data: {
+        board: currentBoard.ref,
+        list: getList(listId).ref,
+        text: textBackup,
+        title: card.data.title || '',
+      },
+    });
+    toast('Card was removed');
   };
 
   const handleClick = event => {
@@ -93,6 +119,8 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
             card={card}
             toggleCardModal={toggleCardModal}
             listId={listId}
+            onUpdate={updateCard}
+            onRemove={deleteCard}
           />
         )}
       </>

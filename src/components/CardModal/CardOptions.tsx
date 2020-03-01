@@ -1,17 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { MdAlarm, MdColorize } from 'react-icons/md';
-import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 
-import { cards } from '../../core/actions';
-import { useBoardsStore } from '../../store';
-import CardDocument from '../../documents/card.doc';
+import CardDocument, { Card } from '../../documents/card.doc';
 import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
 import ClickOutside from '../shared/ClickOutside';
-import Modal from '../shared/Modal';
-import Divider from '../shared/Divider';
-import { useSession } from '../providers/SessionProvider';
+import { Divider, Modal } from '../shared';
 import Calendar from './Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
@@ -19,52 +14,35 @@ import CardOptionButton from './CardOptionButton';
 import CardOptionColors from './CardOptionColors';
 
 interface CardOptionsProps {
-  isColorPickerOpen: boolean;
   card: CardDocument;
   isCardNearRightBorder: boolean;
   listId: string;
-  toggleColorPicker: () => void;
+  onRemove: () => Promise<void>;
+  onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 
 const CardOptions = ({
   card,
-  isColorPickerOpen,
   isCardNearRightBorder,
   listId,
-  toggleColorPicker,
+  onRemove,
+  onUpdate,
 }: CardOptionsProps) => {
-  const { currentBoard, getList } = useBoardsStore();
-  const { userDoc } = useSession();
-
   const calendaButtonRef = useRef<HTMLButtonElement>();
   const colorPickerButton = useRef<HTMLButtonElement>();
 
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const deleteCard = async () => {
-    const textBackup = card.data.text;
-
-    await card.ref.delete().then(() =>
-      cards.removeCardAction({
-        memberCreator: userDoc.ref,
-        data: {
-          board: currentBoard.ref,
-          list: getList(listId).ref,
-          text: textBackup,
-          title: card.data.title || '',
-        },
-      })
-    );
-    toast('Card was removed.');
-  };
+  const toggleColorPicker = () => setIsColorPickerOpen(!isColorPickerOpen);
 
   const changeColor = color => {
     if (card.data.color !== color.code) {
-      card.ref.update({ colorRef: color.ref, color: color.code });
+      onUpdate({ colorRef: color.ref, color: color.code });
     }
 
     toggleColorPicker();
-    colorPickerButton.current.focus();
+    colorPickerButton.current.blur();
   };
 
   const handleKeyDown = event => {
@@ -74,18 +52,16 @@ const CardOptions = ({
     }
   };
 
-  const handleClickOutside = () => {
-    toggleColorPicker();
+  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
+
+  const saveCardCalendar = (date: Date) => onUpdate({ date });
+
+  const removeCardCalendar = () => onUpdate({ date: '' });
+
+  const onColorPickerClick = () => {
     colorPickerButton.current.focus();
+    toggleColorPicker();
   };
-
-  const toggleCalendar = () => {
-    setIsCalendarOpen(!isCalendarOpen);
-  };
-
-  const saveCardCalendar = (date: Date) => card.update({ date });
-
-  const removeCardCalendar = () => card.update({ date: '' });
 
   return (
     <>
@@ -100,7 +76,7 @@ const CardOptions = ({
         </div>
 
         <CardOptionButton
-          onClick={toggleColorPicker}
+          onClick={onColorPickerClick}
           onKeyDown={handleKeyDown}
           ref={colorPickerButton}
           aria-haspopup
@@ -113,7 +89,7 @@ const CardOptions = ({
           {isColorPickerOpen && (
             <ClickOutside
               eventTypes='click'
-              handleClickOutside={handleClickOutside}
+              handleClickOutside={toggleColorPicker}
             >
               <CardOptionColors
                 onKeyDown={handleKeyDown}
@@ -134,7 +110,7 @@ const CardOptions = ({
 
         <Divider />
 
-        <CardOptionButton onClick={deleteCard} className='text-red-400'>
+        <CardOptionButton onClick={onRemove} className='text-red-400'>
           <div className='modal-icon'>
             <FaTrash />
           </div>
