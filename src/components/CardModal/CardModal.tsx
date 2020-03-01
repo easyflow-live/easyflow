@@ -10,9 +10,10 @@ import { useThinDisplay } from '../../hooks/use-thin-display';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../providers/SessionProvider';
 import CardBadges from '../CardBadges/CardBadges';
-import Modal from '../shared/Modal';
+import { Modal } from '../shared';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
+import { Card } from '../../documents/card.doc';
 
 interface CardModalProps {
   card: CardDocument;
@@ -21,6 +22,8 @@ interface CardModalProps {
   isOpen: boolean;
   listId: string;
   toggleCardModal: () => void;
+  onRemove: () => Promise<void>;
+  onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 const CardModal = ({
   card,
@@ -29,12 +32,14 @@ const CardModal = ({
   isOpen,
   listId,
   toggleCardModal,
+  onRemove,
+  onUpdate,
 }: CardModalProps) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
   const [newText, setNewText] = useState(card.data.text);
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+
   const isThinDisplay = useThinDisplay();
 
   const checkboxes = useMemo(() => findCheckboxes(newText), [newText]);
@@ -43,7 +48,7 @@ const CardModal = ({
     const oldText = card.data.text;
 
     if (newText !== oldText) {
-      card.ref.update({ text: newText }).then(() =>
+      onUpdate({ text: newText }).then(() =>
         cardsActions.editCardAction({
           memberCreator: userDoc.ref,
           data: {
@@ -64,10 +69,6 @@ const CardModal = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewText(event.target.value);
-  };
-
-  const toggleColorPicker = () => {
-    setIsColorPickerOpen(!isColorPickerOpen);
   };
 
   const showBadges =
@@ -113,13 +114,13 @@ const CardModal = ({
           )}
         </div>
         <CardOptions
-          isColorPickerOpen={isColorPickerOpen}
           card={card}
           isCardNearRightBorder={
             window.innerWidth - cardRect.right < cardRect.left
           }
-          toggleColorPicker={toggleColorPicker}
           listId={listId}
+          onRemove={onRemove}
+          onUpdate={onUpdate}
         />
       </>
     </Modal>

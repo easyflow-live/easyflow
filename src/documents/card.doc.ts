@@ -12,7 +12,7 @@ export interface Card {
   index: number;
   color: string;
   colorRef: ColorDocument['ref'];
-  date: string;
+  date: string | Date;
   completed: boolean;
   assignee: UserDocument['ref'][];
   tags: string[];
