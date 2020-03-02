@@ -50,6 +50,7 @@ html {
 }
 
 .Toast-background {
+  cursor: initial;
   background: #2d3748;
   color: #fff;
 }

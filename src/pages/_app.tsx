@@ -34,6 +34,7 @@ class MyApp extends App<{}> {
                 <Header />
                 <Component {...pageProps} />
                 <ToastContainer
+                  closeOnClick={false}
                   toastClassName='Toast-background'
                   progressClassName='Toast-progress'
                 />

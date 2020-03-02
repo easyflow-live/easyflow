@@ -71,6 +71,11 @@ const CardModal = ({
     setNewText(event.target.value);
   };
 
+  const handleRemove = () => {
+    toggleCardModal();
+    return onRemove();
+  };
+
   const showBadges =
     card.data.assignee ||
     card.data.date ||
@@ -119,7 +124,7 @@ const CardModal = ({
             window.innerWidth - cardRect.right < cardRect.left
           }
           listId={listId}
-          onRemove={onRemove}
+          onRemove={handleRemove}
           onUpdate={onUpdate}
         />
       </>
