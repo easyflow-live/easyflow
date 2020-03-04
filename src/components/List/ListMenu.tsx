@@ -1,30 +1,20 @@
 import React from 'react';
 import { FaTrash, FaEllipsisH } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 import Menu, { MenuItem, Button } from '../shared/Menu';
-import ListDocument from 'src/documents/list.doc';
 
 interface ListMenuProps {
-  list: ListDocument;
+  title: string;
   className?: string;
+  onRemove: (title: string) => Promise<void>;
 }
 
-const ListMenu = ({ list, className }: ListMenuProps) => {
-  const removeList = async () => {
-    try {
-      await list.delete();
-      toast(`The list ${list.data.title} was removed!`);
-    } catch (error) {
-      toast(`An error occurred. Please, try again.`);
-    }
-  };
-
+const ListMenu = ({ title, className, onRemove }: ListMenuProps) => {
   const handleSelection = (value: string) => {
     switch (value) {
       case 'deleteList':
-        removeList();
+        onRemove(title);
         break;
 
       default:

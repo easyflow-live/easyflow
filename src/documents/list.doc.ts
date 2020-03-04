@@ -3,7 +3,7 @@ import { Document, Collection } from 'firestorter';
 import CardDocument from './card.doc';
 import UserDocument from './user.doc';
 
-interface List {
+export interface List {
   title: string;
   index: number;
   uid: string;
