@@ -2,17 +2,19 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 
-import ListDocument from '../../documents/list.doc';
+import ListDocument, { List as ListModel } from '../../documents/list.doc';
 import { useInterface } from '../providers/InterfaceProvider';
+import Editable from '../shared/Editable';
 import CardCounter from './CardCounter';
 import ListMenu from './ListMenu';
-import Editable from '../shared/Editable';
 
 interface ListHeaderProps {
   listTitle: string;
   dragHandleProps: any;
   list: ListDocument;
   isDragging: boolean;
+  onRemove: (title: string) => Promise<void>;
+  onUpdate: (data: Partial<ListModel>) => Promise<void>;
 }
 
 const ListHeader = ({
@@ -20,6 +22,8 @@ const ListHeader = ({
   dragHandleProps,
   list,
   isDragging,
+  onRemove,
+  onUpdate,
 }: ListHeaderProps) => {
   const { isEditable } = useInterface();
 
@@ -27,13 +31,12 @@ const ListHeader = ({
     if (value === '') return;
 
     if (value !== listTitle) {
-      list.ref.update({ title: value });
+      onUpdate({ title: value });
     }
   };
 
-  const handleCounterSubmit = (value: number) => {
-    list.ref.update({ cardsLimit: value });
-  };
+  const handleCounterSubmit = (value: number) =>
+    onUpdate({ cardsLimit: value });
 
   return (
     <div
@@ -50,7 +53,7 @@ const ListHeader = ({
         inputProps={{ full: false, style: { maxWidth: '179px' } }}
       >
         {({ value, onClick }) => (
-          <div className='flex-grow' {...dragHandleProps}>
+          <div className='flex-grow'>
             <div
               role='button'
               tabIndex={0}
@@ -75,7 +78,7 @@ const ListHeader = ({
         editable={isEditable}
       />
 
-      {isEditable && <ListMenu list={list} />}
+      {isEditable && <ListMenu title={list.data.title} onRemove={onRemove} />}
     </div>
   );
 };
