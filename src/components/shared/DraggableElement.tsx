@@ -7,7 +7,9 @@ interface DraggableElementProps {
   id: string;
   index: number;
   draggable?: boolean;
-  children: ({ isDragging }: { isDragging: boolean }) => ReactChild;
+  children:
+    | (({ isDragging }: { isDragging: boolean }) => ReactChild)
+    | ReactChild;
 }
 
 const DraggableElement = ({
@@ -31,7 +33,9 @@ const DraggableElement = ({
             {...provided.dragHandleProps}
             className={cn(isDragging && 'shadow-lg')}
           >
-            {children({ isDragging: isDragging })}
+            {typeof children === 'function'
+              ? children({ isDragging: isDragging })
+              : children}
           </div>
           {isDragging && provided.placeholder}
         </>

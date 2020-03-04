@@ -10,7 +10,7 @@ import { useRect } from '../../hooks/use-rect';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
 import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
-import DraggableCard from './DraggableCard';
+import DraggableElement from '../shared/DraggableElement';
 import MarkdownText from '../shared/MarkdownText';
 import { Card as CardModel } from '../../documents/card.doc';
 import { ToastUndo } from '../shared';
@@ -110,7 +110,7 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
     checkboxes.total > 0;
 
   return (
-    <DraggableCard id={card.id} index={index} draggable={draggable}>
+    <DraggableElement id={card.id} index={index} draggable={draggable}>
       <>
         <div
           ref={cardRef}
@@ -144,7 +144,7 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
           />
         )}
       </>
-    </DraggableCard>
+    </DraggableElement>
   );
 };
 
