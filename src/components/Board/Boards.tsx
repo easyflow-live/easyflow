@@ -20,15 +20,17 @@ export const Boards = observer(({ boards }: BoardsProps) => {
       <TransitionGroup className={`inline-flex flex-wrap w-full`}>
         {boards.docs.length > 0 && <BoardAdder />}
 
-        {boards.docs.map(board => (
-          <CSSTransition key={board.id} timeout={200} classNames='item'>
-            <BoardLink
-              title={board.data.title}
-              key={board.id}
-              href={`/board?uid=${board.id}`}
-            />
-          </CSSTransition>
-        ))}
+        {boards.docs
+          .filter(({ data }) => !data.archived)
+          .map(board => (
+            <CSSTransition key={board.id} timeout={200} classNames='item'>
+              <BoardLink
+                title={board.data.title}
+                key={board.id}
+                href={`/board?uid=${board.id}`}
+              />
+            </CSSTransition>
+          ))}
       </TransitionGroup>
 
       <AnimatedOpacity show={showEmpty}>
