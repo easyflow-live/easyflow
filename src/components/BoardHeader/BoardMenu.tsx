@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Router from 'next/router';
-import { FaTrash, FaHashtag } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import { FaArchive, FaHashtag } from 'react-icons/fa';
 
 import BoardDocument from '../../documents/board.doc';
 import Menu, { MenuItem, Button, Divider } from '../shared/Menu';
@@ -12,31 +10,22 @@ import styled from 'styled-components';
 interface BoardMenuProps {
   board: BoardDocument;
   className: string;
+  onRemove: () => Promise<void>;
 }
 
-const BoardMenu = ({ board, className }: BoardMenuProps) => {
+const BoardMenu = ({ board, className, onRemove }: BoardMenuProps) => {
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
 
   const toggleTagsModal = () => setIsTagsModalOpen(o => !o);
 
-  const removeBoard = async () => {
-    try {
-      await board.delete();
-      Router.push('/');
-      toast(`The board ${board.data.title} was removed!`);
-    } catch (error) {
-      toast(`An error occurred. Please, try again.`);
-    }
-  };
-
-  const handleSelection = (value: string) => {
+  const handleSelection = async (value: string) => {
     switch (value) {
       case 'tags':
         toggleTagsModal();
         break;
 
       case 'deleteBoard':
-        removeBoard();
+        onRemove();
         break;
 
       default:
@@ -63,8 +52,8 @@ const BoardMenu = ({ board, className }: BoardMenuProps) => {
             </MenuItem>
             <Divider className='my-2 ' />
             <MenuItem value='deleteBoard'>
-              <FaTrash className='text-red-400 mr-3' />
-              <span className='text-red-400'>Delete board</span>
+              <FaArchive className='text-red-400 mr-3' />
+              <span className='text-red-400'>Archive board</span>
             </MenuItem>
           </>
         }

@@ -13,9 +13,10 @@ import Team from './Team';
 
 interface BoardHeaderProps {
   board: BoardDocument;
+  onRemove: () => Promise<void>;
 }
 
-const BoardHeader = ({ board }: BoardHeaderProps) => {
+const BoardHeader = ({ board, onRemove }: BoardHeaderProps) => {
   const { isEditable, isKioskMode, setMenu } = useInterface();
 
   const toggleMenu = () => setMenu(true);
@@ -52,7 +53,7 @@ const BoardHeader = ({ board }: BoardHeaderProps) => {
               onClick={toggleMenu}
             />
 
-            <BoardMenu className='ml-2' board={board} />
+            <BoardMenu className='ml-2' board={board} onRemove={onRemove} />
           </>
         )}
       </div>
