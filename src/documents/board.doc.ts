@@ -6,13 +6,14 @@ import ListDocument from './list.doc';
 import UserDocument from './user.doc';
 import ActionDocument from './action.doc';
 
-interface Board {
+export interface Board {
   title: string;
   uid: string;
   color: string;
   owner: UserDocument['ref'];
   users: UserDocument['ref'][];
   tags: string[];
+  archived?: boolean;
 }
 
 export default class BoardDocument extends Document<Board> {

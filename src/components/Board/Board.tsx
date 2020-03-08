@@ -1,10 +1,12 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import Router from 'next/router';
+import { toast } from 'react-toastify';
 
 import { cards } from '../../core/actions';
 import { useBoardsStore } from '../../store';
-import BoardDocument from '../../documents/board.doc';
+import BoardDocument, { Board as BoardModel } from '../../documents/board.doc';
 import CardDocument from '../../documents/card.doc';
 import ListDocument from '../../documents/list.doc';
 import ListColumns from '../List/ListColumns';
@@ -14,6 +16,7 @@ import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
 import { InterfaceContext } from '../providers/InterfaceProvider';
 import { useSession } from '../providers/SessionProvider';
 import BoardMenu from './BoardMenu';
+import { ToastUndo } from '../shared';
 
 interface BoardProps {
   board: BoardDocument;
@@ -23,6 +26,8 @@ const Board = ({ board }: BoardProps) => {
   const { setBoard } = useBoardsStore();
   const { userDoc } = useSession();
   const { isKioskMode, isEditable } = useContext(InterfaceContext);
+
+  const archivedRef = useRef(false);
 
   useEffect(() => {
     if (board) {
@@ -54,6 +59,32 @@ const Board = ({ board }: BoardProps) => {
     });
   };
 
+  const updateBoard = (data: Partial<BoardModel>) => board.update(data);
+
+  const archiveBoard = async () => {
+    if (!archivedRef.current) return;
+
+    await updateBoard({ archived: true });
+    Router.push('/');
+  };
+
+  const undo = () => (archivedRef.current = false);
+
+  const removeBoard = async () => {
+    archivedRef.current = true;
+
+    toast(
+      <ToastUndo
+        title={`This board will be archived...`}
+        id={board.id}
+        undo={undo}
+      />,
+      {
+        onClose: archiveBoard,
+      }
+    );
+  };
+
   if (!board) return null;
 
   const { lists, isLoading: isLoadingBoard } = board;
@@ -68,7 +99,7 @@ const Board = ({ board }: BoardProps) => {
           kiosk: isKioskMode,
         })}
       >
-        <BoardHeader board={board} />
+        <BoardHeader board={board} onRemove={removeBoard} />
 
         <div
           className='inline-flex mt-4 overflow-x-auto overflow-y-hidden'
