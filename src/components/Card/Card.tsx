@@ -110,7 +110,12 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
     checkboxes.total > 0;
 
   return (
-    <DraggableElement id={card.id} index={index} draggable={draggable}>
+    <DraggableElement
+      id={card.id}
+      index={index}
+      draggable={draggable}
+      onKeyDown={handleKeyDown}
+    >
       <>
         <div
           ref={cardRef}
@@ -120,7 +125,6 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
           )}
           style={{ backgroundColor: card.data.color, minHeight: '60px' }}
           onClick={handleClick}
-          onKeyDown={handleKeyDown}
         >
           <div className='p-2'>
             <MarkdownText source={card.data.text} />
