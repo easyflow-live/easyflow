@@ -1,6 +1,6 @@
 {
   "name": "easy-flow",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A real tiime collaborative project manager based on Kanban methodology.",
   "engines": {
     "node": "10.x"
