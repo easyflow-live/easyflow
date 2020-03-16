@@ -27,6 +27,7 @@ interface CardProps {
 
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
 const isInput = (tagName: string) => tagName.toLowerCase() === 'input';
+const isTextArea = (tagName: string) => tagName.toLowerCase() === 'textarea';
 
 const Card = ({ card, index, listId, draggable = true }: CardProps) => {
   const { currentBoard, getList } = useBoardsStore();
@@ -95,9 +96,8 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
 
   const handleKeyDown = event => {
     const { tagName } = event.target;
-
     // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
-    if (event.keyCode === 13 && !isLink(tagName)) {
+    if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
       event.preventDefault();
       toggleCardModal();
     }
