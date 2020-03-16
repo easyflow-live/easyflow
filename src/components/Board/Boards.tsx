@@ -27,7 +27,7 @@ export const Boards = observer(({ boards }: BoardsProps) => {
               <BoardLink
                 title={board.data.title}
                 key={board.id}
-                href={`/board?uid=${board.id}`}
+                href={`/b/${board.id}`}
               />
             </CSSTransition>
           ))}
