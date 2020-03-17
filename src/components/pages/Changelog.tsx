@@ -83,6 +83,38 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Monday, March 16, 2020</LogDate>
+
+        <LogList type={LogTypes.feature}>
+          {[
+            'Added an alternative URL to access a board. You can use www.easyflow.live/b/UID now. The old URL will continue to work as before.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+        <LogList type={LogTypes.bugfixes}>
+          {[
+            'Fixed issues with spacebar and SHIFT+ENTER shortcut when editing a card.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
+        <LogDate>Sunday, March 8, 2020</LogDate>
+
+        <LogList type={LogTypes.feature}>
+          {[
+            'Added undo toast when a Card and a Column is removed.',
+            'A board is now archived instead of removed, so then you can recover later.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Tuesday, February 20, 2020</LogDate>
 
         <LogList type={LogTypes.improvements}>
