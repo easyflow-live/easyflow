@@ -30,7 +30,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
       />
       <div className='flex items-center'>
         <BoardButton
-          disabled={!previewMode}
+          disabled={previewMode}
           style={{ paddingLeft: '18px' }}
           icon={<Team board={board} />}
           renderModal={
