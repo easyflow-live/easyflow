@@ -14,12 +14,14 @@ interface SessionContextProps {
   user: firebase.User;
   initializing: boolean;
   userDoc: UserDocument;
+  isLogged: boolean;
 }
 
 const SessionContext = createContext<SessionContextProps>({
   user: null,
   initializing: true,
   userDoc: null,
+  isLogged: false,
 });
 
 export const useAuth = () => {
@@ -28,11 +30,11 @@ export const useAuth = () => {
     return { initializing: !user, user };
   });
 
-  function onChange(user) {
-    setState({ initializing: false, user });
-  }
-
   useEffect(() => {
+    function onChange(user: firebase.User) {
+      setState({ initializing: false, user });
+    }
+
     const unsubscribe = firebase.auth().onAuthStateChanged(onChange);
 
     return () => unsubscribe();
@@ -53,7 +55,7 @@ export const SessionProvider = observer(
       }
     }, [user]);
 
-    const value = { user, initializing, userDoc };
+    const value = { user, initializing, userDoc, isLogged: !!user };
 
     return (
       <SessionContext.Provider value={value}>
