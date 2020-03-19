@@ -1,6 +1,5 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
-import classNames from 'classnames';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
 
@@ -13,19 +12,18 @@ import ListColumns from '../List/ListColumns';
 import BoardHeader from '../BoardHeader/BoardHeader';
 import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
 import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
-import { InterfaceContext } from '../providers/InterfaceProvider';
 import { useSession } from '../providers/SessionProvider';
 import BoardMenu from './BoardMenu';
 import { ToastUndo } from '../shared';
 
 interface BoardProps {
   board: BoardDocument;
+  previewMode?: boolean;
 }
 
-const Board = ({ board }: BoardProps) => {
+const Board = ({ board, previewMode }: BoardProps) => {
   const { setBoard } = useBoardsStore();
   const { userDoc } = useSession();
-  const { isKioskMode, isEditable } = useContext(InterfaceContext);
 
   const archivedRef = useRef(false);
 
@@ -94,12 +92,12 @@ const Board = ({ board }: BoardProps) => {
 
   return (
     <div className='relative overflow-hidden'>
-      <div
-        className={classNames('relative m-6 mt-4', {
-          kiosk: isKioskMode,
-        })}
-      >
-        <BoardHeader board={board} onRemove={removeBoard} />
+      <div className='relative m-6 mt-4'>
+        <BoardHeader
+          board={board}
+          onRemove={removeBoard}
+          previewMode={previewMode}
+        />
 
         <div
           className='inline-flex mt-4 overflow-x-auto overflow-y-hidden'
@@ -110,7 +108,7 @@ const Board = ({ board }: BoardProps) => {
           <ListColumns lists={lists} onCardMove={handeCardMoveAction} />
         </div>
 
-        {isEditable && (
+        {!previewMode && (
           <AnimatedOpacity show={showEmpty}>
             <CreateContentEmpty board={board} />
           </AnimatedOpacity>

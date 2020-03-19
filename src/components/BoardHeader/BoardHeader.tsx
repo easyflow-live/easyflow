@@ -14,11 +14,11 @@ import Team from './Team';
 interface BoardHeaderProps {
   board: BoardDocument;
   onRemove: () => Promise<void>;
+  previewMode?: boolean;
 }
 
-const BoardHeader = ({ board, onRemove }: BoardHeaderProps) => {
-  const { isEditable, isKioskMode, setMenu } = useInterface();
-
+const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
+  const { setMenu } = useInterface();
   const toggleMenu = () => setMenu(true);
 
   return (
@@ -26,19 +26,20 @@ const BoardHeader = ({ board, onRemove }: BoardHeaderProps) => {
       <BoardTitle
         boardTitle={board.data.title}
         boardId={board.id}
-        editable={isEditable}
+        editable={!previewMode}
       />
       <div className='flex items-center'>
         <BoardButton
+          disabled={!previewMode}
           style={{ paddingLeft: '18px' }}
           icon={<Team board={board} />}
           renderModal={
-            isEditable
+            !previewMode
               ? props => <TeamListModal board={board} {...props} />
               : () => null
           }
         />
-        {isEditable && !isKioskMode && (
+        {!previewMode && (
           <>
             <BoardButton
               icon={<MdViewColumn size='16px' />}
