@@ -6,14 +6,14 @@ import { useSession } from '../../hooks/use-session';
 
 import { Avatar } from '../shared';
 import UserMenu from '../UserMenu/UserMenu';
-import { useInterface } from '../providers/InterfaceProvider';
 import { GiveFeedback } from '../Feedback/GiveFeedback';
+import { useInterface } from '../providers/InterfaceProvider';
 
 const Header = observer(() => {
   const { user, userDoc } = useSession();
-  const { isKioskMode } = useInterface();
+  const { previewMode } = useInterface();
 
-  if (isKioskMode) return null;
+  if (previewMode) return null;
 
   return (
     <header className='z-100 bg-gray-900 inset-x-0 top-0 lg:static flex items-center shadow-lg'>

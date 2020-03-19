@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/use-session';
 import { useBoard } from '../../hooks/use-board';
-import { useInterface } from '../providers/InterfaceProvider';
 import BoardComponent from '../Board/Board';
 import AuthenticatedPage from '../shared/AuthenticatedPage';
+import { useInterface } from '../providers/InterfaceProvider';
 import Loader from '../shared/Loader';
 
 interface BoardPageProps {
-  query: { uid: string; kiosk: boolean };
+  query: { uid: string; previewmode: boolean };
   children: React.ReactChildren;
 }
 
@@ -19,29 +19,26 @@ const error404 = {
 };
 
 const Board = ({ query }: BoardPageProps) => {
-  const { userDoc } = useSession();
+  const { userDoc, isLogged } = useSession();
   const [board, isBoardLoading] = useBoard(query.uid);
-  const { setIsEditable, setIsKioskMode } = useInterface();
-
-  const isKioskMode = Boolean(query.kiosk);
-
-  setIsKioskMode(isKioskMode);
-  // if there is not user logged, editable must be false
-  setIsEditable(!!userDoc);
+  const { setPreviewMode } = useInterface();
 
   const isLoading = userDoc ? userDoc.boards.isLoading : true;
 
   if (!board && isLoading) return <Loader />;
 
-  const redirect = !userDoc && !query.kiosk && !isBoardLoading;
+  const redirect = !userDoc && !isBoardLoading;
+
+  const previewMode = !!query.previewmode || !isLogged;
+  setPreviewMode(previewMode);
 
   return (
     <AuthenticatedPage
-      isAnonymous={isKioskMode}
+      isAnonymous={!isLogged}
       redirect={redirect}
       error={!board && error404}
     >
-      <BoardComponent board={board} />
+      <BoardComponent board={board} previewMode={previewMode} />
     </AuthenticatedPage>
   );
 };

@@ -1,31 +1,30 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, PropsWithChildren } from 'react';
 
 interface InterfaceContextProps {
-  isEditable: boolean; // if there is a logged user, this will be true
-  isKioskMode: boolean;
   isMenuOpen: boolean;
   setMenu: (value: boolean) => void;
-  setIsEditable: (value: boolean) => void;
-  setIsKioskMode: (value: boolean) => void;
+  previewMode: boolean;
+  togglePreviewMode: () => void;
+  setPreviewMode: (value: boolean) => void;
 }
 
 export const InterfaceContext = createContext<InterfaceContextProps>(null);
 
-export const InterfaceProvider = props => {
-  const [isEditable, setIsEditable] = useState();
-  const [isKioskMode, setIsKioskMode] = useState();
+export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
   const [isMenuOpen, setMenu] = useState();
+  const [previewMode, setPreviewMode] = useState();
+
+  const togglePreviewMode = () => setPreviewMode(s => !s);
 
   return (
     <InterfaceContext.Provider
       {...props}
       value={{
-        isEditable,
-        setIsEditable,
-        isKioskMode,
-        setIsKioskMode,
         isMenuOpen,
         setMenu,
+        previewMode,
+        togglePreviewMode,
+        setPreviewMode,
       }}
     />
   );
