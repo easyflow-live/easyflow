@@ -6,11 +6,12 @@ import { toast } from 'react-toastify';
 
 import ListDocument from '../../documents/list.doc';
 import firebaseService from '../../services/firebase.service';
+import CardDocument from '../../documents/card.doc';
 import List from './List';
-import CardDocument from 'src/documents/card.doc';
 
 interface ListsProps {
   lists: Collection<ListDocument>;
+  previewMode?: boolean;
   onCardMove: (
     card: CardDocument['ref'],
     listBefore: ListDocument['ref'],
@@ -23,7 +24,7 @@ interface UpdatedHash {
   [id: string]: number;
 }
 
-const ListColumns = ({ lists, onCardMove }: ListsProps) => {
+const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
   const [localLists, setLocalLists] = useState([]);
 
   useEffect(() => {
@@ -184,7 +185,12 @@ const ListColumns = ({ lists, onCardMove }: ListsProps) => {
             {...provided.droppableProps}
           >
             {localLists.map((list: ListDocument, index: number) => (
-              <List key={list.id} list={list} index={index} />
+              <List
+                key={list.id}
+                list={list}
+                index={index}
+                previewMode={previewMode}
+              />
             ))}
             {provided.placeholder}
           </div>

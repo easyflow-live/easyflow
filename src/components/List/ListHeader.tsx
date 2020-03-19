@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 
 import ListDocument, { List as ListModel } from '../../documents/list.doc';
-import { useInterface } from '../providers/InterfaceProvider';
 import Editable from '../shared/Editable';
 import CardCounter from './CardCounter';
 import ListMenu from './ListMenu';
@@ -13,6 +12,7 @@ interface ListHeaderProps {
   dragHandleProps: any;
   list: ListDocument;
   isDragging: boolean;
+  previewMode?: boolean;
   onRemove: (title: string) => Promise<void>;
   onUpdate: (data: Partial<ListModel>) => Promise<void>;
 }
@@ -22,10 +22,11 @@ const ListHeader = ({
   dragHandleProps,
   list,
   isDragging,
+  previewMode,
   onRemove,
   onUpdate,
 }: ListHeaderProps) => {
-  const { isEditable } = useInterface();
+  const isEditable = !previewMode;
 
   const handleSubmit = (value: string) => {
     if (value === '') return;
