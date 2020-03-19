@@ -47,7 +47,7 @@ const CardCounter = ({
             className={`
               text-white text-sm rounded-full h-8 w-10 flex items-center justify-center
               ${reachedLimit && !isDefault && 'bg-red-500'}
-              ${editable ? 'cursor-text' : ''}
+              ${editable ? 'cursor-text' : 'cursor-default'}
             `}
             onClick={onClick}
           >
