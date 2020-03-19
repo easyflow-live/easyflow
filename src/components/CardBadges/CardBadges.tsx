@@ -27,7 +27,7 @@ const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
     if (card.data.completed !== state) {
       card.ref.update({ completed: state });
       cards.completeCardAction({
-        memberCreator: userDoc.ref,
+        memberCreator: userDoc && userDoc.ref,
         data: {
           card: card.ref,
           board: currentBoard.ref,

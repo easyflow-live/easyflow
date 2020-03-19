@@ -19,8 +19,10 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
+  const userRef = userDoc && userDoc.ref;
+
   const actionData = {
-    assignee: userDoc.ref,
+    assignee: userRef,
     card: card.ref,
     board: currentBoard.ref,
     list: getList(listId).ref,
@@ -31,26 +33,26 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
     if (!card.data.assignee || !card.data.assignee.length) {
       await card
         .update({
-          assignee: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
+          assignee: firebase.firestore.FieldValue.arrayUnion(userRef),
         })
         .then(() =>
           cards.assigneeCardAction({
-            memberCreator: userDoc.ref,
+            memberCreator: userRef,
             data: actionData,
           })
         );
     } else {
       const ids = card.data.assignee.map(a => a.id);
 
-      if (ids.includes(userDoc.ref.id)) {
+      if (ids.includes(userRef.id)) {
         // Toggle if the user is already an assignee
         await card
           .update({
-            assignee: firebase.firestore.FieldValue.arrayRemove(userDoc.ref),
+            assignee: firebase.firestore.FieldValue.arrayRemove(userRef),
           })
           .then(() =>
             cards.assigneeCardAction({
-              memberCreator: userDoc.ref,
+              memberCreator: userRef,
               data: { ...actionData, assignee: null },
             })
           );
@@ -62,23 +64,23 @@ const CardOptionAssignToMe = observer(({ card, listId }: Props) => {
           await card
             .update({
               assignee: firebase.firestore.FieldValue.arrayUnion(
-                ...[oldAssignee, userDoc.ref]
+                ...[oldAssignee, userRef]
               ),
             })
             .then(() =>
               cards.assigneeCardAction({
-                memberCreator: userDoc.ref,
+                memberCreator: userRef,
                 data: actionData,
               })
             );
         } else {
           await card
             .update({
-              assignee: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
+              assignee: firebase.firestore.FieldValue.arrayUnion(userRef),
             })
             .then(() =>
               cards.assigneeCardAction({
-                memberCreator: userDoc.ref,
+                memberCreator: userRef,
                 data: actionData,
               })
             );
