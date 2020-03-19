@@ -1,7 +1,7 @@
 import React from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { Editable, Heading } from '../shared';
 
@@ -30,7 +30,7 @@ const BoardTitle = ({ boardId, boardTitle, editable }: BoardTitleProps) => {
     <div>
       <Editable value={boardTitle} onSubmit={submitTitle} editable={editable}>
         {({ value, onClick }) => (
-          <BoardTitleButton onClick={onClick}>
+          <BoardTitleButton onClick={onClick} editable={editable}>
             <Heading text={value} />
           </BoardTitleButton>
         )}
@@ -41,7 +41,7 @@ const BoardTitle = ({ boardId, boardTitle, editable }: BoardTitleProps) => {
 
 export default BoardTitle;
 
-const BoardTitleButton = styled.button`
+const BoardTitleButton = styled.button<{ editable: boolean }>`
   display: flex;
   min-width: 0;
   padding: 6px;
@@ -49,10 +49,16 @@ const BoardTitleButton = styled.button`
   border-radius: 3px;
   background: transparent;
   transition: background 0.1s;
-  cursor: pointer;
+  cursor: default;
 
-  &:hover,
-  &:focus {
-    background: rgba(0, 0, 0, 0.2);
-  }
+  ${props =>
+    props.editable &&
+    css`
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        background: rgba(0, 0, 0, 0.2);
+      }
+    `}
 `;

@@ -1,5 +1,5 @@
 import React, { useRef, useState, CSSProperties } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface BoardButtonProps {
   icon: React.ReactChild;
@@ -7,6 +7,7 @@ interface BoardButtonProps {
   renderModal?: ({ isOpen, originRef, toggleIsOpen }) => React.ReactChild;
   onClick?: () => void;
   style?: CSSProperties;
+  disabled?: boolean;
 }
 
 const BoardButton = ({
@@ -15,6 +16,7 @@ const BoardButton = ({
   renderModal,
   onClick,
   style,
+  disabled,
 }: BoardButtonProps) => {
   const buttonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +32,7 @@ const BoardButton = ({
           setIsOpen(true);
         }}
         style={style}
+        disabled={disabled}
       >
         <div className='btn-icon'>{icon}</div>
         {text && <div className='hidden sm:block'>&nbsp;{text}</div>}
@@ -46,7 +49,7 @@ const BoardButton = ({
 
 export default BoardButton;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ disabled: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -58,10 +61,19 @@ const StyledButton = styled.button`
   margin-left: 5px;
   min-height: 40px;
 
-  &:hover,
-  &:focus {
-    background: rgba(0, 0, 0, 0.2);
-  }
+  ${({ disabled }) =>
+    disabled
+      ? css`
+          cursor: default;
+        `
+      : css`
+          cursor: pointer;
+
+          &:hover,
+          &:focus {
+            background: rgba(0, 0, 0, 0.2);
+          }
+        `};
 
   & > .btn-icon {
     flex-shrink: 0;
