@@ -5,17 +5,16 @@ import { Collection } from 'firestorter';
 import styled from 'styled-components';
 
 import CardDocument from '../../documents/card.doc';
-import { useSession } from '../../hooks/use-session';
 import CardPlaceholder from './CardPlaceholder';
 import Card from './Card';
 
 interface CardProps {
   cards: Collection<CardDocument>;
   listId: string;
+  previewMode?: boolean;
 }
 
-const Cards = ({ cards, listId }: CardProps) => {
-  const { userDoc } = useSession();
+const Cards = ({ cards, listId, previewMode }: CardProps) => {
   const { isLoading } = cards;
 
   return (
@@ -32,7 +31,7 @@ const Cards = ({ cards, listId }: CardProps) => {
                 card={card}
                 index={index}
                 listId={listId}
-                draggable={!!userDoc}
+                previewMode={previewMode}
               />
             ))
           )}

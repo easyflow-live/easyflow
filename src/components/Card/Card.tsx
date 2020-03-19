@@ -22,14 +22,14 @@ interface CardProps {
   isDraggingOver: boolean;
   index: number;
   listId: string;
-  draggable: boolean;
+  previewMode: boolean;
 }
 
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
 const isInput = (tagName: string) => tagName.toLowerCase() === 'input';
 const isTextArea = (tagName: string) => tagName.toLowerCase() === 'textarea';
 
-const Card = ({ card, index, listId, draggable = true }: CardProps) => {
+const Card = ({ card, index, listId, previewMode }: CardProps) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
   const toggleCheckbox = useMarkdownCheckbox(card.data.text);
@@ -109,22 +109,25 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
     card.data.tags ||
     checkboxes.total > 0;
 
+  const cardProps = previewMode ? {} : { onClick: handleClick };
+
   return (
     <DraggableElement
       id={card.id}
       index={index}
-      draggable={draggable}
+      draggable={!previewMode}
       onKeyDown={handleKeyDown}
     >
       <>
         <div
           ref={cardRef}
           className={cn(
-            'card relative text-sm select-none cursor-pointer rounded my-2 mx-0 text-gray-900 break-words',
-            isHiddenRef.current && 'hidden'
+            'card relative text-sm select-none rounded my-2 mx-0 text-gray-900 break-words',
+            isHiddenRef.current && 'hidden',
+            !previewMode && 'cursor-pointer'
           )}
           style={{ backgroundColor: card.data.color, minHeight: '60px' }}
-          onClick={handleClick}
+          {...cardProps}
         >
           <div className='p-2'>
             <MarkdownText source={card.data.text} />
@@ -135,7 +138,7 @@ const Card = ({ card, index, listId, draggable = true }: CardProps) => {
           )}
         </div>
 
-        {isModalOpen && (
+        {!previewMode && isModalOpen && (
           <CardModal
             isOpen={isModalOpen}
             cardElement={cardRef}
