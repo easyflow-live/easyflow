@@ -105,7 +105,11 @@ const Board = ({ board, previewMode }: BoardProps) => {
             width: 'calc(100vw - 3rem)',
           }}
         >
-          <ListColumns lists={lists} onCardMove={handeCardMoveAction} />
+          <ListColumns
+            lists={lists}
+            onCardMove={handeCardMoveAction}
+            previewMode={previewMode}
+          />
         </div>
 
         {!previewMode && (
