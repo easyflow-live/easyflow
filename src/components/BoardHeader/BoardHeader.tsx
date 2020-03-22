@@ -33,11 +33,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
           disabled={previewMode}
           style={{ paddingLeft: '18px' }}
           icon={<Team board={board} />}
-          renderModal={
-            !previewMode
-              ? props => <TeamListModal board={board} {...props} />
-              : () => null
-          }
+          renderModal={props => <TeamListModal board={board} {...props} />}
         />
         {!previewMode && (
           <>
