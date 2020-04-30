@@ -13,7 +13,7 @@ const Header = observer(() => {
   const { user, userDoc } = useSession();
   const { previewMode } = useInterface();
 
-  if (previewMode) return null;
+  if (previewMode || !user) return null;
 
   return (
     <header className='z-100 bg-gray-900 inset-x-0 top-0 lg:static flex items-center shadow-lg'>
