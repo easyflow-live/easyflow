@@ -17,16 +17,11 @@ const DraggableElement = ({
   id,
   index,
   draggable = true,
-  onKeyDown,
+  onKeyDown = () => {},
   children,
 }: DraggableElementProps) => {
   return (
-    <Draggable
-      draggableId={id}
-      index={index}
-      disableInteractiveElementBlocking
-      isDragDisabled={!draggable}
-    >
+    <Draggable draggableId={id} index={index} isDragDisabled={!draggable}>
       {(provided, { isDragging }: DraggableStateSnapshot) => (
         <>
           <div
@@ -39,7 +34,7 @@ const DraggableElement = ({
               if (e.target === e.currentTarget) {
                 provided.dragHandleProps.onKeyDown(e);
               }
-              onKeyDown && onKeyDown(e);
+              onKeyDown(e);
             }}
             className={cn(isDragging && 'shadow-lg')}
           >
