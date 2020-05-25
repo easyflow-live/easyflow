@@ -82,6 +82,10 @@ const StyledCardHtml = styled.div`
     margin-left: 1rem;
   }
 
+  & li {
+    margin-left: 1rem;
+  }
+
   & li > input {
     margin-right: 0.3rem;
   }
