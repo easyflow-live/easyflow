@@ -5,12 +5,12 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
 
+import { sortUsersAlpha } from '../../helpers/sortUsersAlpha';
 import BoardDocument from '../../documents/board.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
 import { emitter } from '../../libs/emitter';
-import { User } from '../../store/users';
 import Dialog from '../Dialog/Dialog';
 import { Avatar, Input } from '../shared';
 import { List, ListItem } from '../shared/List';
@@ -40,16 +40,6 @@ interface UserEmailProps {
 const UserEmail = ({ email }: UserEmailProps) => (
   <span className='text-gray-500 font-light'>{email}</span>
 );
-
-const sortAlpha = (a: User, b: User) => {
-  if (a.username < b.username) {
-    return -1;
-  }
-  if (a.username > b.username) {
-    return 1;
-  }
-  return 0;
-};
 
 const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
   const { owner } = useBoardTeam(board);
@@ -179,7 +169,7 @@ const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
           />
         </div>
         <List>
-          {assignees.sort(sortAlpha).map(
+          {assignees.sort(sortUsersAlpha).map(
             (item, key) =>
               item && (
                 <ListItem tabIndex={0} key={key}>
