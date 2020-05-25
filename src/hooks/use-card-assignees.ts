@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import CardDocument from '../../src/documents/card.doc';
 import { useUsersStore } from '../store';
+import { sortUsersAlpha } from '../helpers/sortUsersAlpha';
 
 export const useCardAssignees = (card: CardDocument) => {
   const { users, loadUsers } = useUsersStore();
@@ -12,7 +13,7 @@ export const useCardAssignees = (card: CardDocument) => {
   }
 
   const ids = (card.data.assignee && card.data.assignee.map(a => a.id)) || [];
-  const assignees = users.filter(u => ids.includes(u.id));
+  const assignees = users.filter(u => ids.includes(u.id)).sort(sortUsersAlpha);
 
   useEffect(() => {
     if (card.data.assignee) {
