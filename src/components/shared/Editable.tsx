@@ -1,4 +1,4 @@
-import React, { useState, ReactChild } from 'react';
+import React, { useState, ReactChild, ReactElement } from 'react';
 
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { Input } from '../shared';
@@ -9,6 +9,7 @@ interface EditableProps {
   editable?: boolean;
   inputProps?: InputProps;
   onSubmit: (value: string) => void;
+  onRenderInput?: ReactElement;
   children: ({
     value,
     onClick,
@@ -20,8 +21,9 @@ interface EditableProps {
 
 const Editable = ({
   value,
-  editable,
+  editable = true,
   onSubmit,
+  onRenderInput,
   children,
   inputProps,
 }: EditableProps) => {
@@ -54,16 +56,27 @@ const Editable = ({
   return (
     <div className='flex-grow'>
       {isOpen && editable ? (
-        <Input
-          type='text'
-          autoFocus
-          value={newValue}
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
-          onBlur={revertTitle}
-          spellCheck={false}
-          {...inputProps}
-        />
+        onRenderInput ? (
+          React.cloneElement(onRenderInput, {
+            value: newValue,
+            onKeyDown: handleKeyDown,
+            onChange: handleChange,
+            onBlur: revertTitle,
+            autoFocus: true,
+            ...inputProps,
+          })
+        ) : (
+          <Input
+            type='text'
+            autoFocus
+            value={newValue}
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
+            onBlur={revertTitle}
+            spellCheck={false}
+            {...inputProps}
+          />
+        )
       ) : (
         children({ value, onClick: handleClick })
       )}
