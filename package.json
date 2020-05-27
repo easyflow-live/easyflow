@@ -64,6 +64,7 @@
     "@types/fbemitter": "^2.0.32",
     "@types/next": "^8.0.7",
     "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.7",
     "@types/styled-components": "^4.4.2",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
@@ -77,8 +78,10 @@
     "node-sass": "^4.13.1",
     "postcss-easy-import": "^3.0.0",
     "prettier": "^1.19.1",
-    "tailwindcss": "^1.2.0",
+    "tailwindcss": "^1.4.6",
     "typescript": "^3.7.5"
   },
-  "browserslist": ["defaults"]
+  "browserslist": [
+    "defaults"
+  ]
 }
