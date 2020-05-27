@@ -1,112 +1,66 @@
-import React from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import { observer } from 'mobx-react-lite';
 import Autosuggest from 'react-autosuggest';
-import { observer } from 'mobx-react';
+import { useState, useCallback } from 'react';
 
-import CardDocument from '../../documents/card.doc';
 import './AddTagsWithAutocomplete.scss';
 
+const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 interface AddTagsWithAutocompleteProps {
-  card: CardDocument;
+  options: string[];
+  onSelect: (tag: string) => void;
 }
 
-interface State {
-  suggestions: string[];
-  cachedSuggestions: string[];
-  tags: string[];
-  value: string;
-}
+const AddTagsWithAutocomplete = ({
+  options = [],
+  onSelect,
+}: AddTagsWithAutocompleteProps) => {
+  const [value, setValue] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-const getSuggestions = (tags, value) => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
+  const onChange = (_, { newValue }) => setValue(newValue);
 
-  return inputLength === 0
-    ? []
-    : tags.filter(
-        tag => tag.toLowerCase().slice(0, inputLength) === inputValue
-      );
+  const getSuggestions = useCallback(
+    (value: string) => {
+      const escapedValue = escapeRegexCharacters(value.trim());
+
+      if (escapedValue === '') {
+        return [];
+      }
+
+      const regex = new RegExp(`.*${escapedValue}.*`, 'i');
+      const suggestions = options.filter(tag => regex.test(tag));
+
+      return suggestions;
+    },
+    [options]
+  );
+
+  const getSuggestionValue = useCallback(suggestion => suggestion, []);
+  const renderSuggestion = useCallback(suggestion => suggestion, []);
+
+  const onSuggestionsFetchRequested = ({ value }) =>
+    setSuggestions(getSuggestions(value));
+
+  const onSuggestionsClearRequested = () => setSuggestions([]);
+  const onSuggestionSelected = (_, { suggestion }) => onSelect(suggestion);
+
+  const inputProps = {
+    placeholder: 'Type',
+    value,
+    onChange,
+  };
+
+  return (
+    <Autosuggest
+      suggestions={suggestions}
+      onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+      onSuggestionsClearRequested={onSuggestionsClearRequested}
+      getSuggestionValue={getSuggestionValue}
+      renderSuggestion={renderSuggestion}
+      onSuggestionSelected={onSuggestionSelected}
+      inputProps={inputProps}
+    />
+  );
 };
-
-const getSuggestionValue = suggestion => suggestion;
-
-const renderSuggestion = suggestion => suggestion;
-
-class AddTagsWithAutocomplete extends React.Component<
-  AddTagsWithAutocompleteProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cachedSuggestions: [],
-      suggestions: [],
-      tags: [],
-      value: '',
-    };
-  }
-
-  async componentDidMount() {
-    const boardRef = this.props.card.ref.parent.parent.parent.parent;
-    const board = (await boardRef.get()).data();
-
-    this.setState({
-      cachedSuggestions: board.tags || [],
-      tags: this.props.card.data.tags || [],
-    });
-  }
-
-  onChange = (event, { newValue, method }) => {
-    if (method === 'enter') {
-      event.preventDefault();
-      this.handleSelection(newValue);
-    }
-    this.setState({ value: newValue });
-  };
-
-  handleSelection = value => {
-    this.props.card.update({
-      tags: firebase.firestore.FieldValue.arrayUnion(value),
-    });
-
-    this.setState({ value: '' });
-  };
-
-  onSuggestionsFetchRequested = async ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(this.state.cachedSuggestions, value),
-    });
-  };
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  render() {
-    const { suggestions } = this.state;
-    const inputProps = {
-      placeholder: 'Select a tag',
-      value: this.state.value,
-      onChange: this.onChange,
-    };
-
-    return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-        onSuggestionSelected={(_e, { suggestion }) => {
-          this.handleSelection(suggestion);
-        }}
-      />
-    );
-  }
-}
-
 export default observer(AddTagsWithAutocomplete);
