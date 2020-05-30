@@ -2,7 +2,7 @@ import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
 import classNames from 'classnames';
 
 type Size = 'small' | 'medium';
-type Variant = 'solid' | 'ghost' | 'ghost-danger';
+type Variant = 'solid' | 'secondary' | 'ghost' | 'ghost-danger';
 
 const sizes = {
   small: 'px-2 py-2 text-sm',
@@ -11,6 +11,8 @@ const sizes = {
 
 const variants = {
   solid: 'bg-pink-500 hover:bg-pink-600 shadow-md',
+  secondary:
+    'bg-transparent rounded border border-transparent text-white hover:border-white',
   ghost:
     'bg-transparent rounded text-pink-500 hover:bg-pink-500 hover:text-white',
   'ghost-danger':
