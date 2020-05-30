@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, CSSProperties } from 'react';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { MdClose } from 'react-icons/md';
+import cn from 'classnames';
 
 import './ReactDayPicker.scss';
 import { Button } from '../shared';
@@ -8,6 +9,8 @@ import { Button } from '../shared';
 interface CalendarProps {
   initialDate: Date;
   toggleCalendar: () => void;
+  className?: string;
+  style?: CSSProperties;
   onSave?: (date: Date) => void;
   onRemove?: () => void;
 }
@@ -15,10 +18,11 @@ interface CalendarProps {
 const Calendar = ({
   initialDate,
   toggleCalendar,
-  onSave,
-  onRemove,
+  className,
+  style,
+  onSave = () => {},
+  onRemove = () => {},
 }: CalendarProps) => {
-  // FIXME: InitialDate is not showing when calendar is opened.
   const [selectedDay, setSelectedDay] = useState(initialDate);
 
   const handleDayClick = (
@@ -41,7 +45,7 @@ const Calendar = ({
   ) => {
     event.preventDefault();
     const newDate = selectedDay || initialDate;
-    onSave && onSave(newDate);
+    onSave(newDate);
 
     toggleCalendar();
   };
@@ -50,13 +54,16 @@ const Calendar = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    onRemove && onRemove();
+    onRemove();
 
     toggleCalendar();
   };
 
   return (
-    <div className='calendar bg-gray-700'>
+    <div
+      className={cn('calendar bg-gray-600 rounded', className)}
+      style={style}
+    >
       <div className='flex justify-end mt-3 mr-3'>
         <button title='Close modal' onClick={toggleCalendar}>
           <MdClose color='white' />
