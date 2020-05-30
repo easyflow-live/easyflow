@@ -12,7 +12,13 @@ import CardDocument, { Card } from '../../documents/card.doc';
 import { MdClose } from 'react-icons/md';
 import ReactModal from 'react-modal';
 
-import { Editable, Heading } from '../shared';
+import { Editable, Heading, Button } from '../shared';
+import {
+  Editable as EditableComplex,
+  EditableInput,
+  EditablePreview,
+  EditableTrigger,
+} from '../shared/EditableComplex';
 import MarkdownText from '../shared/MarkdownText';
 import BadgeTaskProgress from '../CardBadges/BadgeTaskProgress';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
@@ -127,30 +133,58 @@ CardModalProps) => {
                   <LeftColumn>
                     <div>
                       <h3 className='text-gray-400 mb-1'>Description</h3>
-                      <Editable
+
+                      <EditableComplex
                         value={card.data.text}
                         onSubmit={text => onUpdate({ text })}
-                        onRenderInput={
-                          <Textarea className='text-white w-full bg-gray-600 rounded shadow py-2 px-3' />
-                        }
                       >
-                        {({ value, onClick }) => (
-                          <HoverableContainer>
-                            <div className='cursor-text' onClick={onClick}>
-                              <MarkdownText
-                                className='text-white text-left'
-                                source={value}
-                              />
-                            </div>
-                            <HiddenButton
-                              type='button'
-                              aria-label='Edit'
-                              className='w-full'
-                              onClick={onClick}
-                            />
-                          </HoverableContainer>
+                        {({ onCancel, onSubmit }) => (
+                          <>
+                            <EditableInput>
+                              {props => (
+                                <div className='column'>
+                                  <Textarea
+                                    {...props}
+                                    className='text-white w-full bg-gray-600 rounded shadow py-2 px-3'
+                                  />
+
+                                  <div className='mt-4'>
+                                    <Button
+                                      onClick={onSubmit}
+                                      className='mr-4'
+                                      size='small'
+                                    >
+                                      Save
+                                    </Button>
+                                    <Button
+                                      variant='secondary'
+                                      onClick={onCancel}
+                                      size='small'
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </EditableInput>
+
+                            <EditablePreview>
+                              {({ value }) => (
+                                <HoverableContainer>
+                                  <EditableTrigger>
+                                    <div className='w-full cursor-text'>
+                                      <MarkdownText
+                                        className='text-white text-left'
+                                        source={value}
+                                      />
+                                    </div>
+                                  </EditableTrigger>
+                                </HoverableContainer>
+                              )}
+                            </EditablePreview>
+                          </>
                         )}
-                      </Editable>
+                      </EditableComplex>
                     </div>
                   </LeftColumn>
 
