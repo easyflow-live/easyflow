@@ -35,10 +35,11 @@ interface TagsProps {
   tags: string[];
   allTags: string[];
   onChange: (tags: string[]) => void;
+  onRemove: (tag: string) => Promise<void>;
 }
 
 export const Tags = observer(
-  ({ tags = [], allTags = [], onChange }: TagsProps) => {
+  ({ tags = [], allTags = [], onChange, onRemove }: TagsProps) => {
     const [showInput, setShowInput] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +81,7 @@ export const Tags = observer(
               >
                 <BadgeTags
                   tags={tags}
-                  onTagClick={null}
+                  onTagClick={onRemove}
                   removable={showInput}
                 />
               </button>
