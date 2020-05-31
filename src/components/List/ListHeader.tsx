@@ -9,7 +9,6 @@ import ListMenu from './ListMenu';
 
 interface ListHeaderProps {
   listTitle: string;
-  dragHandleProps: any;
   list: ListDocument;
   isDragging: boolean;
   previewMode?: boolean;
@@ -19,7 +18,6 @@ interface ListHeaderProps {
 
 const ListHeader = ({
   listTitle,
-  dragHandleProps,
   list,
   isDragging,
   previewMode,
@@ -43,9 +41,8 @@ const ListHeader = ({
     <div
       className={cn(
         'flex inline-flex items-center flex-shrink-0 p-3 rounded-lg',
-        isDragging && 'bg-gray-600'
+        { 'bg-gray-600': isDragging }
       )}
-      {...(isEditable && dragHandleProps)}
     >
       <Editable
         value={listTitle}
@@ -63,7 +60,7 @@ const ListHeader = ({
             >
               <span
                 title='Click to change the list title'
-                className={cn(isEditable && 'cursor-text')}
+                className={cn({ 'cursor-text': isEditable })}
               >
                 {value}
               </span>

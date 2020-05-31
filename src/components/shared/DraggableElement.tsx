@@ -28,7 +28,7 @@ const DraggableElement = ({
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            onKeyDown={e => {
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
               // Avoid run drag handle with spacebar when editing
               // a input or textarea
               if (e.target === e.currentTarget) {
@@ -36,7 +36,7 @@ const DraggableElement = ({
               }
               onKeyDown(e);
             }}
-            className={cn(isDragging && 'shadow-lg')}
+            className={cn({ 'shadow-lg': isDragging })}
           >
             {typeof children === 'function'
               ? children({ isDragging: isDragging })
