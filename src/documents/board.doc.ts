@@ -62,4 +62,11 @@ export default class BoardDocument extends Document<Board> {
       tags: firebase.firestore.FieldValue.arrayRemove(tag),
     });
   }
+
+  isAMember(user: UserDocument) {
+    if (!user) return false;
+
+    const ids = this.data.users?.map(({ id }) => id) || [];
+    return ids.includes(user.id);
+  }
 }
