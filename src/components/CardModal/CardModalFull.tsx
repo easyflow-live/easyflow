@@ -136,7 +136,7 @@ CardModalProps) => {
                 <CardMenu title='Card removed' onRemove={null} />
                 <button
                   aria-label='Close'
-                  className='text-gray-500 hover:text-gray-100'
+                  className='text-gray-500 hover:text-gray-100 rounded p-2 hover:bg-gray-900 hover:bg-opacity-25 transition duration-300'
                   onClick={onClose}
                 >
                   <MdClose size='25' />

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaTrash, FaEllipsisH } from 'react-icons/fa';
-import styled from 'styled-components';
 
 import Menu, { MenuItem, Button } from '../shared/Menu';
 
@@ -27,9 +26,12 @@ const CardMenu = ({ title, onRemove }: CardMenuProps) => {
         onSelection={handleSelection}
         className='w-56 px-0 py-2'
         trigger={
-          <StyledButton className='mr-4' tag='button'>
-            <FaEllipsisH />
-          </StyledButton>
+          <Button
+            className='text-gray-500 hover:text-gray-100 rounded p-2 hover:bg-gray-900 hover:bg-opacity-25 transition duration-300 mr-4'
+            tag='button'
+          >
+            <FaEllipsisH size='25' />
+          </Button>
         }
         items={
           <>
@@ -46,21 +48,3 @@ const CardMenu = ({ title, onRemove }: CardMenuProps) => {
 };
 
 export default CardMenu;
-
-const StyledButton = styled(Button)`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0px 10px;
-  border-radius: 3px;
-  color: #fff;
-  transition: background 0.1s;
-  cursor: pointer;
-  margin-left: 5px;
-  min-height: 37px;
-
-  &:hover,
-  &:focus {
-    background: rgba(0, 0, 0, 0.2);
-  }
-`;
