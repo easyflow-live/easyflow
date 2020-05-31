@@ -27,6 +27,7 @@ import { DueCalendar } from './DueCalendar';
 import { useBoardsStore } from '../../store';
 import { Tags } from './Tags';
 import CardMenu from './CardMenu';
+import { useInterface } from '../providers/InterfaceProvider';
 
 const LeftColumn = styled.div`
   flex: 1 0 calc(75% - 32px);
@@ -281,9 +282,13 @@ const customStyle = {
 
 export const useCardFullModal = () => {
   const [isShow, setIsShow] = useState(false);
+  const { setOpenedModal } = useInterface();
 
   const show = useCallback(() => setIsShow(true), []);
-  const hide = useCallback(() => setIsShow(false), []);
+  const hide = useCallback(() => {
+    setIsShow(false);
+    setOpenedModal(false);
+  }, []);
 
   const Modal = useCallback(
     (props: Omit<CardModalProps, 'onClose'>) => (

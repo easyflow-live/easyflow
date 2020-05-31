@@ -10,6 +10,7 @@ import ListHeader from './ListHeader';
 import Cards from '../Card/Cards';
 import DraggableElement from '../shared/DraggableElement';
 import ToastUndo from '../shared/ToastUndo';
+import { useInterface } from '../providers/InterfaceProvider';
 
 interface ListProps {
   index: number;
@@ -19,6 +20,8 @@ interface ListProps {
 
 const List = ({ index, list, previewMode }: ListProps) => {
   const { isLoading } = list;
+
+  const { hasOpenedModal } = useInterface();
 
   const isHiddenRef = useRef(false);
   const [, forceRenderer] = useState(false);
@@ -54,7 +57,11 @@ const List = ({ index, list, previewMode }: ListProps) => {
   if (isLoading) return null;
 
   return (
-    <DraggableElement id={list.id} index={index} draggable={!previewMode}>
+    <DraggableElement
+      id={list.id}
+      index={index}
+      draggable={!previewMode && !hasOpenedModal}
+    >
       {({ isDragging }) => (
         <StyledList
           tabIndex={0}
@@ -65,7 +72,6 @@ const List = ({ index, list, previewMode }: ListProps) => {
           previewMode={previewMode}
         >
           <ListHeader
-            dragHandleProps={null}
             listTitle={list.data.title}
             list={list}
             isDragging={isDragging}
@@ -73,6 +79,7 @@ const List = ({ index, list, previewMode }: ListProps) => {
             onRemove={deleteList}
             onUpdate={updateList}
           />
+
           <div className='mt-3 overflow-y-auto overflow-x-hidden'>
             <Cards
               cards={list.cards}
