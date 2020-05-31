@@ -61,7 +61,7 @@ const Calendar = ({
 
   return (
     <div
-      className={cn('calendar bg-gray-600 rounded', className)}
+      className={cn('calendar bg-gray-700 rounded', className)}
       style={style}
     >
       <div className='flex justify-end mt-3 mr-3'>
