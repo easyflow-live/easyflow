@@ -12,7 +12,7 @@ import CardDocument, { Card } from '../../documents/card.doc';
 import { MdClose } from 'react-icons/md';
 import ReactModal from 'react-modal';
 
-import { Editable, Heading, Button } from '../shared';
+import { Heading, Button } from '../shared';
 import {
   Editable as EditableComplex,
   EditableInput,
@@ -26,6 +26,7 @@ import { Assignees } from './Assignees';
 import { DueCalendar } from './DueCalendar';
 import { useBoardsStore } from '../../store';
 import { Tags } from './Tags';
+import CardMenu from './CardMenu';
 
 const LeftColumn = styled.div`
   flex: 1 0 calc(75% - 32px);
@@ -43,23 +44,12 @@ const RightColumn = styled.div`
   overflow-wrap: break-word;
 `;
 
-const HiddenButton = styled.button`
-  background: transparent none repeat scroll 0% 0%;
-  border: 0px none;
-  display: inline-block;
-  line-height: 1;
-  margin: 0px;
-  padding: 0px;
-  opacity: 0;
-  outline: currentcolor none 0px;
-`;
-
 const HoverableContainer = ({
   children,
   ...props
 }: PropsWithChildren<{ style?: CSSProperties }>) => (
   <div
-    className='-ml-2 hover:bg-gray-600 transition duration-300 rounded'
+    className='-ml-2 relative hover:bg-gray-600 transition duration-300 rounded w-full'
     {...props}
   >
     <div className='flex px-2'>{children}</div>
@@ -99,24 +89,51 @@ CardModalProps) => {
       aria-modal='true'
     >
       <div className='w-full h-full'>
-        <div className='bg-gray-700 rounded-lg w-full h-full'>
+        <div className='bg-gray-750 rounded-lg w-full h-full'>
           <div className='flex flex-col flex-auto max-h-full'>
             <div>
-              <div className='flex items-center justify-between p-8 px-12 rounded-t-lg'>
-                <Editable
+              <div className='flex items-center justify-between py-8 px-12 rounded-t-lg'>
+                <EditableComplex
                   value={title || 'No title'}
                   onSubmit={title => onUpdate({ title })}
-                  inputProps={{ style: { maxWidth: '780px' } }}
                 >
-                  {({ value, onClick }) => (
-                    <HoverableContainer style={{ maxWidth: '780px' }}>
-                      <div className='cursor-text w-full' onClick={onClick}>
-                        <Heading text={value} />
-                      </div>
-                      <HiddenButton aria-label='Edit title' onClick={onClick} />
-                    </HoverableContainer>
+                  {({ isEditing, onSubmit, onCancel }) => (
+                    <div className='w-full'>
+                      <EditableInput style={{ maxWidth: '670px' }} />
+                      <HoverableContainer style={{ maxWidth: '670px' }}>
+                        <EditableTrigger>
+                          <div className='cursor-text w-full'>
+                            <EditablePreview>
+                              {({ value }) => <Heading text={value} />}
+                            </EditablePreview>
+                          </div>
+                        </EditableTrigger>
+                        {isEditing && (
+                          <div className='absolute right-0 z-10'>
+                            <div className='mt-4'>
+                              <Button
+                                onClick={onSubmit}
+                                className='mr-4'
+                                size='small'
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                variant='secondary'
+                                onClick={onCancel}
+                                size='small'
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </HoverableContainer>
+                    </div>
                   )}
-                </Editable>
+                </EditableComplex>
+
+                <CardMenu title='Card removed' onRemove={null} />
                 <button
                   aria-label='Close'
                   className='text-gray-500 hover:text-gray-100'
