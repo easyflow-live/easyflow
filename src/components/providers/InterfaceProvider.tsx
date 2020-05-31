@@ -6,6 +6,8 @@ interface InterfaceContextProps {
   previewMode: boolean;
   togglePreviewMode: () => void;
   setPreviewMode: (value: boolean) => void;
+  hasOpenedModal: boolean;
+  setOpenedModal: (value: boolean) => void;
 }
 
 export const InterfaceContext = createContext<InterfaceContextProps>(null);
@@ -13,6 +15,7 @@ export const InterfaceContext = createContext<InterfaceContextProps>(null);
 export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
   const [isMenuOpen, setMenu] = useState();
   const [previewMode, setPreviewMode] = useState();
+  const [hasOpenedModal, setOpenedModal] = useState(false);
 
   const togglePreviewMode = () => setPreviewMode(s => !s);
 
@@ -25,6 +28,8 @@ export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
         previewMode,
         togglePreviewMode,
         setPreviewMode,
+        hasOpenedModal,
+        setOpenedModal,
       }}
     />
   );
