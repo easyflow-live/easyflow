@@ -6,8 +6,23 @@ import { Card } from '../../documents/card.doc';
 import { useRect } from '../../hooks/use-rect';
 import DueDate from './DueDate';
 import Calendar from './Calendar';
+import { Checkbox } from '../shared';
+import styled from 'styled-components';
 
 const TOP_PADDING = 10;
+
+const Container = styled.div`
+  & span.done {
+    transition: transform 0.3s, opacity 0.3s;
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+
+  &:hover span.done {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
 
 interface DueCalendarProps {
   date: any;
@@ -25,9 +40,11 @@ export const DueCalendar = observer(
     const toggleCalendar = () => setIsCalendarOpen(s => !s);
     const saveCardCalendar = (date: Date) => onUpdate({ date });
     const removeCardCalendar = () => onUpdate({ date: '' });
+    const toggleDueStatus = (e: React.ChangeEvent<HTMLInputElement>) =>
+      onUpdate({ completed: e.target.checked });
 
     return (
-      <div className='relative'>
+      <Container className='relative'>
         <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
           <button
             className='p-2 text-white text-sm'
@@ -37,6 +54,11 @@ export const DueCalendar = observer(
             <DueDate date={date} completed={completed} />
           </button>
         </div>
+
+        <span className='done ml-2 inline-flex items-center'>
+          <Checkbox checked={completed} onChange={toggleDueStatus} />
+          <span className='text-xs text-white ml-2'>Done?</span>
+        </span>
 
         {isCalendarOpen &&
           ReactDOM.createPortal(
@@ -54,7 +76,7 @@ export const DueCalendar = observer(
             />,
             document.getElementById('__next')
           )}
-      </div>
+      </Container>
     );
   }
 );
