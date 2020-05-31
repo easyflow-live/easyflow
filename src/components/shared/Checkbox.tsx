@@ -47,7 +47,7 @@ const StyledInput = styled.input`
       position: absolute;
       width: 1px;
       height: 6px;
-      background-color: #48bb78;
+      background-color: #ed64a6;
       left: 7px;
       top: 3px;
     }
@@ -58,7 +58,7 @@ const StyledInput = styled.input`
       position: absolute;
       width: 3px;
       height: 1px;
-      background-color: #48bb78;
+      background-color: #ed64a6;
       left: 3px;
       top: 6px;
     }
