@@ -30,19 +30,34 @@ import CardMenu from './CardMenu';
 import { useInterface } from '../providers/InterfaceProvider';
 
 const LeftColumn = styled.div`
-  flex: 1 0 calc(75% - 32px);
   margin: 0px 16px;
-  max-width: calc(75% - 32px);
-  min-width: calc(8.33333% - 32px);
   overflow-wrap: break-word;
+  width: calc(100% - 32px);
+
+  @media (min-width: 640px) {
+    flex: 1 0 calc(75% - 32px);
+    max-width: calc(75% - 32px);
+    min-width: calc(8.33333% - 32px);
+  }
 `;
 
 const RightColumn = styled.div`
-  flex: 1 0 calc(25% - 32px);
   margin: 0px 16px;
-  max-width: calc(25% - 32px);
   min-width: calc(8.33333% - 32px);
   overflow-wrap: break-word;
+  width: calc(100% - 32px);
+  max-width: 100%;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #718096;
+
+  @media (min-width: 640px) {
+    flex: 1 0 calc(25% - 32px);
+    max-width: calc(25% - 32px);
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
 `;
 
 const HoverableContainer = ({
@@ -70,8 +85,8 @@ const CardModalFull = ({
   listId,
   onClose,
   onUpdate,
-}: //onRemove,
-CardModalProps) => {
+  onRemove,
+}: CardModalProps) => {
   const { title } = card.data;
 
   const [newText] = useState(card.data.text);
@@ -93,7 +108,7 @@ CardModalProps) => {
         <div className='bg-gray-750 rounded-lg w-full h-full'>
           <div className='flex flex-col flex-auto max-h-full'>
             <div>
-              <div className='flex items-center justify-between py-8 px-12 rounded-t-lg'>
+              <div className='flex items-center justify-between py-8 px-8 sm:px-12 rounded-t-lg'>
                 <EditableComplex
                   value={title || 'No title'}
                   onSubmit={title => onUpdate({ title })}
@@ -134,7 +149,7 @@ CardModalProps) => {
                   )}
                 </EditableComplex>
 
-                <CardMenu title='Card removed' onRemove={null} />
+                <CardMenu title='Card removed' onRemove={onRemove} />
                 <button
                   aria-label='Close'
                   className='text-gray-500 hover:text-gray-100 rounded p-2 hover:bg-gray-900 hover:bg-opacity-25 transition duration-300'
@@ -145,9 +160,9 @@ CardModalProps) => {
               </div>
             </div>
 
-            <div className='flex-auto px-8 overflow-x-hidden overflow-y-auto'>
+            <div className='flex-auto px-4 sm:px-8 overflow-x-hidden overflow-y-auto'>
               <div className='mb-8'>
-                <div className='flex items-start flex-wrap relative max-w-full'>
+                <div className='flex items-start flex-col sm:flex-row relative max-w-full'>
                   <LeftColumn>
                     <div>
                       <h3 className='text-gray-400 mb-1'>Description</h3>
@@ -272,7 +287,7 @@ const customStyle = {
     background: 'transparent',
     border: 0,
     width: '1040px',
-    maxWidth: 'calc(100% - 120px)',
+    maxWidth: '100%',
     height: 'calc(100% - 119px)',
     left: '50%',
     top: '50%',
