@@ -6,9 +6,7 @@ import cn from 'classnames';
 import { cards as cardsActions } from '../../core/actions';
 import CardDocument from '../../documents/card.doc';
 import { useMarkdownCheckbox } from '../../hooks/use-markdown-checkbox';
-import { useRect } from '../../hooks/use-rect';
 import { findCheckboxes } from '../../helpers/find-check-boxes';
-import CardModal from '../CardModal/CardModal';
 import CardBadges from '../CardBadges/CardBadges';
 import DraggableElement from '../shared/DraggableElement';
 import MarkdownText from '../shared/MarkdownText';
@@ -16,6 +14,8 @@ import { Card as CardModel } from '../../documents/card.doc';
 import { ToastUndo } from '../shared';
 import { useBoardsStore } from '../../store/boards';
 import { useSession } from '../providers/SessionProvider';
+import { useCardFullModal } from '../CardModal/CardModalFull';
+import { useInterface } from '../providers/InterfaceProvider';
 
 interface CardProps {
   card: CardDocument;
@@ -33,19 +33,16 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
   const toggleCheckbox = useMarkdownCheckbox(card.data.text);
-
+  const { Modal, isShow, hide, show } = useCardFullModal();
+  const { setOpenedModal } = useInterface();
   const isHiddenRef = useRef(false);
   const [, forceRenderer] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const cardRef = useRef(null);
-  const [cardRect] = useRect(cardRef);
   const checkboxes = useMemo(() => findCheckboxes(card.data.text), [
     card.data.text,
   ]);
 
   const updateCard = (data: Partial<CardModel>) => card.ref.update(data);
-
-  const toggleCardModal = () => setIsModalOpen(!isModalOpen);
 
   const changeCheckbox = (checked: boolean, index: number) => {
     const newText = toggleCheckbox({
@@ -78,10 +75,17 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
   };
 
   const deleteCard = async () => {
+    hide();
+    setOpenedModal(false);
     isHiddenRef.current = true;
     toast(<ToastUndo title='Card removed' id={card.id} undo={undo} />, {
       onClose: remove,
     });
+  };
+
+  const showModal = () => {
+    show();
+    setOpenedModal(true);
   };
 
   const handleClick = event => {
@@ -90,16 +94,16 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
     if (isInput(tagName)) {
       changeCheckbox(checked, parseInt(id));
     } else if (!isLink(tagName)) {
-      toggleCardModal();
+      showModal();
     }
   };
 
-  const handleKeyDown = event => {
-    const { tagName } = event.target;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const { tagName } = event.target as HTMLElement;
     // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
     if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
       event.preventDefault();
-      toggleCardModal();
+      showModal();
     }
   };
 
@@ -115,10 +119,10 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
     <DraggableElement
       id={card.id}
       index={index}
-      draggable={!previewMode}
+      draggable={!previewMode && !isShow}
       onKeyDown={handleKeyDown}
     >
-      <>
+      <div>
         <div
           ref={cardRef}
           className={cn(
@@ -138,19 +142,13 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
           )}
         </div>
 
-        {!previewMode && isModalOpen && (
-          <CardModal
-            isOpen={isModalOpen}
-            cardElement={cardRef}
-            cardRect={cardRect}
-            card={card}
-            toggleCardModal={toggleCardModal}
-            listId={listId}
-            onUpdate={updateCard}
-            onRemove={deleteCard}
-          />
-        )}
-      </>
+        <Modal
+          card={card}
+          listId={listId}
+          onUpdate={updateCard}
+          onRemove={deleteCard}
+        />
+      </div>
     </DraggableElement>
   );
 };
