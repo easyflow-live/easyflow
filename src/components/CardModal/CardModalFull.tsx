@@ -299,7 +299,11 @@ export const useCardFullModal = () => {
   const [isShow, setIsShow] = useState(false);
   const { setOpenedModal } = useInterface();
 
-  const show = useCallback(() => setIsShow(true), []);
+  const show = useCallback(() => {
+    setIsShow(true);
+    setOpenedModal(true);
+  }, []);
+
   const hide = useCallback(() => {
     setIsShow(false);
     setOpenedModal(false);

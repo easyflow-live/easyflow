@@ -15,7 +15,6 @@ import { ToastUndo } from '../shared';
 import { useBoardsStore } from '../../store/boards';
 import { useSession } from '../providers/SessionProvider';
 import { useCardFullModal } from '../CardModal/CardModalFull';
-import { useInterface } from '../providers/InterfaceProvider';
 
 interface CardProps {
   card: CardDocument;
@@ -34,7 +33,6 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
   const { userDoc } = useSession();
   const toggleCheckbox = useMarkdownCheckbox(card.data.text);
   const { Modal, isShow, hide, show } = useCardFullModal();
-  const { setOpenedModal } = useInterface();
   const isHiddenRef = useRef(false);
   const [, forceRenderer] = useState(false);
   const cardRef = useRef(null);
@@ -76,16 +74,10 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
 
   const deleteCard = async () => {
     hide();
-    setOpenedModal(false);
     isHiddenRef.current = true;
     toast(<ToastUndo title='Card removed' id={card.id} undo={undo} />, {
       onClose: remove,
     });
-  };
-
-  const showModal = () => {
-    show();
-    setOpenedModal(true);
   };
 
   const handleClick = event => {
@@ -94,7 +86,7 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
     if (isInput(tagName)) {
       changeCheckbox(checked, parseInt(id));
     } else if (!isLink(tagName)) {
-      showModal();
+      show();
     }
   };
 
@@ -103,7 +95,7 @@ const Card = ({ card, index, listId, previewMode }: CardProps) => {
     // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
     if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
       event.preventDefault();
-      showModal();
+      show();
     }
   };
 
