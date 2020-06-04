@@ -28,6 +28,7 @@ import { useBoardsStore } from '../../store';
 import { Tags } from './Tags';
 import CardMenu from './CardMenu';
 import { useInterface } from '../providers/InterfaceProvider';
+import Color from './Color';
 
 const LeftColumn = styled.div`
   margin: 0px 16px;
@@ -259,6 +260,13 @@ const CardModalFull = ({
                           total={checkboxes.total}
                           checked={checkboxes.checked}
                         />
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className='text-gray-400 mt-3 mb-1'>Card color</h3>
+                      <div>
+                        <Color color={card.data.color} />
                       </div>
                     </div>
                   </RightColumn>
