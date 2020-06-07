@@ -70,7 +70,7 @@ export const Tags = observer(
         <div className='flex'>
           <div
             className={cn(
-              'flex justify-between items-start mb-1 hover:bg-gray-800 rounded transition-all duration-300 -ml-2',
+              'flex justify-between items-start hover:bg-gray-800 rounded transition-all duration-300 -ml-2',
               { 'w-full': showInput }
             )}
           >
