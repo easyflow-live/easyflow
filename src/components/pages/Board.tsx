@@ -30,7 +30,7 @@ const Board = ({ query }: BoardPageProps) => {
   const redirect = !userDoc && !isBoardLoading;
 
   const previewMode =
-    !!query.previewmode || !isLogged || !board.isAMember(userDoc);
+    !!query.previewmode || !isLogged || (board && !board.isAMember(userDoc));
   setPreviewMode(previewMode);
 
   return (
