@@ -98,6 +98,8 @@ const CardModalFull = ({
 
   const removeTag = (tag: string) => card.removeTag(tag);
 
+  const changeColor = (color: string) => onUpdate({ color });
+
   return (
     <div
       className='w-full h-full bg-gray-900 bg-opacity-75'
@@ -266,7 +268,7 @@ const CardModalFull = ({
                     <div>
                       <h3 className='text-gray-400 mt-3 mb-1'>Card color</h3>
                       <div>
-                        <Color color={card.data.color} />
+                        <Color color={card.data.color} onChange={changeColor} />
                       </div>
                     </div>
                   </RightColumn>
