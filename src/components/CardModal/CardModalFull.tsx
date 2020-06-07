@@ -249,14 +249,14 @@ const CardModalFull = ({
                     </div>
 
                     <div>
-                      <h3 className='text-gray-400 mt-3 mb-1'>Assignments</h3>
+                      <h3 className='text-gray-400 my-3'>Assignments</h3>
                       <div>
                         <Assignees card={card} listId={listId} />
                       </div>
                     </div>
 
                     <div>
-                      <h3 className='text-gray-400 mt-3 mb-1'>Tasks</h3>
+                      <h3 className='text-gray-400 my-3'>Tasks</h3>
                       <div>
                         <BadgeTaskProgress
                           total={checkboxes.total}
