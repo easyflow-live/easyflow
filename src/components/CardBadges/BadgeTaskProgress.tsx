@@ -19,8 +19,7 @@ const BadgeTaskProgress = ({
     return null;
   }
 
-  const bgColor =
-    checked === total ? 'bg-green-500' : 'bg-gray-500  opacity-75';
+  const bgColor = checked === total ? 'bg-green-500' : 'bg-gray-500';
 
   return (
     <Badge className={cn('max-w-full', bgColor, className)}>

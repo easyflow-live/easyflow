@@ -8,10 +8,15 @@ interface DueDateProps {
 }
 
 const DueDate = ({ date, completed }: DueDateProps) => {
-  const { dueTitle, dueDateString } = useDueDate(date, completed);
+  const { dueTitle, dueDateString, dueDateColor } = useDueDate(date, completed);
 
   return date ? (
-    <span className='text-white' title={dueTitle}>
+    <span
+      className={dueDateColor
+        .replace('bg-', 'text-')
+        .replace('text-gray-500', 'text-white')}
+      title={dueTitle}
+    >
       {dueDateString}
     </span>
   ) : (
