@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
+import usePortal from 'react-cool-portal';
+import { useSpring, animated } from 'react-spring';
 
-import { Card } from '../../documents/card.doc';
 import { useRect } from '../../hooks/use-rect';
+import { Card } from '../../documents/card.doc';
 import DueDate from './DueDate';
 import Calendar from './Calendar';
 import { Checkbox } from '../shared';
@@ -32,23 +33,24 @@ interface DueCalendarProps {
 
 export const DueCalendar = observer(
   ({ date, completed, onUpdate }: DueCalendarProps) => {
-    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const calendaButtonRef = useRef<HTMLButtonElement>();
-
     const [buttonRect] = useRect(calendaButtonRef);
 
-    const toggleCalendar = () => setIsCalendarOpen(s => !s);
     const saveCardCalendar = (date: Date) => onUpdate({ date });
     const removeCardCalendar = () => onUpdate({ date: '' });
+
     const toggleDueStatus = (e: React.ChangeEvent<HTMLInputElement>) =>
       onUpdate({ completed: e.target.checked });
+
+    const { Portal, toggle, isShow } = usePortal({ defaultShow: false });
+    const style = useSpring({ opacity: isShow ? 1 : 0 });
 
     return (
       <Container className='relative'>
         <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
           <button
             className='p-2 text-white text-sm'
-            onClick={toggleCalendar}
+            onClick={toggle}
             ref={calendaButtonRef}
           >
             <DueDate date={date} completed={completed} />
@@ -60,22 +62,23 @@ export const DueCalendar = observer(
           <span className='text-xs text-white ml-2'>Done?</span>
         </span>
 
-        {isCalendarOpen &&
-          ReactDOM.createPortal(
+        <Portal>
+          <animated.div
+            className='absolute z-10'
+            style={{
+              ...style,
+              top: buttonRect.top + TOP_PADDING,
+              left: buttonRect.left,
+            }}
+          >
             <Calendar
-              style={{
-                zIndex: 40,
-                top: buttonRect.top + TOP_PADDING,
-                left: buttonRect.left,
-              }}
-              className='absolute z-10 shadow'
               initialDate={new Date(date.toDate() || '')}
-              toggleCalendar={toggleCalendar}
+              toggleCalendar={toggle}
               onSave={saveCardCalendar}
               onRemove={removeCardCalendar}
-            />,
-            document.getElementById('__next')
-          )}
+            />
+          </animated.div>
+        </Portal>
       </Container>
     );
   }
