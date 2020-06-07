@@ -1,61 +1,76 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { CirclePicker } from 'react-color';
-
-import { useBoardsStore } from '../../store';
 import styled from 'styled-components';
-import ReactDOM from 'react-dom';
+import usePortal from 'react-cool-portal';
+import { useSpring, animated } from 'react-spring';
+
+import { useRect } from '../../hooks/use-rect';
+import { useBoardsStore } from '../../store';
+
+const TOP_PADDING = 20;
 
 interface ColorProps {
   color: string;
+  onChange: (color: string) => void;
 }
 
-const Color = ({ color }: ColorProps) => {
+const Color = ({ color, onChange }: ColorProps) => {
   const { colors } = useBoardsStore();
 
-  const [isPickerOpen, setPickerOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>();
+  const [buttonRect] = useRect(buttonRef);
 
-  const togglePicker = () => setPickerOpen(s => !s);
+  const { Portal, toggle, isShow } = usePortal({ defaultShow: false });
+  const style = useSpring({ opacity: isShow ? 1 : 0 });
+
+  const handleChange = ({ hex }: { hex: string }) => onChange(hex);
 
   return (
-    <>
-      <button onClick={togglePicker}>
+    <div>
+      <button onClick={toggle} ref={buttonRef}>
         <span
           className='block w-6 h-6 rounded-full'
           style={{ backgroundColor: color }}
         />
       </button>
 
-      {isPickerOpen &&
-        ReactDOM.createPortal(
-          <div className='relative'>
-            <StyledContainer className='mt-3 absolute z-10 text-white bg-gray-700 p-6 shadow-lg rounded'>
-              <CirclePicker
-                width={200}
-                color={color}
-                colors={colors.map(c => c.data.code)}
-              />
-            </StyledContainer>
+      <Portal>
+        <animated.div
+          className='absolute z-10'
+          style={{
+            ...style,
+            top: buttonRect.top + TOP_PADDING,
+            left: buttonRect.left,
+          }}
+        >
+          <StyledContainer className='mt-3 relative z-10 text-white bg-gray-700 p-6 shadow-lg rounded'>
+            <CirclePicker
+              width={200}
+              color={color}
+              colors={colors.map(c => c.data.code)}
+              onChangeComplete={handleChange}
+            />
             <div className='popover-arrow' />
-          </div>,
-          document.getElementById('__next')
-        )}
-    </>
+          </StyledContainer>
+        </animated.div>
+      </Portal>
+    </div>
   );
 };
 
 export default observer(Color);
 
 const StyledContainer = styled.div`
-  & ~ .popover-arrow {
+  & .popover-arrow {
     position: absolute;
     left: 5%;
     margin-left: -7px;
-    top: 99%;
+    top: -14px;
     clip: rect(0 18px 14px -4px);
   }
 
-  & ~ .popover-arrow:after {
+  & .popover-arrow:after {
     content: '';
     display: block;
     width: 14px;
