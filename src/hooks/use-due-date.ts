@@ -42,7 +42,7 @@ export const useDueDate = (
         if (dueDateFromToday < 0) {
           return 'bg-red-500';
         } else {
-          return 'bg-green-500';
+          return 'bg-gray-500';
         }
     }
   }, [dueDateFromToday, completed, date]);
