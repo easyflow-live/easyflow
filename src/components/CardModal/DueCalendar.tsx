@@ -45,6 +45,8 @@ export const DueCalendar = observer(
     const { Portal, toggle, isShow } = usePortal({ defaultShow: false });
     const style = useSpring({ opacity: isShow ? 1 : 0 });
 
+    const toDate = date ? new Date(date.toDate()) : new Date();
+
     return (
       <Container className='relative'>
         <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
@@ -72,7 +74,7 @@ export const DueCalendar = observer(
             }}
           >
             <Calendar
-              initialDate={new Date(date.toDate() || '')}
+              initialDate={toDate}
               toggleCalendar={toggle}
               onSave={saveCardCalendar}
               onRemove={removeCardCalendar}
