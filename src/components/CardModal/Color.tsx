@@ -8,7 +8,8 @@ import { useSpring, animated } from 'react-spring';
 import { useRect } from '../../hooks/use-rect';
 import { useBoardsStore } from '../../store';
 
-const TOP_PADDING = 20;
+const TOP_PADDING = 35;
+const LEFT_PADDING = 9;
 
 interface ColorProps {
   color: string;
@@ -28,12 +29,14 @@ const Color = ({ color, onChange }: ColorProps) => {
 
   return (
     <div>
-      <button onClick={toggle} ref={buttonRef}>
-        <span
-          className='block w-6 h-6 rounded-full'
-          style={{ backgroundColor: color }}
-        />
-      </button>
+      <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
+        <button onClick={toggle} className='p-2' ref={buttonRef}>
+          <span
+            className='block w-6 h-6 rounded-full'
+            style={{ backgroundColor: color }}
+          />
+        </button>
+      </div>
 
       <Portal>
         <animated.div
@@ -41,7 +44,7 @@ const Color = ({ color, onChange }: ColorProps) => {
           style={{
             ...style,
             top: buttonRect.top + TOP_PADDING,
-            left: buttonRect.left,
+            left: buttonRect.left + LEFT_PADDING,
           }}
         >
           <StyledContainer className='mt-3 relative z-10 text-white bg-gray-700 p-6 shadow-lg rounded'>
