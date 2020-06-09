@@ -21,5 +21,7 @@ module.exports = {
     'no-use-before-define': ['error', { functions: false }],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/prop-types': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
   },
 };

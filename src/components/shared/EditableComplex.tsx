@@ -83,9 +83,11 @@ export const Editable = ({
     setIsEditing(editMode);
   }, [editMode]);
 
-  const handleBlur = () => {
-    cancelOnBlur && handleCancel();
-    submitOnBlur && handleSubmit();
+  const handleSubmit = () => {
+    if (!emptyValue && !value.trim()) return;
+
+    setIsEditing(false);
+    onSubmit && onSubmit(value);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -111,13 +113,10 @@ export const Editable = ({
     onCancel && onCancel(_value);
   };
 
-  const handleSubmit = () => {
-    if (!emptyValue && !value.trim()) return;
-
-    setIsEditing(false);
-    onSubmit && onSubmit(value);
+  const handleBlur = () => {
+    cancelOnBlur && handleCancel();
+    submitOnBlur && handleSubmit();
   };
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };

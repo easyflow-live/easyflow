@@ -298,12 +298,12 @@ export const useCardFullModal = () => {
   const show = useCallback(() => {
     setIsShow(true);
     setOpenedModal(true);
-  }, []);
+  }, [setOpenedModal]);
 
   const hide = useCallback(() => {
     setIsShow(false);
     setOpenedModal(false);
-  }, []);
+  }, [setOpenedModal]);
 
   const Modal = useCallback(
     (props: Omit<CardModalProps, 'onClose'>) => (
@@ -316,7 +316,7 @@ export const useCardFullModal = () => {
         <CardModalFull {...props} onClose={hide} />
       </ReactModal>
     ),
-    [isShow]
+    [isShow, hide]
   );
 
   return { Modal, isShow, show, hide };

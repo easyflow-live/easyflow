@@ -4,7 +4,7 @@ import { MdAlarm, MdColorize } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
 import CardDocument, { Card } from '../../documents/card.doc';
-import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
+//import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
 import ClickOutside from '../shared/ClickOutside';
 import { Divider, Modal } from '../shared';
 import Calendar from './Calendar';
@@ -71,9 +71,7 @@ const CardOptions = ({
           alignItems: isCardNearRightBorder ? 'flex-end' : 'flex-start',
         }}
       >
-        <div className='mb-2 min-w-full px-2'>
-          <AddTagsWithAutocomplete card={card} />
-        </div>
+        <div className='mb-2 min-w-full px-2'></div>
 
         <CardOptionButton
           onClick={onColorPickerClick}
