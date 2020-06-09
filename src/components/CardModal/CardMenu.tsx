@@ -8,7 +8,9 @@ interface CardMenuProps {
   onRemove: (title: string) => Promise<void>;
 }
 
-const CardMenu = ({ title, onRemove }: CardMenuProps) => {
+const CardMenu: React.FC<CardMenuProps> = props => {
+  const { title, onRemove } = props;
+
   const handleSelection = (value: string) => {
     switch (value) {
       case 'delete':

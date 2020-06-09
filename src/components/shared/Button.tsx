@@ -28,12 +28,12 @@ interface ButtonProps
   variant?: Variant;
 }
 
-const Button = ({
+const Button: React.FC<ButtonProps> = ({
   className,
   size = 'medium',
   variant = 'solid',
   ...props
-}: ButtonProps) => (
+}) => (
   <button
     className={classNames(
       `transition-all

@@ -16,7 +16,9 @@ interface ColorProps {
   onChange: (color: string) => void;
 }
 
-const Color = ({ color, onChange }: ColorProps) => {
+const Color: React.FC<ColorProps> = props => {
+  const { color, onChange } = props;
+
   const { colors } = useBoardsStore();
 
   const buttonRef = useRef<HTMLButtonElement>();

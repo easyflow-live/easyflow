@@ -15,21 +15,17 @@ import Dialog from '../Dialog/Dialog';
 import { Avatar, Input } from '../shared';
 import { List, ListItem } from '../shared/List';
 
-interface TeamListModalProps {
-  board?: BoardDocument;
-  isOpen?: boolean;
-  toggleIsOpen?(): void;
-}
-
 interface UserNameProps {
   name: string;
   isOwner: boolean;
 }
 
-const UserName = ({ name, isOwner }: UserNameProps) => (
+const UserName: React.FC<UserNameProps> = props => (
   <div className='flex items-center'>
-    <span className='text-white font-semibold'>{name}</span>{' '}
-    {isOwner && <span className='text-pink-500 ml-4 font-bold'>Owner</span>}
+    <span className='text-white font-semibold'>{props.name}</span>{' '}
+    {props.isOwner && (
+      <span className='text-pink-500 ml-4 font-bold'>Owner</span>
+    )}
   </div>
 );
 
@@ -37,11 +33,19 @@ interface UserEmailProps {
   email: string;
 }
 
-const UserEmail = ({ email }: UserEmailProps) => (
-  <span className='text-gray-500 font-light'>{email}</span>
+const UserEmail: React.FC<UserEmailProps> = props => (
+  <span className='text-gray-500 font-light'>{props.email}</span>
 );
 
-const TeamListModal = ({ board, toggleIsOpen, isOpen }: TeamListModalProps) => {
+interface TeamListModalProps {
+  board?: BoardDocument;
+  isOpen?: boolean;
+  toggleIsOpen?(): void;
+}
+
+const TeamListModal: React.FC<TeamListModalProps> = props => {
+  const { board, toggleIsOpen, isOpen } = props;
+
   const { owner } = useBoardTeam(board);
   let { assignees } = useBoardTeam(board);
   const { userDoc } = useSession();

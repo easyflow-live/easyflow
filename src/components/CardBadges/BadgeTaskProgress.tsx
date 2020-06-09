@@ -1,3 +1,4 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MdDoneAll } from 'react-icons/md';
 import cn from 'classnames';
@@ -10,11 +11,8 @@ interface BadgeTaskProgressProps {
   className?: string;
 }
 
-const BadgeTaskProgress = ({
-  total,
-  checked,
-  className,
-}: BadgeTaskProgressProps) => {
+const BadgeTaskProgress: React.FC<BadgeTaskProgressProps> = props => {
+  const { total, checked, className } = props;
   if (total === 0) {
     return null;
   }

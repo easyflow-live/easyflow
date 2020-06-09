@@ -1,3 +1,4 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MdClose } from 'react-icons/md';
 import styled from 'styled-components';
@@ -22,69 +23,73 @@ const Container = styled.div`
   }
 `;
 
-export const Assignees = observer(
-  ({ card, listId }: { card: CardDocument; listId: string }) => {
-    const { assignees } = useCardAssignees(card);
-    const { userDoc } = useSession();
-    const toogleAssigment = useAssign(card, listId);
+interface AssigneesProps {
+  card: CardDocument;
+  listId: string;
+}
 
-    const assigneesId = assignees.map(a => a.id);
-    const hasMySelfAsAssignee = assigneesId.includes(userDoc.id);
+export const Assignees: React.FC<AssigneesProps> = observer(props => {
+  const { card, listId } = props;
+  const { assignees } = useCardAssignees(card);
+  const { userDoc } = useSession();
+  const toogleAssigment = useAssign(card, listId);
 
-    const transitions = useTransition(assignees, item => item.username, {
-      initial: { transform: 'translate3d(0px, 0, 0)', opacity: 0 },
-      from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
-      enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
-      leave: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
-    });
+  const assigneesId = assignees.map(a => a.id);
+  const hasMySelfAsAssignee = assigneesId.includes(userDoc.id);
 
-    const animate = useSpring({
-      delay: 600,
-      opacity: !hasMySelfAsAssignee ? 1 : 0,
-    });
+  const transitions = useTransition(assignees, item => item.username, {
+    initial: { transform: 'translate3d(0px, 0, 0)', opacity: 0 },
+    from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
+    enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
+    leave: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
+  });
 
-    return (
-      <div>
-        {!hasMySelfAsAssignee && (
-          <animated.div style={animate}>
-            <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
+  const animate = useSpring({
+    delay: 600,
+    opacity: !hasMySelfAsAssignee ? 1 : 0,
+  });
+
+  return (
+    <div>
+      {!hasMySelfAsAssignee && (
+        <animated.div style={animate}>
+          <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
+            <button
+              className='flex items-center text-white text-sm hover:bg-gray-800 p-2 rounded'
+              onClick={toogleAssigment}
+            >
+              Assign me
+            </button>
+          </div>
+        </animated.div>
+      )}
+
+      {transitions.map(({ item: assignee, key, props }) => (
+        <animated.div key={key} style={props}>
+          <Container
+            className='flex items-center text-white mb-2'
+            key={assignee.username}
+          >
+            <Avatar
+              src={assignee.photo}
+              username={assignee.username}
+              className='border mr-2'
+              size='small'
+            />
+            <span>{assignee.username}</span>
+
+            {userDoc.id === assignee.email && (
               <button
-                className='flex items-center text-white text-sm hover:bg-gray-800 p-2 rounded'
+                title='Remove assignment'
+                className='ml-2 hover:text-red-500'
                 onClick={toogleAssigment}
               >
-                Assign me
+                <MdClose />
               </button>
-            </div>
-          </animated.div>
-        )}
-
-        {transitions.map(({ item: assignee, key, props }) => (
-          <animated.div key={key} style={props}>
-            <Container
-              className='flex items-center text-white mb-2'
-              key={assignee.username}
-            >
-              <Avatar
-                src={assignee.photo}
-                username={assignee.username}
-                className='border mr-2'
-                size='small'
-              />
-              <span>{assignee.username}</span>
-
-              {userDoc.id === assignee.email && (
-                <button
-                  title='Remove assignment'
-                  className='ml-2 hover:text-red-500'
-                  onClick={toogleAssigment}
-                >
-                  <MdClose />
-                </button>
-              )}
-            </Container>
-          </animated.div>
-        ))}
-      </div>
-    );
-  }
-);
+            )}
+          </Container>
+        </animated.div>
+      ))}
+    </div>
+  );
+});

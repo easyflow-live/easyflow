@@ -1,3 +1,4 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MdAlarm } from 'react-icons/md';
 
@@ -11,13 +12,9 @@ interface BadgeDueDateProps {
   showCheckbox?: boolean;
   onComplete: (completed: boolean) => void;
 }
-const BadgeDueDate = ({
-  date,
-  completed,
-  id,
-  showCheckbox,
-  onComplete,
-}: BadgeDueDateProps) => {
+
+const BadgeDueDate: React.FC<BadgeDueDateProps> = props => {
+  const { date, completed, id, showCheckbox, onComplete } = props;
   const { dueDateColor, dueTitle, dueDateString } = useDueDate(date, completed);
 
   return (
