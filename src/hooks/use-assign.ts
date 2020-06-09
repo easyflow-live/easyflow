@@ -10,7 +10,7 @@ export const useAssign = (card: CardDocument, listId: string): (() => void) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
-  const userRef = userDoc && userDoc.ref;
+  const userRef = userDoc?.ref;
 
   const actionData = {
     assignee: userRef,
