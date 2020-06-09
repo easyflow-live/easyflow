@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
-import {
-  useMemo,
-  useState,
-  PropsWithChildren,
-  CSSProperties,
-  useCallback,
-} from 'react';
+import React, { useMemo, useState, CSSProperties, useCallback } from 'react';
 import CardDocument, { Card } from '../../documents/card.doc';
 import { MdClose } from 'react-icons/md';
 import ReactModal from 'react-modal';
@@ -61,15 +55,12 @@ const RightColumn = styled.div`
   }
 `;
 
-const HoverableContainer = ({
-  children,
-  ...props
-}: PropsWithChildren<{ style?: CSSProperties }>) => (
+const HoverableContainer: React.FC<{ style?: CSSProperties }> = props => (
   <div
     className='-ml-2 relative hover:bg-gray-600 transition duration-300 rounded w-full'
     {...props}
   >
-    <div className='flex px-2'>{children}</div>
+    <div className='flex px-2'>{props.children}</div>
   </div>
 );
 
@@ -81,23 +72,18 @@ interface CardModalProps {
   onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 
-const CardModalFull = ({
-  card,
-  listId,
-  onClose,
-  onUpdate,
-  onRemove,
-}: CardModalProps) => {
+const CardModalFull: React.FC<CardModalProps> = props => {
+  const { card, listId, onClose, onUpdate, onRemove } = props;
+
   const { title } = card.data;
 
   const [newText] = useState(card.data.text);
   const checkboxes = useMemo(() => findCheckboxes(newText), [newText]);
 
   const { currentBoard } = useBoardsStore();
+
   const handleTagClick = (tags: string[]) => onUpdate({ tags });
-
   const removeTag = (tag: string) => card.removeTag(tag);
-
   const changeColor = (color: string) => onUpdate({ color });
 
   return (

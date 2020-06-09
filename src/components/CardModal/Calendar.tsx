@@ -15,14 +15,16 @@ interface CalendarProps {
   onRemove?: () => void;
 }
 
-const Calendar = ({
-  initialDate,
-  toggleCalendar,
-  className,
-  style,
-  onSave = () => {},
-  onRemove = () => {},
-}: CalendarProps) => {
+const Calendar: React.FC<CalendarProps> = props => {
+  const {
+    initialDate,
+    toggleCalendar,
+    className,
+    style,
+    onSave = () => {},
+    onRemove = () => {},
+  } = props;
+
   const [selectedDay, setSelectedDay] = useState(initialDate);
 
   const handleDayClick = (

@@ -1,3 +1,4 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Autosuggest from 'react-autosuggest';
 import { useState, useCallback } from 'react';
@@ -11,10 +12,9 @@ interface AddTagsWithAutocompleteProps {
   onSelect: (tag: string) => void;
 }
 
-const AddTagsWithAutocomplete = ({
-  options = [],
-  onSelect,
-}: AddTagsWithAutocompleteProps) => {
+const AddTagsWithAutocomplete: React.FC<AddTagsWithAutocompleteProps> = props => {
+  const { options = [], onSelect } = props;
+
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
 

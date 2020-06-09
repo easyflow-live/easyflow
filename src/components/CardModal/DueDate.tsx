@@ -1,3 +1,4 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useDueDate } from '../../hooks/use-due-date';
@@ -7,7 +8,9 @@ interface DueDateProps {
   completed?: boolean;
 }
 
-const DueDate = ({ date, completed }: DueDateProps) => {
+const DueDate: React.FC<DueDateProps> = props => {
+  const { date, completed } = props;
+
   const { dueTitle, dueDateString, dueDateColor } = useDueDate(date, completed);
 
   return date ? (

@@ -1,14 +1,14 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import usePortal from 'react-cool-portal';
 import { useSpring, animated } from 'react-spring';
+import styled from 'styled-components';
 
 import { useRect } from '../../hooks/use-rect';
 import { Card } from '../../documents/card.doc';
+import { Checkbox } from '../shared';
 import DueDate from './DueDate';
 import Calendar from './Calendar';
-import { Checkbox } from '../shared';
-import styled from 'styled-components';
 
 const TOP_PADDING = 10;
 
@@ -31,57 +31,57 @@ interface DueCalendarProps {
   onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 
-export const DueCalendar = observer(
-  ({ date, completed, onUpdate }: DueCalendarProps) => {
-    const calendaButtonRef = useRef<HTMLButtonElement>();
-    const [buttonRect] = useRect(calendaButtonRef);
+export const DueCalendar: React.FC<DueCalendarProps> = observer(props => {
+  const { date, completed, onUpdate } = props;
 
-    const saveCardCalendar = (date: Date) => onUpdate({ date });
-    const removeCardCalendar = () => onUpdate({ date: '' });
+  const calendaButtonRef = useRef<HTMLButtonElement>();
+  const [buttonRect] = useRect(calendaButtonRef);
 
-    const toggleDueStatus = (e: React.ChangeEvent<HTMLInputElement>) =>
-      onUpdate({ completed: e.target.checked });
+  const saveCardCalendar = (date: Date) => onUpdate({ date });
+  const removeCardCalendar = () => onUpdate({ date: '' });
 
-    const { Portal, toggle, isShow } = usePortal({ defaultShow: false });
-    const style = useSpring({ opacity: isShow ? 1 : 0 });
+  const toggleDueStatus = (e: React.ChangeEvent<HTMLInputElement>) =>
+    onUpdate({ completed: e.target.checked });
 
-    const toDate = date ? new Date(date.toDate()) : new Date();
+  const { Portal, toggle, isShow } = usePortal({ defaultShow: false });
+  const style = useSpring({ opacity: isShow ? 1 : 0 });
 
-    return (
-      <Container className='relative'>
-        <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
-          <button
-            className='p-2 text-white text-sm'
-            onClick={toggle}
-            ref={calendaButtonRef}
-          >
-            <DueDate date={date} completed={completed} />
-          </button>
-        </div>
+  const toDate = date ? new Date(date.toDate()) : new Date();
 
-        <span className='done ml-2 inline-flex items-center'>
-          <Checkbox checked={completed} onChange={toggleDueStatus} />
-          <span className='text-xs text-white ml-2'>Done?</span>
-        </span>
+  return (
+    <Container className='relative'>
+      <div className='-ml-2 inline-flex hover:bg-gray-800 rounded transition duration-300'>
+        <button
+          className='p-2 text-white text-sm'
+          onClick={toggle}
+          ref={calendaButtonRef}
+        >
+          <DueDate date={date} completed={completed} />
+        </button>
+      </div>
 
-        <Portal>
-          <animated.div
-            className='absolute z-10'
-            style={{
-              ...style,
-              top: buttonRect.top + TOP_PADDING,
-              left: buttonRect.left,
-            }}
-          >
-            <Calendar
-              initialDate={toDate}
-              toggleCalendar={toggle}
-              onSave={saveCardCalendar}
-              onRemove={removeCardCalendar}
-            />
-          </animated.div>
-        </Portal>
-      </Container>
-    );
-  }
-);
+      <span className='done ml-2 inline-flex items-center'>
+        <Checkbox checked={completed} onChange={toggleDueStatus} />
+        <span className='text-xs text-white ml-2'>Done?</span>
+      </span>
+
+      <Portal>
+        <animated.div
+          className='absolute z-10'
+          style={{
+            ...style,
+            top: buttonRect.top + TOP_PADDING,
+            left: buttonRect.left,
+          }}
+        >
+          <Calendar
+            initialDate={toDate}
+            toggleCalendar={toggle}
+            onSave={saveCardCalendar}
+            onRemove={removeCardCalendar}
+          />
+        </animated.div>
+      </Portal>
+    </Container>
+  );
+});
