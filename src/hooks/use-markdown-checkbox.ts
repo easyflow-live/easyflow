@@ -6,6 +6,7 @@ export const useMarkdownCheckbox = (
   text: string
 ): (({ checked, index }: { checked: boolean; index: number }) => string) => {
   const jRef = useRef(0);
+  const max = text?.match(/\[(\s|x)\]/g)?.length;
 
   const toggle = useCallback(
     ({ checked, index }) =>
@@ -14,10 +15,13 @@ export const useMarkdownCheckbox = (
 
         if (index === jRef.current) {
           newString = checked ? '[x]' : '[ ]';
-          jRef.current = 0;
         } else {
           newString = match;
-          jRef.current += 1;
+        }
+        jRef.current += 1;
+
+        if (jRef.current === max) {
+          jRef.current = 0;
         }
 
         return newString;
