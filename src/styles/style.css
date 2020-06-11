@@ -46,8 +46,22 @@ html {
 
 *:focus,
 *:active {
-  outline-color: #ed64a6 !important;
+  outline: none !important;
+  box-shadow: 0 0 1px 1px #ed64a6;
 }
+
+/* HACK hide all divs with focus and active shadow */
+div:focus,
+div:active {
+  box-shadow: none;
+}
+
+div[tabindex='0']:active,
+div[tabindex='0']:focus {
+  box-shadow: 0 0 1px 1px #ed64a6;
+}
+
+/* */
 
 .Toast-background {
   cursor: initial;
