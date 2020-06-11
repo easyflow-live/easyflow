@@ -83,6 +83,16 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Thursday, June 11, 2020</LogDate>
+
+        <LogList type={LogTypes.feature}>
+          {['The new card modal opens on full screen.'].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Thursday, June 9, 2020</LogDate>
 
         <LogList type={LogTypes.feature}>
