@@ -57,6 +57,7 @@ interface EditableProps {
   isDisabled?: boolean;
   submitOnBlur?: boolean;
   cancelOnBlur?: boolean;
+  submitOnEnter?: boolean;
   emptyValue?: boolean;
   editMode?: boolean;
   placeholder?: string;
@@ -70,6 +71,7 @@ export const Editable = ({
   isDisabled,
   submitOnBlur,
   cancelOnBlur,
+  submitOnEnter = true,
   emptyValue,
   editMode,
   placeholder,
@@ -96,7 +98,7 @@ export const Editable = ({
       return;
     }
 
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && submitOnEnter) {
       handleSubmit();
     }
   };

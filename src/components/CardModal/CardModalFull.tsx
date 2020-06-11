@@ -157,6 +157,7 @@ const CardModalFull: React.FC<CardModalProps> = props => {
                       <h3 className='text-gray-400 mb-1'>Description</h3>
 
                       <EditableComplex
+                        submitOnEnter={false}
                         value={card.data.text}
                         onSubmit={text => onUpdate({ text })}
                       >
