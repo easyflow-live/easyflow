@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 import React, { useMemo, useState, CSSProperties, useCallback } from 'react';
-import CardDocument, { Card } from '../../documents/card.doc';
 import { MdClose } from 'react-icons/md';
 import ReactModal from 'react-modal';
 
+import CardDocument, { Card } from '../../documents/card.doc';
+import { useThinDisplay } from '../../hooks/use-thin-display';
 import { Heading, Button } from '../shared';
 import {
   Editable as EditableComplex,
@@ -269,7 +270,7 @@ const CardModalFull: React.FC<CardModalProps> = props => {
   );
 };
 
-const customStyle = {
+const getStyle = (isThinDisplay: boolean) => ({
   overlay: {
     position: 'fixed',
     left: 0,
@@ -285,16 +286,21 @@ const customStyle = {
     border: 0,
     width: '1040px',
     maxWidth: '100%',
-    height: 'calc(100% - 119px)',
+    height: isThinDisplay ? '100%' : 'calc(100% - 119px)',
     left: '50%',
     top: '50%',
     transform: 'translate(-50%,-50%)',
+    padding: isThinDisplay ? 0 : '20px',
   },
-};
+});
 
 export const useCardFullModal = () => {
   const [isShow, setIsShow] = useState(false);
   const { setOpenedModal } = useInterface();
+
+  const isThinDisplay = useThinDisplay();
+
+  const customStyle = useMemo(() => getStyle(isThinDisplay), [isThinDisplay]);
 
   const show = useCallback(() => {
     setIsShow(true);
@@ -317,9 +323,8 @@ export const useCardFullModal = () => {
         <CardModalFull {...props} onClose={hide} />
       </ReactModal>
     ),
-    [isShow, hide]
+    [isShow, hide, customStyle]
   );
-
   return { Modal, isShow, show, hide };
 };
 
