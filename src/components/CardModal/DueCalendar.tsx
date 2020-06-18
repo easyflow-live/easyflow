@@ -4,6 +4,7 @@ import usePortal from 'react-cool-portal';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 
+import { useThinDisplay } from '../../hooks/use-thin-display';
 import { useRect } from '../../hooks/use-rect';
 import { Card } from '../../documents/card.doc';
 import { Checkbox } from '../shared';
@@ -31,8 +32,16 @@ interface DueCalendarProps {
   onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 
+const getStyle = (isThinDisplay: boolean, style: ClientRect) => ({
+  top: isThinDisplay ? '50%' : style.top + TOP_PADDING,
+  left: isThinDisplay ? '50%' : style.left,
+  transform: isThinDisplay ? 'translate(-50%, -50%)' : '',
+});
+
 export const DueCalendar: React.FC<DueCalendarProps> = observer(props => {
   const { date, completed, onUpdate } = props;
+
+  const isThinDisplay = useThinDisplay();
 
   const calendaButtonRef = useRef<HTMLButtonElement>();
   const [buttonRect] = useRect(calendaButtonRef);
@@ -47,6 +56,8 @@ export const DueCalendar: React.FC<DueCalendarProps> = observer(props => {
   const style = useSpring({ opacity: isShow ? 1 : 0 });
 
   const toDate = date ? new Date(date.toDate()) : new Date();
+
+  const customStyle = getStyle(isThinDisplay, buttonRect);
 
   return (
     <Container className='relative'>
@@ -70,8 +81,7 @@ export const DueCalendar: React.FC<DueCalendarProps> = observer(props => {
           className='absolute z-10'
           style={{
             ...style,
-            top: buttonRect.top + TOP_PADDING,
-            left: buttonRect.left,
+            ...customStyle,
           }}
         >
           <Calendar
