@@ -13,9 +13,9 @@ interface InterfaceContextProps {
 export const InterfaceContext = createContext<InterfaceContextProps>(null);
 
 export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
-  const [isMenuOpen, setMenu] = useState();
-  const [previewMode, setPreviewMode] = useState();
-  const [hasOpenedModal, setOpenedModal] = useState(false);
+  const [isMenuOpen, setMenu] = useState<boolean>();
+  const [previewMode, setPreviewMode] = useState<boolean>();
+  const [hasOpenedModal, setOpenedModal] = useState<boolean>(false);
 
   const togglePreviewMode = () => setPreviewMode(s => !s);
 
