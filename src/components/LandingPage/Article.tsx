@@ -1,5 +1,7 @@
+import cn from 'classnames';
+
 import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
-import './Article.css';
+import styles from './Article.module.css';
 
 type Size = 'small' | 'large';
 
@@ -30,10 +32,18 @@ const Article = ({
   const contentSize = sizeImg === 'small' ? 'md:w-1/2' : 'md:w-2/5'; // small img, bigger content
 
   return (
-    <article className='Article flex w-full items-start flex-col sm:flex-col md:flex-row'>
+    <article
+      className={cn(
+        styles.Article,
+        'flex w-full items-start flex-col sm:flex-col md:flex-row'
+      )}
+    >
       <AnimateSlideUpinView className={`sm:w-full ${imageSize}`}>
         <img
-          className='print rounded-lg object-cover mx-auto md:mx-0'
+          className={cn(
+            styles.print,
+            'rounded-lg object-cover mx-auto md:mx-0'
+          )}
           src={srcImg}
           alt={altImg}
         />

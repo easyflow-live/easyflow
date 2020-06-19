@@ -1,7 +1,8 @@
 import { memo, useState, useEffect } from 'react';
 import { usePrevious } from '../../../src/hooks/use-previous';
+import cn from 'classnames';
 
-import './emoji.css';
+import styles from './emoji.module.css';
 
 const EMOJIS = new Map([
   ['🤩', 'f929'],
@@ -78,12 +79,13 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
 
   return (
     <main
-      className={`geist-emoji-selector ${shown ? 'shown' : ''} ${
-        props.loading ? 'loading' : ''
-      }`}
+      className={cn(styles.emojiSelector, {
+        [styles.shown]: shown,
+        [styles.loading]: props.loading,
+      })}
     >
       <button
-        className={current !== null ? 'active' : ''}
+        className={cn({ [styles.active]: current })}
         onMouseEnter={onMouseEnter}
         onTouchStart={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -96,7 +98,7 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
             : onMouseEnter
         }
       >
-        <span className='inner icon'>
+        <span className={cn(styles.inner, styles.icon)}>
           {current === null ? (
             <EmojiIcon width='16px' height='16px' />
           ) : shown ? (
@@ -110,14 +112,14 @@ export const EmojiSelector = (props: EmojiSelectorProps) => {
       {Array.from(EMOJIS.values()).map(emoji => (
         <button
           type='button'
-          className='option'
+          className={styles.option}
           key={emoji}
           onMouseEnter={onMouseEnter}
           onTouchStart={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onClick={() => onSelectItem(emoji)}
         >
-          <span className='inner'>
+          <span className={styles.inner}>
             <Emoji code={emoji} />
           </span>
         </button>

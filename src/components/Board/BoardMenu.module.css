@@ -1,8 +1,8 @@
-.BoardMenu-container {
+.BoardMenu {
   transform: translateX(339px);
   width: 339px;
 }
 
-.BoardMenu-container--open {
+.BoardMenuOpen {
   transform: translateX(0);
 }

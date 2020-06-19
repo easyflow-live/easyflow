@@ -4,7 +4,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import TagsInput from 'react-tagsinput';
-import './AddTags.scss';
 
 interface AddTagsProps {
   document: Document;

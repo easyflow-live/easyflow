@@ -2,7 +2,6 @@ import React, { ReactChild } from 'react';
 import { observer } from 'mobx-react-lite';
 import Modal from 'react-modal';
 
-import './Dialog.css';
 import { MdClose } from 'react-icons/md';
 
 if (typeof window !== 'undefined') {

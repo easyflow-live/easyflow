@@ -1,34 +1,30 @@
-const withCSS = require('@zeit/next-css');
-const withSASS = require('@zeit/next-sass');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 
-module.exports = withSASS(
-  withCSS({
-    webpack: (config, { dev }) => {
-      config.plugins = config.plugins || [];
+module.exports = {
+  webpack: (config, { dev }) => {
+    config.plugins = config.plugins || [];
 
-      config.plugins = [
-        ...config.plugins,
+    config.plugins = [
+      ...config.plugins,
 
-        // Read the .env file
-        new Dotenv({
-          path: path.join(__dirname, dev ? '.env-dev' : '.env'),
-          systemvars: true
-        })
-      ];
+      // Read the .env file
+      new Dotenv({
+        path: path.join(__dirname, dev ? '.env-dev' : '.env'),
+        systemvars: true,
+      }),
+    ];
 
-      if (config.mode === 'production') {
-        if (Array.isArray(config.optimization.minimizer)) {
-          config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
-        }
+    if (config.mode === 'production') {
+      if (Array.isArray(config.optimization.minimizer)) {
+        config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
       }
-
-      config.plugins.push(new webpack.DefinePlugin({ __DEV__: dev }));
-
-      return config;
     }
-  })
-);
+
+    config.plugins.push(new webpack.DefinePlugin({ __DEV__: dev }));
+
+    return config;
+  },
+};
