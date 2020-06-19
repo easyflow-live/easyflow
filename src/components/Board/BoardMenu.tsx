@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import AddTagsModal from '../BoardHeader/AddTagsModal';
 import { observer } from 'mobx-react-lite';
 import { useInterface } from '../providers/InterfaceProvider';
-import './BoardMenu.css';
+import styles from './BoardMenu.module.css';
 import BoardDocument from '../../documents/board.doc';
 
 const Actions = dynamic(() => import('./Actions'));
@@ -26,9 +26,10 @@ const BoardMenu = ({ board }: BoardMenuProps) => {
   return (
     <div
       className={classNames(
-        'BoardMenu-container transition-all block absolute bottom-0 right-0 z-50',
+        styles.BoardMenu,
+        'transition-all block absolute bottom-0 right-0 z-50',
         {
-          'BoardMenu-container--open': isMenuOpen,
+          [styles.BoardMenuOpen]: isMenuOpen,
         }
       )}
       style={{ top: '0' }}

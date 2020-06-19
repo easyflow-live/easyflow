@@ -11,7 +11,6 @@ import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
 import Footer from './Footer';
 import Header from './Header';
 import Article from './Article';
-import './LandingPage.scss';
 import { Button } from '../shared';
 
 const items = ['Simple.', 'Beautiful.', 'Darker.'];

@@ -53,8 +53,8 @@
   width: 300px;
 }
 
-.error-message,
-.success-message {
+.errorMessage,
+.successMessage {
   border-radius: 5px;
   position: absolute;
   top: -15px;
@@ -77,28 +77,28 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.error-message span {
+.errorMessage span {
   color: var(--geist-error);
   margin-bottom: 20px;
 }
 
-.success-message p {
+.successMessage p {
   opacity: 0;
 }
 
-.success-message p:first-child {
+.successMessage p:first-child {
   animation: appear 500ms ease;
   animation-delay: 100ms;
   animation-fill-mode: forwards;
 }
 
-.success-message p:last-child {
+.successMessage p:last-child {
   animation: appear 500ms ease;
   animation-delay: 1s;
   animation-fill-mode: forwards;
 }
 
-.error-message a {
+.errorMessage a {
   color: #fff;
   text-decoration: none;
 }

@@ -6,7 +6,7 @@ import { Button } from '../shared';
 
 import { EmojiSelector, getEmoji } from './EmojiSelector';
 
-import './style.css';
+import styles from './style.module.css';
 
 interface FeedbackInputProps {
   placeholder?: string;
@@ -138,26 +138,26 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
       ref={mainRef}
       title='Share any feedback about EasyFlow with us.'
       className={`
-          ${errorMessage != null ? 'error' : ''}
-          ${loading ? 'loading' : ''}
-          ${success ? 'success' : ''}
-          ${focused ? 'focused' : ''}
-          main
+          ${errorMessage != null ? styles.error : ''}
+          ${loading ? styles.loading : ''}
+          ${success ? styles.success : ''}
+          ${focused ? styles.focused : ''}
+          ${styles.main}
         `}
     >
       <div>
         <textarea
-          className='textarea'
+          className={styles.textarea}
           ref={textAreaRef}
           disabled={loading === true || errorMessage != null}
           placeholder={placeholder || 'Feedback...'}
           aria-label='Submit Feedback'
           onFocus={onFocus}
         />
-        <div className='controls'>
+        <div className={styles.controls}>
           {errorMessage == null && !success && (
             <>
-              <span className='emojis'>
+              <span className={styles.emojis}>
                 <EmojiSelector
                   onShow={onEmojiShown}
                   onHide={onEmojiHidden}
@@ -166,7 +166,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
                 />
               </span>
 
-              <span className='buttons'>
+              <span className={styles.buttons}>
                 <Button size='small' onClick={onSubmit}>
                   Send
                 </Button>
@@ -177,7 +177,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
       </div>
 
       {errorMessage != null && (
-        <div className='error-message'>
+        <div className={styles.errorMessage}>
           <span>{errorMessage}</span>
 
           <a
@@ -193,7 +193,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
       )}
 
       {success && (
-        <div className='success-message'>
+        <div className={styles.successMessage}>
           <p>Your feedback has been received!</p>
           <p>Thank you for your help.</p>
         </div>

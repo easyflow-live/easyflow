@@ -3,7 +3,6 @@ import DayPicker, { DayModifiers } from 'react-day-picker';
 import { MdClose } from 'react-icons/md';
 import cn from 'classnames';
 
-import './ReactDayPicker.scss';
 import { Button } from '../shared';
 
 interface CalendarProps {

@@ -3,8 +3,6 @@ import { observer } from 'mobx-react-lite';
 import Autosuggest from 'react-autosuggest';
 import { useState, useCallback } from 'react';
 
-import './AddTagsWithAutocomplete.scss';
-
 const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 interface AddTagsWithAutocompleteProps {
