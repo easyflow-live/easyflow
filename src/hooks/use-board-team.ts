@@ -2,10 +2,11 @@ import { useEffect, useRef } from 'react';
 
 import BoardDocument from '../../src/documents/board.doc';
 import { useUsersStore } from '../store';
+import { User } from '../store/users';
 
 export const useBoardTeam = (board: BoardDocument) => {
   const { loadUsers, isLoading, getUser, users } = useUsersStore();
-  const ownerRef = useRef(null);
+  const ownerRef = useRef<User>(null);
 
   useEffect(() => {
     loadUsers(board.data.users);
