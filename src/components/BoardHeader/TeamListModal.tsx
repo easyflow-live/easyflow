@@ -51,52 +51,38 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
   const { userDoc } = useSession();
   const [value, setValue] = useState('');
 
+  const getUser = async (email: string) =>
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(email)
+      .get();
+
   const save = async (newValue: string) => {
     if (!newValue) return;
 
-    const userRef = await firebase
-      .firestore()
-      .collection('users')
-      .doc(newValue);
-
-    const user = await userRef.get();
+    const user = await getUser(newValue);
 
     if (user.exists) {
-      return firebase
-        .firestore()
-        .collection('boards')
-        .doc(board.id)
-        .update({
-          users: firebase.firestore.FieldValue.arrayUnion(userRef),
-        })
-        .then(r => {
-          emitter.emit('TEAM_MEMBER_UPDATED', {});
-          return r;
-        });
+      return board.update({
+        users: firebase.firestore.FieldValue.arrayUnion(user.ref),
+      });
     }
+
     toast(`${value} is not a registered user!`);
     return Promise.resolve();
   };
 
-  const remove = async index => {
-    // TODO remove this mutability
+  const remove = async (index: number) => {
     const assignee = assignees[index];
     assignees = assignees.splice(index, 1);
 
-    const userRef = firebase
-      .firestore()
-      .collection('users')
-      .doc(assignee.email);
-
-    const user = await userRef.get();
+    const user = await getUser(assignee.email);
 
     if (user.exists) {
-      firebase
-        .firestore()
-        .collection('boards')
-        .doc(board.id)
+      board
         .update({
-          users: firebase.firestore.FieldValue.arrayRemove(userRef),
+          users: firebase.firestore.FieldValue.arrayRemove(user.ref),
         })
         .then(r => {
           toast(`User ${assignee.username} was removed from the board!`);
@@ -105,23 +91,15 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
     }
   };
 
-  const giveOwnership = async index => {
+  const giveOwnership = async (index: number) => {
     const assignee = assignees[index];
 
-    const userRef = firebase
-      .firestore()
-      .collection('users')
-      .doc(assignee.email);
-
-    const user = await userRef.get();
+    const user = await getUser(assignee.email);
 
     if (user.exists) {
-      firebase
-        .firestore()
-        .collection('boards')
-        .doc(board.id)
+      board
         .update({
-          owner: userRef,
+          owner: user.ref,
         })
         .then(r => {
           toast(
