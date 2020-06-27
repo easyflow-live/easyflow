@@ -30,7 +30,7 @@ class MyApp extends App<{}> {
           <UsersStoreProvider>
             <BoardsStoreProvider>
               <InterfaceProvider>
-                <Link rel='shortcut icon' href='/static/images/icon.png' />
+                <Link rel='shortcut icon' href='/static/images/icon.ico' />
                 <Header />
                 <Component {...pageProps} />
                 <ToastContainer
