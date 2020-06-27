@@ -10,10 +10,10 @@ import BoardDocument from '../../documents/board.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
-import { emitter } from '../../libs/emitter';
 import Dialog from '../Dialog/Dialog';
 import { Avatar, Input } from '../shared';
 import { List, ListItem } from '../shared/List';
+import { sendInviteEmail } from 'src/libs/api';
 
 interface UserNameProps {
   name: string;
@@ -51,6 +51,8 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
   const { userDoc } = useSession();
   const [value, setValue] = useState('');
 
+  const [submitting, setSubmit] = useState<boolean>(false);
+
   const getUser = async (email: string) =>
     firebase
       .firestore()
@@ -61,16 +63,35 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
   const save = async (newValue: string) => {
     if (!newValue) return;
 
+    setSubmit(true);
+
     const user = await getUser(newValue);
 
-    if (user.exists) {
-      return board.update({
-        users: firebase.firestore.FieldValue.arrayUnion(user.ref),
-      });
-    }
+    const updateBoard = user.exists
+      ? board.update({
+          users: firebase.firestore.FieldValue.arrayUnion(user.ref),
+        })
+      : Promise.resolve();
 
-    toast(`${value} is not a registered user!`);
-    return Promise.resolve();
+    Promise.all([
+      sendInviteEmail({
+        to: user.id,
+        userName: userDoc.data.username,
+        userEmail: userDoc.id,
+        ownerName: owner.username,
+        boardName: board.data.title,
+        boardUrl: `https://easyflow.live/b/${board.id}`,
+      }),
+      updateBoard,
+    ]).then(() => {
+      if (user.exists) {
+        toast(`${value} was added to the team.`);
+      } else {
+        toast(`An invite was sent to ${value} imbox.`);
+      }
+      setSubmit(false);
+      setValue('');
+    });
   };
 
   const remove = async (index: number) => {
@@ -115,8 +136,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
   };
 
   const handleSubmit = async () => {
-    await save(value);
-    setValue('');
+    save(value);
   };
 
   const handleKeyDown = useKeySubmit(handleSubmit, () => {
@@ -141,6 +161,8 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
         <div className='m-4 mt-0 sm:mt-0 sm:m-8'>
           <label className='text-white'>Add a new member</label>
           <Input
+            loading={submitting}
+            disabled={submitting}
             placeholder='member@email.com'
             className='mt-4'
             autoFocus
