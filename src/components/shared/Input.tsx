@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, InputHTMLAttributes, ReactChild } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 import classNames from 'classnames';
 import { Spinner } from './Spinner';
 
