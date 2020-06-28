@@ -67,6 +67,11 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
 
     const user = await getUser(newValue);
 
+    if (board.isAMember(user)) {
+      toast(`The user ${value} is already a member.`);
+      return;
+    }
+
     const updateBoard = user.exists
       ? board.update({
           users: firebase.firestore.FieldValue.arrayUnion(user.ref),
