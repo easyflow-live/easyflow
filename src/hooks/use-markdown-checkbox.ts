@@ -26,7 +26,7 @@ export const useMarkdownCheckbox = (
 
         return newString;
       }),
-    [text]
+    [text, max]
   );
 
   return toggle;
