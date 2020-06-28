@@ -63,7 +63,7 @@ export default class BoardDocument extends Document<Board> {
     });
   }
 
-  isAMember(user: UserDocument) {
+  isAMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {
     if (!user) return false;
 
     const ids = this.data.users?.map(({ id }) => id) || [];
