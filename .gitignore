@@ -4,3 +4,4 @@ stats.json
 .next
 .env-dev
 .env
+.env.local
