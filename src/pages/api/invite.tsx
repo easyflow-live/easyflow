@@ -443,7 +443,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.method !== 'POST')
-    return res.status(405).send(`Method ${req.method} Not Allowed`);
+    return res.status(405).send({ error: `Method ${req.method} Not Allowed` });
 
   const { to, ...body } = req.body;
 
