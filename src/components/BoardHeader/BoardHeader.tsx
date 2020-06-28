@@ -2,6 +2,7 @@ import React from 'react';
 import { MdTimeline, MdViewColumn } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
+import { useGoogleLogin } from '../../hooks/use-google-login';
 import BoardDocument from '../../documents/board.doc';
 import { useInterface } from '../providers/InterfaceProvider';
 import AddNewListModal from './AddNewListModal';
@@ -21,6 +22,9 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { setMenu } = useInterface();
   const toggleMenu = () => setMenu(true);
 
+  const { login } = useGoogleLogin();
+  const handleLogin = () => login();
+
   return (
     <div className='flex justify-between items-center'>
       <BoardTitle
@@ -35,7 +39,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
           icon={<Team board={board} />}
           renderModal={props => <TeamListModal board={board} {...props} />}
         />
-        {!previewMode && (
+        {!previewMode ? (
           <>
             <BoardButton
               icon={<MdViewColumn size='16px' />}
@@ -52,6 +56,15 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
 
             <BoardMenu className='ml-2' board={board} onRemove={onRemove} />
           </>
+        ) : (
+          <div className='px-3'>
+            <button
+              className='text-pink-400 hover:text-pink-500 mb-2'
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+          </div>
         )}
       </div>
     </div>
