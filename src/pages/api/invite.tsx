@@ -18,34 +18,6 @@ const transporter = nodemailer.createTransport({
   auth,
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  res.setHeader('Content-Type', 'application/json');
-
-  if (req.method !== 'POST')
-    return res.status(405).send(`Method ${req.method} Not Allowed`);
-
-  const { to, ...body } = req.body;
-
-  const mailOptions = {
-    from: `Invite from EasyFlow <${auth.user}>`,
-    to,
-    subject: 'Board Invitation | EasyFlow',
-    html: createTemplate({ ...body }),
-  };
-
-  const promised = await new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (erro, info) => {
-      if (erro) {
-        reject(erro);
-        return;
-      }
-      resolve(info);
-    });
-  });
-
-  res.send(promised);
-};
-
 function createTemplate({
   userName,
   userEmail,
@@ -466,3 +438,31 @@ ul.social li{
 
   return html;
 }
+
+export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  res.setHeader('Content-Type', 'application/json');
+
+  if (req.method !== 'POST')
+    return res.status(405).send(`Method ${req.method} Not Allowed`);
+
+  const { to, ...body } = req.body;
+
+  const mailOptions = {
+    from: `Invite from EasyFlow <${auth.user}>`,
+    to,
+    subject: 'Board Invitation | EasyFlow',
+    html: createTemplate({ ...body }),
+  };
+
+  const promised = await new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (erro, info) => {
+      if (erro) {
+        reject(erro);
+        return;
+      }
+      resolve(info);
+    });
+  });
+
+  res.send(promised);
+};
