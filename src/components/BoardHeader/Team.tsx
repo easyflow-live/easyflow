@@ -26,15 +26,11 @@ const Counter = ({ number, className }: CounterProps) => (
 const Team = ({ board }: TeamProps) => {
   const { assignees } = useBoardTeam(board);
 
-  const transitions = useTransition(
-    assignees.slice(0, 3),
-    item => item.username,
-    {
-      from: { opacity: 0 },
-      enter: { opacity: 1 },
-      leave: { opacity: 0 },
-    }
-  );
+  const transitions = useTransition(assignees.slice(0, 3), item => item.id, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  });
 
   return (
     <div className='flex'>
@@ -47,7 +43,7 @@ const Team = ({ board }: TeamProps) => {
               className='assignee'
             >
               <Avatar
-                key={item.username}
+                key={item.id}
                 src={item.photo}
                 username={item.username}
                 borderColor={'border-gray-800'}
