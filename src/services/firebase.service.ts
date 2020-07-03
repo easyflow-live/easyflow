@@ -59,7 +59,11 @@ class FirebaseService {
 
   getUsers = () => this.db.collection('users');
 
-  getUser = email => this.getUsers().doc(email);
+  getBoards = () => this.db.collection('boards');
+
+  getUser = (email: string) => this.getUsers().doc(email);
+
+  getBoard = (id: string) => this.getBoards().doc(id);
 
   doSignOut = () => this.auth.signOut();
 
