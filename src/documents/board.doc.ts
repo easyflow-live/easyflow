@@ -69,4 +69,16 @@ export default class BoardDocument extends Document<Board> {
     const ids = this.data.users?.map(({ id }) => id) || [];
     return ids.includes(user.id);
   }
+
+  addMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {
+    return this.update({
+      users: firebase.firestore.FieldValue.arrayUnion(user.ref),
+    });
+  }
+
+  removeMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {
+    return this.update({
+      users: firebase.firestore.FieldValue.arrayRemove(user.ref),
+    });
+  }
 }
