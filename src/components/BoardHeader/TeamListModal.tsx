@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import firebase from '../../services/firebase.service';
 import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
@@ -53,12 +52,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
 
   const [submitting, setSubmit] = useState<boolean>(false);
 
-  const getUser = async (email: string) =>
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
-      .get();
+  const getUser = async (email: string) => firebase.getUser(email).get();
 
   const save = async (newValue: string) => {
     if (!newValue) return;
@@ -73,11 +67,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
       return;
     }
 
-    const updateBoard = user.exists
-      ? board.update({
-          users: firebase.firestore.FieldValue.arrayUnion(user.ref),
-        })
-      : Promise.resolve();
+    const updateBoard = user.exists ? board.addMember(user) : Promise.resolve();
 
     Promise.all([
       sendInviteEmail({
@@ -91,9 +81,9 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
       updateBoard,
     ]).then(() => {
       if (user.exists) {
-        toast(`${value} was added to the team.`);
+        toast(`${value} was added to the board.`);
       } else {
-        toast(`An invite was sent to ${value} imbox.`);
+        toast(`An invite was sent to ${value} inbox.`);
       }
       setSubmit(false);
       setValue('');
@@ -107,14 +97,10 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
     const user = await getUser(assignee.email);
 
     if (user.exists) {
-      board
-        .update({
-          users: firebase.firestore.FieldValue.arrayRemove(user.ref),
-        })
-        .then(r => {
-          toast(`User ${assignee.username} was removed from the board!`);
-          return r;
-        });
+      board.removeMember(user).then(r => {
+        toast(`User ${assignee.username} was removed from the board!`);
+        return r;
+      });
     }
   };
 
