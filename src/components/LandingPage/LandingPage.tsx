@@ -13,8 +13,7 @@ import Header from './Header';
 import Article from './Article';
 import { Button } from '../shared';
 
-const items = ['Simple.', 'Beautiful.', 'Darker.'];
-const config = { mass: 5, tension: 2000, friction: 800 };
+const items = ['Simple.', 'Beautiful.', 'Darker.', 'Open source.'];
 
 interface SafariWarningProps {
   isMobileSafari: boolean;
@@ -38,7 +37,7 @@ const SafariWarning = ({ isMobileSafari, onLogin }: SafariWarningProps) =>
 const LandingPage = () => {
   const { login } = useGoogleLogin();
   const trail = useTrail(items.length, {
-    config,
+    //config,
     from: {
       opacity: 0,
       transform: 'translate3d(0, 20px,0)',

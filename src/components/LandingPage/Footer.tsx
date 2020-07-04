@@ -14,10 +14,20 @@ const Footer = () => (
         <a className='hover:text-pink-500 mr-2'>Changelog</a>
       </Link>
       <a
-        href='http://twitter.com/pinheirofellipe'
-        className='hover:text-pink-500'
+        href='https://twitter.com/pinheirofellipe'
+        target='_blank'
+        rel='noopener noreferrer'
+        className='hover:text-pink-500 mr-2'
       >
         Twitter
+      </a>
+      <a
+        href='https://github.com/easyflow-live/easyflow'
+        target='_blank'
+        rel='noopener noreferrer'
+        className='hover:text-pink-500'
+      >
+        Github
       </a>
     </div>
   </footer>
