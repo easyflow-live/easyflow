@@ -6,6 +6,7 @@ import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
 
 import { sortUsersAlpha } from '../../helpers/sortUsersAlpha';
 import BoardDocument from '../../documents/board.doc';
+import BoardInviteDocument from '../../documents/board-invite.doc';
 import { useBoardTeam } from '../../hooks/use-board-team';
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
@@ -67,27 +68,37 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
       return;
     }
 
-    const updateBoard = user.exists ? board.addMember(user) : Promise.resolve();
-
-    Promise.all([
-      sendInviteEmail({
-        to: user.id,
-        userName: userDoc.data.username,
-        userEmail: userDoc.id,
-        ownerName: owner.username,
-        boardName: board.data.title,
-        boardUrl: `https://easyflow.live/b/${board.id}`,
-      }),
-      updateBoard,
-    ]).then(() => {
-      if (user.exists) {
-        toast(`${value} was added to the board.`);
-      } else {
-        toast(`An invite was sent to ${value} inbox.`);
-      }
+    if (user.exists) {
+      board.addMember(user).catch(() => {
+        toast(
+          "Sorry, something went wrong and we could't add the new member to the board, please, try again later."
+        );
+      });
+      toast(`${value} was added to the board.`);
       setSubmit(false);
       setValue('');
+      return;
+    }
+
+    const invite = await board.createInvite(user, userDoc);
+
+    sendInviteEmail({
+      to: user.id,
+      userName: userDoc.data.username,
+      userEmail: userDoc.id,
+      ownerName: owner.username,
+      boardName: board.data.title,
+      boardUrl: `https://easyflow.live/b/${board.id}`,
+      inviteId: invite.id,
+    }).catch(() => {
+      toast(
+        "Sorry, something went wrong and we could't sent the invite, please, try again later."
+      );
     });
+
+    toast(`An invite was sent to ${value} inbox.`);
+    setSubmit(false);
+    setValue('');
   };
 
   const remove = async (index: number) => {

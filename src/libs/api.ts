@@ -5,6 +5,7 @@ type InviteEmail = {
   ownerName: string;
   boardName: string;
   boardUrl: string;
+  inviteId: string;
 };
 
 export const sendInviteEmail = (body: InviteEmail) => {
