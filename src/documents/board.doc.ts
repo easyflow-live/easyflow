@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import ListDocument from './list.doc';
 import UserDocument from './user.doc';
 import ActionDocument from './action.doc';
+import BoardInviteDocument, { InviteStatus } from './board-invite.doc';
 
 export interface Board {
   title: string;
@@ -79,6 +80,21 @@ export default class BoardDocument extends Document<Board> {
   removeMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {
     return this.update({
       users: firebase.firestore.FieldValue.arrayRemove(user.ref),
+    });
+  }
+
+  async createInvite(
+    user: UserDocument | firebase.firestore.DocumentSnapshot,
+    fromUser: UserDocument | firebase.firestore.DocumentSnapshot
+  ): Promise<BoardInviteDocument> {
+    const invites = new Collection<BoardInviteDocument>('board_invites');
+
+    return invites.add({
+      board: this.ref,
+      user: user.ref,
+      fromUser: fromUser.ref,
+      createdAt: firebase.firestore.Timestamp.now(),
+      status: InviteStatus.PENDING,
     });
   }
 }
