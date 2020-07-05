@@ -40,7 +40,9 @@ class FirebaseService {
   }
 
   // *** Auth API ***
-  doSignInWithGoogle = async onLoggin => {
+  doSignInWithGoogle = async (
+    onLoggin: (user?: firebase.User) => {}
+  ): Promise<void> => {
     const { user } = await this.auth.signInWithPopup(this.googleProvider);
 
     if (user) {
@@ -61,9 +63,13 @@ class FirebaseService {
 
   getBoards = () => this.db.collection('boards');
 
+  getBoardInvites = () => this.db.collection('board_invites');
+
   getUser = (email: string) => this.getUsers().doc(email);
 
   getBoard = (id: string) => this.getBoards().doc(id);
+
+  getBoardInvite = (id: string) => this.getBoardInvites().doc(id);
 
   doSignOut = () => this.auth.signOut();
 
