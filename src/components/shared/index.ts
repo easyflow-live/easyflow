@@ -10,3 +10,4 @@ export { default as Modal } from './Modal';
 export { default as Tag } from './Tag';
 export { default as Truncate } from './Truncate';
 export { default as ToastUndo } from './ToastUndo';
+export { default as SafariButtonWarning } from './SafariButtonWarning';
