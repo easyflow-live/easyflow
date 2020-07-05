@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import Router from 'next/router';
 import { ErrorProps } from 'next/error';
 import Error from 'next/error';
 
@@ -17,11 +16,9 @@ interface PageProps {
 export default ({ children, isAnonymous, redirect, error }: PageProps) => {
   const { user, initializing } = useSession();
 
-  if (initializing) return <Loader />;
+  if (initializing || redirect) return <Loader />;
   if (error) return <Error {...error} />;
   if (isAnonymous || user) return children;
-  if (!redirect) return <LandingPage />;
 
-  Router.push('/');
-  return null;
+  return <LandingPage />;
 };
