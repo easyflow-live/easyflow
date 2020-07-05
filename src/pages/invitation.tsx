@@ -3,6 +3,7 @@ import { Title } from 'react-head';
 import Router from 'next/router';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
+import { NextPage } from 'next';
 
 import firebase from 'services/firebase.service';
 import { useSession } from 'hooks/use-session';
@@ -11,7 +12,6 @@ import Header from 'components/LandingPage/Header';
 import { SafariButtonWarning } from 'components/shared';
 import { InviteStatus } from 'documents/board-invite.doc';
 import Loader from 'components/shared/Loader';
-import { NextPage } from 'next';
 
 const Shell: React.FC = ({ children }) => (
   <section className='w-full grid' style={{ placeItems: 'center' }}>
