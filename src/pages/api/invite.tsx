@@ -23,9 +23,10 @@ function createTemplate({
   userEmail,
   ownerName,
   boardName,
-  boardUrl,
+  baseUrl,
+  inviteId,
 }) {
-  const BASE_URL = 'https://easyflow.live';
+  const BASE_URL = baseUrl;
   const UTM_PARAMS =
     '/?utm_source=newsletter&utm_medium=email&utm_campaign=email';
 
@@ -360,7 +361,7 @@ ul.social li{
                     <img src="https://lh3.googleusercontent.com/-SYdK9Ptjm90/AAAAAAAAAAI/AAAAAAAABN4/xPgWgPqmvig/photo.jpg" />
 				          	<h3 class="name">${ownerName}</h3>
 				          	<span class="position">Board Owner</span>
-				           	<p><a href="${boardUrl}${UTM_PARAMS}" class="btn btn-primary">Access Board</a></p>
+                    <p><a href="${BASE_URL}/invitation?token=${inviteId}" class="btn btn-primary">Access board</a></p>
 			           	</div>
 			          </td>
 			        </tr>
@@ -451,7 +452,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     from: `Invite from EasyFlow <${auth.user}>`,
     to,
     subject: 'Board Invitation | EasyFlow',
-    html: createTemplate({ ...body }),
+    html: createTemplate({ ...body, baseUrl: req.headers.host }),
   };
 
   const promised = await new Promise((resolve, reject) => {
