@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import firebase from '../../services/firebase.service';
 import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
 
-import { sortUsersAlpha } from '../../helpers/sortUsersAlpha';
-import BoardDocument from '../../documents/board.doc';
-import BoardInviteDocument from '../../documents/board-invite.doc';
-import { useBoardTeam } from '../../hooks/use-board-team';
-import { useKeySubmit } from '../../hooks/use-key-submit';
-import { useSession } from '../../hooks/use-session';
-import Dialog from '../Dialog/Dialog';
-import { Avatar, Input } from '../shared';
-import { List, ListItem } from '../shared/List';
-import { sendInviteEmail } from 'src/libs/api';
+import firebase from 'services/firebase.service';
+import { sendInviteEmail } from 'libs/api';
+import { sortUsersAlpha } from 'helpers/sortUsersAlpha';
+import BoardDocument from 'documents/board.doc';
+import { useBoardTeam } from 'hooks/use-board-team';
+import { useKeySubmit } from 'hooks/use-key-submit';
+import { useSession } from 'hooks/use-session';
+import Dialog from 'components/Dialog/Dialog';
+import { Avatar, Input } from 'components/shared';
+import { List, ListItem } from 'components/shared/List';
 
 interface UserNameProps {
   name: string;
