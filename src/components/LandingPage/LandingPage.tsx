@@ -1,38 +1,17 @@
 import React from 'react';
 import { Title } from 'react-head';
-import { FaExclamationTriangle } from 'react-icons/fa';
 import { useTrail, animated } from 'react-spring';
 
 import { useGoogleLogin } from '../../hooks/use-google-login';
-import { useIsMobileSafari } from '../../hooks/use-is-mobile-safari';
 import { AnimatedSlideUp } from '../Animated/AnimatedSlideUp';
 import { BoardAndProcess } from '../images/BoardAndProcess';
 import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
 import Footer from './Footer';
 import Header from './Header';
 import Article from './Article';
-import { Button } from '../shared';
+import { SafariButtonWarning } from '../shared';
 
 const items = ['Simple.', 'Beautiful.', 'Darker.', 'Open source.'];
-
-interface SafariWarningProps {
-  isMobileSafari: boolean;
-  onLogin: () => void;
-}
-
-const SafariWarning = ({ isMobileSafari, onLogin }: SafariWarningProps) =>
-  isMobileSafari ? (
-    <p className='text-red-500 '>
-      <FaExclamationTriangle className='inline mr-1' />
-      <span>
-        This app is unavailable when using Safari on IPhone because of iOS
-        native issues. Please use the app from Google Chrome or Firefox. We hope
-        to improve this as soon as possible.
-      </span>
-    </p>
-  ) : (
-    <Button onClick={onLogin}>Get Started</Button>
-  );
 
 const LandingPage = () => {
   const { login } = useGoogleLogin();
@@ -47,7 +26,6 @@ const LandingPage = () => {
       transform: 'translate3d(0,0px,0)',
     },
   });
-  const isMobileSafari = useIsMobileSafari();
 
   const handleLogin = () => login();
 
@@ -94,10 +72,9 @@ const LandingPage = () => {
                     complete tasks and ship great products.
                   </p>
                   <div className='flex mt-6 justify-start md:justify-center xl:justify-start'>
-                    <SafariWarning
-                      isMobileSafari={isMobileSafari}
-                      onLogin={handleLogin}
-                    />
+                    <SafariButtonWarning onLogin={handleLogin}>
+                      Get Started
+                    </SafariButtonWarning>
                   </div>
                 </>
               </AnimatedSlideUp>
@@ -187,10 +164,9 @@ const LandingPage = () => {
                 Start today and get more done in a simple way
               </h2>
             </AnimateSlideUpinView>
-            <SafariWarning
-              isMobileSafari={isMobileSafari}
-              onLogin={handleLogin}
-            />
+            <SafariButtonWarning onLogin={handleLogin}>
+              Get Started
+            </SafariButtonWarning>
           </div>
         </div>
       </section>
