@@ -1,4 +1,4 @@
-import UserDocument from 'src/documents/user.doc';
+import UserDocument from 'documents/user.doc';
 
 export enum Actions {
   UPDATE_CARD = 'updateCard',
