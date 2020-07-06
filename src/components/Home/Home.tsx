@@ -1,11 +1,10 @@
 import React from 'react';
 import { Title } from 'react-head';
-
-import Heading from '../shared/Heading';
-import { Boards } from '../Board/Boards';
-
-import UserDocument from 'src/documents/user.doc';
 import { observer } from 'mobx-react-lite';
+
+import UserDocument from 'documents/user.doc';
+import Heading from 'components/shared/Heading';
+import { Boards } from 'components/Board/Boards';
 
 const Home = ({ userDoc }: { userDoc: UserDocument }) => {
   if (!userDoc) return null;

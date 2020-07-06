@@ -4,7 +4,7 @@ import firebase from '../services/firebase.service';
 
 export const useGoogleLogin = () => {
   const login = useCallback(
-    (cb: (user?: firebase.User) => Promise<void>) =>
+    (cb?: (user?: firebase.User) => Promise<void>) =>
       firebase.doSignInWithGoogle(cb),
     []
   );
