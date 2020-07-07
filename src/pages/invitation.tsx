@@ -26,7 +26,7 @@ const Shell: React.FC = ({ children }) => (
 const Invitation: NextPage<{ token?: string }> = ({ token }) => {
   const { isLogged, user: sessionUser } = useSession();
   const { login } = useGoogleLogin();
-  const [user, setUser] = useState<firebase.User>(sessionUser);
+  const [user, setUser] = useState<firebase.User>(null);
   const [error, setError] = useState<string>(null);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
 
       const invite = i.data();
 
-      if (invite.user.id !== user.email) {
+      if (invite.user.id !== (user || sessionUser).email) {
         setError('This invite is not for you');
         return null;
       }
@@ -52,14 +52,14 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
       return invite;
     }
 
-    if (user) {
+    if (user || sessionUser) {
       fetchInvite().then(invite => {
         if (invite) {
           Router.replace(`/b/${invite.board.id}?redirect=true`);
         }
       });
     }
-  }, [user, token]);
+  }, [user, sessionUser, token]);
 
   const handleLogin = () => login(async u => setUser(u));
 
