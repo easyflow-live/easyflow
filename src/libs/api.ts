@@ -8,12 +8,15 @@ type InviteEmail = {
   inviteId: string;
 };
 
-export const sendInviteEmail = (body: InviteEmail) => {
-  return fetch('/api/invite', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+export const sendInviteEmail = async (body: InviteEmail) => {
+  return (
+    await fetch('/api/invite', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+  ).json();
 };
