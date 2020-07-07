@@ -340,7 +340,7 @@ ul.social li{
           	<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
           		<tr>
           			<td class="logo" style="text-align: center;">
-                  <img src="https://easyflow.live/static/images/icon.png" />
+                  <img src="https://easyflow.live/static/images/icon.ico" />
                   <h1><a href="${BASE_URL}${UTM_PARAMS}">EasyFlow</a></h1>
 			          </td>
           		</tr>
