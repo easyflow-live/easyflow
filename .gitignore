@@ -5,3 +5,4 @@ stats.json
 .env-dev
 .env
 .env.local
+.vercel
