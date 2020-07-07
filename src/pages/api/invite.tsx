@@ -15,7 +15,10 @@ const transporter = nodemailer.createTransport({
   host: 'smtpout.secureserver.net',
   port: 465,
   secure: true,
-  auth,
+  auth: {
+    user: auth.user,
+    pass: auth.pass,
+  },
 });
 
 function createTemplate({
@@ -446,24 +449,14 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (req.method !== 'POST')
     return res.status(405).send({ error: `Method ${req.method} Not Allowed` });
 
-  const { to, ...body } = req.body;
-
   const mailOptions = {
     from: `Invite from EasyFlow <${auth.user}>`,
-    to,
+    to: req.body.to,
     subject: 'Board Invitation | EasyFlow',
-    html: createTemplate({ ...body, baseUrl: req.headers.host }),
+    html: createTemplate({ ...req.body, baseUrl: req.headers.origin }),
   };
 
-  const promised = await new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (erro, info) => {
-      if (erro) {
-        reject(erro);
-        return;
-      }
-      resolve(info);
-    });
-  });
+  const info = await transporter.sendMail(mailOptions);
 
-  res.send(promised);
+  res.send({ status: info.response });
 };
