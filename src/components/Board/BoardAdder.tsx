@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 
-import ClickOutside from '../shared/ClickOutside';
-import { useSession } from '../../hooks/use-session';
-import { Button, Input } from '../shared';
+import { useSession } from 'hooks/use-session';
+import BoardDocument from 'documents/board.doc';
+import ClickOutside from 'components/shared/ClickOutside';
+import { Button, Input } from 'components/shared';
 
 const BoardAdder = () => {
   const { userDoc } = useSession();
@@ -23,17 +22,14 @@ const BoardAdder = () => {
     event.preventDefault();
     if (title === '') return;
 
-    await firebase
-      .firestore()
-      .collection('boards')
-      .add({
-        owner: userDoc.ref,
-        title,
-        color: '',
-        users: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
-        lists: [],
-        completed: false,
-      });
+    const index = userDoc.boards.docs.length;
+
+    await BoardDocument.craate({
+      owner: userDoc.ref,
+      users: [userDoc.ref],
+      title,
+      index,
+    });
 
     setIsOpen(false);
     setTitle('');
