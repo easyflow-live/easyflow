@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import shortid from 'shortid';
 import { toast } from 'react-toastify';
 
 import { useKeySubmit } from '../../hooks/use-key-submit';
 import { useSession } from '../../hooks/use-session';
 import Dialog from '../Dialog/Dialog';
 import { Input } from '../shared';
+import BoardDocument from 'documents/board.doc';
 
 interface AddBoardModalProps {
   isOpen?: boolean;
@@ -23,31 +21,24 @@ const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
     setTitle(event.target.value);
   };
 
-  const save = async (value: string) => {
+  const save = (value: string) => {
     if (!value) return;
 
     const index = userDoc.boards.docs.length;
 
-    // TODO change this to modal class
-    return userDoc.boards.ref
-      .add({
-        uid: shortid.generate(),
-        owner: userDoc.ref,
-        title: value,
-        color: '',
-        users: firebase.firestore.FieldValue.arrayUnion(userDoc.ref),
-        index,
-      })
-      .then(() => {
-        toast(`A new board was created!`);
-      });
+    BoardDocument.craate({
+      owner: userDoc.ref,
+      users: [userDoc.ref],
+      title: value,
+      index,
+    }).then(() => {
+      toast(`A new board was created!`);
+      setTitle('');
+      toggleIsOpen();
+    });
   };
 
-  const handleSubmit = async () => {
-    await save(title);
-    setTitle('');
-    toggleIsOpen();
-  };
+  const handleSubmit = () => save(title);
 
   const handleKeyDown = useKeySubmit(handleSubmit, () => {
     setTitle('');
