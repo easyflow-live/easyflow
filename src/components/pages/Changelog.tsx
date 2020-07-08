@@ -83,6 +83,18 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Tuesday, July 7, 2020</LogDate>
+
+        <LogList type={LogTypes.feature}>
+          {['Email invitation when add a new member to the board team.'].map(
+            (item, i) => (
+              <LogListItem key={i}>{item}</LogListItem>
+            )
+          )}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Thursday, June 11, 2020</LogDate>
 
         <LogList type={LogTypes.feature}>
