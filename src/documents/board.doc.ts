@@ -1,6 +1,7 @@
 import { Document, Collection } from 'firestorter';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import shortid from 'shortid';
 
 import ListDocument from './list.doc';
 import UserDocument from './user.doc';
@@ -8,18 +9,32 @@ import ActionDocument from './action.doc';
 import BoardInviteDocument, { InviteStatus } from './board-invite.doc';
 
 export interface Board {
-  title: string;
   uid: string;
-  color: string;
+  index: number;
+  title: string;
   owner: UserDocument['ref'];
   users: UserDocument['ref'][];
-  tags: string[];
+  tags?: string[];
   archived?: boolean;
+  lists?: string[];
 }
 
 export default class BoardDocument extends Document<Board> {
   private _lists: Collection<ListDocument>;
   private _actions: Collection<ActionDocument>;
+
+  static craate(board: Omit<Board, 'uid'>): Promise<BoardDocument> {
+    const boards = new Collection<BoardDocument>('/boards');
+
+    return boards.add({
+      archived: false,
+      tags: [],
+      uid: shortid.generate(),
+      lists: [],
+      ...board,
+      users: firebase.firestore.FieldValue.arrayUnion(...board.users),
+    });
+  }
 
   get lists(): Collection<ListDocument> {
     if (this._lists) return this._lists;
