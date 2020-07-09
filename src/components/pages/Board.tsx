@@ -20,24 +20,20 @@ const error404 = {
 
 const Board = ({ query }: BoardPageProps) => {
   const { userDoc, isLogged } = useSession();
-  const [board, isBoardLoading] = useBoard(query.uid);
+  const [board] = useBoard(query.uid);
   const { setPreviewMode } = useInterface();
 
-  const isLoading = userDoc ? userDoc.boards.isLoading : true;
-
-  if (!board && isLoading) return <Loader />;
-
-  const redirect = !userDoc && !isBoardLoading;
+  if (!board || board.isLoading) return <Loader />;
 
   const previewMode =
     !!query.previewmode || !isLogged || (board && !board.hasMember(userDoc));
+
   setPreviewMode(previewMode);
 
   return (
     <AuthenticatedPage
-      isAnonymous={!isLogged}
-      redirect={redirect}
-      error={!board && error404}
+      isAnonymous={previewMode}
+      error={!board.exists && error404}
     >
       <BoardComponent board={board} previewMode={previewMode} />
     </AuthenticatedPage>

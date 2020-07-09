@@ -36,6 +36,10 @@ export default class BoardDocument extends Document<Board> {
     });
   }
 
+  get exists(): boolean {
+    return this.hasData;
+  }
+
   get lists(): Collection<ListDocument> {
     if (this._lists) return this._lists;
 
