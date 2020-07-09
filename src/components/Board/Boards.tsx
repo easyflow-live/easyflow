@@ -24,11 +24,7 @@ export const Boards = observer(({ boards }: BoardsProps) => {
           .filter(({ data }) => !data.archived)
           .map(board => (
             <CSSTransition key={board.id} timeout={200} classNames='item'>
-              <BoardLink
-                title={board.data.title}
-                key={board.id}
-                href={`/b/${board.id}`}
-              />
+              <BoardLink title={board.data.title} id={board.id} />
             </CSSTransition>
           ))}
       </TransitionGroup>
