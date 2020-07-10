@@ -32,6 +32,7 @@
     "mobx-react": "^5.4.3",
     "mobx-react-lite": "^1.5.2",
     "next": "^9.4.4",
+    "next-cookies": "^2.0.3",
     "nodemailer": "^6.4.10",
     "normalizr": "^3.6.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
