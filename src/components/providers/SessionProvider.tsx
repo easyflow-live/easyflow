@@ -12,8 +12,20 @@ import cookies from 'js-cookie';
 
 import UserDocument from 'documents/user.doc';
 
+interface CookieUser {
+  displayName: string;
+  email: string;
+  photoURL: string;
+  id: string;
+  token: string;
+  emailVerified: string;
+  isAnonymous: boolean;
+  createdAt: number;
+  lastLoginAt: number;
+}
+
 interface SessionContextProps {
-  user: firebase.User;
+  user: CookieUser;
   initializing: boolean;
   userDoc: UserDocument;
   isLogged: boolean;
@@ -31,7 +43,7 @@ const SessionContext = createContext<SessionContextProps>({
 const useProvideSession = () => {
   const router = useRouter();
 
-  const [user, setUser] = useState<firebase.User>();
+  const [user, setUser] = useState<CookieUser>();
   const [userDoc, setUserDoc] = useState<UserDocument>(null);
   const [initializing, setInitializing] = useState<boolean>(true);
 
@@ -46,6 +58,17 @@ const useProvideSession = () => {
       })
       .catch(console.log);
   };
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged(
+        (authUser: firebase.User) =>
+          authUser && setUser(normalizeCookieUser(authUser))
+      );
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const cookie = cookies.get('auth');
@@ -90,4 +113,32 @@ export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
 
 export const useSession = () => {
   return useContext(SessionContext);
+};
+
+export const normalizeCookieUser = (user: firebase.User): CookieUser => {
+  const rawUser: any = user.toJSON();
+
+  const {
+    displayName,
+    email,
+    emailVerified,
+    isAnonymous,
+    photoURL,
+    stsTokenManager,
+    uid,
+    createdAt,
+    lastLoginAt,
+  } = rawUser;
+
+  return {
+    displayName,
+    email,
+    photoURL,
+    id: uid,
+    token: stsTokenManager.accessToken,
+    emailVerified,
+    isAnonymous,
+    createdAt,
+    lastLoginAt,
+  };
 };

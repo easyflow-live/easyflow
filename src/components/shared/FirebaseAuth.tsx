@@ -6,6 +6,8 @@ import 'firebase/auth';
 import cookie from 'js-cookie';
 import { useRouter } from 'next/router';
 
+import { normalizeCookieUser } from 'components/providers/SessionProvider';
+
 const firebaseAuthConfig = {
   signInFlow: 'popup',
   signInOptions: [
@@ -15,16 +17,7 @@ const firebaseAuthConfig = {
   ],
   callbacks: {
     signInSuccessWithAuthResult: async ({ user }) => {
-      const token = await firebase.auth().currentUser.getIdToken();
-      const userData = {
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        id: user.uid,
-        token,
-      };
-
-      cookie.set('auth', userData);
+      cookie.set('auth', normalizeCookieUser(user));
 
       return true;
     },
@@ -42,7 +35,7 @@ const FirebaseAuth = () => {
 
       configsRef.current = {
         ...firebaseAuthConfig,
-        signInSuccessUrl: route.asPath,
+        //...(route.pathname !== '/' ? { signInSuccessUrl: route.asPath } : {}),
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
