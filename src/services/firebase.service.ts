@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 import 'firebase/firestore';
 import { initFirestorter } from 'firestorter';
 
@@ -16,10 +15,8 @@ const config = {
 };
 
 class FirebaseService {
-  app: any;
-  auth: firebase.auth.Auth;
+  app: firebase.app.App;
   db: firebase.firestore.Firestore;
-  googleProvider: firebase.auth.GoogleAuthProvider;
 
   constructor() {
     if (!firebase.apps.length) {
@@ -32,32 +29,8 @@ class FirebaseService {
     }
 
     /* Firebase APIs */
-    this.auth = firebase.auth();
     this.db = firebase.firestore();
-
-    /* Social Sign In Method Provider */
-    this.googleProvider = new firebase.auth.GoogleAuthProvider();
   }
-
-  // *** Auth API ***
-  doSignInWithGoogle = async (
-    onLoggin: (user?: firebase.User) => {}
-  ): Promise<void> => {
-    const { user } = await this.auth.signInWithPopup(this.googleProvider);
-
-    if (user) {
-      const token = await user.getIdToken(true);
-      this.getUser(user.email).set({
-        username: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        roles: {},
-        token,
-      });
-
-      onLoggin && onLoggin(user);
-    }
-  };
 
   getUsers = () => this.db.collection('users');
 
@@ -70,8 +43,6 @@ class FirebaseService {
   getBoard = (id: string) => this.getBoards().doc(id);
 
   getBoardInvite = (id: string) => this.getBoardInvites().doc(id);
-
-  doSignOut = () => this.auth.signOut();
 
   createAction = (action: IAction) => {
     return this.db.collection('actions').add(action);
