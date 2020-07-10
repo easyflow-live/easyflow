@@ -2,11 +2,13 @@ import React from 'react';
 import { Title } from 'react-head';
 import { observer } from 'mobx-react-lite';
 
-import UserDocument from 'documents/user.doc';
 import Heading from 'components/shared/Heading';
 import { Boards } from 'components/Board/Boards';
+import { useSession } from 'hooks/use-session';
 
-const Home = ({ userDoc }: { userDoc: UserDocument }) => {
+const Home = () => {
+  const { userDoc } = useSession();
+
   if (!userDoc) return null;
 
   return (
