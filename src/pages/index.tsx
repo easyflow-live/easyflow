@@ -1,16 +1,24 @@
+import nextCookies from 'next-cookies';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+
 import Home from '../components/Home/Home';
-import AuthenticatedPage from '../components/shared/AuthenticatedPage';
-import { useSession } from '../hooks/use-session';
-import { useRouter } from 'next/router';
+import LandingPage from 'components/LandingPage/LandingPage';
+import { useSession } from 'hooks/use-session';
 
-export default () => {
-  const { userDoc } = useSession();
-  const { query } = useRouter();
-  const { redirect } = query;
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const auth = nextCookies(ctx).auth || null;
 
-  return (
-    <AuthenticatedPage redirect={redirect === 'true' ? true : false}>
-      <Home userDoc={userDoc} />
-    </AuthenticatedPage>
-  );
+  return {
+    props: { auth },
+  };
 };
+
+const Index: InferGetServerSidePropsType<typeof getServerSideProps> = ({
+  auth,
+}) => {
+  const { user } = useSession();
+
+  return auth || user ? <Home /> : <LandingPage />;
+};
+
+export default Index;

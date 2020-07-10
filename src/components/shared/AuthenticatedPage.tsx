@@ -18,7 +18,7 @@ export default ({ children, isAnonymous, redirect, error }: PageProps) => {
 
   if (redirect) return <Loader />;
   if (error) return <Error {...error} />;
-  if (isAnonymous || user) return children;
+  if (!user && !isAnonymous) return <LandingPage />;
 
-  return <LandingPage />;
+  return children;
 };
