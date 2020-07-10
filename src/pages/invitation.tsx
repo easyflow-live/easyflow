@@ -24,9 +24,7 @@ const Shell: React.FC = ({ children }) => (
 );
 
 const Invitation: NextPage<{ token?: string }> = ({ token }) => {
-  const { isLogged, user: sessionUser } = useSession();
-  const { login } = useGoogleLogin();
-  const [user, setUser] = useState<firebase.User>(null);
+  const { isLogged, user } = useSession();
   const [error, setError] = useState<string>(null);
 
   useEffect(() => {
@@ -40,7 +38,7 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
 
       const invite = i.data();
 
-      if (invite.user.id !== (user || sessionUser).email) {
+      if (invite.user.id !== user.email) {
         setError('This invite is not for you');
         return null;
       }
@@ -52,16 +50,14 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
       return invite;
     }
 
-    if (user || sessionUser) {
+    if (user) {
       fetchInvite().then(invite => {
         if (invite) {
           Router.replace(`/b/${invite.board.id}?redirect=true`);
         }
       });
     }
-  }, [user, sessionUser, token]);
-
-  const handleLogin = () => login(async u => setUser(u));
+  }, [user, token]);
 
   if (error)
     return (
@@ -87,9 +83,7 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
         <h1 className='text-2xl font-light text-white leading-tight mb-6'>
           Log in to EasyFlow
         </h1>
-        <SafariButtonWarning onLogin={handleLogin}>
-          Login with Google
-        </SafariButtonWarning>
+        <SafariButtonWarning>Login with Google</SafariButtonWarning>
       </Shell>
     </main>
   );
