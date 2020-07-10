@@ -12,7 +12,7 @@ import cookies from 'js-cookie';
 
 import UserDocument from 'documents/user.doc';
 
-interface CookieUser {
+export interface CookieUser {
   displayName: string;
   email: string;
   photoURL: string;
@@ -80,24 +80,28 @@ const useProvideSession = () => {
     const u = JSON.parse(cookie);
     setUser(u);
 
-    const userDoc = new UserDocument(`users/${u.email}`);
-    setUserDoc(userDoc);
-
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(u.email)
-      .set({
-        username: u.displayName,
-        email: u.email,
-        photo: u.photoURL,
-        roles: {},
-        token: u.token,
-      })
-      .then(() => setInitializing(false));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const userDoc = new UserDocument(`users/${user.email}`);
+      setUserDoc(userDoc);
+
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user.email)
+        .set({
+          username: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          roles: {},
+          token: user.token,
+        })
+        .then(() => setInitializing(false));
+    }
+  }, [user]);
 
   return { user, initializing, userDoc, isLogged: !!user, logout };
 };
