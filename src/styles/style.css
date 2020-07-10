@@ -422,4 +422,8 @@ html {
   color: #fff;
   background-color: #2d3748;
 }
+
+div.firebaseui-card-content {
+  padding: 0px;
+}
 @tailwind utilities;

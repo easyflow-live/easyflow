@@ -2,21 +2,18 @@ import React from 'react';
 import { Title } from 'react-head';
 import { useTrail, animated } from 'react-spring';
 
-import { useGoogleLogin } from '../../hooks/use-google-login';
-import { AnimatedSlideUp } from '../Animated/AnimatedSlideUp';
-import { BoardAndProcess } from '../images/BoardAndProcess';
-import AnimateSlideUpinView from '../Animated/AnimateSlideUpinView';
+import { AnimatedSlideUp } from 'components/Animated/AnimatedSlideUp';
+import { BoardAndProcess } from 'components/images/BoardAndProcess';
+import AnimateSlideUpinView from 'components/Animated/AnimateSlideUpinView';
+import { SafariButtonWarning } from 'components/shared';
 import Footer from './Footer';
 import Header from './Header';
 import Article from './Article';
-import { SafariButtonWarning } from '../shared';
 
 const items = ['Simple.', 'Beautiful.', 'Darker.', 'Open source.'];
 
 const LandingPage = () => {
-  const { login } = useGoogleLogin();
   const trail = useTrail(items.length, {
-    //config,
     from: {
       opacity: 0,
       transform: 'translate3d(0, 20px,0)',
@@ -26,8 +23,6 @@ const LandingPage = () => {
       transform: 'translate3d(0,0px,0)',
     },
   });
-
-  const handleLogin = () => login();
 
   return (
     <main>
@@ -72,9 +67,7 @@ const LandingPage = () => {
                     complete tasks and ship great products.
                   </p>
                   <div className='flex mt-6 justify-start md:justify-center xl:justify-start'>
-                    <SafariButtonWarning onLogin={handleLogin}>
-                      Get Started
-                    </SafariButtonWarning>
+                    <SafariButtonWarning />
                   </div>
                 </>
               </AnimatedSlideUp>
@@ -164,9 +157,6 @@ const LandingPage = () => {
                 Start today and get more done in a simple way
               </h2>
             </AnimateSlideUpinView>
-            <SafariButtonWarning onLogin={handleLogin}>
-              Get Started
-            </SafariButtonWarning>
           </div>
         </div>
       </section>

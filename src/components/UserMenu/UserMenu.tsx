@@ -1,8 +1,7 @@
 import React from 'react';
-import Router from 'next/router';
 
-import { useGoogleLogin } from '../../hooks/use-google-login';
 import Menu, { MenuItem, Button } from '../shared/Menu';
+import { useSession } from 'hooks/use-session';
 
 interface UserMenuProps {
   trigger: React.ReactChild;
@@ -18,12 +17,7 @@ const UserEmail = ({ email }: { email: string }) => (
 );
 
 const UserMenu = ({ trigger, userName, userEmail }: UserMenuProps) => {
-  const { logout } = useGoogleLogin();
-
-  const signOut = () => {
-    logout();
-    Router.push('/');
-  };
+  const { logout } = useSession();
 
   return (
     <Menu
@@ -41,7 +35,7 @@ const UserMenu = ({ trigger, userName, userEmail }: UserMenuProps) => {
       items={
         <MenuItem
           className='cursor-pointer hover:text-teal-500 px-25 py-7'
-          onClick={signOut}
+          onClick={logout}
         >
           Sign out
         </MenuItem>

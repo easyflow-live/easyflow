@@ -2,16 +2,9 @@ import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 import { useIsMobileSafari } from 'hooks/use-is-mobile-safari';
-import { Button } from 'components/shared';
+import FirebaseAuth from './FirebaseAuth';
 
-interface SafariWarningProps {
-  onLogin: () => void;
-}
-
-const SafariButtonWarning: React.FC<SafariWarningProps> = ({
-  children,
-  onLogin,
-}) => {
+const SafariButtonWarning: React.FC<SafariWarningProps> = () => {
   const isMobileSafari = useIsMobileSafari();
 
   return isMobileSafari ? (
@@ -24,7 +17,7 @@ const SafariButtonWarning: React.FC<SafariWarningProps> = ({
       </span>
     </p>
   ) : (
-    <Button onClick={onLogin}>{children}</Button>
+    <FirebaseAuth />
   );
 };
 

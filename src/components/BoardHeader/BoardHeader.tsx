@@ -2,9 +2,9 @@ import React from 'react';
 import { MdTimeline, MdViewColumn } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
-import { useGoogleLogin } from '../../hooks/use-google-login';
-import BoardDocument from '../../documents/board.doc';
-import { useInterface } from '../providers/InterfaceProvider';
+import BoardDocument from 'documents/board.doc';
+import { useInterface } from 'components/providers/InterfaceProvider';
+import { SafariButtonWarning } from 'components/shared';
 import AddNewListModal from './AddNewListModal';
 import TeamListModal from './TeamListModal';
 import BoardButton from './BoardButton';
@@ -21,9 +21,6 @@ interface BoardHeaderProps {
 const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { setMenu } = useInterface();
   const toggleMenu = () => setMenu(true);
-
-  const { login } = useGoogleLogin();
-  const handleLogin = () => login();
 
   return (
     <div className='flex justify-between items-center'>
@@ -58,12 +55,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
           </>
         ) : (
           <div className='px-3'>
-            <button
-              className='text-pink-400 hover:text-pink-500 mb-2'
-              onClick={handleLogin}
-            >
-              Login
-            </button>
+            <SafariButtonWarning />
           </div>
         )}
       </div>
