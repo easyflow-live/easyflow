@@ -28,7 +28,7 @@ const Board = ({ query }: BoardPageProps) => {
 
   useEffect(() => {
     setPreviewMode(previewMode);
-  }, [previewMode]);
+  }, [previewMode, setPreviewMode]);
 
   if (!board || board.isLoading) return <Loader />;
 
