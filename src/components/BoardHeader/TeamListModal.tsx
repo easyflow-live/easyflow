@@ -61,7 +61,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
 
     const user = await getUser(newValue);
 
-    if (board.hasMember(user)) {
+    if (board.hasMember(user.id)) {
       toast(`The user ${value} is already a member.`);
       setSubmit(false);
       return;

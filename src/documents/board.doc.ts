@@ -83,11 +83,11 @@ export default class BoardDocument extends Document<Board> {
     });
   }
 
-  hasMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {
-    if (!user) return false;
+  hasMember(email: string) {
+    if (!email) return false;
 
     const ids = this.data.users?.map(({ id }) => id) || [];
-    return ids.includes(user.id);
+    return ids.includes(email);
   }
 
   addMember(user: UserDocument | firebase.firestore.DocumentSnapshot) {

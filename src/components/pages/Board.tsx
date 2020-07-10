@@ -19,12 +19,14 @@ const error404 = {
 };
 
 const Board = ({ query }: BoardPageProps) => {
-  const { userDoc, isLogged } = useSession();
+  const { user } = useSession();
   const [board] = useBoard(query.uid);
   const { setPreviewMode } = useInterface();
 
-  const previewMode =
-    !!query.previewmode || !isLogged || (board && !board.hasMember(userDoc));
+  const isAnonymous = !user;
+  const isABoardMember = !isAnonymous && board && board.hasMember(user.email);
+
+  const previewMode = !!query.previewmode || isAnonymous || !isABoardMember;
 
   useEffect(() => {
     setPreviewMode(previewMode);
@@ -34,7 +36,7 @@ const Board = ({ query }: BoardPageProps) => {
 
   return (
     <AuthenticatedPage
-      isAnonymous={previewMode}
+      isAnonymous={isAnonymous}
       error={!board.exists && error404}
     >
       <BoardComponent board={board} previewMode={previewMode} />
