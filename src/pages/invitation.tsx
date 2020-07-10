@@ -82,7 +82,7 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
         <h1 className='text-2xl font-light text-white leading-tight mb-6'>
           Log in to EasyFlow
         </h1>
-        <SafariButtonWarning>Login with Google</SafariButtonWarning>
+        <SafariButtonWarning />
       </Shell>
     </main>
   );
