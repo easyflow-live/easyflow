@@ -7,7 +7,6 @@ import { NextPage } from 'next';
 
 import firebase from 'services/firebase.service';
 import { useSession } from 'hooks/use-session';
-import { useGoogleLogin } from 'hooks/use-google-login';
 import Header from 'components/LandingPage/Header';
 import { SafariButtonWarning } from 'components/shared';
 import { InviteStatus } from 'documents/board-invite.doc';

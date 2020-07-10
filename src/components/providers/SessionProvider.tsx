@@ -28,15 +28,6 @@ const SessionContext = createContext<SessionContextProps>({
   logout: null,
 });
 
-export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
-  const session = useProvideSession();
-  return (
-    <SessionContext.Provider value={session}>
-      {children}
-    </SessionContext.Provider>
-  );
-};
-
 const useProvideSession = () => {
   const router = useRouter();
 
@@ -86,6 +77,15 @@ const useProvideSession = () => {
   }, []);
 
   return { user, initializing, userDoc, isLogged: !!user, logout };
+};
+
+export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
+  const session = useProvideSession();
+  return (
+    <SessionContext.Provider value={session}>
+      {children}
+    </SessionContext.Provider>
+  );
 };
 
 export const useSession = () => {

@@ -45,6 +45,7 @@ const FirebaseAuth = () => {
         signInSuccessUrl: route.asPath,
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
