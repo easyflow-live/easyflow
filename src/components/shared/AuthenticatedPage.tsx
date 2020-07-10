@@ -14,9 +14,9 @@ interface PageProps {
 }
 
 export default ({ children, isAnonymous, redirect, error }: PageProps) => {
-  const { user, initializing } = useSession();
+  const { user } = useSession();
 
-  if (initializing || redirect) return <Loader />;
+  if (redirect) return <Loader />;
   if (error) return <Error {...error} />;
   if (isAnonymous || user) return children;
 

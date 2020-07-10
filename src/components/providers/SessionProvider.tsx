@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import {
   useContext,
   createContext,
@@ -6,15 +7,17 @@ import {
   useState,
   useEffect,
 } from 'react';
-import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
+import cookies from 'js-cookie';
 
-import UserDocument from '../../documents/user.doc';
+import UserDocument from 'documents/user.doc';
 
 interface SessionContextProps {
   user: firebase.User;
   initializing: boolean;
   userDoc: UserDocument;
   isLogged: boolean;
+  logout: () => Promise<void>;
 }
 
 const SessionContext = createContext<SessionContextProps>({
@@ -22,48 +25,68 @@ const SessionContext = createContext<SessionContextProps>({
   initializing: true,
   userDoc: null,
   isLogged: false,
+  logout: null,
 });
 
-export const useAuth = () => {
-  const [state, setState] = useState(() => {
-    const user = firebase.auth().currentUser;
-    return { initializing: !user, user };
-  });
-
-  useEffect(() => {
-    function onChange(user: firebase.User) {
-      setState({ initializing: false, user });
-    }
-
-    const unsubscribe = firebase.auth().onAuthStateChanged(onChange);
-
-    return () => unsubscribe();
-  }, []);
-
-  return state;
+export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
+  const session = useProvideSession();
+  return (
+    <SessionContext.Provider value={session}>
+      {children}
+    </SessionContext.Provider>
+  );
 };
 
-export const SessionProvider = observer(
-  ({ children }: PropsWithChildren<{}>) => {
-    const { user, initializing } = useAuth();
-    const [userDoc, setUserDoc] = useState<UserDocument>(null);
+const useProvideSession = () => {
+  const router = useRouter();
 
-    useEffect(() => {
-      if (user) {
-        const userDoc = new UserDocument(`users/${user.email}`);
-        setUserDoc(userDoc);
-      }
-    }, [user]);
+  const [user, setUser] = useState<firebase.User>();
+  const [userDoc, setUserDoc] = useState<UserDocument>(null);
+  const [initializing, setInitializing] = useState<boolean>(true);
 
-    const value = { user, initializing, userDoc, isLogged: !!user };
+  const logout = async () => {
+    return firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        cookies.remove('auth');
+        router.push('/');
+        setUser(null);
+      })
+      .catch(console.log);
+  };
 
-    return (
-      <SessionContext.Provider value={value}>
-        {children}
-      </SessionContext.Provider>
-    );
-  }
-);
+  useEffect(() => {
+    const cookie = cookies.get('auth');
+    if (!cookie) {
+      setInitializing(false);
+      return;
+    }
+
+    const u = JSON.parse(cookie);
+    setUser(u);
+
+    const userDoc = new UserDocument(`users/${u.email}`);
+    setUserDoc(userDoc);
+
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(u.email)
+      .set({
+        username: u.displayName,
+        email: u.email,
+        photo: u.photoURL,
+        roles: {},
+        token: u.token,
+      })
+      .then(() => setInitializing(false));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { user, initializing, userDoc, isLogged: !!user, logout };
+};
 
 export const useSession = () => {
   return useContext(SessionContext);
