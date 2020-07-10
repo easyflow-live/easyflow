@@ -29,6 +29,7 @@ const Avatar = memo(
     borderColor,
     className = '',
     size = 'medium',
+    src = '/static/images/default-avatar.png',
     ...props
   }: AvatarProps) => (
     <img
@@ -40,6 +41,7 @@ const Avatar = memo(
         className
       )}
       title={username}
+      src={src}
       {...props}
     />
   )
