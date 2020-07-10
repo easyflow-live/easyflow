@@ -7,6 +7,7 @@ import BoardComponent from '../Board/Board';
 import AuthenticatedPage from '../shared/AuthenticatedPage';
 import { useInterface } from '../providers/InterfaceProvider';
 import Loader from '../shared/Loader';
+import { BoardsStoreProvider, UsersStoreProvider } from 'store';
 
 interface BoardPageProps {
   query: { uid: string; previewmode: boolean };
@@ -39,7 +40,11 @@ const Board = ({ query }: BoardPageProps) => {
       isAnonymous={isAnonymous}
       error={!board.exists && error404}
     >
-      <BoardComponent board={board} previewMode={previewMode} />
+      <UsersStoreProvider>
+        <BoardsStoreProvider>
+          <BoardComponent board={board} previewMode={previewMode} />
+        </BoardsStoreProvider>
+      </UsersStoreProvider>
     </AuthenticatedPage>
   );
 };
