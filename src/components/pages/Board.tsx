@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSession } from '../../hooks/use-session';
@@ -23,12 +23,14 @@ const Board = ({ query }: BoardPageProps) => {
   const [board] = useBoard(query.uid);
   const { setPreviewMode } = useInterface();
 
-  if (!board || board.isLoading) return <Loader />;
-
   const previewMode =
     !!query.previewmode || !isLogged || (board && !board.hasMember(userDoc));
 
-  setPreviewMode(previewMode);
+  useEffect(() => {
+    setPreviewMode(previewMode);
+  }, [previewMode]);
+
+  if (!board || board.isLoading) return <Loader />;
 
   return (
     <AuthenticatedPage
