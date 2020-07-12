@@ -18,7 +18,7 @@ const firebaseAuthConfig = {
     signInSuccessWithAuthResult: ({ user }) => {
       cookie.set('auth', normalizeCookieUser(user));
 
-      return true;
+      return false;
     },
   },
 };
