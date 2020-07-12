@@ -11,6 +11,7 @@ import BoardButton from './BoardButton';
 import BoardMenu from './BoardMenu';
 import BoardTitle from './BoardTitle';
 import Team from './Team';
+import { useSession } from 'hooks/use-session';
 
 interface BoardHeaderProps {
   board: BoardDocument;
@@ -20,6 +21,7 @@ interface BoardHeaderProps {
 
 const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { setMenu } = useInterface();
+  const { user } = useSession();
   const toggleMenu = () => setMenu(true);
 
   return (
@@ -36,7 +38,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
           icon={<Team board={board} />}
           renderModal={props => <TeamListModal board={board} {...props} />}
         />
-        {!previewMode ? (
+        {!previewMode && (
           <>
             <BoardButton
               icon={<MdViewColumn size='16px' />}
@@ -53,7 +55,9 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
 
             <BoardMenu className='ml-2' board={board} onRemove={onRemove} />
           </>
-        ) : (
+        )}
+
+        {previewMode && !user && (
           <div className='px-3'>
             <SafariButtonWarning />
           </div>
