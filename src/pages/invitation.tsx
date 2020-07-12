@@ -52,7 +52,7 @@ const Invitation: NextPage<{ token?: string }> = ({ token }) => {
     if (user) {
       fetchInvite().then(invite => {
         if (invite) {
-          Router.replace(`/b/${invite.board.id}?redirect=true`);
+          Router.replace(`/b/${invite.board.id}`);
         }
       });
     }
