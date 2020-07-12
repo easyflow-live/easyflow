@@ -24,6 +24,34 @@ export interface CookieUser {
   lastLoginAt: number;
 }
 
+export const normalizeCookieUser = (user: firebase.User): CookieUser => {
+  const rawUser: any = user.toJSON();
+
+  const {
+    displayName,
+    email,
+    emailVerified,
+    isAnonymous,
+    photoURL,
+    stsTokenManager,
+    uid,
+    createdAt,
+    lastLoginAt,
+  } = rawUser;
+
+  return {
+    displayName,
+    email,
+    photoURL,
+    id: uid,
+    token: stsTokenManager.accessToken,
+    emailVerified,
+    isAnonymous,
+    createdAt,
+    lastLoginAt,
+  };
+};
+
 interface SessionContextProps {
   user: CookieUser;
   initializing: boolean;
@@ -117,32 +145,4 @@ export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
 
 export const useSession = () => {
   return useContext(SessionContext);
-};
-
-export const normalizeCookieUser = (user: firebase.User): CookieUser => {
-  const rawUser: any = user.toJSON();
-
-  const {
-    displayName,
-    email,
-    emailVerified,
-    isAnonymous,
-    photoURL,
-    stsTokenManager,
-    uid,
-    createdAt,
-    lastLoginAt,
-  } = rawUser;
-
-  return {
-    displayName,
-    email,
-    photoURL,
-    id: uid,
-    token: stsTokenManager.accessToken,
-    emailVerified,
-    isAnonymous,
-    createdAt,
-    lastLoginAt,
-  };
 };

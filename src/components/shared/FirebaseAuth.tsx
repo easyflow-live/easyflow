@@ -15,7 +15,7 @@ const firebaseAuthConfig = {
     },
   ],
   callbacks: {
-    signInSuccessWithAuthResult: async ({ user }) => {
+    signInSuccessWithAuthResult: ({ user }) => {
       cookie.set('auth', normalizeCookieUser(user));
 
       return true;
