@@ -16,6 +16,7 @@
   "author": "Fellipe Pinheiro <pinheiro.llip@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/js-cookie": "^2.2.6",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "classnames": "^2.2.6",
