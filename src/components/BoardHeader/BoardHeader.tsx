@@ -21,8 +21,9 @@ interface BoardHeaderProps {
 
 const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { setMenu } = useInterface();
-  const { user, userDoc } = useSession();
+  const { user } = useSession();
   const toggleMenu = () => setMenu(true);
+  const isOwner = board.isOwner(user.email);
 
   return (
     <div className='flex justify-between items-center'>
@@ -55,7 +56,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
 
             <BoardMenu
               className='ml-2'
-              user={userDoc}
+              isOwner={isOwner}
               board={board}
               onRemove={onRemove}
             />
