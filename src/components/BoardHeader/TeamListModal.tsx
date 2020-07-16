@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
+import Router from 'next/router';
 
 import firebase from 'services/firebase.service';
 import { sendInviteEmail } from 'libs/api';
@@ -108,7 +109,15 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
 
     if (user.exists) {
       board.removeMember(user).then(r => {
-        toast(`User ${assignee.username} was removed from the board!`);
+        const myself = user.id === userDoc.id;
+
+        const subject = myself
+          ? 'You left'
+          : `User ${assignee.username} was remved from`;
+
+        toast(`${subject} the board!`);
+
+        if (myself) Router.replace('/');
         return r;
       });
     }
@@ -213,6 +222,16 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
                         <MdRemove size='24px' />
                       </button>
                     </div>
+                  )}
+
+                  {item.email === userDoc.id && (
+                    <button
+                      className='text-red-500 hover:text-red-700  h-4 pl-4'
+                      title={`Leave the board`}
+                      onClick={() => remove(key)}
+                    >
+                      <MdRemove size='24px' />
+                    </button>
                   )}
                 </ListItem>
               )

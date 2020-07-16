@@ -6,15 +6,19 @@ import Menu, { MenuItem, Button, Divider } from '../shared/Menu';
 import AddTagsModal from './AddTagsModal';
 import { MdSettings } from 'react-icons/md';
 import styled from 'styled-components';
+import UserDocument from 'documents/user.doc';
 
 interface BoardMenuProps {
   board: BoardDocument;
+  user: UserDocument;
   className: string;
   onRemove: () => Promise<void>;
 }
 
-const BoardMenu = ({ board, className, onRemove }: BoardMenuProps) => {
+const BoardMenu = ({ board, user, className, onRemove }: BoardMenuProps) => {
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
+
+  const isTheOwner = board.data.owner.id === user.id;
 
   const toggleTagsModal = () => setIsTagsModalOpen(o => !o);
 
@@ -53,7 +57,9 @@ const BoardMenu = ({ board, className, onRemove }: BoardMenuProps) => {
             <Divider className='my-2 ' />
             <MenuItem value='deleteBoard'>
               <FaArchive className='text-red-400 mr-3' />
-              <span className='text-red-400'>Archive board</span>
+              <span className='text-red-400'>
+                {isTheOwner ? 'Archive board' : 'Leave board'}
+              </span>
             </MenuItem>
           </>
         }

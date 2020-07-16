@@ -3,18 +3,18 @@ import { observer } from 'mobx-react-lite';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
 
-import { cards } from '../../core/actions';
-import { useBoardsStore } from '../../store';
-import BoardDocument, { Board as BoardModel } from '../../documents/board.doc';
-import CardDocument from '../../documents/card.doc';
-import ListDocument from '../../documents/list.doc';
-import ListColumns from '../List/ListColumns';
-import BoardHeader from '../BoardHeader/BoardHeader';
-import { CreateContentEmpty } from '../Empty/CreateContentEmpty';
-import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
-import { useSession } from '../providers/SessionProvider';
+import { cards } from 'core/actions';
+import { useBoardsStore } from 'store';
+import BoardDocument from 'documents/board.doc';
+import CardDocument from 'documents/card.doc';
+import ListDocument from 'documents/list.doc';
+import ListColumns from 'components/List/ListColumns';
+import BoardHeader from 'components/BoardHeader/BoardHeader';
+import { CreateContentEmpty } from 'components/Empty/CreateContentEmpty';
+import { AnimatedOpacity } from 'components/Animated/AnimatedOpacity';
+import { useSession } from 'components/providers/SessionProvider';
 import BoardMenu from './BoardMenu';
-import { ToastUndo } from '../shared';
+import { ToastUndo } from 'components/shared';
 
 interface BoardProps {
   board: BoardDocument;
@@ -25,7 +25,9 @@ const Board = ({ board, previewMode }: BoardProps) => {
   const { setBoard } = useBoardsStore();
   const { userDoc } = useSession();
 
-  const archivedRef = useRef(false);
+  const isOwner = board.isOwner(userDoc.id);
+
+  const actionRef = useRef(false);
 
   useEffect(() => {
     if (board) {
@@ -57,28 +59,31 @@ const Board = ({ board, previewMode }: BoardProps) => {
     });
   };
 
-  const updateBoard = (data: Partial<BoardModel>) => board.update(data);
+  const archiveOrLeaveBoard = async () => {
+    if (!actionRef.current) return;
 
-  const archiveBoard = async () => {
-    if (!archivedRef.current) return;
+    isOwner ? await board.archive() : await board.removeMember(userDoc);
 
-    await updateBoard({ archived: true });
-    Router.push('/');
+    Router.replace('/');
   };
 
-  const undo = () => (archivedRef.current = false);
+  const undo = () => (actionRef.current = false);
 
   const removeBoard = async () => {
-    archivedRef.current = true;
+    actionRef.current = true;
 
     toast(
       <ToastUndo
-        title={`This board will be archived...`}
+        title={
+          isOwner
+            ? `This board will be archived...`
+            : 'You will be removed from this board...'
+        }
         id={board.id}
         undo={undo}
       />,
       {
-        onClose: archiveBoard,
+        onClose: archiveOrLeaveBoard,
       }
     );
   };
