@@ -21,7 +21,7 @@ interface BoardHeaderProps {
 
 const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { setMenu } = useInterface();
-  const { user } = useSession();
+  const { user, userDoc } = useSession();
   const toggleMenu = () => setMenu(true);
 
   return (
@@ -53,7 +53,12 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
               onClick={toggleMenu}
             />
 
-            <BoardMenu className='ml-2' board={board} onRemove={onRemove} />
+            <BoardMenu
+              className='ml-2'
+              user={userDoc}
+              board={board}
+              onRemove={onRemove}
+            />
           </>
         )}
 

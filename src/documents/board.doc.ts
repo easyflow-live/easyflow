@@ -116,4 +116,12 @@ export default class BoardDocument extends Document<Board> {
       status: InviteStatus.PENDING,
     });
   }
+
+  isOwner(email: string): boolean {
+    return this.data.owner.id === email;
+  }
+
+  archive() {
+    return this.update({ archived: true });
+  }
 }
