@@ -158,7 +158,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
   if (!userDoc) return null;
 
   const ownerEmail = owner ? owner.email : '';
-  const AmITheBoardOwner = userDoc.data.email === ownerEmail;
+  const amITheBoardOwner = userDoc.data.email === ownerEmail;
 
   return (
     <Dialog
@@ -205,7 +205,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
                       <UserEmail email={item.email} />
                     </div>
                   </div>
-                  {ownerEmail !== item.email && AmITheBoardOwner && (
+                  {ownerEmail !== item.email && amITheBoardOwner && (
                     <div>
                       <button
                         className='text-gray-500 hover:text-gray-900 h-4'
@@ -224,7 +224,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
                     </div>
                   )}
 
-                  {item.email === userDoc.id && (
+                  {item.email === userDoc.id && !amITheBoardOwner && (
                     <button
                       className='text-red-500 hover:text-red-700  h-4 pl-4'
                       title={`Leave the board`}
