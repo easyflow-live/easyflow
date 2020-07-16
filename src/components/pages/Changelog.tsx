@@ -83,6 +83,18 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Wednesday, July 15, 2020</LogDate>
+
+        <LogList type={LogTypes.feature}>
+          {[
+            'Added option to leave the board instead of archive it, to members that not own the board.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Tuesday, July 14, 2020</LogDate>
 
         <LogList type={LogTypes.improvements}>
