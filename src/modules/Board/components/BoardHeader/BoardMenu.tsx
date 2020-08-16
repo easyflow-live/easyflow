@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FaArchive, FaHashtag } from 'react-icons/fa';
-
-import BoardDocument from '../../documents/board.doc';
-import Menu, { MenuItem, Button, Divider } from '../shared/Menu';
-import AddTagsModal from './AddTagsModal';
-import { MdSettings } from 'react-icons/md';
 import styled from 'styled-components';
+import { MdSettings } from 'react-icons/md';
+
+import BoardDocument from 'documents/board.doc';
+import Menu, { MenuItem, Button, Divider } from 'components/shared/Menu';
+import AddTagsModal from './AddTagsModal';
 
 interface BoardMenuProps {
   board: BoardDocument;

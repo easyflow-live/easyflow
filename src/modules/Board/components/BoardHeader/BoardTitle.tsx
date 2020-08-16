@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import styled, { css } from 'styled-components';
 
-import { Editable, Heading } from '../shared';
+import { Editable, Heading } from 'components/shared';
 
 interface BoardTitleProps {
   boardTitle: string;

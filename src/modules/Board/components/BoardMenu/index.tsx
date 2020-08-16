@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-
-import AddTagsModal from '../BoardHeader/AddTagsModal';
 import { observer } from 'mobx-react-lite';
-import { useInterface } from '../providers/InterfaceProvider';
-import styles from './BoardMenu.module.css';
-import BoardDocument from '../../documents/board.doc';
 
-const Actions = dynamic(() => import('./Actions'));
+import BoardDocument from 'documents/board.doc';
+
+import { useInterface } from 'components/providers/InterfaceProvider';
+import AddTagsModal from 'modules/Board/components/BoardHeader/AddTagsModal';
+
+import styles from './BoardMenu.module.css';
+
+const Actions = dynamic(() => import('components/shared/Actions'));
 
 interface BoardMenuProps {
   board: BoardDocument;

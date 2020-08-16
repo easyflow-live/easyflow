@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import BoardDocument from '../../documents/board.doc';
+import BoardDocument from 'documents/board.doc';
+import AddNewListModal from 'modules/Board/components/BoardHeader/AddNewListModal';
 import { CreateContent } from '../images/CreateContent';
-import AddNewListModal from '../BoardHeader/AddNewListModal';
 import { Empty } from './Empty';
 import { Button } from '../shared';
 

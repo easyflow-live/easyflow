@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-import { useKeySubmit } from '../../hooks/use-key-submit';
-import BoardDocument from '../../documents/board.doc';
-import Dialog from '../Dialog/Dialog';
-import { Input } from '../shared';
+import { useKeySubmit } from 'hooks/use-key-submit';
+import BoardDocument from 'documents/board.doc';
+import Dialog from 'components/Dialog/Dialog';
+import { Input } from 'components/shared';
 
 interface AddNewListModalProps {
   board: BoardDocument;
