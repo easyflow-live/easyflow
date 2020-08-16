@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { PropsWithChildren } from 'react';
 import ContentLoader from 'react-content-loader';
 
-import { User } from '../../store/users';
-import ActionDocument from '../../documents/action.doc';
-import { Avatar, Truncate } from '../shared';
-import { useBoardsStore } from '../../store';
+import { User } from 'store/users';
+import ActionDocument from 'documents/action.doc';
+import { Avatar, Truncate } from 'components/shared';
+import { useBoardsStore } from 'store';
 import {
   CardActions,
   NewCardData,
@@ -15,7 +15,7 @@ import {
   EditCardData,
   CompleteCardData,
   RemoveCardData,
-} from '../../core/actions/card.actions';
+} from 'core/actions/card.actions';
 
 const Text = ({ children }: { children: PropsWithChildren<{}> }) => (
   <span className='text-gray-400'> {children} </span>

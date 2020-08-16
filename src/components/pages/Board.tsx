@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { useSession } from '../../hooks/use-session';
-import { useBoard } from '../../hooks/use-board';
-import BoardComponent from '../Board/Board';
-import AuthenticatedPage from '../shared/AuthenticatedPage';
-import { useInterface } from '../providers/InterfaceProvider';
-import Loader from '../shared/Loader';
+import { useSession } from 'hooks/use-session';
+import { useBoard } from 'hooks/use-board';
+import Board from 'modules/Board';
+import AuthenticatedPage from 'components/shared/AuthenticatedPage';
+import { useInterface } from 'components/providers/InterfaceProvider';
+import Loader from 'components/shared/Loader';
 import { BoardsStoreProvider, UsersStoreProvider } from 'store';
 
 interface BoardPageProps {
@@ -19,7 +19,7 @@ const error404 = {
   title: 'Board not found',
 };
 
-const Board = ({ query }: BoardPageProps) => {
+const BoardPage = ({ query }: BoardPageProps) => {
   const { user } = useSession();
   const [board] = useBoard(query.uid);
   const { setPreviewMode } = useInterface();
@@ -42,13 +42,13 @@ const Board = ({ query }: BoardPageProps) => {
     >
       <UsersStoreProvider>
         <BoardsStoreProvider>
-          <BoardComponent board={board} previewMode={previewMode} />
+          <Board board={board} previewMode={previewMode} />
         </BoardsStoreProvider>
       </UsersStoreProvider>
     </AuthenticatedPage>
   );
 };
 
-Board.getInitialProps = ({ query }) => ({ query });
+BoardPage.getInitialProps = ({ query }) => ({ query });
 
-export default observer(Board);
+export default observer(BoardPage);

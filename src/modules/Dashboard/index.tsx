@@ -2,17 +2,17 @@ import { observer } from 'mobx-react-lite';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Collection } from 'firestorter';
 
-import BoardDocument from '../../documents/board.doc';
-import { AnimatedOpacity } from '../Animated/AnimatedOpacity';
-import { StartProjectEmpty } from '../Empty/StartBoardEmpty';
-import BoardAdder from './BoardAdder';
-import BoardLink from './BoardLink';
+import BoardDocument from 'documents/board.doc';
+import { AnimatedOpacity } from 'components/Animated/AnimatedOpacity';
+import { StartProjectEmpty } from 'components/Empty/StartBoardEmpty';
+import BoardAdder from './components/BoardAdder';
+import BoardLink from './components/BoardLink';
 
 interface BoardsProps {
   boards: Collection<BoardDocument>;
 }
 
-export const Boards = observer(({ boards }: BoardsProps) => {
+const Boards = ({ boards }: BoardsProps) => {
   const showEmpty = !boards.docs.length && !boards.isLoading;
 
   return (
@@ -34,4 +34,6 @@ export const Boards = observer(({ boards }: BoardsProps) => {
       </AnimatedOpacity>
     </div>
   );
-});
+};
+
+export default observer(Boards);

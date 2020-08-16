@@ -3,7 +3,7 @@ import { Title } from 'react-head';
 import { observer } from 'mobx-react-lite';
 
 import Heading from 'components/shared/Heading';
-import { Boards } from 'components/Board/Boards';
+import Boards from 'modules/Dashboard';
 import { useSession } from 'hooks/use-session';
 
 const Home = () => {

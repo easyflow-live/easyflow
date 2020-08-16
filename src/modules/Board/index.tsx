@@ -9,11 +9,11 @@ import BoardDocument from 'documents/board.doc';
 import CardDocument from 'documents/card.doc';
 import ListDocument from 'documents/list.doc';
 import ListColumns from 'components/List/ListColumns';
-import BoardHeader from 'components/BoardHeader/BoardHeader';
+import BoardHeader from 'modules/Board/components/BoardHeader';
 import { CreateContentEmpty } from 'components/Empty/CreateContentEmpty';
 import { AnimatedOpacity } from 'components/Animated/AnimatedOpacity';
 import { useSession } from 'components/providers/SessionProvider';
-import BoardMenu from './BoardMenu';
+import BoardMenu from './components/BoardMenu';
 import { ToastUndo } from 'components/shared';
 
 interface BoardProps {
