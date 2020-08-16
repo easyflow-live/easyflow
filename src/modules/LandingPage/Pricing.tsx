@@ -1,8 +1,8 @@
 import PricingCard from './PricingCard';
+import { useInView } from 'react-intersection-observer';
 
 import './Pricing.css';
-import { AnimatedSlideUp } from '../Animated/AnimatedSlideUp';
-import { useInView } from 'react-intersection-observer';
+import { AnimatedSlideUp } from 'components/Animated/AnimatedSlideUp';
 
 const Pricing = () => {
   const [ref, inView] = useInView({
