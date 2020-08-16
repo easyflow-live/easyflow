@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import Header from 'components/Header/Header';
+import Header from 'components/Header';
 import { initGA, logPageView } from 'libs/analytics';
 import { InterfaceProvider } from 'components/providers/InterfaceProvider';
 import { SessionProvider } from 'components/providers/SessionProvider';

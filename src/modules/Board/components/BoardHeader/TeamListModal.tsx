@@ -11,7 +11,7 @@ import BoardDocument from 'documents/board.doc';
 import { useBoardTeam } from 'hooks/use-board-team';
 import { useKeySubmit } from 'hooks/use-key-submit';
 import { useSession } from 'hooks/use-session';
-import Dialog from 'components/Dialog/Dialog';
+import Dialog from 'components/shared/Dialog';
 import { Avatar, Input } from 'components/shared';
 import { List, ListItem } from 'components/shared/List';
 

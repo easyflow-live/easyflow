@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import AnimateSlideUpinView from 'components/Animated/AnimateSlideUpinView';
+import AnimateSlideUpinView from 'components/shared/Animated/AnimateSlideUpinView';
 import styles from './Article.module.css';
 
 type Size = 'small' | 'large';

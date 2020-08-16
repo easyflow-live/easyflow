@@ -5,25 +5,25 @@ import React, { useMemo, useState, CSSProperties, useCallback } from 'react';
 import { MdClose } from 'react-icons/md';
 import ReactModal from 'react-modal';
 
-import CardDocument, { Card } from '../../documents/card.doc';
-import { useThinDisplay } from '../../hooks/use-thin-display';
-import { Heading, Button } from '../shared';
+import CardDocument, { Card } from 'documents/card.doc';
+import { useThinDisplay } from 'hooks/use-thin-display';
+import { Heading, Button } from 'components/shared';
 import {
   Editable as EditableComplex,
   EditableInput,
   EditablePreview,
   EditableTrigger,
-} from '../shared/EditableComplex';
-import MarkdownText from '../shared/MarkdownText';
-import BadgeTaskProgress from '../CardBadges/BadgeTaskProgress';
-import { findCheckboxes } from '../../helpers/find-check-boxes';
-import { Assignees } from './Assignees';
-import { DueCalendar } from './DueCalendar';
-import { useBoardsStore } from '../../store';
-import { Tags } from './Tags';
+} from 'components/shared/EditableComplex';
+import MarkdownText from 'components/shared/MarkdownText';
+import BadgeTaskProgress from 'components/shared/BadgeTaskProgress';
+import { findCheckboxes } from 'helpers/find-check-boxes';
+import { useBoardsStore } from 'store';
+import { useInterface } from 'components/providers/InterfaceProvider';
+import Color from 'components/shared/Color';
+import { DueCalendar } from 'components/shared/DueCalendar';
+import { Assignees } from 'components/shared/Assignees';
+import { Tags } from 'components/shared/Tags';
 import CardMenu from './CardMenu';
-import { useInterface } from '../providers/InterfaceProvider';
-import Color from './Color';
 
 const LeftColumn = styled.div`
   margin: 0px 16px;
