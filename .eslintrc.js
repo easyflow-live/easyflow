@@ -24,4 +24,10 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',
   },
+  settings: {
+    react: {
+      pragma: 'React', // Pragma to use, default to "React"
+      version: 'detect', // React version. "detect" automatically picks the version you have installed.
+    },
+  },
 };

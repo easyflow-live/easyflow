@@ -2,18 +2,18 @@ import React, { useState, useMemo, MutableRefObject } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 
-import { cards as cardsActions } from '../../core/actions';
-import { useBoardsStore } from '../../store';
-import CardDocument from '../../documents/card.doc';
-import { findCheckboxes } from '../../helpers/find-check-boxes';
-import { useThinDisplay } from '../../hooks/use-thin-display';
-import { useKeySubmit } from '../../hooks/use-key-submit';
-import { useSession } from '../providers/SessionProvider';
-import CardBadges from '../CardBadges/CardBadges';
-import { Modal } from '../shared';
+import { cards as cardsActions } from 'core/actions';
+import { useBoardsStore } from 'store';
+import CardDocument from 'documents/card.doc';
+import { findCheckboxes } from 'helpers/find-check-boxes';
+import { useThinDisplay } from 'hooks/use-thin-display';
+import { useKeySubmit } from 'hooks/use-key-submit';
+import { useSession } from 'components/providers/SessionProvider';
+import CardBadges from 'components/CardBadges';
+import { Modal } from 'components/shared';
+import { Card } from 'documents/card.doc';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
-import { Card } from '../../documents/card.doc';
 
 interface CardModalProps {
   card: CardDocument;

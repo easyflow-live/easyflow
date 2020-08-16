@@ -3,11 +3,10 @@ import { FaTrash } from 'react-icons/fa';
 import { MdAlarm, MdColorize } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
-import CardDocument, { Card } from '../../documents/card.doc';
-//import AddTagsWithAutocomplete from '../TagList/AddTagsWithAutocomplete';
-import ClickOutside from '../shared/ClickOutside';
-import { Divider, Modal } from '../shared';
-import Calendar from './Calendar';
+import CardDocument, { Card } from 'documents/card.doc';
+import ClickOutside from 'components/shared/ClickOutside';
+import { Divider, Modal } from 'components/shared';
+import Calendar from 'components/shared/Calendar';
 import CardOptionAssignToMe from './CardOptionAssignToMe';
 import './CardOptions.scss';
 import CardOptionButton from './CardOptionButton';

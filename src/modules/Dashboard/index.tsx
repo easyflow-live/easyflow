@@ -3,8 +3,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Collection } from 'firestorter';
 
 import BoardDocument from 'documents/board.doc';
-import { AnimatedOpacity } from 'components/Animated/AnimatedOpacity';
-import { StartProjectEmpty } from 'components/Empty/StartBoardEmpty';
+import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
+import { StartProjectEmpty } from 'components/shared/Empty/StartBoardEmpty';
 import BoardAdder from './components/BoardAdder';
 import BoardLink from './components/BoardLink';
 

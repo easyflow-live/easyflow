@@ -2,9 +2,9 @@ import React from 'react';
 import { Title } from 'react-head';
 import { useTrail, animated } from 'react-spring';
 
-import { AnimatedSlideUp } from 'components/Animated/AnimatedSlideUp';
-import { BoardAndProcess } from 'components/images/BoardAndProcess';
-import AnimateSlideUpinView from 'components/Animated/AnimateSlideUpinView';
+import { AnimatedSlideUp } from 'components/shared/Animated/AnimatedSlideUp';
+import { BoardAndProcess } from 'components/shared/images/BoardAndProcess';
+import AnimateSlideUpinView from 'components/shared/Animated/AnimateSlideUpinView';
 import { SafariButtonWarning } from 'components/shared';
 import Footer from './Footer';
 import Header from './Header';

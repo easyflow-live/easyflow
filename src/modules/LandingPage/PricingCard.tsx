@@ -1,8 +1,8 @@
 import { FaCheck } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 
+import { AnimatedSlideUp } from 'components/shared/Animated/AnimatedSlideUp';
 import './PricingCard.css';
-import { AnimatedSlideUp } from 'components/Animated/AnimatedSlideUp';
 
 interface PricingCardProps {
   title: string;
