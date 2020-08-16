@@ -2,8 +2,8 @@ import { ReactElement } from 'react';
 import { ErrorProps } from 'next/error';
 import Error from 'next/error';
 
-import LandingPage from '../LandingPage/LandingPage';
-import { useSession } from '../../hooks/use-session';
+import LandingPage from 'modules/LandingPage';
+import { useSession } from 'hooks/use-session';
 import Loader from './Loader';
 
 interface PageProps {

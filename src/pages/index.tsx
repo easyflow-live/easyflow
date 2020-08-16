@@ -1,8 +1,8 @@
 import nextCookies from 'next-cookies';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-import Home from '../components/Home/Home';
-import LandingPage from 'components/LandingPage/LandingPage';
+import Home from 'components/Home/Home';
+import LandingPage from 'modules/LandingPage';
 import { useSession } from 'hooks/use-session';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
