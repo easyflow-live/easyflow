@@ -1,23 +1,19 @@
-import { CSSProperties } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTransition, animated, useSpring, config } from 'react-spring';
 import styled from 'styled-components';
 
-import CardDocument from 'documents/card.doc';
-import { useCardAssignees } from 'hooks/use-card-assignees';
 import { useFirstRender } from 'hooks/use-first-render';
 import Avatar from 'components/shared/Avatar';
+import { User } from 'store/users';
 
 interface AssigneeProps {
-  card: CardDocument;
-  style?: CSSProperties;
-  className?: string;
+  assignees: User[];
+  avatarColor: string;
 }
 
-const Assignee = ({ card }: AssigneeProps) => {
-  const { assignees } = useCardAssignees(card);
-
-  const transitions = useTransition(assignees, item => item.username, {
+const Assignee = ({ assignees, avatarColor }: AssigneeProps) => {
+  const transitions = useTransition(assignees, item => item.id, {
     from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
     enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
     leave: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
@@ -50,12 +46,11 @@ const Assignee = ({ card }: AssigneeProps) => {
               className='assignee mr-1'
             >
               <Avatar
-                key={item.username}
                 src={item.photo}
                 username={item.username}
                 className='border'
                 size='small'
-                style={{ borderColor: card.data.color }}
+                style={{ borderColor: avatarColor }}
               />
             </animated.div>
           )

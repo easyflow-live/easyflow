@@ -69,7 +69,7 @@ interface CardModalProps {
   card: CardDocument;
   listId: string;
   onClose: () => void;
-  onRemove?: () => Promise<void>;
+  onRemove?: () => void;
   onUpdate: (data: Partial<Card>) => Promise<void>;
 }
 

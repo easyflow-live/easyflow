@@ -1,57 +1,46 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { cards } from 'core/actions';
-import { useBoardsStore } from 'store';
-import CardDocument from 'documents/card.doc';
 import BadgeTags from 'components/shared/BadgeTags';
 import Assignee from 'components/shared/Assignee';
-import { useSession } from 'components/providers/SessionProvider';
 import BadgeTaskProgress from 'components/shared/BadgeTaskProgress';
 import BadgeDueDate from 'components/shared/BadgeDueDate';
+import { User } from 'store/users';
 
 interface CardBadgesProps {
-  card: CardDocument;
-  listId: string;
+  tags: string[];
+  date: string | Date;
+  completed: boolean;
+  cardId: string;
+  color: string;
+  assignees: User[];
   checkboxes: { total: number; checked: number };
   isModal?: boolean;
+  onComplete: (state: boolean) => void;
+  onTagClick: (tag: string) => Promise<void>;
 }
 
-const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
-  const { currentBoard, getList } = useBoardsStore();
-  const { userDoc } = useSession();
-
-  const handleTagClick = (tag: string) => card.removeTag(tag);
-
-  const handleComplete = (state: boolean) => {
-    if (card.data.completed !== state) {
-      card.ref.update({ completed: state });
-      cards.completeCardAction({
-        memberCreator: userDoc && userDoc.ref,
-        data: {
-          card: card.ref,
-          board: currentBoard.ref,
-          list: getList(listId).ref,
-          title: card.data.title || '',
-          completed: state,
-        },
-      });
-    }
-  };
-
+const CardBadges = ({
+  tags,
+  date,
+  completed,
+  cardId,
+  color,
+  assignees,
+  checkboxes,
+  isModal,
+  onComplete,
+  onTagClick,
+}: CardBadgesProps) => {
   return (
     <div className='flex flex-col px-2 pb-2'>
       <div>
-        <BadgeTags
-          tags={card.data.tags}
-          onTagClick={handleTagClick}
-          removable={isModal}
-        />
+        <BadgeTags tags={tags} onTagClick={onTagClick} removable={isModal} />
       </div>
 
       <div className='flex justify-between items-center mt-2'>
         <div>
-          <Assignee card={card} />
+          <Assignee assignees={assignees} avatarColor={color} />
         </div>
 
         <div className='flex items-center'>
@@ -62,10 +51,10 @@ const CardBadges = ({ card, listId, checkboxes, isModal }: CardBadgesProps) => {
           />
 
           <BadgeDueDate
-            date={card.data.date}
-            completed={card.data.completed}
-            id={card.id}
-            onComplete={handleComplete}
+            date={date}
+            completed={completed}
+            id={cardId}
+            onComplete={onComplete}
             showCheckbox={isModal}
           />
         </div>
