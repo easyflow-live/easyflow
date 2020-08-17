@@ -37,7 +37,7 @@ export const Assignees: React.FC<AssigneesProps> = observer(props => {
   const assigneesId = assignees.map(a => a.id);
   const hasMySelfAsAssignee = assigneesId.includes(userDoc.id);
 
-  const transitions = useTransition(assignees, item => item.username, {
+  const transitions = useTransition(assignees, item => item.id, {
     initial: { transform: 'translate3d(0px, 0, 0)', opacity: 0 },
     from: { transform: 'translate3d(40px, 0, 0)', opacity: 0 },
     enter: { transform: 'translate3d(0, 0px, 0)', opacity: 1 },
@@ -66,10 +66,7 @@ export const Assignees: React.FC<AssigneesProps> = observer(props => {
 
       {transitions.map(({ item: assignee, key, props }) => (
         <animated.div key={key} style={props}>
-          <Container
-            className='flex items-center text-white mb-2'
-            key={assignee.username}
-          >
+          <Container className='flex items-center text-white mb-2'>
             <Avatar
               src={assignee.photo}
               username={assignee.username}

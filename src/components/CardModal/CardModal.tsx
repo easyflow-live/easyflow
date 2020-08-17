@@ -12,6 +12,7 @@ import { useSession } from 'components/providers/SessionProvider';
 import CardBadges from 'components/CardBadges';
 import { Modal } from 'components/shared';
 import { Card } from 'documents/card.doc';
+import { useCardAssignees } from 'hooks/use-card-assignees';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
 
@@ -37,6 +38,7 @@ const CardModal = ({
 }: CardModalProps) => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
+  const { assignees } = useCardAssignees(card);
 
   const [newText, setNewText] = useState(card.data.text);
 
@@ -76,6 +78,24 @@ const CardModal = ({
     return onRemove();
   };
 
+  const handleComplete = (state: boolean) => {
+    if (card.data.completed !== state) {
+      card.ref.update({ completed: state });
+      cardsActions.completeCardAction({
+        memberCreator: userDoc && userDoc.ref,
+        data: {
+          card: card.ref,
+          board: currentBoard.ref,
+          list: getList(listId).ref,
+          title: card.data.title || '',
+          completed: state,
+        },
+      });
+    }
+  };
+
+  const handleTagClick = (tag: string) => card.removeTag(tag);
+
   const showBadges =
     card.data.assignee ||
     card.data.date ||
@@ -111,9 +131,15 @@ const CardModal = ({
 
           {showBadges && (
             <CardBadges
+              tags={card.data.tags}
+              date={card.data.date}
+              completed={card.data.completed}
+              cardId={card.data.id}
+              color={card.data.color}
+              assignees={assignees}
               checkboxes={checkboxes}
-              card={card}
-              listId={listId}
+              onComplete={handleComplete}
+              onTagClick={handleTagClick}
               isModal
             />
           )}
