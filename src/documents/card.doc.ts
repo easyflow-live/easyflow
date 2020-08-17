@@ -7,6 +7,7 @@ import ListDocument from './list.doc';
 import ColorDocument from './color.doc';
 
 export interface Card {
+  id: string;
   title?: string;
   text: string;
   index: number;
