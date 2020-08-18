@@ -11,9 +11,9 @@ const Truncate = ({
   className,
   title,
 }: PropsWithChildren<TruncateProps>) => (
-  <p className={cn('truncate', className)} title={title}>
+  <span className={cn('truncate', className)} title={title}>
     {children}
-  </p>
+  </span>
 );
 
 export default Truncate;
