@@ -8,6 +8,7 @@ import AuthenticatedPage from 'components/shared/AuthenticatedPage';
 import { useInterface } from 'components/providers/InterfaceProvider';
 import Loader from 'components/shared/Loader';
 import { BoardsStoreProvider, UsersStoreProvider } from 'store';
+import AppActionsEvents from 'components/shared/AppActionsEvents';
 
 interface BoardPageProps {
   query: { uid: string; previewmode: boolean };
@@ -42,6 +43,7 @@ const BoardPage = ({ query }: BoardPageProps) => {
     >
       <UsersStoreProvider>
         <BoardsStoreProvider>
+          <AppActionsEvents />
           <Board board={board} previewMode={previewMode} />
         </BoardsStoreProvider>
       </UsersStoreProvider>

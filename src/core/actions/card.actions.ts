@@ -55,7 +55,9 @@ export interface EditCardData extends BaseCardData {
   action: CardActions.EDIT;
   oldText: string;
   newText: string;
-  title: string;
+  title?: string;
+  oldTitle: string;
+  newTitle: string;
 }
 
 export const editCardAction = ({

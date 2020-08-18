@@ -1,20 +1,18 @@
 import React, { useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { cards as cardsActions } from 'core/actions';
 import CardDocument from 'documents/card.doc';
 import { useMarkdownCheckbox } from 'hooks/use-markdown-checkbox';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import CardBadges from 'components/CardBadges';
 import DraggableElement from 'components/shared/DraggableElement';
 import { Card as CardModel } from 'documents/card.doc';
-import { useBoardsStore } from 'store/boards';
-import { useSession } from 'components/providers/SessionProvider';
 import { useCardFullModal } from 'components/CardModal/CardModalFull';
 import CardMarkdown from 'components/shared/Cards/CardMarkdown';
 import { useCardAssignees } from 'hooks/use-card-assignees';
 import { User } from 'store/users';
 import { useUndo } from 'hooks/use-undo';
+import { emitter } from 'libs/emitter';
 
 interface CardContainerProps {
   card: CardDocument;
@@ -33,8 +31,6 @@ const CardContainer = ({
   listId,
   previewMode,
 }: CardContainerProps) => {
-  const { currentBoard, getList } = useBoardsStore();
-  const { userDoc } = useSession();
   const toggleCheckbox = useMarkdownCheckbox(card.data.text);
   const { assignees } = useCardAssignees(card);
 
@@ -42,19 +38,16 @@ const CardContainer = ({
 
   const remove = async ({ card: removedCard }: { card: CardModel }) => {
     await card.ref.delete();
-    await cardsActions.removeCardAction({
-      memberCreator: userDoc.ref,
-      data: {
-        board: currentBoard.ref,
-        list: getList(listId).ref,
-        text: removedCard.text,
-        title: removedCard.title || '',
-      },
+
+    emitter.emit('REMOVE_CARD', {
+      text: removedCard.text,
+      title: removedCard.title || '',
+      listId,
     });
   };
 
-  const onClose = useCallback(() => {
-    remove({ card: card.data });
+  const onClose = useCallback(async () => {
+    await remove({ card: card.data });
   }, [card]);
 
   const onAction = useCallback(() => {
@@ -76,15 +69,11 @@ const CardContainer = ({
     if (card.data.completed !== state) {
       updateCard({ completed: state });
 
-      cardsActions.completeCardAction({
-        memberCreator: userDoc && userDoc.ref,
-        data: {
-          card: card.ref,
-          board: currentBoard.ref,
-          list: getList(listId).ref,
-          title: card.data.title || '',
-          completed: state,
-        },
+      emitter.emit('COMPLETE_CARD', {
+        cardId: card.id,
+        listId,
+        title: card.data.title || '',
+        completed: state,
       });
     }
   };

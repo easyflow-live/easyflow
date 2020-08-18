@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
 
-import { cards } from 'core/actions';
 import { useBoardsStore } from 'store';
 import BoardDocument from 'documents/board.doc';
 import CardDocument from 'documents/card.doc';
@@ -15,6 +14,7 @@ import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
 import { useSession } from 'components/providers/SessionProvider';
 import BoardMenu from './components/BoardMenu';
 import { ToastUndo } from 'components/shared';
+import { emitter } from 'libs/emitter';
 
 interface BoardProps {
   board: BoardDocument;
@@ -47,15 +47,11 @@ const Board = ({ board, previewMode }: BoardProps) => {
     listAfter: ListDocument['ref'],
     cardTitle: string
   ) => {
-    cards.moveCardAction({
-      memberCreator: userDoc.ref,
-      data: {
-        card,
-        listBefore,
-        listAfter,
-        board: board.ref,
-        title: cardTitle || '',
-      },
+    emitter.emit('MOVE_CARD', {
+      title: cardTitle,
+      cardId: card.id,
+      listBeforeId: listBefore.id,
+      listAfterId: listAfter.id,
     });
   };
 
