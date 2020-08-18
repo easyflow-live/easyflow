@@ -3,14 +3,12 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { Collection } from 'firestorter';
 
-import { cards as cardsActions } from 'core/actions';
 import CardDocument from 'documents/card.doc';
 import ListDocument from 'documents/list.doc';
-import { useBoardsStore } from 'store';
 import Input from 'components/shared/Input';
-import { useSession } from 'components/providers/SessionProvider';
 import { useKeySubmit } from 'hooks/use-key-submit';
 import ClickOutside from './ClickOutside';
+import { emitter } from 'libs/emitter';
 
 interface CardAdderProps {
   cards: Collection<CardDocument>;
@@ -19,8 +17,6 @@ interface CardAdderProps {
 }
 
 const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
-  const { currentBoard } = useBoardsStore();
-  const { userDoc } = useSession();
   const [newText, setNewText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -55,14 +51,10 @@ const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
     toggleCardComposer();
     setNewText('');
 
-    cardsActions.newCardAction({
-      memberCreator: userDoc.ref,
-      data: {
-        card: createdCard.ref,
-        list: list.ref,
-        board: currentBoard.ref,
-        title: newText,
-      },
+    emitter.emit('ADD_CARD', {
+      title: newText,
+      listId: list.id,
+      cardId: createdCard.id,
     });
   };
 

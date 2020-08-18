@@ -119,10 +119,21 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
 
+  const difTitle = data.oldTitle !== data.newTitle;
+
   return (
     <>
       <Text> edited a card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      {difTitle ? (
+        <>
+          <Text> from title </Text>
+          <TruncatedTitle title={data.oldTitle}>{data.oldTitle}</TruncatedTitle>
+          <Text> to </Text>
+          <TruncatedTitle title={data.newTitle}>{data.newTitle}</TruncatedTitle>
+        </>
+      ) : (
+        <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      )}
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column</Text>

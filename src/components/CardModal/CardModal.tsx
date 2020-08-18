@@ -50,19 +50,7 @@ const CardModal = ({
     const oldText = card.data.text;
 
     if (newText !== oldText) {
-      onUpdate({ text: newText }).then(() =>
-        cardsActions.editCardAction({
-          memberCreator: userDoc.ref,
-          data: {
-            card: card.ref,
-            list: getList(listId).ref,
-            board: currentBoard.ref,
-            oldText,
-            newText,
-            title: card.data.title || '',
-          },
-        })
-      );
+      onUpdate({ text: newText });
     }
     toggleCardModal();
   };

@@ -1,24 +1,26 @@
+import { useCallback } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import { cards } from '../core/actions';
-import { useBoardsStore } from '../store';
 import { useSession } from './use-session';
 import CardDocument from '../documents/card.doc';
+import { emitter } from 'libs/emitter';
 
 export const useAssign = (card: CardDocument, listId: string): (() => void) => {
-  const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
   const userRef = userDoc?.ref;
 
-  const actionData = {
-    assignee: userRef,
-    card: card.ref,
-    board: currentBoard.ref,
-    list: getList(listId).ref,
-    title: card.data.title || '',
-  };
+  const emitEvent = useCallback(
+    assigneId =>
+      emitter.emit('ASSIGNE_CARD', {
+        title: card.data.title || '',
+        cardId: card.id,
+        listId,
+        assigneId,
+      }),
+    [card, listId]
+  );
 
   const toggleAssignment = async () => {
     if (!card.data.assignee || !card.data.assignee.length) {
@@ -26,12 +28,7 @@ export const useAssign = (card: CardDocument, listId: string): (() => void) => {
         .update({
           assignee: firebase.firestore.FieldValue.arrayUnion(userRef),
         })
-        .then(() =>
-          cards.assigneeCardAction({
-            memberCreator: userRef,
-            data: actionData,
-          })
-        );
+        .then(() => emitEvent(userDoc.id));
     } else {
       const ids = card.data.assignee.map(a => a.id);
 
@@ -41,12 +38,7 @@ export const useAssign = (card: CardDocument, listId: string): (() => void) => {
           .update({
             assignee: firebase.firestore.FieldValue.arrayRemove(userRef),
           })
-          .then(() =>
-            cards.assigneeCardAction({
-              memberCreator: userRef,
-              data: { ...actionData, assignee: null },
-            })
-          );
+          .then(() => emitEvent(null));
       } else {
         // If is not an array, we need to keep the old assigne to save with the new one,
         // otherwise, the old assigne will be cleanned. (backwards compatibility)
@@ -58,23 +50,13 @@ export const useAssign = (card: CardDocument, listId: string): (() => void) => {
                 ...[oldAssignee, userRef]
               ),
             })
-            .then(() =>
-              cards.assigneeCardAction({
-                memberCreator: userRef,
-                data: actionData,
-              })
-            );
+            .then(() => emitEvent(userDoc.id));
         } else {
           await card
             .update({
               assignee: firebase.firestore.FieldValue.arrayUnion(userRef),
             })
-            .then(() =>
-              cards.assigneeCardAction({
-                memberCreator: userRef,
-                data: actionData,
-              })
-            );
+            .then(() => emitEvent(userDoc.id));
         }
       }
     }
