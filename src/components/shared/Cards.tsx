@@ -19,7 +19,7 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
 
   return (
     <Droppable droppableId={listId} direction='vertical' isCombineEnabled>
-      {(provided, { isDraggingOver }) => (
+      {provided => (
         <StyledCards className='px-2' ref={provided.innerRef}>
           {isLoading ? (
             <CardPlaceholder />
@@ -27,7 +27,6 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
             cards.docs.map((card, index) => (
               <Card
                 key={card.id}
-                isDraggingOver={isDraggingOver}
                 card={card}
                 index={index}
                 listId={listId}
