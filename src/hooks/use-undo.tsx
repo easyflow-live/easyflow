@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
 
 import { ToastUndo } from 'components/shared';
@@ -16,20 +16,20 @@ export const useUndo = ({
   toastId,
   toastTitle,
 }: Props): { action: () => void; isHidden: boolean } => {
-  const [isHidden, setHidden] = useState(false);
+  const isHiddenRef = useRef(false);
 
   const _onClose = useCallback(() => {
-    if (!isHidden) return;
+    if (!isHiddenRef.current) return;
 
     onClose();
   }, [onClose]);
 
   const undo = useCallback(() => {
-    setHidden(false);
+    isHiddenRef.current = false;
   }, []);
 
   const action = useCallback(() => {
-    setHidden(true);
+    isHiddenRef.current = true;
     onAction();
 
     toast(<ToastUndo title={toastTitle} id={toastId} undo={undo} />, {
@@ -37,5 +37,5 @@ export const useUndo = ({
     });
   }, [onAction]);
 
-  return { action, isHidden };
+  return { action, isHidden: isHiddenRef.current };
 };
