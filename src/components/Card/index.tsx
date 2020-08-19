@@ -60,6 +60,15 @@ const CardContainer = ({
 
   const updateCard = (data: Partial<CardModel>) => card.ref.update(data);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const { tagName } = event.target as HTMLElement;
+    // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
+    if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
+      event.preventDefault();
+      show();
+    }
+  };
+
   return (
     <>
       <Card
@@ -71,6 +80,7 @@ const CardContainer = ({
         isModalOpen={isShow}
         onUpdate={updateCard}
         onClick={show}
+        onKeyDown={handleKeyDown}
       />
 
       <Modal
@@ -94,6 +104,7 @@ interface CardProps {
   onComplete?: (state: boolean) => void;
   onTagClick?: (tag: string) => Promise<void>;
   onClick?: () => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const Card = observer(
@@ -108,17 +119,9 @@ const Card = observer(
     onComplete,
     onTagClick,
     onClick,
+    onKeyDown,
   }: CardProps) => {
     const checkboxes = useMemo(() => findCheckboxes(card.text), [card.text]);
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      const { tagName } = event.target as HTMLElement;
-      // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
-      if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
-        event.preventDefault();
-        onClick();
-      }
-    };
 
     const showBadges =
       card.assignee || card.date || card.tags || checkboxes.total > 0;
@@ -130,7 +133,7 @@ const Card = observer(
         id={card.id}
         index={index}
         draggable={!previewMode && !isModalOpen}
-        onKeyDown={handleKeyDown}
+        onKeyDown={onKeyDown}
       >
         <CardMarkdown
           onChangeCheckbox={text => onUpdate({ text })}
