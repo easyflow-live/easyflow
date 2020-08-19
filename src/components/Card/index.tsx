@@ -1,8 +1,7 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import CardDocument from 'documents/card.doc';
-import { useMarkdownCheckbox } from 'hooks/use-markdown-checkbox';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import CardBadges from 'components/CardBadges';
 import DraggableElement from 'components/shared/DraggableElement';
@@ -22,7 +21,6 @@ interface CardContainerProps {
 }
 
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
-const isInput = (tagName: string) => tagName.toLowerCase() === 'input';
 const isTextArea = (tagName: string) => tagName.toLowerCase() === 'textarea';
 
 const CardContainer = ({
@@ -31,7 +29,6 @@ const CardContainer = ({
   listId,
   previewMode,
 }: CardContainerProps) => {
-  const toggleCheckbox = useMarkdownCheckbox(card.data.text);
   const { assignees } = useCardAssignees(card);
 
   const { Modal, isShow, hide, show } = useCardFullModal();
@@ -63,21 +60,6 @@ const CardContainer = ({
 
   const updateCard = (data: Partial<CardModel>) => card.ref.update(data);
 
-  const handleTagClick = (tag: string) => card.removeTag(tag);
-
-  const handleComplete = (state: boolean) => {
-    if (card.data.completed !== state) {
-      updateCard({ completed: state });
-
-      emitter.emit('COMPLETE_CARD', {
-        cardId: card.id,
-        listId,
-        title: card.data.title || '',
-        completed: state,
-      });
-    }
-  };
-
   return (
     <>
       <Card
@@ -88,9 +70,6 @@ const CardContainer = ({
         isHidden={isHidden}
         isModalOpen={isShow}
         onUpdate={updateCard}
-        onToggleCheckbox={toggleCheckbox}
-        onComplete={handleComplete}
-        onTagClick={handleTagClick}
         onClick={show}
       />
 
@@ -112,10 +91,9 @@ interface CardProps {
   isHidden: boolean;
   isModalOpen: boolean;
   onUpdate: (data: Partial<CardModel>) => Promise<void>;
-  onToggleCheckbox: ({ checked: boolean, index: number }) => string;
-  onComplete: (state: boolean) => void;
-  onTagClick: (tag: string) => Promise<void>;
-  onClick: () => void;
+  onComplete?: (state: boolean) => void;
+  onTagClick?: (tag: string) => Promise<void>;
+  onClick?: () => void;
 }
 
 const Card = observer(
@@ -127,30 +105,11 @@ const Card = observer(
     isHidden,
     isModalOpen,
     onUpdate,
-    onToggleCheckbox,
     onComplete,
     onTagClick,
     onClick,
   }: CardProps) => {
     const checkboxes = useMemo(() => findCheckboxes(card.text), [card.text]);
-
-    const changeCheckbox = (checked: boolean, index: number) => {
-      const newText = onToggleCheckbox({
-        checked,
-        index,
-      });
-      onUpdate({ text: newText });
-    };
-
-    const handleClick = event => {
-      const { tagName, checked, id } = event.target;
-
-      if (isInput(tagName)) {
-        changeCheckbox(checked, parseInt(id));
-      } else if (!isLink(tagName)) {
-        onClick();
-      }
-    };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       const { tagName } = event.target as HTMLElement;
@@ -164,7 +123,7 @@ const Card = observer(
     const showBadges =
       card.assignee || card.date || card.tags || checkboxes.total > 0;
 
-    const cardProps = previewMode ? {} : { onClick: handleClick };
+    const cardProps = previewMode ? {} : { onClick };
 
     return (
       <DraggableElement
@@ -174,6 +133,7 @@ const Card = observer(
         onKeyDown={handleKeyDown}
       >
         <CardMarkdown
+          onChangeCheckbox={text => onUpdate({ text })}
           text={card.text}
           isHidden={isHidden}
           previewMode={previewMode}

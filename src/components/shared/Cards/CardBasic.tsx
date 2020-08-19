@@ -7,7 +7,7 @@ export interface CardBasicProps {
   previewMode?: boolean;
   isHidden?: boolean;
   renderBadges?: () => ReactChild;
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 const CardBasic: FC<CardBasicProps> = ({
