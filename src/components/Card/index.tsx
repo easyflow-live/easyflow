@@ -4,21 +4,21 @@ import { observer } from 'mobx-react-lite';
 import CardDocument from 'documents/card.doc';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import CardBadges from 'components/CardBadges';
-import DraggableElement from 'components/shared/DraggableElement';
 import { Card as CardModel } from 'documents/card.doc';
-import { useCardFullModal } from 'modules/Board/components/CardModalProvider';
 import CardMarkdown from 'components/shared/Cards/CardMarkdown';
 import { useCardAssignees } from 'hooks/use-card-assignees';
 import { User } from 'store/users';
 import { useUndo } from 'hooks/use-undo';
+import { CardModalProps } from 'components/CardModal/CardModalFull';
 
 interface CardContainerProps {
   card: CardDocument;
-  index: number;
   listId: string;
   previewMode: boolean;
   onUpdate: (card: CardDocument, data: Partial<CardModel>) => void;
   onRemove: (card: CardDocument) => void;
+  onHideModal: () => void;
+  onShowModal: (props: CardModalProps) => void;
 }
 
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
@@ -26,15 +26,14 @@ const isTextArea = (tagName: string) => tagName.toLowerCase() === 'textarea';
 
 const CardContainer = ({
   card,
-  index,
   listId,
   previewMode,
   onUpdate,
   onRemove,
+  onHideModal,
+  onShowModal,
 }: CardContainerProps) => {
   const { assignees } = useCardAssignees(card);
-
-  const { isOpen, hideModal, showModal } = useCardFullModal();
 
   const onClose = useCallback(async () => {
     onRemove(card);
@@ -49,21 +48,21 @@ const CardContainer = ({
 
   const { action, isHidden } = useUndo({
     onClose,
-    onAction: hideModal,
+    onAction: onHideModal,
     toastId: card.id,
     toastTitle: 'Card removed',
   });
 
   const handleClick = useCallback(
     () =>
-      showModal({
+      onShowModal({
         card,
         listId,
         onUpdate: updateCard,
         onRemove: action,
-        onClose: hideModal,
+        onClose: onHideModal,
       }),
-    [card, listId, updateCard, action, hideModal]
+    [card, listId, updateCard, action, onHideModal]
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -79,11 +78,9 @@ const CardContainer = ({
     <>
       <Card
         card={{ ...card.data, id: card.id }}
-        index={index}
         previewMode={previewMode}
         assignees={assignees}
         isHidden={isHidden}
-        isModalOpen={isOpen}
         onUpdate={updateCard}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
@@ -94,11 +91,9 @@ const CardContainer = ({
 
 interface CardProps {
   card: CardModel;
-  index: number;
   previewMode: boolean;
   assignees: User[];
   isHidden: boolean;
-  isModalOpen: boolean;
   onUpdate: (data: Partial<CardModel>) => void;
   onComplete?: (state: boolean) => void;
   onTagClick?: (tag: string) => void;
@@ -109,11 +104,9 @@ interface CardProps {
 const Card = observer(
   ({
     card,
-    index,
     previewMode,
     assignees,
     isHidden,
-    isModalOpen,
     onUpdate,
     onComplete,
     onTagClick,
@@ -130,39 +123,32 @@ const Card = observer(
       onClick && onClick(card.id);
     };
 
-    const cardProps = previewMode ? {} : { onClick: handleClick };
+    const cardProps = previewMode ? {} : { onClick: handleClick, onKeyDown };
 
     return (
-      <DraggableElement
-        id={card.id}
-        index={index}
-        draggable={!previewMode && !isModalOpen}
-        onKeyDown={onKeyDown}
-      >
-        <CardMarkdown
-          onChangeCheckbox={text => onUpdate({ text })}
-          text={card.text}
-          isHidden={isHidden}
-          previewMode={previewMode}
-          bgColor={card.color}
-          renderBadges={() =>
-            showBadges && (
-              <CardBadges
-                tags={card.tags}
-                date={card.date}
-                completed={card.completed}
-                cardId={card.id}
-                color={card.color}
-                assignees={assignees}
-                checkboxes={checkboxes}
-                onComplete={onComplete}
-                onTagClick={onTagClick}
-              />
-            )
-          }
-          {...cardProps}
-        />
-      </DraggableElement>
+      <CardMarkdown
+        onChangeCheckbox={text => onUpdate({ text })}
+        text={card.text}
+        isHidden={isHidden}
+        previewMode={previewMode}
+        bgColor={card.color}
+        renderBadges={() =>
+          showBadges && (
+            <CardBadges
+              tags={card.tags}
+              date={card.date}
+              completed={card.completed}
+              cardId={card.id}
+              color={card.color}
+              assignees={assignees}
+              checkboxes={checkboxes}
+              onComplete={onComplete}
+              onTagClick={onTagClick}
+            />
+          )
+        }
+        {...cardProps}
+      />
     );
   }
 );

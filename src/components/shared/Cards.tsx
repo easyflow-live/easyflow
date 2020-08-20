@@ -8,6 +8,8 @@ import CardDocument, { Card as CardModel } from 'documents/card.doc';
 import CardPlaceholder from 'components/shared/CardPlaceholder';
 import Card from 'components/Card';
 import { emitter } from 'libs/emitter';
+import DraggableElement from './DraggableElement';
+import { useCardFullModal } from 'modules/Board/components/CardModalProvider';
 
 interface CardProps {
   cards: Collection<CardDocument>;
@@ -17,6 +19,8 @@ interface CardProps {
 
 const Cards = ({ cards, listId, previewMode }: CardProps) => {
   const { isLoading } = cards;
+
+  const { isOpen, hideModal, showModal } = useCardFullModal();
 
   const removeCard = (card: CardDocument) => {
     card.ref.delete().then(() =>
@@ -51,15 +55,23 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
             <CardPlaceholder />
           ) : (
             cards.docs.map((card, index) => (
-              <Card
+              <DraggableElement
                 key={card.id}
-                card={card}
+                id={card.id}
                 index={index}
-                listId={listId}
-                previewMode={previewMode}
-                onRemove={removeCard}
-                onUpdate={updateCard}
-              />
+                draggable={!previewMode && !isOpen}
+              >
+                <Card
+                  key={card.id}
+                  card={card}
+                  listId={listId}
+                  previewMode={previewMode}
+                  onRemove={removeCard}
+                  onUpdate={updateCard}
+                  onShowModal={showModal}
+                  onHideModal={hideModal}
+                />
+              </DraggableElement>
             ))
           )}
 
