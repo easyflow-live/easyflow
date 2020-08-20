@@ -54,15 +54,6 @@ const CardContainer = ({
     toastTitle: 'Card removed',
   });
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const { tagName } = event.target as HTMLElement;
-    // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
-    if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
-      event.preventDefault();
-      handleClick();
-    }
-  };
-
   const handleClick = useCallback(
     () =>
       showModal({
@@ -74,6 +65,15 @@ const CardContainer = ({
       }),
     [card, listId, updateCard, action, hideModal]
   );
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const { tagName } = event.target as HTMLElement;
+    // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
+    if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
+      event.preventDefault();
+      handleClick();
+    }
+  };
 
   return (
     <>
