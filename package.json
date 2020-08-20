@@ -82,10 +82,17 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "husky": "^4.2.5",
     "node-sass": "^4.14.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^1.19.1",
     "tailwindcss": "^1.4.6",
     "typescript": "^3.9.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
   }
 }
