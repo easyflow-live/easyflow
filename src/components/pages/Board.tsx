@@ -9,6 +9,7 @@ import { useInterface } from 'components/providers/InterfaceProvider';
 import Loader from 'components/shared/Loader';
 import { BoardsStoreProvider, UsersStoreProvider } from 'store';
 import AppActionsEvents from 'components/shared/AppActionsEvents';
+import { CardModalProvider } from 'modules/Board/components/CardModalProvider';
 
 interface BoardPageProps {
   query: { uid: string; previewmode: boolean };
@@ -44,7 +45,9 @@ const BoardPage = ({ query }: BoardPageProps) => {
       <UsersStoreProvider>
         <BoardsStoreProvider>
           <AppActionsEvents />
-          <Board board={board} previewMode={previewMode} />
+          <CardModalProvider>
+            <Board board={board} previewMode={previewMode} />
+          </CardModalProvider>
         </BoardsStoreProvider>
       </UsersStoreProvider>
     </AuthenticatedPage>
