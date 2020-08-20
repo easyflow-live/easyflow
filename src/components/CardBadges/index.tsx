@@ -17,7 +17,7 @@ interface CardBadgesProps {
   checkboxes: { total: number; checked: number };
   isModal?: boolean;
   onComplete: (state: boolean) => void;
-  onTagClick: (tag: string) => Promise<void>;
+  onTagClick: (tag: string) => void;
 }
 
 const CardBadges = ({

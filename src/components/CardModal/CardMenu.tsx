@@ -5,7 +5,7 @@ import Menu, { MenuItem, Button } from '../shared/Menu';
 
 interface CardMenuProps {
   title: string;
-  onRemove: (title: string) => Promise<void>;
+  onRemove: (title: string) => void;
 }
 
 const CardMenu: React.FC<CardMenuProps> = props => {
