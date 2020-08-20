@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import CardDocument from 'documents/card.doc';
@@ -6,18 +6,19 @@ import { findCheckboxes } from 'helpers/find-check-boxes';
 import CardBadges from 'components/CardBadges';
 import DraggableElement from 'components/shared/DraggableElement';
 import { Card as CardModel } from 'documents/card.doc';
-import { useCardFullModal } from 'components/CardModal/CardModalFull';
+import { useCardFullModal } from 'modules/Board/components/CardModalProvider';
 import CardMarkdown from 'components/shared/Cards/CardMarkdown';
 import { useCardAssignees } from 'hooks/use-card-assignees';
 import { User } from 'store/users';
 import { useUndo } from 'hooks/use-undo';
-import { emitter } from 'libs/emitter';
 
 interface CardContainerProps {
   card: CardDocument;
   index: number;
   listId: string;
   previewMode: boolean;
+  onUpdate: (card: CardDocument, data: Partial<CardModel>) => void;
+  onRemove: (card: CardDocument) => void;
 }
 
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
@@ -28,46 +29,51 @@ const CardContainer = ({
   index,
   listId,
   previewMode,
+  onUpdate,
+  onRemove,
 }: CardContainerProps) => {
   const { assignees } = useCardAssignees(card);
 
-  const { Modal, isShow, hide, show } = useCardFullModal();
-
-  const remove = async ({ card: removedCard }: { card: CardModel }) => {
-    await card.ref.delete();
-
-    emitter.emit('REMOVE_CARD', {
-      text: removedCard.text,
-      title: removedCard.title || '',
-      listId,
-    });
-  };
+  const { isOpen, hideModal, showModal } = useCardFullModal();
 
   const onClose = useCallback(async () => {
-    await remove({ card: card.data });
+    onRemove(card);
   }, [card]);
 
-  const onAction = useCallback(() => {
-    hide();
-  }, [hide]);
+  const updateCard = useCallback(
+    (data: Partial<CardModel>) => {
+      onUpdate(card, data);
+    },
+    [card]
+  );
 
   const { action, isHidden } = useUndo({
     onClose,
-    onAction,
+    onAction: hideModal,
     toastId: card.id,
     toastTitle: 'Card removed',
   });
-
-  const updateCard = (data: Partial<CardModel>) => card.ref.update(data);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { tagName } = event.target as HTMLElement;
     // Only open card on enter since spacebar is used by react-beautiful-dnd for keyboard dragging
     if (event.keyCode === 13 && !isLink(tagName) && !isTextArea(tagName)) {
       event.preventDefault();
-      show();
+      handleClick();
     }
   };
+
+  const handleClick = useCallback(
+    () =>
+      showModal({
+        card,
+        listId,
+        onUpdate: updateCard,
+        onRemove: action,
+        onClose: hideModal,
+      }),
+    [card, listId, updateCard, action, hideModal]
+  );
 
   return (
     <>
@@ -77,17 +83,10 @@ const CardContainer = ({
         previewMode={previewMode}
         assignees={assignees}
         isHidden={isHidden}
-        isModalOpen={isShow}
+        isModalOpen={isOpen}
         onUpdate={updateCard}
-        onClick={show}
+        onClick={handleClick}
         onKeyDown={handleKeyDown}
-      />
-
-      <Modal
-        card={card}
-        listId={listId}
-        onUpdate={updateCard}
-        onRemove={action}
       />
     </>
   );
@@ -100,10 +99,10 @@ interface CardProps {
   assignees: User[];
   isHidden: boolean;
   isModalOpen: boolean;
-  onUpdate: (data: Partial<CardModel>) => Promise<void>;
+  onUpdate: (data: Partial<CardModel>) => void;
   onComplete?: (state: boolean) => void;
-  onTagClick?: (tag: string) => Promise<void>;
-  onClick?: () => void;
+  onTagClick?: (tag: string) => void;
+  onClick?: (cardId: string) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
@@ -126,7 +125,12 @@ const Card = observer(
     const showBadges =
       card.assignee || card.date || card.tags || checkboxes.total > 0;
 
-    const cardProps = previewMode ? {} : { onClick };
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e.preventDefault();
+      onClick && onClick(card.id);
+    };
+
+    const cardProps = previewMode ? {} : { onClick: handleClick };
 
     return (
       <DraggableElement
