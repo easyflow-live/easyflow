@@ -29,7 +29,7 @@ const Container = styled.div`
 interface DueCalendarProps {
   date: any;
   completed: boolean;
-  onUpdate: (data: Partial<Card>) => Promise<void>;
+  onUpdate: (data: Partial<Card>) => void;
 }
 
 const getStyle = (isThinDisplay: boolean, style: ClientRect) => ({
