@@ -8,6 +8,7 @@ export interface CardBasicProps {
   isHidden?: boolean;
   renderBadges?: () => ReactChild;
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 const CardBasic: FC<CardBasicProps> = ({
@@ -17,10 +18,12 @@ const CardBasic: FC<CardBasicProps> = ({
   isHidden,
   renderBadges,
   onClick,
+  onKeyDown,
 }) => {
   return (
     <div
       onClick={onClick}
+      onKeyDown={onKeyDown}
       className={cn(
         'card relative text-sm select-none rounded my-2 mx-0 text-gray-900 break-words',
         { hidden: isHidden },
