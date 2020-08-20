@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
-import React, { useMemo, useState, CSSProperties, useCallback } from 'react';
+import React, { useMemo, useState, CSSProperties } from 'react';
 import { MdClose } from 'react-icons/md';
-import ReactModal from 'react-modal';
 
 import CardDocument, { Card } from 'documents/card.doc';
-import { useThinDisplay } from 'hooks/use-thin-display';
 import { Heading, Button } from 'components/shared';
 import {
   Editable as EditableComplex,
@@ -18,7 +16,6 @@ import MarkdownText from 'components/shared/MarkdownText';
 import BadgeTaskProgress from 'components/shared/BadgeTaskProgress';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import { useBoardsStore } from 'store';
-import { useInterface } from 'components/providers/InterfaceProvider';
 import Color from 'components/shared/Color';
 import { DueCalendar } from 'components/shared/DueCalendar';
 import { Assignees } from 'components/shared/Assignees';
@@ -65,12 +62,12 @@ const HoverableContainer: React.FC<{ style?: CSSProperties }> = props => (
   </div>
 );
 
-interface CardModalProps {
+export interface CardModalProps {
   card: CardDocument;
   listId: string;
   onClose: () => void;
-  onRemove?: () => void;
-  onUpdate: (data: Partial<Card>) => Promise<void>;
+  onRemove?: (title: string) => void;
+  onUpdate: (data: Partial<Card>) => void;
 }
 
 const CardModalFull: React.FC<CardModalProps> = props => {
@@ -270,7 +267,7 @@ const CardModalFull: React.FC<CardModalProps> = props => {
   );
 };
 
-const getStyle = (isThinDisplay: boolean) => ({
+export const getStyle = (isThinDisplay: boolean) => ({
   overlay: {
     position: 'fixed',
     left: 0,
@@ -293,39 +290,5 @@ const getStyle = (isThinDisplay: boolean) => ({
     padding: isThinDisplay ? 0 : '20px',
   },
 });
-
-export const useCardFullModal = () => {
-  const [isShow, setIsShow] = useState(false);
-  const { setOpenedModal } = useInterface();
-
-  const isThinDisplay = useThinDisplay();
-
-  const customStyle = useMemo(() => getStyle(isThinDisplay), [isThinDisplay]);
-
-  const show = useCallback(() => {
-    setIsShow(true);
-    setOpenedModal(true);
-  }, [setOpenedModal]);
-
-  const hide = useCallback(() => {
-    setIsShow(false);
-    setOpenedModal(false);
-  }, [setOpenedModal]);
-
-  const Modal = useCallback(
-    (props: Omit<CardModalProps, 'onClose'>) => (
-      <ReactModal
-        isOpen={isShow}
-        onRequestClose={hide}
-        style={customStyle}
-        includeDefaultStyles={false}
-      >
-        <CardModalFull {...props} onClose={hide} />
-      </ReactModal>
-    ),
-    [isShow, hide, customStyle]
-  );
-  return { Modal, isShow, show, hide };
-};
 
 export default observer(CardModalFull);
