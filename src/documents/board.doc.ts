@@ -12,6 +12,7 @@ export interface Board {
   uid: string;
   index: number;
   title: string;
+  code?: string;
   owner: UserDocument['ref'];
   users: UserDocument['ref'][];
   tags?: string[];
@@ -19,11 +20,21 @@ export interface Board {
   lists?: string[];
 }
 
+const generateDefaultCode = (str: string) => {
+  const splited = str.trim().split(' ');
+
+  if (splited.length > 1) {
+    return splited.map(word => word[0].toUpperCase()).join('');
+  }
+
+  return str.slice(0, 3).toUpperCase();
+};
+
 export default class BoardDocument extends Document<Board> {
   private _lists: Collection<ListDocument>;
   private _actions: Collection<ActionDocument>;
 
-  static craate(board: Omit<Board, 'uid'>): Promise<BoardDocument> {
+  static create(board: Omit<Board, 'uid'>): Promise<BoardDocument> {
     const boards = new Collection<BoardDocument>('/boards');
 
     return boards.add({
@@ -34,6 +45,17 @@ export default class BoardDocument extends Document<Board> {
       ...board,
       users: firebase.firestore.FieldValue.arrayUnion(...board.users),
     });
+  }
+
+  get code(): string {
+    if (!this.data.code) {
+      const code = generateDefaultCode(this.data.title);
+
+      this.update({ code });
+
+      return code;
+    }
+    return this.data.code;
   }
 
   get exists(): boolean {

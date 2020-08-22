@@ -3,36 +3,28 @@ import React, { useState } from 'react';
 import { useSession } from 'hooks/use-session';
 import BoardDocument from 'documents/board.doc';
 import ClickOutside from 'components/shared/ClickOutside';
-import { Button, Input } from 'components/shared';
+import NewBoardForm from 'components/shared/NewBoardForm';
 
 const BoardAdder = () => {
   const { userDoc } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState('');
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleChange = event => {
-    setTitle(event.target.value);
-  };
+  const handleSubmit = async props => {
+    const { title, code, index } = props;
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (title === '') return;
-
-    const index = userDoc.boards.docs.length;
-
-    await BoardDocument.craate({
+    await BoardDocument.create({
       owner: userDoc.ref,
       users: [userDoc.ref],
       title,
+      code,
       index,
     });
 
     setIsOpen(false);
-    setTitle('');
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -43,25 +35,9 @@ const BoardAdder = () => {
 
   return isOpen ? (
     <ClickOutside handleClickOutside={toggleOpen}>
-      <form
-        onSubmit={handleSubmit}
-        className='bg-gray-700 shadow-lg rounded-lg p-4 mr-4 mb-4 w-full sm:w-48 h-32'
-      >
-        <Input
-          autoFocus
-          type='text'
-          value={title}
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
-          spellCheck={false}
-          placeholder='Board name'
-          className='my-3'
-        />
-
-        <Button type='submit' disabled={title === ''} size='small'>
-          Create
-        </Button>
-      </form>
+      <div className='bg-gray-700 shadow-lg rounded-lg p-4 mr-4 mb-4 w-full sm:w-64'>
+        <NewBoardForm onKeyDown={handleKeyDown} onSubmit={handleSubmit} />
+      </div>
     </ClickOutside>
   ) : (
     <button
