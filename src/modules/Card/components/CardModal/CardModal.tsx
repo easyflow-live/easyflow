@@ -8,11 +8,11 @@ import CardDocument from 'documents/card.doc';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import { useThinDisplay } from 'hooks/use-thin-display';
 import { useKeySubmit } from 'hooks/use-key-submit';
-import { useSession } from 'components/providers/SessionProvider';
-import CardBadges from 'components/CardBadges';
+import { useSession } from 'modules/Auth/components/SessionProvider';
+import CardBadges from 'modules/Card/components/CardBadges';
 import { Modal } from 'components/shared';
 import { Card } from 'documents/card.doc';
-import { useCardAssignees } from 'hooks/use-card-assignees';
+import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import CardOptions from './CardOptions';
 import './CardModal.scss';
 

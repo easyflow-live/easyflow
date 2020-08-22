@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import Header from 'components/Header';
 import { initGA, logPageView } from 'libs/analytics';
 import { InterfaceProvider } from 'components/providers/InterfaceProvider';
-import { SessionProvider } from 'components/providers/SessionProvider';
+import { SessionProvider } from 'modules/Auth/components/SessionProvider';
 
 import 'services/firebase.service';
 import 'styles/style.css';

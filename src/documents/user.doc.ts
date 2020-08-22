@@ -1,6 +1,6 @@
 import { Document, Collection } from 'firestorter';
 
-import BoardDocument from './board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 
 interface User {
   email: string;

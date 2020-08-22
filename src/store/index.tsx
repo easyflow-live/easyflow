@@ -1,5 +1,8 @@
 import { useUsersStore, UsersStoreProvider } from './users';
-import { useBoardsStore, BoardsStoreProvider } from './boards';
+import {
+  useBoardsStore,
+  BoardsStoreProvider,
+} from 'modules/Board/store/boards';
 
 export {
   useBoardsStore,

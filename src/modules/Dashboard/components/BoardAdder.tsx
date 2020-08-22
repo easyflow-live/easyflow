@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useSession } from 'hooks/use-session';
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 import ClickOutside from 'components/shared/ClickOutside';
 import NewBoardForm from 'components/shared/NewBoardForm';
 

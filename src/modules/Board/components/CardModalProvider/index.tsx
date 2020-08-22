@@ -11,7 +11,7 @@ import ReactModal from 'react-modal';
 import CardModalFull, {
   getStyle,
   CardModalProps,
-} from 'components/CardModal/CardModalFull';
+} from 'modules/Card/components/CardModal/CardModalFull';
 import { useThinDisplay } from 'hooks/use-thin-display';
 
 interface CardModalContextProps {

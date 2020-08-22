@@ -1,15 +1,12 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import CardDocument from 'documents/card.doc';
-import { findCheckboxes } from 'helpers/find-check-boxes';
-import CardBadges from 'components/CardBadges';
 import { Card as CardModel } from 'documents/card.doc';
-import CardMarkdown from 'components/shared/Cards/CardMarkdown';
-import { useCardAssignees } from 'hooks/use-card-assignees';
-import { User } from 'store/users';
+import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import { useUndo } from 'hooks/use-undo';
-import { CardModalProps } from 'components/CardModal/CardModalFull';
+import { CardModalProps } from 'modules/Card/components/CardModal/CardModalFull';
+import Card from 'modules/Card/components/Card';
 
 interface CardContainerProps {
   card: CardDocument;
@@ -88,69 +85,5 @@ const CardContainer = ({
     </>
   );
 };
-
-interface CardProps {
-  card: CardModel;
-  previewMode: boolean;
-  assignees: User[];
-  isHidden: boolean;
-  onUpdate: (data: Partial<CardModel>) => void;
-  onComplete?: (state: boolean) => void;
-  onTagClick?: (tag: string) => void;
-  onClick?: (cardId: string) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-}
-
-const Card = observer(
-  ({
-    card,
-    previewMode,
-    assignees,
-    isHidden,
-    onUpdate,
-    onComplete,
-    onTagClick,
-    onClick,
-    onKeyDown,
-  }: CardProps) => {
-    const checkboxes = useMemo(() => findCheckboxes(card.text), [card.text]);
-
-    const showBadges =
-      card.assignee || card.date || card.tags || checkboxes.total > 0;
-
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      e.preventDefault();
-      onClick && onClick(card.id);
-    };
-
-    const cardProps = previewMode ? {} : { onClick: handleClick, onKeyDown };
-
-    return (
-      <CardMarkdown
-        onChangeCheckbox={text => onUpdate({ text })}
-        text={card.text}
-        isHidden={isHidden}
-        previewMode={previewMode}
-        bgColor={card.color}
-        renderBadges={() =>
-          showBadges && (
-            <CardBadges
-              tags={card.tags}
-              date={card.date}
-              completed={card.completed}
-              cardId={card.id}
-              color={card.color}
-              assignees={assignees}
-              checkboxes={checkboxes}
-              onComplete={onComplete}
-              onTagClick={onTagClick}
-            />
-          )
-        }
-        {...cardProps}
-      />
-    );
-  }
-);
 
 export default observer(CardContainer);

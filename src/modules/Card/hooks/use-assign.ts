@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import { useSession } from './use-session';
-import CardDocument from '../documents/card.doc';
+import { useSession } from 'hooks/use-session';
+import CardDocument from 'documents/card.doc';
 import { emitter } from 'libs/emitter';
 
 export const useAssign = (card: CardDocument, listId: string): (() => void) => {

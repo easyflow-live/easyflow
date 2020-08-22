@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import { observer } from 'mobx-react-lite';
 
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 
 import { useInterface } from 'components/providers/InterfaceProvider';
 import AddTagsModal from 'modules/Board/components/BoardHeader/AddTagsModal';

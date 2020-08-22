@@ -81,6 +81,8 @@ const AppActionsEvents = () => {
           list: getList(listId).ref,
           card: getList(listId).cards.docs.find(c => c.id === cardId).ref,
           ...payload,
+          oldTitle: payload.oldTitle || '',
+          newTitle: payload.newTitle || payload.oldTitle || '',
         },
       }),
     [userDoc, currentBoard]

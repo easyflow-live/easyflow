@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
-import BoardDocument from '../../documents/board.doc';
-import { useUsersStore } from '../../store';
+import BoardDocument from 'modules/Board/data/board.doc';
+import { useUsersStore } from 'store';
 import ActionCard, { ActionCardPlaceholder } from './ActionCard';
 
 interface ActionsProps {

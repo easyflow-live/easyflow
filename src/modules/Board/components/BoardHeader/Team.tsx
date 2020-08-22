@@ -2,8 +2,8 @@ import { CSSProperties } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTransition, animated } from 'react-spring';
 
-import BoardDocument from 'documents/board.doc';
-import { useBoardTeam } from 'hooks/use-board-team';
+import BoardDocument from 'modules/Board/data/board.doc';
+import { useBoardTeam } from 'modules/Board/hooks/use-board-team';
 import { Avatar } from 'components/shared';
 
 interface TeamProps {

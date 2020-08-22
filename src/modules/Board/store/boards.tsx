@@ -3,9 +3,9 @@ import { observable, action } from 'mobx';
 import { useLocalStore } from 'mobx-react-lite';
 import { Collection, Mode } from 'firestorter';
 
-import BoardDocument from '../../src/documents/board.doc';
-import ListDocument from '../../src/documents/list.doc';
-import ColorDocument from '../../src/documents/color.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
+import ListDocument from 'documents/list.doc';
+import ColorDocument from 'documents/color.doc';
 
 class BoardsStore {
   @observable currentBoard: BoardDocument = null;

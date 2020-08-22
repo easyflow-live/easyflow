@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { FaUser } from 'react-icons/fa';
 
-import { useAssign } from '../../hooks/use-assign';
-import CardDocument from '../../documents/card.doc';
+import { useAssign } from 'modules/Card/hooks/use-assign';
+import CardDocument from 'documents/card.doc';
 import CardOptionButton from './CardOptionButton';
 
 interface Props {

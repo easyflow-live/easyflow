@@ -4,14 +4,14 @@ import Router from 'next/router';
 import { toast } from 'react-toastify';
 
 import { useBoardsStore } from 'store';
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 import CardDocument from 'documents/card.doc';
 import ListDocument from 'documents/list.doc';
 import ListColumns from 'components/shared/ListColumns';
 import BoardHeader from 'modules/Board/components/BoardHeader';
 import { CreateContentEmpty } from 'components/shared/Empty/CreateContentEmpty';
 import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
-import { useSession } from 'components/providers/SessionProvider';
+import { useSession } from 'modules/Auth/components/SessionProvider';
 import BoardMenu from './components/BoardMenu';
 import { ToastUndo } from 'components/shared';
 import { emitter } from 'libs/emitter';

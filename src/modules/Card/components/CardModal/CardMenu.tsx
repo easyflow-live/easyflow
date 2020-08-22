@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaTrash, FaEllipsisH } from 'react-icons/fa';
 
-import Menu, { MenuItem, Button } from '../shared/Menu';
+import Menu, { MenuItem, Button } from 'components/shared/Menu';
 
 interface CardMenuProps {
   title: string;

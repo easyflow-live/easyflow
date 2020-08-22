@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import cookie from 'js-cookie';
 
-import { normalizeCookieUser } from 'components/providers/SessionProvider';
+import { normalizeCookieUser } from 'modules/Auth/components/SessionProvider';
 
 const firebaseAuthConfig = {
   signInFlow: 'popup',

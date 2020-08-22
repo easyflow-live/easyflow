@@ -4,7 +4,7 @@ import Error from 'next/error';
 
 import LandingPage from 'modules/LandingPage';
 import { useSession } from 'hooks/use-session';
-import Loader from './Loader';
+import Loader from 'components/shared/Loader';
 
 interface PageProps {
   children: ReactElement;

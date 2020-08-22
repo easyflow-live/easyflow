@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { toast } from 'react-toastify';
 
 import { useSession } from 'hooks/use-session';
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 import Dialog from './Dialog';
 import NewBoardForm from './NewBoardForm';
 

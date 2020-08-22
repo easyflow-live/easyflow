@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import CardDocument, { Card as CardModel } from 'documents/card.doc';
 import CardPlaceholder from 'components/shared/CardPlaceholder';
-import Card from 'components/Card';
+import Card from 'modules/Card';
 import { emitter } from 'libs/emitter';
 import DraggableElement from './DraggableElement';
 import { useCardFullModal } from 'modules/Board/components/CardModalProvider';

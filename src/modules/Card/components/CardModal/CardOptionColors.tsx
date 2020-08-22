@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { KeyboardEvent } from 'react';
 
-import { useBoardsStore } from '../../store';
+import { useBoardsStore } from 'store';
 
 interface CardOptionColorsProps {
   onClick: (props: any) => void;

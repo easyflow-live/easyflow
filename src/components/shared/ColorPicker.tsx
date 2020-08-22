@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import CardOptionButton from 'components/CardModal/CardOptionButton';
+import CardOptionButton from 'modules/Card/components/CardModal/CardOptionButton';
 import ClickOutside from './ClickOutside';
 
 interface PickerModalProps {
