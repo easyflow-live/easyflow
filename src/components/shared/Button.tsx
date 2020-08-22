@@ -27,12 +27,14 @@ interface ButtonProps
   > {
   size?: Size;
   variant?: Variant;
+  block?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   className,
   size = 'medium',
   variant = 'solid',
+  block,
   ...props
 }) => (
   <button
@@ -46,6 +48,7 @@ const Button: React.FC<ButtonProps> = ({
       cursor-pointer`,
       variants[props.disabled ? 'disabled' : variant],
       sizes[size],
+      { 'w-full': block },
       className
     )}
     {...props}
