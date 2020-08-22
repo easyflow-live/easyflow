@@ -17,6 +17,7 @@ const variants = {
     'bg-transparent rounded text-pink-500 hover:bg-pink-500 hover:text-white',
   'ghost-danger':
     'bg-transparent rounded text-red-500 hover:bg-red-500 hover:text-white',
+  disabled: 'bg-pink-400 cursor-not-allowed text-gray-200',
 };
 
 interface ButtonProps
@@ -43,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
       font-semibold
       leading-tight
       cursor-pointer`,
-      variants[variant],
+      variants[props.disabled ? 'disabled' : variant],
       sizes[size],
       className
     )}
