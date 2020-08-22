@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import BoardDocument from '../../src/documents/board.doc';
-import { useUsersStore } from '../store';
-import { User } from '../store/users';
+import BoardDocument from 'modules/Board/data/board.doc';
+import { useUsersStore } from 'store';
+import { User } from 'store/users';
 
 export const useBoardTeam = (board: BoardDocument) => {
   const { loadUsers, isLoading, getUser, users } = useUsersStore();

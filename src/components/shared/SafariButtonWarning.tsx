@@ -2,7 +2,7 @@ import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
 import { useIsMobileSafari } from 'hooks/use-is-mobile-safari';
-import FirebaseAuth from './FirebaseAuth';
+import FirebaseAuth from 'modules/Auth/components/FirebaseAuth';
 
 const SafariButtonWarning = () => {
   const isMobileSafari = useIsMobileSafari();

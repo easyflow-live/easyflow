@@ -1,3 +1,3 @@
-import { useSession } from '../components/providers/SessionProvider';
+import { useSession } from 'modules/Auth/components/SessionProvider';
 
 export { useSession };

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSession } from 'hooks/use-session';
-import { useBoard } from 'hooks/use-board';
+import { useBoard } from 'modules/Board/hooks/use-board';
 import Board from 'modules/Board';
-import AuthenticatedPage from 'components/shared/AuthenticatedPage';
+import AuthenticatedPage from 'modules/Auth/components/AuthenticatedPage';
 import { useInterface } from 'components/providers/InterfaceProvider';
 import Loader from 'components/shared/Loader';
 import { BoardsStoreProvider, UsersStoreProvider } from 'store';

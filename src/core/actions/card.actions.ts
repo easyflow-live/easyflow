@@ -1,8 +1,8 @@
-import UserDocument from '../../documents/user.doc';
-import BoardDocument from '../../documents/board.doc';
-import ListDocument from '../../documents/list.doc';
-import CardDocument from '../../documents/card.doc';
-import firebaseService from '../../services/firebase.service';
+import UserDocument from 'documents/user.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
+import ListDocument from 'documents/list.doc';
+import CardDocument from 'documents/card.doc';
+import firebaseService from 'services/firebase.service';
 import { Actions } from './types';
 
 export enum CardActions {

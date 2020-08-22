@@ -2,7 +2,7 @@ import React from 'react';
 import { MdTimeline, MdViewColumn } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 import { useInterface } from 'components/providers/InterfaceProvider';
 import { SafariButtonWarning } from 'components/shared';
 import AddNewListModal from './AddNewListModal';

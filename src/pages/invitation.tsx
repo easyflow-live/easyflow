@@ -9,7 +9,7 @@ import firebase from 'services/firebase.service';
 import { useSession } from 'hooks/use-session';
 import Header from 'modules/LandingPage/Header';
 import { SafariButtonWarning } from 'components/shared';
-import { InviteStatus } from 'documents/board-invite.doc';
+import { InviteStatus } from 'modules/Board/data/board-invite.doc';
 import Loader from 'components/shared/Loader';
 
 const Shell: React.FC = ({ children }) => (

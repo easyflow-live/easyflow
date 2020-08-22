@@ -3,10 +3,12 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import shortid from 'shortid';
 
-import ListDocument from './list.doc';
-import UserDocument from './user.doc';
-import ActionDocument from './action.doc';
-import BoardInviteDocument, { InviteStatus } from './board-invite.doc';
+import ListDocument from 'documents/list.doc';
+import UserDocument from 'documents/user.doc';
+import ActionDocument from 'documents/action.doc';
+import BoardInviteDocument, {
+  InviteStatus,
+} from 'modules/Board/data/board-invite.doc';
 
 export interface Board {
   uid: string;

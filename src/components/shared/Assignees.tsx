@@ -4,9 +4,9 @@ import { MdClose } from 'react-icons/md';
 import styled from 'styled-components';
 import { useTransition, useSpring, animated } from 'react-spring';
 
-import { useCardAssignees } from 'hooks/use-card-assignees';
+import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import { useSession } from 'hooks/use-session';
-import { useAssign } from 'hooks/use-assign';
+import { useAssign } from 'modules/Card/hooks/use-assign';
 import CardDocument from 'documents/card.doc';
 import Avatar from 'components/shared/Avatar';
 

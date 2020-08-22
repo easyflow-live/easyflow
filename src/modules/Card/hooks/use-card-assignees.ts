@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import CardDocument from '../../src/documents/card.doc';
-import { useUsersStore } from '../store';
-import { sortUsersAlpha } from '../helpers/sortUsersAlpha';
+import CardDocument from 'documents/card.doc';
+import { useUsersStore } from 'store';
+import { sortUsersAlpha } from 'helpers/sortUsersAlpha';
 
 export const useCardAssignees = (card: CardDocument) => {
   const { users, loadUsers } = useUsersStore();

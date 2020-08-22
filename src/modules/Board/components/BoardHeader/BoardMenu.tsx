@@ -3,7 +3,7 @@ import { FaArchive, FaHashtag } from 'react-icons/fa';
 import styled from 'styled-components';
 import { MdSettings } from 'react-icons/md';
 
-import BoardDocument from 'documents/board.doc';
+import BoardDocument from 'modules/Board/data/board.doc';
 import Menu, { MenuItem, Button, Divider } from 'components/shared/Menu';
 import AddTagsModal from './AddTagsModal';
 
