@@ -37,7 +37,7 @@ export const useUndo = ({
     toast(<ToastUndo title={toastTitle} id={toastId} undo={undo} />, {
       onClose: _onClose,
     });
-  }, [onAction]);
+  }, [onAction, _onClose, undo, toastId, toastTitle]);
 
   return { action, isHidden: isHiddenRef.current };
 };

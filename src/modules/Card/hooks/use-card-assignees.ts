@@ -28,7 +28,7 @@ export const useCardAssignees = (card: CardDocument) => {
 
       setAssignees(assignees);
     }
-  }, [users]);
+  }, [users, card.data.assignee]);
 
   return { assignees };
 };

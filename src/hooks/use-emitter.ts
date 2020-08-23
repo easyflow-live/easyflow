@@ -12,7 +12,7 @@ export function useEmitter<K extends keyof EmitterTypes>(
 
     const listener = emitter.addListener(key, callback);
     return () => listener.remove();
-  }, [key, ...deps]);
+  }, [key, callback, ...deps]);
 
   return emitter;
 }

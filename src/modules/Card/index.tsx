@@ -34,13 +34,13 @@ const CardContainer = ({
 
   const onClose = useCallback(async () => {
     onRemove(card);
-  }, [card]);
+  }, [card, onRemove]);
 
   const updateCard = useCallback(
     (data: Partial<CardModel>) => {
       onUpdate(card, data);
     },
-    [card]
+    [card, onUpdate]
   );
 
   const { action, isHidden } = useUndo({
@@ -59,7 +59,7 @@ const CardContainer = ({
         onRemove: action,
         onClose: onHideModal,
       }),
-    [card, listId, updateCard, action, onHideModal]
+    [card, listId, updateCard, action, onHideModal, onShowModal]
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
