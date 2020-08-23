@@ -2,28 +2,30 @@ import { observer } from 'mobx-react-lite';
 
 import BoardDocument from 'modules/Board/data/board.doc';
 import { useUsersStore } from 'store';
-import ActionCard, { ActionCardPlaceholder } from './ActionCard';
+import ActivityCard, {
+  ActivityCardPlaceholder,
+} from 'modules/Activity/components/ActivityCard';
 
-interface ActionsProps {
+interface ActivitiesProps {
   board: BoardDocument;
 }
 
-const Actions = ({ board }: ActionsProps) => {
+const Activities = ({ board }: ActivitiesProps) => {
   const { getUser } = useUsersStore();
 
   return (
     <>
       {board.actions.isLoading ? (
         <>
-          <ActionCardPlaceholder />
-          <ActionCardPlaceholder />
-          <ActionCardPlaceholder />
+          <ActivityCardPlaceholder />
+          <ActivityCardPlaceholder />
+          <ActivityCardPlaceholder />
         </>
       ) : (
         board.actions.docs.map(action => (
-          <ActionCard
+          <ActivityCard
             key={action.id}
-            action={action}
+            activity={action}
             user={getUser(action.data.memberCreator.id)}
           />
         ))
@@ -32,4 +34,4 @@ const Actions = ({ board }: ActionsProps) => {
   );
 };
 
-export default observer(Actions);
+export default observer(Activities);

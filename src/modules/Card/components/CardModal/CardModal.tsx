@@ -2,7 +2,7 @@ import React, { useState, useMemo, MutableRefObject } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { observer } from 'mobx-react-lite';
 
-import { cards as cardsActions } from 'core/actions';
+import * as cardsActivities from 'modules/Activity/data/card-activities';
 import { useBoardsStore } from 'store';
 import CardDocument from 'modules/Card/data/card.doc';
 import { findCheckboxes } from 'helpers/find-check-boxes';
@@ -69,7 +69,7 @@ const CardModal = ({
   const handleComplete = (state: boolean) => {
     if (card.data.completed !== state) {
       card.ref.update({ completed: state });
-      cardsActions.completeCardAction({
+      cardsActivities.trackCompleteActivity({
         memberCreator: userDoc && userDoc.ref,
         data: {
           card: card.ref,

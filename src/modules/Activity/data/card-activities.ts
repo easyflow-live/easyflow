@@ -3,16 +3,7 @@ import BoardDocument from 'modules/Board/data/board.doc';
 import ListDocument from 'documents/list.doc';
 import CardDocument from 'modules/Card/data/card.doc';
 import firebaseService from 'services/firebase.service';
-import { Actions } from './types';
-
-export enum CardActions {
-  MOVE = 'move',
-  EDIT = 'edit',
-  NEW = 'new',
-  REMOVE = 'remove',
-  ASSIGNEE = 'assignee',
-  COMPLETE = 'complete',
-}
+import { CardActivity } from 'modules/Activity/domain/card-activity';
 
 interface BaseCardData {
   card: CardDocument['ref'];
@@ -22,37 +13,37 @@ interface BaseCardData {
 export interface MoveCardData extends BaseCardData {
   listBefore: ListDocument['ref'];
   listAfter: ListDocument['ref'];
-  action: CardActions.MOVE;
+  activity: CardActivity.MOVE;
   title: string;
 }
 
-const createAction = (
-  type: Actions,
+const createActivity = (
+  type: CardActivity,
   memberCreator: UserDocument['ref'],
   data: any
 ) =>
-  firebaseService.createAction({
+  firebaseService.createActivity({
     date: Date.now(),
     type,
     memberCreator,
     data,
   });
 
-export const moveCardAction = ({
+export const trackMoveActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<MoveCardData, 'action'>;
+  data: Omit<MoveCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.MOVE, memberCreator, {
     ...data,
-    action: CardActions.MOVE,
+    activity: CardActivity.MOVE,
   });
 
 export interface EditCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.EDIT;
+  activity: CardActivity.EDIT;
   oldText: string;
   newText: string;
   title?: string;
@@ -60,89 +51,89 @@ export interface EditCardData extends BaseCardData {
   newTitle: string;
 }
 
-export const editCardAction = ({
+export const trackEditActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<EditCardData, 'action'>;
+  data: Omit<EditCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.EDIT, memberCreator, {
     ...data,
-    action: CardActions.EDIT,
+    activity: CardActivity.EDIT,
   });
 
 export interface NewCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.NEW;
+  activity: CardActivity.NEW;
   title: string;
 }
 
-export const newCardAction = ({
+export const trackNewActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<NewCardData, 'action'>;
+  data: Omit<NewCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.NEW, memberCreator, {
     ...data,
-    action: CardActions.NEW,
+    activity: CardActivity.NEW,
   });
 
 export interface RemoveCardData extends Omit<BaseCardData, 'card'> {
   text: string;
   list: ListDocument['ref'];
-  action: CardActions.REMOVE;
+  activity: CardActivity.REMOVE;
   title: string;
 }
 
-export const removeCardAction = ({
+export const trackRemoveActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<RemoveCardData, 'action'>;
+  data: Omit<RemoveCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.REMOVE, memberCreator, {
     ...data,
-    action: CardActions.REMOVE,
+    activity: CardActivity.REMOVE,
   });
 
 export interface AssigneeCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.ASSIGNEE;
+  activity: CardActivity.ASSIGNEE;
   assignee: UserDocument['ref'];
   title: string;
 }
 
-export const assigneeCardAction = ({
+export const trackAssigneeActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<AssigneeCardData, 'action'>;
+  data: Omit<AssigneeCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.ASSIGNEE, memberCreator, {
     ...data,
-    action: CardActions.ASSIGNEE,
+    activity: CardActivity.ASSIGNEE,
   });
 
 export interface CompleteCardData extends BaseCardData {
   list: ListDocument['ref'];
-  action: CardActions.COMPLETE;
+  activity: CardActivity.COMPLETE;
   title: string;
   completed: boolean;
 }
 
-export const completeCardAction = ({
+export const trackCompleteActivity = ({
   memberCreator,
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<CompleteCardData, 'action'>;
+  data: Omit<CompleteCardData, 'activity'>;
 }) =>
-  createAction(Actions.UPDATE_CARD, memberCreator, {
+  createActivity(CardActivity.COMPLETE, memberCreator, {
     ...data,
-    action: CardActions.COMPLETE,
+    activity: CardActivity.COMPLETE,
   });

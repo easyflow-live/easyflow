@@ -1,18 +1,18 @@
 import { observer } from 'mobx-react-lite';
 
 import { useEmitter } from 'hooks/use-emitter';
-import { cards as cardsActions } from 'core/actions';
+import * as cardsActivities from 'modules/Activity/data/card-activities';
 import { useBoardsStore } from 'store';
 import { useSession } from 'hooks/use-session';
 
-const AppActionsEvents = () => {
+const AppTrackEvents = () => {
   const { currentBoard, getList } = useBoardsStore();
   const { userDoc } = useSession();
 
   useEmitter(
     'REMOVE_CARD',
     ({ title, text, listId }) =>
-      cardsActions.removeCardAction({
+      cardsActivities.trackRemoveActivity({
         memberCreator: userDoc.ref,
         data: {
           title,
@@ -27,7 +27,7 @@ const AppActionsEvents = () => {
   useEmitter(
     'COMPLETE_CARD',
     ({ cardId, listId, title, completed }) =>
-      cardsActions.completeCardAction({
+      cardsActivities.trackCompleteActivity({
         memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
@@ -43,7 +43,7 @@ const AppActionsEvents = () => {
   useEmitter(
     'ASSIGNE_CARD',
     ({ cardId, listId, title, assigneId }) =>
-      cardsActions.assigneeCardAction({
+      cardsActivities.trackAssigneeActivity({
         memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
@@ -59,7 +59,7 @@ const AppActionsEvents = () => {
   useEmitter(
     'ADD_CARD',
     ({ cardId, listId, title }) =>
-      cardsActions.newCardAction({
+      cardsActivities.trackNewActivity({
         memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
@@ -74,7 +74,7 @@ const AppActionsEvents = () => {
   useEmitter(
     'EDIT_CARD',
     ({ cardId, listId, ...payload }) =>
-      cardsActions.editCardAction({
+      cardsActivities.trackEditActivity({
         memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
@@ -91,7 +91,7 @@ const AppActionsEvents = () => {
   useEmitter(
     'MOVE_CARD',
     ({ cardId, listBeforeId, listAfterId, title }) =>
-      cardsActions.moveCardAction({
+      cardsActivities.trackMoveActivity({
         memberCreator: userDoc.ref,
         data: {
           board: currentBoard.ref,
@@ -107,6 +107,6 @@ const AppActionsEvents = () => {
   return null;
 };
 
-AppActionsEvents.displayName = 'AppActionsEvents';
+AppTrackEvents.displayName = 'AppTrackEvents';
 
-export default observer(AppActionsEvents);
+export default observer(AppTrackEvents);

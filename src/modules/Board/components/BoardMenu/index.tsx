@@ -11,7 +11,9 @@ import AddTagsModal from 'modules/Board/components/BoardHeader/AddTagsModal';
 
 import styles from './BoardMenu.module.css';
 
-const Actions = dynamic(() => import('components/shared/Actions'));
+const Activities = dynamic(() =>
+  import('modules/Activity/components/Activities')
+);
 
 interface BoardMenuProps {
   board: BoardDocument;
@@ -52,7 +54,7 @@ const BoardMenu = ({ board }: BoardMenuProps) => {
           className='max-w-full overflow-y-auto'
           style={{ height: 'calc(100% - 49px)' }}
         >
-          {isMenuOpen && <Actions board={board} />}
+          {isMenuOpen && <Activities board={board} />}
         </div>
       </div>
 

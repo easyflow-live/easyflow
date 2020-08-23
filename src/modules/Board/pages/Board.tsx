@@ -8,7 +8,7 @@ import AuthenticatedPage from 'modules/Auth/components/AuthenticatedPage';
 import { useInterface } from 'components/providers/InterfaceProvider';
 import Loader from 'components/shared/Loader';
 import { BoardsStoreProvider, UsersStoreProvider } from 'store';
-import AppActionsEvents from 'components/shared/AppActionsEvents';
+import AppTrackEvents from 'components/shared/AppTrackEvents';
 import { CardModalProvider } from 'modules/Board/components/CardModalProvider';
 
 interface BoardPageProps {
@@ -44,7 +44,7 @@ const BoardPage = ({ query }: BoardPageProps) => {
     >
       <UsersStoreProvider>
         <BoardsStoreProvider>
-          <AppActionsEvents />
+          <AppTrackEvents />
           <CardModalProvider>
             <Board board={board} previewMode={previewMode} />
           </CardModalProvider>
