@@ -3,7 +3,7 @@ import { FaTrash } from 'react-icons/fa';
 import { MdAlarm, MdColorize } from 'react-icons/md';
 import { observer } from 'mobx-react-lite';
 
-import CardDocument, { Card } from 'documents/card.doc';
+import CardDocument, { Card } from 'modules/Card/data/card.doc';
 import ClickOutside from 'components/shared/ClickOutside';
 import { Divider, Modal } from 'components/shared';
 import Calendar from 'components/shared/Calendar';

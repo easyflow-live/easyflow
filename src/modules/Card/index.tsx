@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import CardDocument from 'documents/card.doc';
-import { Card as CardModel } from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
+import { Card as CardModel } from 'modules/Card/data/card.doc';
 import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import { useUndo } from 'hooks/use-undo';
 import { CardModalProps } from 'modules/Card/components/CardModal/CardModalFull';

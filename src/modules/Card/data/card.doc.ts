@@ -2,9 +2,9 @@ import { Document } from 'firestorter';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import UserDocument from './user.doc';
-import ListDocument from './list.doc';
-import ColorDocument from './color.doc';
+import UserDocument from 'documents/user.doc';
+import ListDocument from 'documents/list.doc';
+import ColorDocument from 'documents/color.doc';
 
 export interface Card {
   id: string;

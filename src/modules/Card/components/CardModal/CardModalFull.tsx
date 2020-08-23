@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useMemo, useState, CSSProperties } from 'react';
 import { MdClose } from 'react-icons/md';
 
-import CardDocument, { Card } from 'documents/card.doc';
+import CardDocument, { Card } from 'modules/Card/data/card.doc';
 import { Heading, Button } from 'components/shared';
 import {
   Editable as EditableComplex,

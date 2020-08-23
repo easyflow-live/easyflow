@@ -1,7 +1,7 @@
 import { Document, Collection } from 'firestorter';
 
-import CardDocument from './card.doc';
-import UserDocument from './user.doc';
+import CardDocument from 'modules/Card/data/card.doc';
+import UserDocument from 'documents/user.doc';
 
 export interface List {
   title: string;

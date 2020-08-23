@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { useBoardsStore } from 'store';
 import BoardDocument from 'modules/Board/data/board.doc';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import ListDocument from 'documents/list.doc';
 import ListColumns from 'components/shared/ListColumns';
 import BoardHeader from 'modules/Board/components/BoardHeader';

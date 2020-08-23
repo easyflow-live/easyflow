@@ -7,7 +7,7 @@ import { useTransition, useSpring, animated } from 'react-spring';
 import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import { useSession } from 'hooks/use-session';
 import { useAssign } from 'modules/Card/hooks/use-assign';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import Avatar from 'components/shared/Avatar';
 
 const Container = styled.div`

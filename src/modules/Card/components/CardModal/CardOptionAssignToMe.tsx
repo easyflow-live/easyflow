@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { FaUser } from 'react-icons/fa';
 
 import { useAssign } from 'modules/Card/hooks/use-assign';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import CardOptionButton from './CardOptionButton';
 
 interface Props {
