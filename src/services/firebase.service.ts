@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import { initFirestorter } from 'firestorter';
 
-import { IAction } from '../core/actions/types';
+import { Activity } from 'modules/Activity/domain/activity';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -44,8 +44,8 @@ class FirebaseService {
 
   getBoardInvite = (id: string) => this.getBoardInvites().doc(id);
 
-  createAction = (action: IAction) => {
-    return this.db.collection('actions').add(action);
+  createActivity = (activity: Activity) => {
+    return this.db.collection('actions').add(activity);
   };
 }
 

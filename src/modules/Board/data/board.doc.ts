@@ -5,7 +5,7 @@ import shortid from 'shortid';
 
 import ListDocument from 'documents/list.doc';
 import UserDocument from 'documents/user.doc';
-import ActionDocument from 'documents/action.doc';
+import ActivityDocument from 'modules/Activity/data/activity.doc';
 import BoardInviteDocument, {
   InviteStatus,
 } from 'modules/Board/data/board-invite.doc';
@@ -34,7 +34,7 @@ const generateDefaultCode = (str: string) => {
 
 export default class BoardDocument extends Document<Board> {
   private _lists: Collection<ListDocument>;
-  private _actions: Collection<ActionDocument>;
+  private _actions: Collection<ActivityDocument>;
 
   static create(board: Omit<Board, 'uid'>): Promise<BoardDocument> {
     const boards = new Collection<BoardDocument>('/boards');
@@ -82,12 +82,12 @@ export default class BoardDocument extends Document<Board> {
     return this._lists;
   }
 
-  get actions(): Collection<ActionDocument> {
+  get actions(): Collection<ActivityDocument> {
     if (this._actions) return this._actions;
 
-    this._actions = new Collection<ActionDocument>(() => 'actions', {
+    this._actions = new Collection<ActivityDocument>(() => 'actions', {
       createDocument: (src, opts) =>
-        new ActionDocument(src, {
+        new ActivityDocument(src, {
           ...opts,
           debug: __DEV__,
           debugName: 'Action document',

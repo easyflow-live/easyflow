@@ -4,18 +4,18 @@ import { PropsWithChildren } from 'react';
 import ContentLoader from 'react-content-loader';
 
 import { User } from 'store/users';
-import ActionDocument from 'documents/action.doc';
+import ActivityDocument from 'modules/Activity/data/activity.doc';
 import { Avatar, Truncate } from 'components/shared';
 import { useBoardsStore } from 'store';
+import { CardActivity } from 'modules/Activity/domain/card-activity';
 import {
-  CardActions,
   NewCardData,
   MoveCardData,
   AssigneeCardData,
   EditCardData,
   CompleteCardData,
   RemoveCardData,
-} from 'core/actions/card.actions';
+} from 'modules/Activity/data/card-activities';
 
 const Text = ({ children }: { children: PropsWithChildren<{}> }) => (
   <span className='text-gray-400'> {children} </span>
@@ -28,7 +28,7 @@ const TruncatedTitle = ({
   <Truncate title={title}>{children}</Truncate>
 );
 
-export const ActionCardPlaceholder = () => (
+export const ActivityCardPlaceholder = () => (
   <ContentLoader
     speed={2}
     width={300}
@@ -45,7 +45,7 @@ export const ActionCardPlaceholder = () => (
   </ContentLoader>
 );
 
-const NewCardAction = ({ data }: { data: NewCardData }) => {
+const NewCardActivity = ({ data }: { data: NewCardData }) => {
   const { getList } = useBoardsStore();
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
@@ -61,7 +61,7 @@ const NewCardAction = ({ data }: { data: NewCardData }) => {
   );
 };
 
-const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
+const RemoveCardActivity = ({ data }: { data: RemoveCardData }) => {
   const { getList } = useBoardsStore();
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
@@ -77,7 +77,7 @@ const RemoveCardAction = ({ data }: { data: RemoveCardData }) => {
   );
 };
 
-const MoveCardAction = ({ data }: { data: MoveCardData }) => {
+const MoveCardActivity = ({ data }: { data: MoveCardData }) => {
   const { getList } = useBoardsStore();
 
   const listBeforeTitle =
@@ -98,7 +98,7 @@ const MoveCardAction = ({ data }: { data: MoveCardData }) => {
   );
 };
 
-const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
+const AssigneeCardActivity = ({ data }: { data: AssigneeCardData }) => {
   const { getList } = useBoardsStore();
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
@@ -114,7 +114,7 @@ const AssigneeCardAction = ({ data }: { data: AssigneeCardData }) => {
   );
 };
 
-const EditCardAction = ({ data }: { data: EditCardData }) => {
+const EditCardActivity = ({ data }: { data: EditCardData }) => {
   const { getList } = useBoardsStore();
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
@@ -141,7 +141,7 @@ const EditCardAction = ({ data }: { data: EditCardData }) => {
   );
 };
 
-const CompleteCardAction = ({ data }: { data: CompleteCardData }) => {
+const CompleteCardActivity = ({ data }: { data: CompleteCardData }) => {
   const { getList } = useBoardsStore();
 
   const listTitle = getList(data.list.id) && getList(data.list.id).data.title;
@@ -166,40 +166,40 @@ type Data =
   | EditCardData
   | CompleteCardData;
 
-const CardsActions = ({ data }: { data: Data }) => {
-  switch (data.action) {
-    case CardActions.NEW:
-      return <NewCardAction data={data} />;
+const CardsActivities = ({ data }: { data: Data }) => {
+  switch (data.activity) {
+    case CardActivity.NEW:
+      return <NewCardActivity data={data} />;
 
-    case CardActions.REMOVE:
-      return <RemoveCardAction data={data} />;
+    case CardActivity.REMOVE:
+      return <RemoveCardActivity data={data} />;
 
-    case CardActions.MOVE:
-      return <MoveCardAction data={data} />;
+    case CardActivity.MOVE:
+      return <MoveCardActivity data={data} />;
 
-    case CardActions.ASSIGNEE:
-      return <AssigneeCardAction data={data} />;
+    case CardActivity.ASSIGNEE:
+      return <AssigneeCardActivity data={data} />;
 
-    case CardActions.EDIT:
-      return <EditCardAction data={data} />;
+    case CardActivity.EDIT:
+      return <EditCardActivity data={data} />;
 
-    case CardActions.COMPLETE:
-      return <CompleteCardAction data={data} />;
+    case CardActivity.COMPLETE:
+      return <CompleteCardActivity data={data} />;
 
     default:
       return null;
   }
 };
 
-interface ActionCardProps {
-  action: ActionDocument;
+interface ActivityCardProps {
+  activity: ActivityDocument;
   user: User;
 }
 
-const ActionCard = ({ action, user }: ActionCardProps) => {
+const ActivityCard = ({ activity, user }: ActivityCardProps) => {
   return (
     user && (
-      <div className='flex items-center p-3' key={action.id}>
+      <div className='flex items-center p-3' key={activity.id}>
         <div className='mr-4 ml-2'>
           <Avatar
             username={user.username}
@@ -210,10 +210,10 @@ const ActionCard = ({ action, user }: ActionCardProps) => {
         <div className='flex flex-col' style={{ maxWidth: '80%' }}>
           <p>
             {user.username}
-            <CardsActions data={action.data.data as Data} />
+            <CardsActivities data={activity.data.data as Data} />
           </p>
           <p className='text-gray-600'>
-            {formatRelative(new Date(action.data.date), new Date())}
+            {formatRelative(new Date(activity.data.date), new Date())}
           </p>
         </div>
       </div>
@@ -221,4 +221,4 @@ const ActionCard = ({ action, user }: ActionCardProps) => {
   );
 };
 
-export default observer(ActionCard);
+export default observer(ActivityCard);
