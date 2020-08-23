@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import ListDocument from 'documents/list.doc';
 import firebaseService from 'services/firebase.service';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import BoardList from 'components/shared/BoardList';
 
 interface ListsProps {

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Collection } from 'firestorter';
 import styled from 'styled-components';
 
-import CardDocument, { Card as CardModel } from 'documents/card.doc';
+import CardDocument, { Card as CardModel } from 'modules/Card/data/card.doc';
 import CardPlaceholder from 'components/shared/CardPlaceholder';
 import Card from 'modules/Card';
 import { emitter } from 'libs/emitter';

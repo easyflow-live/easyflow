@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { useThinDisplay } from 'hooks/use-thin-display';
 import { useRect } from 'hooks/use-rect';
-import { Card } from 'documents/card.doc';
+import { Card } from 'modules/Card/data/card.doc';
 import { Checkbox } from 'components/shared';
 import Calendar from 'components/shared/Calendar';
 import DueDate from 'components/shared/DueCalendar/DueDate';

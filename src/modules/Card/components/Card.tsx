@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import CardBadges from 'modules/Card/components/CardBadges';
-import { Card as CardModel } from 'documents/card.doc';
+import { Card as CardModel } from 'modules/Card/data/card.doc';
 import CardMarkdown from 'modules/Card/components/CardMarkdown';
 import { User } from 'store/users';
 

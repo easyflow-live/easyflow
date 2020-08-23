@@ -4,14 +4,14 @@ import { observer } from 'mobx-react-lite';
 
 import { cards as cardsActions } from 'core/actions';
 import { useBoardsStore } from 'store';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import { findCheckboxes } from 'helpers/find-check-boxes';
 import { useThinDisplay } from 'hooks/use-thin-display';
 import { useKeySubmit } from 'hooks/use-key-submit';
 import { useSession } from 'modules/Auth/components/SessionProvider';
 import CardBadges from 'modules/Card/components/CardBadges';
 import { Modal } from 'components/shared';
-import { Card } from 'documents/card.doc';
+import { Card } from 'modules/Card/data/card.doc';
 import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import CardOptions from './CardOptions';
 import './CardModal.scss';

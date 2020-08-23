@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { Collection } from 'firestorter';
 
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import ListDocument from 'documents/list.doc';
 import Input from 'components/shared/Input';
 import { useKeySubmit } from 'hooks/use-key-submit';

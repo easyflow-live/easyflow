@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import { useUsersStore } from 'store';
 import { sortUsersAlpha } from 'helpers/sortUsersAlpha';
 

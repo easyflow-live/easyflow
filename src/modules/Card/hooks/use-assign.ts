@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import { useSession } from 'hooks/use-session';
-import CardDocument from 'documents/card.doc';
+import CardDocument from 'modules/Card/data/card.doc';
 import { emitter } from 'libs/emitter';
 
 export const useAssign = (card: CardDocument, listId: string): (() => void) => {
