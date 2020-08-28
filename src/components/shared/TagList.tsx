@@ -1,4 +1,5 @@
 import Tag from 'components/shared/Tag';
+import { observer } from 'mobx-react-lite';
 
 interface TagListProps {
   tags: string[];
@@ -18,4 +19,4 @@ const TagList = ({ tags, onRemoveTag, className, removable }: TagListProps) => (
   </ul>
 );
 
-export default TagList;
+export default observer(TagList);
