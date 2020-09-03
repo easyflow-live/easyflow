@@ -20,9 +20,9 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
-  const { setMenu } = useInterface();
+  const { isMenuOpen, setMenu } = useInterface();
   const { user } = useSession();
-  const toggleMenu = () => setMenu(true);
+  const toggleMenu = () => setMenu(!isMenuOpen);
   const isOwner = board.isOwner(user.email);
 
   return (

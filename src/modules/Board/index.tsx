@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
@@ -12,9 +13,13 @@ import BoardHeader from 'modules/Board/components/BoardHeader';
 import { CreateContentEmpty } from 'components/shared/Empty/CreateContentEmpty';
 import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
 import { useSession } from 'modules/Auth/components/SessionProvider';
-import BoardMenu from './components/BoardMenu';
 import { ToastUndo } from 'components/shared';
 import { emitter } from 'libs/emitter';
+import { useInterface } from 'components/providers/InterfaceProvider';
+import SideMenu from 'components/shared/SideMenu';
+const Activities = dynamic(() =>
+  import('modules/Activity/components/Activities')
+);
 
 interface BoardProps {
   board: BoardDocument;
@@ -24,10 +29,20 @@ interface BoardProps {
 const Board = ({ board, previewMode }: BoardProps) => {
   const { setBoard } = useBoardsStore();
   const { userDoc } = useSession();
+  const { isMenuOpen, setMenu, toggleMenu } = useInterface();
 
   const isOwner = board.isOwner(userDoc.id);
 
   const actionRef = useRef(false);
+  const [loadedActivities, setLoadedActivities] = useState(false);
+
+  const _setMenu = (newState: boolean) => {
+    if (!loadedActivities) {
+      setLoadedActivities(true);
+    }
+
+    setMenu(newState);
+  };
 
   useEffect(() => {
     if (board) {
@@ -93,7 +108,16 @@ const Board = ({ board, previewMode }: BoardProps) => {
 
   return (
     <div className='relative overflow-hidden'>
-      <div className='relative m-6 mt-4'>
+      <SideMenu
+        title='Activity'
+        isOpen={isMenuOpen}
+        onClose={toggleMenu}
+        onStateChange={_setMenu}
+      >
+        {loadedActivities && <Activities board={board} />}
+      </SideMenu>
+
+      <div className='m-6 mt-4' id='page-wrap'>
         <BoardHeader
           board={board}
           onRemove={removeBoard}
@@ -119,7 +143,6 @@ const Board = ({ board, previewMode }: BoardProps) => {
           </AnimatedOpacity>
         )}
       </div>
-      <BoardMenu board={board} />
     </div>
   );
 };
