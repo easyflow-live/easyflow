@@ -46,7 +46,9 @@ const BoardPage = ({ query }: BoardPageProps) => {
         <BoardsStoreProvider>
           <AppTrackEvents />
           <CardModalProvider>
-            <Board board={board} previewMode={previewMode} />
+            <div id='outer-container'>
+              <Board board={board} previewMode={previewMode} />
+            </div>
           </CardModalProvider>
         </BoardsStoreProvider>
       </UsersStoreProvider>

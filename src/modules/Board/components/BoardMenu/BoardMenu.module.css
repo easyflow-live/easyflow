@@ -1,8 +1,0 @@
-.BoardMenu {
-  transform: translateX(339px);
-  width: 339px;
-}
-
-.BoardMenuOpen {
-  transform: translateX(0);
-}
