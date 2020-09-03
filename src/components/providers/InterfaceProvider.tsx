@@ -3,6 +3,7 @@ import { createContext, useContext, useState, PropsWithChildren } from 'react';
 interface InterfaceContextProps {
   isMenuOpen: boolean;
   setMenu: (value: boolean) => void;
+  toggleMenu: () => void;
   previewMode: boolean;
   togglePreviewMode: () => void;
   setPreviewMode: (value: boolean) => void;
@@ -18,6 +19,7 @@ export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
   const [hasOpenedModal, setOpenedModal] = useState<boolean>(false);
 
   const togglePreviewMode = () => setPreviewMode(s => !s);
+  const toggleMenu = () => setMenu(s => !s);
 
   return (
     <InterfaceContext.Provider
@@ -25,6 +27,7 @@ export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
       value={{
         isMenuOpen,
         setMenu,
+        toggleMenu,
         previewMode,
         togglePreviewMode,
         setPreviewMode,
