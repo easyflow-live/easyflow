@@ -13,7 +13,7 @@ interface BaseCardData {
 export interface MoveCardData extends BaseCardData {
   listBefore: ListDocument['ref'];
   listAfter: ListDocument['ref'];
-  activity: CardActivity.MOVE;
+  action: CardActivity.MOVE;
   title: string;
 }
 
@@ -38,12 +38,12 @@ export const trackMoveActivity = ({
 }) =>
   createActivity(CardActivity.MOVE, memberCreator, {
     ...data,
-    activity: CardActivity.MOVE,
+    action: CardActivity.MOVE,
   });
 
 export interface EditCardData extends BaseCardData {
   list: ListDocument['ref'];
-  activity: CardActivity.EDIT;
+  action: CardActivity.EDIT;
   oldText: string;
   newText: string;
   title?: string;
@@ -60,12 +60,12 @@ export const trackEditActivity = ({
 }) =>
   createActivity(CardActivity.EDIT, memberCreator, {
     ...data,
-    activity: CardActivity.EDIT,
+    action: CardActivity.EDIT,
   });
 
 export interface NewCardData extends BaseCardData {
   list: ListDocument['ref'];
-  activity: CardActivity.NEW;
+  action: CardActivity.NEW;
   title: string;
 }
 
@@ -78,13 +78,13 @@ export const trackNewActivity = ({
 }) =>
   createActivity(CardActivity.NEW, memberCreator, {
     ...data,
-    activity: CardActivity.NEW,
+    action: CardActivity.NEW,
   });
 
 export interface RemoveCardData extends Omit<BaseCardData, 'card'> {
   text: string;
   list: ListDocument['ref'];
-  activity: CardActivity.REMOVE;
+  action: CardActivity.REMOVE;
   title: string;
 }
 
@@ -97,12 +97,12 @@ export const trackRemoveActivity = ({
 }) =>
   createActivity(CardActivity.REMOVE, memberCreator, {
     ...data,
-    activity: CardActivity.REMOVE,
+    action: CardActivity.REMOVE,
   });
 
 export interface AssigneeCardData extends BaseCardData {
   list: ListDocument['ref'];
-  activity: CardActivity.ASSIGNEE;
+  action: CardActivity.ASSIGNEE;
   assignee: UserDocument['ref'];
   title: string;
 }
@@ -116,12 +116,12 @@ export const trackAssigneeActivity = ({
 }) =>
   createActivity(CardActivity.ASSIGNEE, memberCreator, {
     ...data,
-    activity: CardActivity.ASSIGNEE,
+    action: CardActivity.ASSIGNEE,
   });
 
 export interface CompleteCardData extends BaseCardData {
   list: ListDocument['ref'];
-  activity: CardActivity.COMPLETE;
+  action: CardActivity.COMPLETE;
   title: string;
   completed: boolean;
 }
@@ -135,5 +135,5 @@ export const trackCompleteActivity = ({
 }) =>
   createActivity(CardActivity.COMPLETE, memberCreator, {
     ...data,
-    activity: CardActivity.COMPLETE,
+    action: CardActivity.COMPLETE,
   });

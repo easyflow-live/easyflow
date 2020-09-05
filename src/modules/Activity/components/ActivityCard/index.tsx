@@ -167,7 +167,7 @@ type Data =
   | CompleteCardData;
 
 const CardsActivities = ({ data }: { data: Data }) => {
-  switch (data.activity) {
+  switch (data.action) {
     case CardActivity.NEW:
       return <NewCardActivity data={data} />;
 
