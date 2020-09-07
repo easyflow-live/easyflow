@@ -30,6 +30,7 @@ const SideMenu: React.FC<SideMenuProps> = ({
 }) => {
   return (
     <Menu
+      width='320px'
       styles={styles}
       right={right}
       pageWrapId='page-wrap'
