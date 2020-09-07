@@ -14,7 +14,7 @@ const Activities = ({ board }: ActivitiesProps) => {
   const { getUser } = useUsersStore();
 
   return (
-    <>
+    <div className='p-2 h-full overflow-y-auto'>
       {board.actions.isLoading ? (
         <>
           <ActivityCardPlaceholder />
@@ -30,7 +30,7 @@ const Activities = ({ board }: ActivitiesProps) => {
           />
         ))
       )}
-    </>
+    </div>
   );
 };
 

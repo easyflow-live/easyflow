@@ -5,7 +5,7 @@ import ContentLoader from 'react-content-loader';
 
 import { User } from 'store/users';
 import ActivityDocument from 'modules/Activity/data/activity.doc';
-import { Avatar, Truncate } from 'components/shared';
+import { Avatar } from 'components/shared';
 import { useBoardsStore } from 'store';
 import { CardActivity } from 'modules/Activity/domain/card-activity';
 import {
@@ -21,11 +21,10 @@ const Text = ({ children }: { children: PropsWithChildren<{}> }) => (
   <span className='text-gray-400'> {children} </span>
 );
 
-const TruncatedTitle = ({
-  children,
-  title,
-}: PropsWithChildren<{ title: string }>) => (
-  <Truncate title={title}>{children}</Truncate>
+const Title = ({ children, title }: PropsWithChildren<{ title: string }>) => (
+  <span className='break-words' title={title}>
+    {children}
+  </span>
 );
 
 export const ActivityCardPlaceholder = () => (
@@ -53,7 +52,7 @@ const NewCardActivity = ({ data }: { data: NewCardData }) => {
   return (
     <>
       <Text> added a new card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      <Title title={data.title}>{data.title}</Title>
       <Text> to </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -69,7 +68,7 @@ const RemoveCardActivity = ({ data }: { data: RemoveCardData }) => {
   return (
     <>
       <Text> removed a card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      <Title title={data.title}>{data.title}</Title>
       <Text> from </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -89,7 +88,7 @@ const MoveCardActivity = ({ data }: { data: MoveCardData }) => {
   return (
     <>
       <Text> moved a card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      <Title title={data.title}>{data.title}</Title>
       <Text> from </Text>
       <span>{listBeforeTitle}</span>
       <Text> column to </Text>
@@ -106,7 +105,7 @@ const AssigneeCardActivity = ({ data }: { data: AssigneeCardData }) => {
   return (
     <>
       <Text> assigneed to card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      <Title title={data.title}>{data.title}</Title>
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column</Text>
@@ -127,12 +126,12 @@ const EditCardActivity = ({ data }: { data: EditCardData }) => {
       {difTitle ? (
         <>
           <Text> from title </Text>
-          <TruncatedTitle title={data.oldTitle}>{data.oldTitle}</TruncatedTitle>
+          <Title title={data.oldTitle}>{data.oldTitle}</Title>
           <Text> to </Text>
-          <TruncatedTitle title={data.newTitle}>{data.newTitle}</TruncatedTitle>
+          <Title title={data.newTitle}>{data.newTitle}</Title>
         </>
       ) : (
-        <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+        <Title title={data.title}>{data.title}</Title>
       )}
       <Text> in </Text>
       <span>{listTitle}</span>
@@ -149,7 +148,7 @@ const CompleteCardActivity = ({ data }: { data: CompleteCardData }) => {
   return (
     <>
       <Text> marked a card </Text>
-      <TruncatedTitle title={data.title}>{data.title}</TruncatedTitle>
+      <Title title={data.title}>{data.title}</Title>
       <Text> in </Text>
       <span>{listTitle}</span>
       <Text> column as </Text>
@@ -199,16 +198,16 @@ interface ActivityCardProps {
 const ActivityCard = ({ activity, user }: ActivityCardProps) => {
   return (
     user && (
-      <div className='flex items-center p-3' key={activity.id}>
-        <div className='mr-4 ml-2'>
+      <div className='relative ml-10 mb-3' key={activity.id}>
+        <div className='absolute l-10' style={{ left: '-40px', top: '6px' }}>
           <Avatar
             username={user.username}
             src={user.photo}
             className='max-w-none'
           />
         </div>
-        <div className='flex flex-col' style={{ maxWidth: '80%' }}>
-          <p>
+        <div className='flex flex-col'>
+          <p className='text-white'>
             {user.username}
             <CardsActivities data={activity.data.data as Data} />
           </p>

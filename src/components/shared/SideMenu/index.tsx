@@ -2,6 +2,8 @@ import React from 'react';
 import Menu from 'react-burger-menu/lib/menus/slide';
 import { MdClose } from 'react-icons/md';
 
+import { useLockBodyScroll } from 'hooks/use-lock-body-scroll';
+
 interface SideMenuProps {
   isOpen: boolean;
   title: string;
@@ -20,6 +22,24 @@ const styles = {
   },
 };
 
+interface ModalHeaderProps {
+  title: string;
+  onClose: () => void;
+}
+
+const ModalHeader = ({ title, onClose }: ModalHeaderProps) => (
+  <div className='flex items-center justify-between border-b border-solid border-gray-700 py-3 mx-3 mb-3'>
+    <p className='text-gray-400'>{title}</p>
+    <button
+      aria-label='Close activities'
+      onClick={onClose}
+      className='text-gray-400 hover:text-gray-100'
+    >
+      <MdClose size='22' />
+    </button>
+  </div>
+);
+
 const SideMenu: React.FC<SideMenuProps> = ({
   isOpen,
   title,
@@ -28,6 +48,8 @@ const SideMenu: React.FC<SideMenuProps> = ({
   onStateChange,
   children,
 }) => {
+  useLockBodyScroll(isOpen);
+
   return (
     <Menu
       width='320px'
@@ -39,18 +61,10 @@ const SideMenu: React.FC<SideMenuProps> = ({
       customBurgerIcon={false}
       onStateChange={state => onStateChange(state.isOpen)}
     >
-      <div className='overflow-hidden h-full flex flex-col bg-gray-750 shadow-lg rounded-l text-white'>
-        <div className='flex items-center justify-between'>
-          <p className='p-3 text-gray-500 uppercase'>{title}</p>
-          <button
-            aria-label='Close activities'
-            onClick={onClose}
-            className='p-3 text-gray-500 hover:text-gray-100'
-          >
-            <MdClose size='25' />
-          </button>
-        </div>
-        <div className='h-full overflow-y-auto'>{children}</div>
+      <div className='h-full bg-gray-800 shadow-lg rounded-r'>
+        <ModalHeader title={title} onClose={onClose} />
+
+        <div style={{ height: 'calc(100% - 65px)' }}>{children}</div>
       </div>
     </Menu>
   );
