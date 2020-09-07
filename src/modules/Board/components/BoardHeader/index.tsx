@@ -23,7 +23,7 @@ const BoardHeader = ({ board, onRemove, previewMode }: BoardHeaderProps) => {
   const { isMenuOpen, setMenu } = useInterface();
   const { user } = useSession();
   const toggleMenu = () => setMenu(!isMenuOpen);
-  const isOwner = board.isOwner(user.email);
+  const isOwner = board.isOwner(user && user.email);
 
   return (
     <div className='flex justify-between items-center'>

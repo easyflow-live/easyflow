@@ -31,7 +31,7 @@ const Board = ({ board, previewMode }: BoardProps) => {
   const { userDoc } = useSession();
   const { isMenuOpen, setMenu, toggleMenu } = useInterface();
 
-  const isOwner = board.isOwner(userDoc.id);
+  const isOwner = board.isOwner(userDoc && userDoc.id);
 
   const actionRef = useRef(false);
   const [loadedActivities, setLoadedActivities] = useState(false);

@@ -35,7 +35,7 @@ const CardMarkdown: FC<CardMarkdownProps> = ({
     if (isInput(tagName)) {
       changeCheckbox(checked, parseInt(id));
     } else if (!isLink(tagName)) {
-      props.onClick(e);
+      props.onClick && props.onClick(e);
     }
   };
 
