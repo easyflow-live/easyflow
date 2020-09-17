@@ -34,7 +34,7 @@ export const trackMoveActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<MoveCardData, 'activity'>;
+  data: Omit<MoveCardData, 'action'>;
 }) =>
   createActivity(CardActivity.MOVE, memberCreator, {
     ...data,
@@ -56,7 +56,7 @@ export const trackEditActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<EditCardData, 'activity'>;
+  data: Omit<EditCardData, 'action'>;
 }) =>
   createActivity(CardActivity.EDIT, memberCreator, {
     ...data,
@@ -74,7 +74,7 @@ export const trackNewActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<NewCardData, 'activity'>;
+  data: Omit<NewCardData, 'action'>;
 }) =>
   createActivity(CardActivity.NEW, memberCreator, {
     ...data,
@@ -93,7 +93,7 @@ export const trackRemoveActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<RemoveCardData, 'activity'>;
+  data: Omit<RemoveCardData, 'action'>;
 }) =>
   createActivity(CardActivity.REMOVE, memberCreator, {
     ...data,
@@ -112,7 +112,7 @@ export const trackAssigneeActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<AssigneeCardData, 'activity'>;
+  data: Omit<AssigneeCardData, 'action'>;
 }) =>
   createActivity(CardActivity.ASSIGNEE, memberCreator, {
     ...data,
@@ -131,7 +131,7 @@ export const trackCompleteActivity = ({
   data,
 }: {
   memberCreator: UserDocument['ref'];
-  data: Omit<CompleteCardData, 'activity'>;
+  data: Omit<CompleteCardData, 'action'>;
 }) =>
   createActivity(CardActivity.COMPLETE, memberCreator, {
     ...data,
