@@ -17,7 +17,7 @@ const isBoardCodeValid = (code: string) =>
 const isBoardTitleValid = (title: string) => title !== '';
 
 interface NewBoardFormProps {
-  onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
   onSubmit: ({
     title,
     code,
@@ -29,7 +29,10 @@ interface NewBoardFormProps {
   }) => void;
 }
 
-const NewBoardForm = ({ onKeyDown, onSubmit }: NewBoardFormProps) => {
+const NewBoardForm = ({
+  onKeyDown = () => {},
+  onSubmit,
+}: NewBoardFormProps) => {
   const { userDoc } = useSession();
   const [title, setTitle] = useState('');
   const [code, setCode] = useState('');

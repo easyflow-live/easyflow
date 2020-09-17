@@ -35,7 +35,7 @@ const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
   return (
     <Dialog title='Start a new board' isOpen={isOpen} onClose={toggleIsOpen}>
       <div className='m-4 sm:m-8 mt-0 sm:mt-0'>
-        <NewBoardForm onKeyDown={toggleIsOpen} onSubmit={onSubmit} />
+        <NewBoardForm onSubmit={onSubmit} />
       </div>
     </Dialog>
   );
