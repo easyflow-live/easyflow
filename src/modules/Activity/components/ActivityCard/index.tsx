@@ -198,7 +198,7 @@ interface ActivityCardProps {
 const ActivityCard = ({ activity, user }: ActivityCardProps) => {
   return (
     user && (
-      <div className='relative ml-10 mb-3' key={activity.id}>
+      <div className='relative ml-12 mb-3' key={activity.id}>
         <div className='absolute l-10' style={{ left: '-40px', top: '6px' }}>
           <Avatar
             username={user.username}
