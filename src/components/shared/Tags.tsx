@@ -5,7 +5,7 @@ import { MdClose } from 'react-icons/md';
 
 import BadgeTags from 'components/shared/BadgeTags';
 import { useClickOutside } from 'hooks/use-click-outside';
-import AddTagsWithAutocomplete from 'components/shared/AddTagsWithAutocomplete';
+import AutosuggestInput from 'components/shared/AutosuggestInput';
 
 const CloseButton: React.FC<{
   onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -98,8 +98,8 @@ export const Tags: React.FC<TagsProps> = observer(props => {
         })}
       >
         {showInput && (
-          <AddTagsWithAutocomplete
-            options={selectableTags}
+          <AutosuggestInput
+            suggestions={selectableTags}
             onSelect={handleSelection}
           />
         )}
