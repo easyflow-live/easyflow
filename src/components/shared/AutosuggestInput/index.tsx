@@ -2,19 +2,20 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Autosuggest from 'react-autosuggest';
 import { useState, useCallback } from 'react';
+import { StyledAutosuggestInput } from './styles';
 
 const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-export interface AddTagsWithAutocompleteProps {
-  options: string[];
+export interface AutosuggestInputProps {
+  suggestions: string[];
   onSelect: (tag: string) => void;
 }
 
-const AddTagsWithAutocomplete: React.FC<AddTagsWithAutocompleteProps> = props => {
-  const { options = [], onSelect } = props;
+const AutosuggestInput = (props: AutosuggestInputProps) => {
+  const { suggestions = [], onSelect } = props;
 
   const [value, setValue] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [_suggestions, setSuggestions] = useState<string[]>([]);
 
   const onChange = (_, { newValue }) => setValue(newValue);
 
@@ -27,11 +28,10 @@ const AddTagsWithAutocomplete: React.FC<AddTagsWithAutocompleteProps> = props =>
       }
 
       const regex = new RegExp(`.*${escapedValue}.*`, 'i');
-      const suggestions = options.filter(tag => regex.test(tag));
 
-      return suggestions;
+      return suggestions.filter(tag => regex.test(tag));
     },
-    [options]
+    [suggestions]
   );
 
   const getSuggestionValue = useCallback(suggestion => suggestion, []);
@@ -50,15 +50,17 @@ const AddTagsWithAutocomplete: React.FC<AddTagsWithAutocompleteProps> = props =>
   };
 
   return (
-    <Autosuggest
-      suggestions={suggestions}
-      onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-      onSuggestionsClearRequested={onSuggestionsClearRequested}
-      getSuggestionValue={getSuggestionValue}
-      renderSuggestion={renderSuggestion}
-      onSuggestionSelected={onSuggestionSelected}
-      inputProps={inputProps}
-    />
+    <StyledAutosuggestInput>
+      <Autosuggest
+        suggestions={_suggestions}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={renderSuggestion}
+        onSuggestionSelected={onSuggestionSelected}
+        inputProps={inputProps}
+      />
+    </StyledAutosuggestInput>
   );
 };
-export default observer(AddTagsWithAutocomplete);
+export default observer(AutosuggestInput);
