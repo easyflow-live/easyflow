@@ -11,7 +11,9 @@
     "start": "next start -p 8080",
     "deploy": "next build; gcloud app deploy",
     "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint --fix . --ext .ts,.tsx"
+    "lint:fix": "eslint --fix . --ext .ts,.tsx",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "Fellipe Pinheiro <pinheiro.llip@gmail.com>",
   "license": "MIT",
@@ -68,6 +70,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.10.1",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
+    "@storybook/addons": "^6.0.21",
+    "@storybook/react": "^6.0.21",
+    "@storybook/theming": "^6.0.21",
     "@types/classnames": "^2.2.10",
     "@types/fbemitter": "^2.0.32",
     "@types/next": "^8.0.7",
@@ -79,6 +86,7 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "babel-plugin-styled-components": "^1.10.7",
+    "core-js": "^3.6.5",
     "cssnano": "^4.1.10",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",

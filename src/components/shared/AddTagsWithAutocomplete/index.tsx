@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react';
 
 const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-interface AddTagsWithAutocompleteProps {
+export interface AddTagsWithAutocompleteProps {
   options: string[];
   onSelect: (tag: string) => void;
 }
