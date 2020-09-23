@@ -22,7 +22,10 @@ export default class UserDocument extends Document<User> {
           debug: __DEV__,
           debugName: 'Board document',
         }),
-      query: ref => ref.where('users', 'array-contains', this.ref),
+      query: ref =>
+        ref
+          .where('users', 'array-contains', this.ref)
+          .where('archived', '==', false),
       debug: __DEV__,
       debugName: 'Board collection',
     });
