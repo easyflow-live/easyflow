@@ -1,6 +1,6 @@
 import Badge from '.';
 
-export default { title: 'Badge' };
+export default { title: 'Atomos/Badge', component: Badge };
 
 export const basic = () => (
   <Badge className='bg-pink-500' title='feature'>
