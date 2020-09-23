@@ -40,7 +40,7 @@ export const Wrapper = styled.div`
   margin: 0;
 
   color: #c2c6dc;
-  background: #262c49;
+  background: #2d3748;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-color: #414561;
 `;
