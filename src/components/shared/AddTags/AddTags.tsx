@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Document } from 'firestorter';
 import * as firebase from 'firebase/app';
+import { observer } from 'mobx-react-lite';
 import 'firebase/firestore';
 
 import TagsInput from 'react-tagsinput';
@@ -34,4 +35,4 @@ const AddTags = ({ document }: AddTagsProps) => {
   );
 };
 
-export default AddTags;
+export default observer(AddTags);

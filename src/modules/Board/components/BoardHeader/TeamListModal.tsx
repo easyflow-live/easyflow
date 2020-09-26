@@ -172,8 +172,8 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
         <div className='m-4 mt-0 sm:mt-0 sm:m-8'>
           <label className='text-white'>Add a new member</label>
           <Input
-            loading={submitting}
-            disabled={submitting}
+            isLoading={submitting}
+            isDisabled={submitting}
             placeholder='member@email.com'
             className='mt-4'
             autoFocus

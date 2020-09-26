@@ -1,39 +1,42 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
-import classNames from 'classnames';
+import {
+  InputGroup,
+  InputRightElement,
+  Input as ChakraInput,
+  InputProps as ChakraInputProps,
+} from '@chakra-ui/core';
 import { Spinner } from './Spinner';
 
-export interface InputProps
-  extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  full?: boolean;
-  loading?: boolean;
+export interface InputProps extends ChakraInputProps {
+  isLoading?: boolean;
 }
 
-const Input = ({
-  className,
-  full = true,
-  disabled,
-  loading,
-  ...props
-}: InputProps) => (
-  <div className='inline relative'>
-    <input
-      disabled={disabled}
-      className={classNames(
-        'bg-gray-600 shadow appearance-none rounded py-2 px-3 text-white leading-tight placeholder-gray-900',
-        {
-          'bg-gray-700 text-gray-900 cursor-not-allowed': disabled,
-          'w-full': full,
-        },
-        className
-      )}
+const Input = ({ isFullWidth = true, isLoading, ...props }: InputProps) => (
+  <InputGroup>
+    <ChakraInput
+      position='relative'
+      borderWidth='1px'
+      borderColor='transparent'
+      bg='gray.600'
+      color='white'
+      px={3}
+      py={2}
+      shadow='lg'
+      isFullWidth={isFullWidth}
+      _disabled={{ bg: 'gray.700', color: 'gray.900', cursor: 'not-allowed' }}
+      _placeholder={{ color: 'gray.900' }}
+      _focus={{
+        borderColor: 'pink.500',
+        zIndex: 1,
+      }}
       {...props}
     />
 
-    {loading && <Spinner className='absolute top-0 right-0 mr-2' />}
-  </div>
+    {isLoading && (
+      <InputRightElement>
+        <Spinner />
+      </InputRightElement>
+    )}
+  </InputGroup>
 );
 
 export default Input;

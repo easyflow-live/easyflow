@@ -37,7 +37,7 @@ const CardCounter = ({
           min: MAX_DEFAULT_VALUE,
           type: 'tel',
           inputMode: 'numeric',
-          full: false,
+          isFullWidth: false,
           className: 'w-12',
         }}
       >
