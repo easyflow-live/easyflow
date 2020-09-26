@@ -10,14 +10,31 @@ export const StyledAutosuggestInput = styled.div`
     width: 100%;
     padding: 10px;
     font-family: inherit;
-    font-size: 16px;
-    border: 0;
-    border-radius: 3px;
+    font-size: 1rem;
+    line-height: 1.25;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    outline: none;
+    align-items: center;
+    position: relative;
+    display: flex;
+
+    height: 2.5rem;
     background-color: #718096;
     color: #fff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   .react-autosuggest__input::placeholder {
     color: #1a202c;
+  }
+  .react-autosuggest__input:focus {
+    z-index: 1;
+    border-color: #ed64a6;
+    box-shadow: 0 0px 1px 0px #ed64a6;
   }
 
   .react-autosuggest__input--open {

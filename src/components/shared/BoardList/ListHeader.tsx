@@ -48,7 +48,7 @@ const ListHeader = ({
         value={listTitle}
         onSubmit={handleSubmit}
         editable={isEditable}
-        inputProps={{ full: false, style: { maxWidth: '179px' } }}
+        inputProps={{ isFullWidth: false, style: { maxWidth: '179px' } }}
       >
         {({ value, onClick }) => (
           <div className='flex-grow'>

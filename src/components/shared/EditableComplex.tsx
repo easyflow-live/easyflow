@@ -186,7 +186,7 @@ export const EditableInput = ({ children, ...props }: EditableInputProps) => {
       value={value}
       placeholder={placeholder}
       onChange={onChange}
-      required
+      isRequired
       {...props}
     />
   );

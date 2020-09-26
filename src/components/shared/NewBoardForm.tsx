@@ -70,7 +70,7 @@ const NewBoardForm = ({
           onChange={handleTitleChange}
           placeholder='Ex: Easy Flow'
           className='mt-1 mb-3'
-          required
+          isRequired
         />
 
         <label className='text-gray-300 text-sm'>Code</label>
@@ -85,7 +85,7 @@ const NewBoardForm = ({
           className='mt-1 mb-8'
           minLength={MIN_CHAR}
           maxLength={MAX_CHAR}
-          required
+          isRequired
         />
 
         <Button

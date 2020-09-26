@@ -65,7 +65,8 @@ const AddNewListModal = ({
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          disabled={isSubmit}
+          isDisabled={isSubmit}
+          isLoading={isSubmit}
         />
       </div>
     </Dialog>

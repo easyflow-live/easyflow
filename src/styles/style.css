@@ -344,16 +344,32 @@ html {
 
 .react-tagsinput-input {
   width: 100%;
-  color: white;
-  background-color: #718096;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+  line-height: 1.25;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.25rem;
+  appearance: none;
+  font-size: 1rem;
+  transition: all 0.2s;
+  outline: none;
+  align-items: center;
+  position: relative;
+  display: flex;
+
+  height: 2.5rem;
+  background-color: #718096;
+  color: #fff;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  line-height: 1.25;
-  border-width: 0px;
-  border-radius: 0.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.react-tagsinput-input:focus {
+  z-index: 1;
+  border-color: #ed64a6;
+  box-shadow: 0 0px 1px 0px #ed64a6;
 }
 
 .react-tagsinput-input::placeholder {
