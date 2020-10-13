@@ -44,7 +44,7 @@ const CardContainer = ({
   );
 
   const { action, isHidden } = useUndo({
-    onClose,
+    onCloseComplete: onClose,
     onAction: onHideModal,
     toastId: card.id,
     toastTitle: 'Card removed',

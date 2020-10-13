@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { MdRemove, MdSupervisorAccount } from 'react-icons/md';
 import Router from 'next/router';
@@ -14,6 +13,7 @@ import { useSession } from 'hooks/use-session';
 import Dialog from 'components/shared/Dialog';
 import { Avatar, Input } from 'components/shared';
 import { List, ListItem } from 'components/shared/List';
+import { useAppToast } from 'hooks/use-app-toast';
 
 interface UserNameProps {
   name: string;
@@ -44,6 +44,7 @@ interface TeamListModalProps {
 }
 
 const TeamListModal: React.FC<TeamListModalProps> = props => {
+  const toast = useAppToast();
   const { board, toggleIsOpen, isOpen } = props;
 
   const { owner } = useBoardTeam(board);
@@ -63,18 +64,20 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
     const user = await getUser(newValue);
 
     if (board.hasMember(user.id)) {
-      toast(`The user ${value} is already a member.`);
+      toast({ id: board.id, title: `The user ${value} is already a member.` });
       setSubmit(false);
       return;
     }
 
     if (user.exists) {
       board.addMember(user).catch(() => {
-        toast(
-          "Sorry, something went wrong and we could't add the new member to the board, please, try again later."
-        );
+        toast({
+          id: board.id,
+          title:
+            "Sorry, something went wrong and we could't add the new member to the board, please, try again later.",
+        });
       });
-      toast(`${value} was added to the board.`);
+      toast({ id: board.id, title: `${value} was added to the board.` });
       setSubmit(false);
       setValue('');
       return;
@@ -91,12 +94,14 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
       boardUrl: `https://easyflow.live/b/${board.id}`,
       inviteId: invite.id,
     }).catch(() => {
-      toast(
-        "Sorry, something went wrong and we could't sent the invite, please, try again later."
-      );
+      toast({
+        id: board.id,
+        title:
+          "Sorry, something went wrong and we could't sent the invite, please, try again later.",
+      });
     });
 
-    toast(`An invite was sent to ${value} inbox.`);
+    toast({ id: board.id, title: `An invite was sent to ${value} inbox.` });
     setSubmit(false);
     setValue('');
   };
@@ -115,7 +120,7 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
           ? 'You left'
           : `User ${assignee.username} was remved from`;
 
-        toast(`${subject} the board!`);
+        toast({ id: board.id, title: `${subject} the board!` });
 
         if (myself) Router.replace('/');
         return r;
@@ -134,9 +139,10 @@ const TeamListModal: React.FC<TeamListModalProps> = props => {
           owner: user.ref,
         })
         .then(r => {
-          toast(
-            `User ${assignee.username} is the new owner of ${board.data.title}!`
-          );
+          toast({
+            id: board.id,
+            title: `User ${assignee.username} is the new owner of ${board.data.title}!`,
+          });
           return r;
         });
     }

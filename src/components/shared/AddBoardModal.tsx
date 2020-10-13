@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { toast } from 'react-toastify';
 
 import { useSession } from 'hooks/use-session';
 import BoardDocument from 'modules/Board/data/board.doc';
+import { useAppToast } from 'hooks/use-app-toast';
 import Dialog from './Dialog';
 import NewBoardForm from './NewBoardForm';
 
@@ -13,6 +13,7 @@ interface AddBoardModalProps {
 }
 
 const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
+  const toast = useAppToast();
   const { userDoc } = useSession();
 
   const onSubmit = async props => {
@@ -24,12 +25,11 @@ const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
       title,
       code,
       index,
-    }).then(() => {
-      toast(`A new board was created!`);
-      toggleIsOpen();
-    });
-
-    toggleIsOpen();
+    })
+      .then(() => {
+        toast({ title: 'A new board was created!' });
+      })
+      .finally(toggleIsOpen);
   };
 
   return (

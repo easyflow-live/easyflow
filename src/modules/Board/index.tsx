@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import Router from 'next/router';
-import { toast } from 'react-toastify';
 
 import { useBoardsStore } from 'store';
 import BoardDocument from 'modules/Board/data/board.doc';
@@ -13,10 +12,10 @@ import BoardHeader from 'modules/Board/components/BoardHeader';
 import { CreateContentEmpty } from 'components/shared/Empty/CreateContentEmpty';
 import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
 import { useSession } from 'modules/Auth/components/SessionProvider';
-import { ToastUndo } from 'components/shared';
 import { emitter } from 'libs/emitter';
 import { useInterface } from 'components/providers/InterfaceProvider';
 import SideMenu from 'components/shared/SideMenu';
+import { useUndo } from 'hooks/use-undo';
 const Activities = dynamic(() =>
   import('modules/Activity/components/Activities')
 );
@@ -33,7 +32,6 @@ const Board = ({ board, previewMode }: BoardProps) => {
 
   const isOwner = board.isOwner(userDoc && userDoc.id);
 
-  const actionRef = useRef(false);
   const [loadedActivities, setLoadedActivities] = useState(false);
 
   const _setMenu = (newState: boolean) => {
@@ -71,33 +69,18 @@ const Board = ({ board, previewMode }: BoardProps) => {
   };
 
   const archiveOrLeaveBoard = async () => {
-    if (!actionRef.current) return;
-
     isOwner ? await board.archive() : await board.removeMember(userDoc);
 
     Router.replace('/');
   };
 
-  const undo = () => (actionRef.current = false);
-
-  const removeBoard = async () => {
-    actionRef.current = true;
-
-    toast(
-      <ToastUndo
-        title={
-          isOwner
-            ? `This board will be archived...`
-            : 'You will be removed from this board...'
-        }
-        id={board.id}
-        undo={undo}
-      />,
-      {
-        onClose: archiveOrLeaveBoard,
-      }
-    );
-  };
+  const { action } = useUndo({
+    onCloseComplete: archiveOrLeaveBoard,
+    toastId: board.id,
+    toastTitle: isOwner
+      ? `This board will be archived...`
+      : 'You will be removed from this board...',
+  });
 
   if (!board) return null;
 
@@ -120,7 +103,7 @@ const Board = ({ board, previewMode }: BoardProps) => {
       <div className='m-6 mt-4' id='page-wrap'>
         <BoardHeader
           board={board}
-          onRemove={removeBoard}
+          onRemove={action}
           previewMode={previewMode}
         />
 
