@@ -27,7 +27,7 @@ class MyApp extends App<{}> {
 
     return (
       <ThemeProvider theme={customTheme}>
-        <ColorModeProvider>
+        <ColorModeProvider options={{ initialColorMode: 'dark' }}>
           <SessionProvider>
             <HeadProvider headTags={[]}>
               <InterfaceProvider>
@@ -36,8 +36,8 @@ class MyApp extends App<{}> {
                 <Component {...pageProps} />
                 <ToastContainer
                   closeOnClick={false}
+                  closeButton={false}
                   toastClassName='Toast-background'
-                  progressClassName='Toast-progress'
                 />
               </InterfaceProvider>
             </HeadProvider>
