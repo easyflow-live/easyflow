@@ -18,7 +18,7 @@
   "author": "Fellipe Pinheiro <pinheiro.llip@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@chakra-ui/core": "^0.8.0",
+    "@chakra-ui/core": "^1.0.0-rc.5",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@types/js-cookie": "^2.2.6",
