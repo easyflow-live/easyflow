@@ -1,9 +1,10 @@
-import chakraTheme, { ITheme, ColorHues } from '@chakra-ui/core/dist/theme';
+import { Theme as CharkaTheme, theme as chakraTheme } from '@chakra-ui/theme';
+import { ColorHues } from '@chakra-ui/theme/dist/types/foundations/colors';
 import { tailwindColors } from './colors';
 import { systemFontStack, systemMonoFontStack } from './fonts';
 
-export interface Theme extends ITheme {
-  colors: ITheme['colors'] & {
+export interface Theme extends CharkaTheme {
+  colors: CharkaTheme['colors'] & {
     // Custom colors hues
     indigo: ColorHues;
   };
