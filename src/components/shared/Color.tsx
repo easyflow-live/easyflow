@@ -51,7 +51,7 @@ const Color: React.FC<ColorProps> = props => {
         >
           <StyledContainer className='mt-3 relative z-10 text-white bg-gray-700 p-6 shadow-lg rounded'>
             <CirclePicker
-              width={200}
+              width='200px'
               color={color}
               colors={colors.map(c => c.data.code)}
               onChangeComplete={handleChange}

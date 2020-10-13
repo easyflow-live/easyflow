@@ -21,7 +21,7 @@ const Input = ({ isFullWidth = true, isLoading, ...props }: InputProps) => (
       px={3}
       py={2}
       shadow='lg'
-      isFullWidth={isFullWidth}
+      width={isFullWidth && '100%'}
       _disabled={{ bg: 'gray.700', color: 'gray.900', cursor: 'not-allowed' }}
       _placeholder={{ color: 'gray.900' }}
       _focus={{

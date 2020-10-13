@@ -1,15 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import styled, { css } from 'styled-components';
-import { toast } from 'react-toastify';
 import cn from 'classnames';
 
 import ListDocument, { List as ListModel } from 'documents/list.doc';
 import CardAdder from 'components/shared/CardAdder';
 import Cards from 'components/shared/Cards';
 import DraggableElement from 'components/shared/DraggableElement';
-import ToastUndo from 'components/shared/ToastUndo';
 import { useInterface } from 'components/providers/InterfaceProvider';
+import { useAppToast } from 'hooks/use-app-toast';
 import ListHeader from './ListHeader';
 
 interface ListProps {
@@ -19,6 +18,7 @@ interface ListProps {
 }
 
 const List = ({ index, list, previewMode }: ListProps) => {
+  const toast = useAppToast();
   const { isLoading } = list;
 
   const { hasOpenedModal } = useInterface();
@@ -42,16 +42,13 @@ const List = ({ index, list, previewMode }: ListProps) => {
   const deleteList = async (title: string) => {
     isHiddenRef.current = true;
     forceRenderer(s => !s);
-    toast(
-      <ToastUndo
-        title={`The list ${title} was removed!`}
-        id={list.id}
-        undo={undo}
-      />,
-      {
-        onClose: remove,
-      }
-    );
+
+    toast({
+      id: list.id,
+      undo,
+      title: `The list ${title} was removed.`,
+      onCloseComplete: remove,
+    });
   };
 
   if (isLoading) return null;

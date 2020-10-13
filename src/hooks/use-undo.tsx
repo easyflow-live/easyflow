@@ -1,29 +1,29 @@
 import { useCallback, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
 
-import { ToastUndo } from 'components/shared';
+import { useAppToast } from './use-app-toast';
 
 interface Props {
-  onAction: () => void;
-  onClose: () => void;
-  toastId: string;
+  onAction?: () => void;
+  onCloseComplete: () => void;
+  toastId?: string;
   toastTitle: string;
 }
 
 export const useUndo = ({
   onAction,
-  onClose,
+  onCloseComplete,
   toastId,
   toastTitle,
 }: Props): { action: () => void; isHidden: boolean } => {
+  const toast = useAppToast();
   const isHiddenRef = useRef(false);
   const [, forceUpdate] = useState(false);
 
   const _onClose = useCallback(() => {
     if (!isHiddenRef.current) return;
 
-    onClose();
-  }, [onClose]);
+    onCloseComplete();
+  }, [onCloseComplete]);
 
   const undo = useCallback(() => {
     isHiddenRef.current = false;
@@ -32,12 +32,15 @@ export const useUndo = ({
 
   const action = useCallback(() => {
     isHiddenRef.current = true;
-    onAction();
+    onAction?.();
 
-    toast(<ToastUndo title={toastTitle} id={toastId} undo={undo} />, {
-      onClose: _onClose,
+    toast({
+      id: toastId,
+      title: toastTitle,
+      onCloseComplete: _onClose,
+      undo,
     });
-  }, [onAction, _onClose, undo, toastId, toastTitle]);
+  }, [onAction, _onClose, undo, toast, toastTitle]);
 
   return { action, isHidden: isHiddenRef.current };
 };

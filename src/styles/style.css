@@ -61,14 +61,15 @@ html {
 
 /* */
 
+.Toastify__toast {
+  padding: 0;
+  border-radius: 0.5rem;
+}
+
 .Toast-background {
   cursor: initial;
   background: #2d3748;
-  color: #fff;
-}
-
-.Toast-progress {
-  background: #ed64a6;
+  /* color: #fff; */
 }
 
 .ReactModal__Body--open {

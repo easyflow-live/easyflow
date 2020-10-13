@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import { Collection } from 'firestorter';
 
@@ -9,6 +8,7 @@ import Input from 'components/shared/Input';
 import { useKeySubmit } from 'hooks/use-key-submit';
 import ClickOutside from './ClickOutside';
 import { emitter } from 'libs/emitter';
+import { useAppToast } from 'hooks/use-app-toast';
 
 interface CardAdderProps {
   cards: Collection<CardDocument>;
@@ -17,6 +17,7 @@ interface CardAdderProps {
 }
 
 const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
+  const toast = useAppToast();
   const [newText, setNewText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +35,7 @@ const CardAdder = ({ cards, limit, list }: CardAdderProps) => {
     const greaterThanLimit = amount > limit;
 
     if (hasLimit && greaterThanLimit) {
-      toast('Cards limit reached!');
+      toast({ title: 'Cards limit reached!', id: list.id });
     }
 
     const index = (await cards.ref.get()).size;

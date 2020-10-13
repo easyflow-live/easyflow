@@ -15,7 +15,7 @@ import { useSession } from 'hooks/use-session';
 
 interface BoardHeaderProps {
   board: BoardDocument;
-  onRemove: () => Promise<void>;
+  onRemove: () => void;
   previewMode?: boolean;
 }
 

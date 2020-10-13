@@ -11,7 +11,7 @@ interface BoardMenuProps {
   board: BoardDocument;
   isOwner: boolean;
   className: string;
-  onRemove: () => Promise<void>;
+  onRemove: () => void;
 }
 
 const BoardMenu = ({ board, isOwner, className, onRemove }: BoardMenuProps) => {

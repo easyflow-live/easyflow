@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import 'firebase/firestore';
-import { toast } from 'react-toastify';
 
 import { useKeySubmit } from 'hooks/use-key-submit';
 import BoardDocument from 'modules/Board/data/board.doc';
 import Dialog from 'components/shared/Dialog';
 import { Input } from 'components/shared';
+import { useAppToast } from 'hooks/use-app-toast';
 
 interface AddNewListModalProps {
   board: BoardDocument;
@@ -19,6 +19,7 @@ const AddNewListModal = ({
   toggleIsOpen,
   isOpen,
 }: AddNewListModalProps) => {
+  const toast = useAppToast();
   const [value, setValue] = useState('');
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -39,7 +40,7 @@ const AddNewListModal = ({
         index,
       })
       .then(() => {
-        toast(`A new list was created!`);
+        toast({ title: `A new list was created!` });
         setIsSubmit(false);
       });
   };

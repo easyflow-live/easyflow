@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Collection, Document } from 'firestorter';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { toast } from 'react-toastify';
 
 import ListDocument from 'documents/list.doc';
 import firebaseService from 'services/firebase.service';
 import CardDocument from 'modules/Card/data/card.doc';
 import BoardList from 'components/shared/BoardList';
+import { useAppToast } from 'hooks/use-app-toast';
 
 interface ListsProps {
   lists: Collection<ListDocument>;
@@ -25,6 +25,7 @@ interface UpdatedHash {
 }
 
 const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
+  const toast = useAppToast();
   const [localLists, setLocalLists] = useState([]);
 
   useEffect(() => {
@@ -45,7 +46,12 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
       }
     });
 
-    batch.commit().catch(() => toast(`An error occurred. Please, try again.`));
+    batch.commit().catch(() =>
+      toast({
+        title: 'An error occurred. Please, try again.',
+        id: 1,
+      })
+    );
   };
 
   const updateLists = (updatedListHash: UpdatedHash) => {
@@ -146,7 +152,10 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
           )
         )
         .catch(e => {
-          toast(`An error occurred. Please, try again.`);
+          toast({
+            title: 'An error occurred. Please, try again.',
+            id: 0,
+          });
           console.log(e);
         });
     } else {
