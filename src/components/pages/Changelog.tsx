@@ -83,6 +83,24 @@ export default () => (
       <h2 className='text-2xl mb-6 font-bold'>Latest Published Changes</h2>
 
       <LogCard>
+        <LogDate>Sunday, November 8, 2020</LogDate>
+
+        <LogList type={LogTypes.improvements}>
+          {[
+            'Add an UI library, to reduce bugs and increase development process.',
+          ].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+
+        <LogList type={LogTypes.bugfixes}>
+          {['Fix toast style, adding dark theme.'].map((item, i) => (
+            <LogListItem key={i}>{item}</LogListItem>
+          ))}
+        </LogList>
+      </LogCard>
+
+      <LogCard>
         <LogDate>Wednesday, July 15, 2020</LogDate>
 
         <LogList type={LogTypes.feature}>
