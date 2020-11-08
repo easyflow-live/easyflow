@@ -61,15 +61,11 @@ html {
 
 /* */
 
-.Toastify__toast {
-  padding: 0;
-  border-radius: 0.5rem;
-}
-
-.Toast-background {
-  cursor: initial;
-  background: #2d3748;
-  /* color: #fff; */
+.Toastify__toast--default {
+  padding: 0 !important;
+  border-radius: 0.5rem !important;
+  cursor: initial !important;
+  background: #2d3748 !important;
 }
 
 .ReactModal__Body--open {
