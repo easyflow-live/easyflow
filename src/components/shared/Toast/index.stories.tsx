@@ -26,7 +26,7 @@ export default { title: 'Molecules/Toast', component: Toast };
 export const basicToast = () => (
   <Overlay>
     <Centered>
-      <Toast title='Started a new board' onClose={() => {}} id={'0'} />
+      <Toast title='Started a new board' closeToast={() => {}} id={'0'} />
     </Centered>
   </Overlay>
 );
@@ -36,7 +36,7 @@ export const undoToast = () => (
     <Centered>
       <Toast
         title='Started a new board'
-        onClose={() => {}}
+        closeToast={() => {}}
         undo={() => {}}
         id={'0'}
       />
