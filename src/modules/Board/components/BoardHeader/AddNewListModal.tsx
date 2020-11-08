@@ -40,7 +40,7 @@ const AddNewListModal = ({
         index,
       })
       .then(() => {
-        toast({ title: `A new list was created!` });
+        toast({ id: index, title: `A new list was created!` });
         setIsSubmit(false);
       });
   };

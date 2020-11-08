@@ -26,9 +26,7 @@ const AddBoardModal = ({ toggleIsOpen, isOpen }: AddBoardModalProps) => {
       code,
       index,
     })
-      .then(() => {
-        toast({ title: 'A new board was created!' });
-      })
+      .then(() => toast({ id: code, title: 'A new board was created!' }))
       .finally(toggleIsOpen);
   };
 
