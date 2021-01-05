@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { initFirestorter } from 'firestorter';
 
@@ -14,20 +14,17 @@ const config = {
   appId: process.env.REACT_APP_ID,
 };
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+
+  // @ts-ignore
+  initFirestorter({ firebase });
+}
 class FirebaseService {
   app: firebase.app.App;
   db: firebase.firestore.Firestore;
 
   constructor() {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-    try {
-      initFirestorter({ firebase });
-    } catch (error) {
-      // do nothing
-    }
-
     /* Firebase APIs */
     this.db = firebase.firestore();
   }

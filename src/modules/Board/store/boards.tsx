@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext } from 'react';
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import { useLocalStore } from 'mobx-react-lite';
 import { Collection, Mode } from 'firestorter';
 
@@ -8,22 +8,19 @@ import ListDocument from 'documents/list.doc';
 import ColorDocument from 'documents/color.doc';
 
 class BoardsStore {
-  @observable currentBoard: BoardDocument = null;
-  @observable lists: ListDocument[] = [];
-  @observable colors: ColorDocument[] = [];
+  currentBoard: BoardDocument = null;
+  lists: ListDocument[] = [];
+  colors: ColorDocument[] = [];
 
-  @action
   private setCurrentBoard = (board: BoardDocument) => {
     this.currentBoard = board;
     this.fetchColors();
   };
 
-  @action
   private setListsFromCurrentBoard = (lists: ListDocument[]) => {
     this.lists = lists;
   };
 
-  @action
   private setColors = (colors: ColorDocument[]) => {
     this.colors = colors;
   };
@@ -58,6 +55,17 @@ class BoardsStore {
   getColor = (id: string) => {
     return this.colors.find(color => color.id === id);
   };
+
+  constructor() {
+    makeObservable<BoardsStore, "setCurrentBoard" | "setListsFromCurrentBoard" | "setColors">(this, {
+      currentBoard: observable,
+      lists: observable,
+      colors: observable,
+      setCurrentBoard: action,
+      setListsFromCurrentBoard: action,
+      setColors: action
+    });
+  }
 }
 
 const createStore = () => new BoardsStore();

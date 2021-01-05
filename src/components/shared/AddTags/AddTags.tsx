@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Document } from 'firestorter';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import { observer } from 'mobx-react-lite';
 import 'firebase/firestore';
 
