@@ -1,5 +1,5 @@
 import { Document, Collection } from 'firestorter';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import shortid from 'shortid';
 

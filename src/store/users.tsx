@@ -1,7 +1,7 @@
-import { observable, runInAction, action } from 'mobx';
+import { observable, runInAction, action, makeObservable } from 'mobx';
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useLocalStore } from 'mobx-react-lite';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 import UserDocument from '../documents/user.doc';
 
@@ -18,13 +18,16 @@ export class User implements IUser {
   photo: string;
   email: string;
 
-  constructor(private store: UsersStore) {}
+  constructor(private store: UsersStore) {
+    makeObservable(this, {
+      updateFromJson: action,
+    });
+  }
 
   delete() {
     this.store.remove(this);
   }
 
-  @action
   updateFromJson = (json: IUser) => {
     this.id = json.id;
     this.username = json.username;
@@ -34,11 +37,21 @@ export class User implements IUser {
 }
 
 class UsersStore {
-  @observable users: User[] = [];
-  @observable isLoading = false;
-  @observable currentUser: UserDocument = null;
+  users: User[] = [];
+  isLoading = false;
+  currentUser: UserDocument = null;
 
-  @action
+  constructor() {
+    makeObservable(this, {
+      users: observable,
+      isLoading: observable,
+      currentUser: observable,
+      createUser: action,
+      remove: action,
+      loadUsers: action,
+    });
+  }
+
   createUser = (data: IUser) => {
     const { id, username, photo, email } = data;
 
@@ -51,7 +64,6 @@ class UsersStore {
     return user;
   };
 
-  @action
   remove = (user: User) => {
     this.users.splice(this.users.indexOf(user), 1);
   };
@@ -60,7 +72,6 @@ class UsersStore {
     return this.users.find(u => u.id === id);
   };
 
-  @action
   loadUsers = async (usersRef: firebase.firestore.DocumentReference[] = []) => {
     let loadedUsers = [];
     this.isLoading = true;

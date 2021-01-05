@@ -1,5 +1,5 @@
 import { Document } from 'firestorter';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 import BoardDocument from 'modules/Board/data/board.doc';
 import UserDocument from 'documents/user.doc';

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import { useSession } from 'hooks/use-session';
