@@ -39,10 +39,9 @@ const ListHeader = ({
 
   return (
     <div
-      className={cn(
-        'flex inline-flex items-center flex-shrink-0 p-3 rounded-lg',
-        { 'bg-gray-600': isDragging }
-      )}
+      className={cn('flex items-center flex-shrink-0 p-3 rounded-lg', {
+        'bg-gray-600': isDragging,
+      })}
     >
       <Editable
         value={listTitle}

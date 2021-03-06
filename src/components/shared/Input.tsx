@@ -3,11 +3,12 @@ import {
   InputRightElement,
   Input as ChakraInput,
   InputProps as ChakraInputProps,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { Spinner } from './Spinner';
 
 export interface InputProps extends ChakraInputProps {
   isLoading?: boolean;
+  isFullWidth?: boolean;
 }
 
 const Input = ({ isFullWidth = true, isLoading, ...props }: InputProps) => (

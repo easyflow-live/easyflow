@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { HeadProvider, Link } from 'react-head';
 import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
-import { ThemeProvider, ColorModeProvider } from '@chakra-ui/core';
+import { ChakraProvider } from '@chakra-ui/react';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import Header from 'components/Header';
@@ -26,24 +26,22 @@ class MyApp extends App<{}> {
     const { Component, pageProps } = this.props;
 
     return (
-      <ThemeProvider theme={customTheme}>
-        <ColorModeProvider options={{ initialColorMode: 'dark' }}>
-          <SessionProvider>
-            <HeadProvider headTags={[]}>
-              <InterfaceProvider>
-                <Link rel='shortcut icon' href='/static/images/icon.ico' />
-                <Header />
-                <Component {...pageProps} />
-                <ToastContainer
-                  closeOnClick={false}
-                  closeButton={false}
-                  toastClassName='Toast-background'
-                />
-              </InterfaceProvider>
-            </HeadProvider>
-          </SessionProvider>
-        </ColorModeProvider>
-      </ThemeProvider>
+      <ChakraProvider theme={customTheme}>
+        <SessionProvider>
+          <HeadProvider headTags={[]}>
+            <InterfaceProvider>
+              <Link rel='shortcut icon' href='/static/images/icon.ico' />
+              <Header />
+              <Component {...pageProps} />
+              <ToastContainer
+                closeOnClick={false}
+                closeButton={false}
+                toastClassName='Toast-background'
+              />
+            </InterfaceProvider>
+          </HeadProvider>
+        </SessionProvider>
+      </ChakraProvider>
     );
   }
 }
