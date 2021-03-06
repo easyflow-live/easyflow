@@ -1,16 +1,24 @@
 import { Theme as CharkaTheme, theme as chakraTheme } from '@chakra-ui/theme';
-import { ColorHues } from '@chakra-ui/theme/dist/types/foundations/colors';
+import { ColorMode, extendTheme } from '@chakra-ui/react';
 import { tailwindColors } from './colors';
 import { systemFontStack, systemMonoFontStack } from './fonts';
 
 export interface Theme extends CharkaTheme {
   colors: CharkaTheme['colors'] & {
     // Custom colors hues
-    indigo: ColorHues;
+    // indigo: CharkaTheme['colors'];
   };
 }
 
+const config = {
+  initialColorMode: 'dark' as ColorMode,
+  useSystemColorMode: false,
+};
+
+const theme = extendTheme({ config });
+
 export const customTheme: Theme = {
+  ...theme,
   ...chakraTheme,
   fonts: {
     ...chakraTheme.fonts,

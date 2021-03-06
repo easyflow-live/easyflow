@@ -19,10 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "@chakra-ui/react": "^1.3.4",
-    "@emotion/react": "^11.1.5",
-    "@emotion/styled": "^11.1.5",
     "@dnd-kit/core": "^1.0.2",
     "@dnd-kit/sortable": "^1.0.2",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
     "@types/js-cookie": "^2.2.6",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
