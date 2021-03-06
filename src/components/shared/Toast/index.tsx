@@ -1,4 +1,4 @@
-import { CloseButton, Flex, Text } from '@chakra-ui/core';
+import { CloseButton, Flex, Text } from '@chakra-ui/react';
 import Button from '../Button';
 
 interface ToastProps {
