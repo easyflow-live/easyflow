@@ -8,7 +8,6 @@ import Document, {
   DocumentContext,
 } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
-import { customTheme } from 'ui/theme';
 
 class MyDocument extends Document<DocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {

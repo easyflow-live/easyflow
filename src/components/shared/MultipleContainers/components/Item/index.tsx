@@ -25,12 +25,6 @@ export interface Props {
   value: React.ReactNode;
 }
 
-const initialStyles = {
-  x: 0,
-  y: 0,
-  scale: 1,
-};
-
 export const Item = React.memo(
   React.forwardRef<HTMLLIElement, Props>(
     (
@@ -71,6 +65,7 @@ export const Item = React.memo(
           className={classNames(
             styles.Wrapper,
             fadeIn && styles.fadeIn,
+            sorting && styles.sorting,
             dragOverlay && styles.dragOverlay
           )}
           style={

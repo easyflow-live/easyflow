@@ -1,7 +1,7 @@
 import { MultipleContainers } from '.';
 
 export default {
-  title: 'Components/MultipleContainers',
+  title: 'Molecules/MultipleContainers',
   component: MultipleContainers,
 };
 

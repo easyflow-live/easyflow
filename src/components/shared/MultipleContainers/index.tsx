@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   closestCorners,
   CollisionDetection,
   DndContext,
+  DragOverlay,
   KeyboardSensor,
+  Modifiers,
+  PointerSensor,
   useDroppable,
   UniqueIdentifier,
   useSensors,
   useSensor,
-  MouseSensor,
-  TouchSensor,
-  ScreenReaderInstructions,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -24,29 +25,9 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { Item } from './components/Item';
 import { List } from './components/List';
-import {
-  getColor,
-  defaultContainerStyle,
-  createRange,
-  announcements,
-} from './helpers';
+
+import { createRange, getColor } from './helpers';
 import { restrictToColumnsEdge } from './restrict-to-columns-edge';
-
-export default {
-  title: 'Presets/Sortable/Multiple Containers',
-};
-
-function useMountStatus() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 500);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  return isMounted;
-}
 
 function DroppableContainer({
   children,
@@ -81,9 +62,21 @@ function DroppableContainer({
   );
 }
 
+export const defaultContainerStyle = ({
+  isOverContainer,
+}: {
+  isOverContainer: boolean;
+}) => ({
+  marginTop: 40,
+  backgroundColor: isOverContainer
+    ? 'rgb(235,235,235,1)'
+    : 'rgba(246,246,246,1)',
+});
+
 type Items = Record<string, string[]>;
 
 interface Props {
+  adjustScale?: boolean;
   collisionDetection?: CollisionDetection;
   columns?: number;
   getItemStyles?(args: {
@@ -95,30 +88,22 @@ interface Props {
     isSorting: boolean;
     isDragOverlay: boolean;
   }): React.CSSProperties;
-  wrapperStyle?(args: {
-    index: number;
-    isDragging: boolean;
-    id: string;
-  }): React.CSSProperties;
+  wrapperStyle?(args: { index: number }): React.CSSProperties;
   getContainerStyle?(args: { isOverContainer: boolean }): React.CSSProperties;
+  itemCount?: number;
   items?: Items;
   handle?: boolean;
   strategy?: SortingStrategy;
+  modifiers?: Modifiers;
   vertical?: boolean;
   confirmDrop?: (overId: string) => boolean;
 }
 
 export const VOID_ID = 'void';
 
-const screenReaderInstructions: ScreenReaderInstructions = {
-  draggable: `
-    To pick up a card, press the space bar.
-    While sorting, use the arrow keys to move the card.
-    Press space again to drop the card in its new position, or press escape to cancel.
-  `,
-};
-
 export function MultipleContainers({
+  adjustScale = false,
+  itemCount = 3,
   collisionDetection = closestCorners,
   columns,
   handle = false,
@@ -126,6 +111,7 @@ export function MultipleContainers({
   getItemStyles = () => ({}),
   getContainerStyle = defaultContainerStyle,
   wrapperStyle = () => ({}),
+  modifiers = [restrictToColumnsEdge],
   strategy = verticalListSortingStrategy,
   vertical = false,
   confirmDrop,
@@ -133,43 +119,40 @@ export function MultipleContainers({
   const [items, setItems] = useState<Items>(
     () =>
       initialItems ?? {
-        A: createRange(3, index => `A${index + 1}`),
-        B: createRange(3, index => `B${index + 1}`),
-        // C: createRange(3, index => `C${index + 1}`),
-        // D: createRange(3, index => `D${index + 1}`),
+        A: createRange(itemCount, index => `A${index + 1}`),
+        B: createRange(itemCount, index => `B${index + 1}`),
+        C: createRange(itemCount, index => `C${index + 1}`),
+        D: createRange(itemCount, index => `D${index + 1}`),
         [VOID_ID]: [],
       }
   );
   const [clonedItems, setClonedItems] = useState<Items | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
+    useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-  const findContainer = (itemId: string) => {
-    if (itemId in items) {
-      return itemId;
+  const findContainer = (id: string) => {
+    if (id in items) {
+      return id;
     }
 
-    return Object.keys(items).find(key => items[key].includes(itemId));
+    return Object.keys(items).find(key => items[key].includes(id));
   };
 
-  const getItemIndex = (itemId: string) => {
-    const container = findContainer(itemId);
+  const getIndex = (id: string) => {
+    const container = findContainer(id);
 
     if (!container) {
       return -1;
     }
 
-    const index = items[container].indexOf(itemId);
+    const index = items[container].indexOf(id);
 
     return index;
   };
-
-  const getItemPosition = (itemId: string) => getItemIndex(itemId) + 1;
 
   const onDragCancel = () => {
     if (clonedItems) {
@@ -184,53 +167,9 @@ export function MultipleContainers({
 
   return (
     <DndContext
-      modifiers={[restrictToColumnsEdge]}
-      screenReaderInstructions={screenReaderInstructions}
-      announcements={{
-        onDragStart(id) {
-          const container = findContainer(id);
-          return announcements['onDragStart']({
-            id,
-            totalItems: container.length,
-          });
-        },
-        onDragOver(id, overId) {
-          if (overId) {
-            const container = findContainer(overId);
-            return announcements['onDragOver']({
-              id,
-              overPosition: getItemPosition(overId),
-              totalItems: container.length,
-            });
-          }
-
-          return;
-        },
-        onDragEnd(id, overId) {
-          if (overId) {
-            const container = findContainer(overId);
-            return announcements['onDragEnd']({
-              id,
-              overPosition: getItemPosition(overId),
-              totalItems: container.length,
-            });
-          }
-
-          return;
-        },
-        onDragCancel(id) {
-          return announcements['onDragCancel']({
-            id,
-          });
-        },
-      }}
       sensors={sensors}
       collisionDetection={collisionDetection}
       onDragStart={({ active }) => {
-        if (!active) {
-          return;
-        }
-
         setActiveId(active.id);
         setClonedItems(items);
       }}
@@ -336,6 +275,7 @@ export function MultipleContainers({
         setActiveId(null);
       }}
       onDragCancel={onDragCancel}
+      modifiers={modifiers}
     >
       <div
         style={{
@@ -355,28 +295,52 @@ export function MultipleContainers({
               strategy={strategy}
             >
               <DroppableContainer
-                key={containerId}
                 id={containerId}
                 columns={columns}
                 items={items[containerId]}
                 getStyle={getContainerStyle}
               >
-                {items[containerId].map((value, index) => (
-                  <SortableItem
-                    key={value}
-                    id={value}
-                    index={index}
-                    handle={handle}
-                    style={getItemStyles}
-                    wrapperStyle={wrapperStyle}
-                    containerId={containerId}
-                    getIndex={getItemIndex}
-                  />
-                ))}
+                {items[containerId].map((value, index) => {
+                  return (
+                    <SortableItem
+                      key={value}
+                      id={value}
+                      index={index}
+                      handle={handle}
+                      style={getItemStyles}
+                      wrapperStyle={wrapperStyle}
+                      containerId={containerId}
+                      getIndex={getIndex}
+                    />
+                  );
+                })}
               </DroppableContainer>
             </SortableContext>
           ))}
       </div>
+      {createPortal(
+        <DragOverlay adjustScale={adjustScale}>
+          {activeId ? (
+            <Item
+              value={activeId}
+              handle={handle}
+              style={getItemStyles({
+                containerId: findContainer(activeId) as string,
+                overIndex: -1,
+                index: getIndex(activeId),
+                value: activeId,
+                isSorting: activeId !== null,
+                isDragging: true,
+                isDragOverlay: true,
+              })}
+              color={getColor(activeId)}
+              wrapperStyle={wrapperStyle({ index: 0 })}
+              dragOverlay
+            />
+          ) : null}
+        </DragOverlay>,
+        document.body
+      )}
     </DndContext>
   );
 }
@@ -389,6 +353,18 @@ interface SortableItemProps {
   style(args: any): React.CSSProperties;
   getIndex(id: string): number;
   wrapperStyle({ index }: { index: number }): React.CSSProperties;
+}
+
+function useMountStatus() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsMounted(true), 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return isMounted;
 }
 
 function SortableItem({
@@ -439,8 +415,6 @@ function SortableItem({
       wrapperStyle={wrapperStyle({ index })}
       style={styles}
       color={getColor(id)}
-      transition={transition}
-      transform={transform}
       fadeIn={mountedWhileDragging}
       listeners={listeners}
     />
