@@ -1,29 +1,3 @@
-export const getColor = (id: string) => {
-  switch (id[0]) {
-    case 'A':
-      return '#7193f1';
-    case 'B':
-      return '#ffda6c';
-    case 'C':
-      return '#00bcd4';
-    case 'D':
-      return '#ef769f';
-  }
-
-  return undefined;
-};
-
-export const defaultContainerStyle = ({
-  isOverContainer,
-}: {
-  isOverContainer: boolean;
-}) => ({
-  marginTop: 40,
-  backgroundColor: isOverContainer
-    ? 'rgb(235,235,235,1)'
-    : 'rgba(246,246,246,1)',
-});
-
 const defaultInitializer = (index: number) => index;
 
 export function createRange<T = number>(

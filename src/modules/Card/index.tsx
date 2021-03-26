@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import CardDocument from 'modules/Card/data/card.doc';
@@ -7,6 +7,8 @@ import { useCardAssignees } from 'modules/Card/hooks/use-card-assignees';
 import { useUndo } from 'hooks/use-undo';
 import { CardModalProps } from 'modules/Card/components/CardModal/CardModalFull';
 import Card from 'modules/Card/components/Card';
+import { emitter } from 'libs/emitter';
+import { list } from '@chakra-ui/react';
 
 interface CardContainerProps {
   card: CardDocument;
@@ -21,6 +23,48 @@ interface CardContainerProps {
 const isLink = (tagName: string) => tagName.toLowerCase() === 'a';
 const isTextArea = (tagName: string) => tagName.toLowerCase() === 'textarea';
 
+const useCardProps = ({
+  card,
+  listId,
+}: {
+  card: CardDocument;
+  listId: string;
+}) => {
+  const remove = useCallback(
+    () =>
+      card.ref.delete().then(() =>
+        emitter.emit('REMOVE_CARD', {
+          text: card.data.text,
+          title: card.data.title || '',
+          listId,
+        })
+      ),
+    [card, listId]
+  );
+
+  const update = useCallback(
+    (newData: Partial<CardModel>) => {
+      const oldData = { ...card.data };
+
+      card.ref.update(newData).then(() =>
+        emitter.emit('EDIT_CARD', {
+          cardId: card.id,
+          newText: newData.text || oldData.text,
+          oldText: oldData.text,
+          newTitle: newData.title || oldData.title,
+          oldTitle: oldData.title,
+          listId,
+        })
+      );
+    },
+    [card, listId]
+  );
+
+  const props = useMemo(() => ({ remove, update }), [remove, update]);
+
+  return props;
+};
+
 const CardContainer = ({
   card,
   listId,
@@ -31,20 +75,21 @@ const CardContainer = ({
   onShowModal,
 }: CardContainerProps) => {
   const { assignees } = useCardAssignees(card);
+  const cardProps = useCardProps({ card, listId });
 
-  const onClose = useCallback(async () => {
-    onRemove(card);
-  }, [card, onRemove]);
+  // const onClose = useCallback(async () => {
+  //   onRemove(card);
+  // }, [card, onRemove]);
 
-  const updateCard = useCallback(
-    (data: Partial<CardModel>) => {
-      onUpdate(card, data);
-    },
-    [card, onUpdate]
-  );
+  // const updateCard = useCallback(
+  //   (data: Partial<CardModel>) => {
+  //     onUpdate(card, data);
+  //   },
+  //   [card, onUpdate]
+  // );
 
   const { action, isHidden } = useUndo({
-    onCloseComplete: onClose,
+    onCloseComplete: cardProps.remove,
     onAction: onHideModal,
     toastId: card.id,
     toastTitle: 'Card removed',
@@ -55,11 +100,11 @@ const CardContainer = ({
       onShowModal({
         card,
         listId,
-        onUpdate: updateCard,
+        onUpdate: cardProps.update,
         onRemove: action,
         onClose: onHideModal,
       }),
-    [card, listId, updateCard, action, onHideModal, onShowModal]
+    [card, listId, cardProps, action, onHideModal, onShowModal]
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -78,7 +123,7 @@ const CardContainer = ({
         previewMode={previewMode}
         assignees={assignees}
         isHidden={isHidden}
-        onUpdate={updateCard}
+        onUpdate={cardProps.update}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
       />

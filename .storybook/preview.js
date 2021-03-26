@@ -1,5 +1,5 @@
 import { themes } from '@storybook/theming';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 
 import '../src/styles/style.css';
 import { customTheme } from '../src/ui/theme';
@@ -14,8 +14,11 @@ export const parameters = {
 
 export const decorators = [
   Story => (
+    <>
+    <ColorModeScript initialColorMode={'dark'} />
     <ChakraProvider theme={customTheme}>
         <Story />
     </ChakraProvider>
+    </>
   ),
 ];
