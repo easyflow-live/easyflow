@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "author": "pinheiro.llip@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "dev": "make up",
+    "dev:stop": "make stop",
+    "dev:clean": "make clean",
+    "console": "make console &",
+    "hasura": "hasura"
+  },
+  "devDependencies": {
+    "hasura-cli": "^2.0.0-alpha.7"
+  }
+}

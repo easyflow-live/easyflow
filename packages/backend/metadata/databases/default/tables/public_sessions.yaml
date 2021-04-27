@@ -1,0 +1,11 @@
+table:
+  name: sessions
+  schema: public
+configuration:
+  custom_column_names:
+    access_token: accessToken
+    created_at: createdAt
+    session_token: sessionToken
+    updated_at: updatedAt
+    user_id: userId
+  custom_root_fields: {}

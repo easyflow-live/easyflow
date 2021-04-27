@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "frontend:dev": "npm run --prefix packages/frontend dev",
+    "frontend:generate": "npm run --prefix packages/frontend generate",
+    "backend:dev": "npm run --prefix packages/backend dev",
+    "backend:dev:stop": "npm run --prefix packages/backend dev:stop",
+    "backend:dev:clean": "npm run --prefix packages/backend dev:clean",
+    "backend:console": "npm run --prefix packages/backend console"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

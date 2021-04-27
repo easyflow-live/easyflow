@@ -1,0 +1,11 @@
+**/.DS_STORE
+**/node_modules
+**/.next
+**/.env
+**/out
+**/frontend/src/types/generated.ts
+**/frontend/dist
+
+**/*.pem
+**/*.log
+**/.vercel

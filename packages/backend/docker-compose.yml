@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  backend:
+    container_name: backend
+    image: hasura/graphql-engine:v2.0.0-alpha.7.cli-migrations-v3
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    volumes:
+      - $PWD/migrations:/hasura-migrations
+      - $PWD/metadata:/hasura-metadata
+    env_file: .env
+    restart: on-failure
+
+  db:
+    container_name: db
+    image: postgres:11.3-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: on-failure
+
+volumes:
+  db_data:

@@ -1,0 +1,8 @@
+query CurrentUser {
+  currentUser {
+    email
+    theme
+    image
+    name
+  }
+}

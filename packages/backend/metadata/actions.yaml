@@ -1,0 +1,14 @@
+actions:
+- name: currentUser
+  definition:
+    kind: ""
+    handler: http://host.docker.internal:3000/api/actions./current-user
+    headers:
+    - name: HASURA_ACTION_TOKEN
+      value_from_env: HASURA_ACTION_TOKEN
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+  - name: User
+  scalars: []

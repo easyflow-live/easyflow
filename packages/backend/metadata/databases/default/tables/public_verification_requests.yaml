@@ -1,0 +1,8 @@
+table:
+  name: verification_requests
+  schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    updated_at: updateAt
+  custom_root_fields: {}

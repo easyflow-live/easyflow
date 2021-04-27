@@ -1,0 +1,25 @@
+# schema: ${GRAPHQL_HOST}
+# for using env var, see: https://graphql-code-generator.com/docs/getting-started/codegen-config#environment-variables
+# The same env var must be set in vercel (prod and preview envs) and github (e2e test)
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+config:
+  nonOptionalTypename: false
+  skipTypename: false
+  withHooks: true
+  withHOC: false
+  withComponent: false
+
+generates:
+  ./src/types/generated.ts:
+    schema:
+      - ${NEXT_PUBLIC_HASURA_GRAPHQL_HOST}:
+          headers:
+            'X-Hasura-Admin-Secret': ${HASURA_ADMIN_SECRET}
+    documents:
+      - './src/**/*.gql'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

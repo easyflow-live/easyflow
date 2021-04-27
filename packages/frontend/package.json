@@ -1,0 +1,72 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "author": "pinheiro.llip@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:eslint:fix": "npm run lint:eslint --fix",
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
+    "start": "next start",
+    "type-check": "tsc",
+    "codegen:generate": "graphql-codegen -r dotenv/config",
+    "prisma:generate": "prisma generate",
+    "prisma:introspect": "prisma introspect",
+    "generate": "npm run prisma:introspect && npm run prisma:generate && npm run codegen:generate",
+    "predev": "npm run generate"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.15",
+    "@prisma/client": "^2.21.2",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "next": "^9.4.4",
+    "next-auth": "^3.3.0",
+    "pg": "^8.6.0",
+    "ramda": "0.27.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "subscriptions-transport-ws": "^0.9.18"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/typescript": "^1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.4",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/next": "^9.0.0",
+    "@types/next-auth": "^3.13.0",
+    "@types/node": "^14.0.23",
+    "@types/ramda": "0.27.1",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
+    "prisma": "^2.21.2",
+    "typescript": "^3.9.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,tsx,ts}": [
+      "npm run lint:eslint"
+    ]
+  },
+  "prisma": {
+    "schema": "src/server/db/schema.prisma"
+  }
+}

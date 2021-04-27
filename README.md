@@ -11,6 +11,65 @@
 
 Easy Flow is a real time collaborative project manager based on Kanban methodology. We make everything easier so you and your team can focus on complete tasks and ship great products.
 
+This mono-repo boilerplate consists of the following packages:
+
+- [Current version v1](./packages/v1)
+- Next version (working in progress)
+  - [Frontend](./packages/frontend)
+  - [Backend](./packages/backend)
+
+## Next version packages
+
+### 1. [**Frontend**](./packages/frontend): Next.js application
+
+This application is the primary user-facing application. Once it’s up and running (see Development section), it’s available on http://localhost:3000/.
+
+### 2. [**Backend**](./packages/backend): Dockerized Hasura application
+
+## Installation
+
+### 1. **Clone the application**
+
+```sh
+git clone https://github.com/easyflow-live/easyflow
+```
+
+### 2. **Install Lerna**
+
+```sh
+npm install
+```
+
+### 3. **Bootstrap the packages**
+
+From the project root, we can run the following command to bootstrap the packages and install all their dependencies and linking any cross-dependencies:
+
+```sh
+npx lerna bootstrap
+```
+
+### 4. **Start the packages**
+
+Before start the project, duplicate the `.env` example and fill it.
+
+```sh
+cp packages/frontend/.env.example packages/frontend/.env && cp packages/backend/.env.example packages/backend/.env
+```
+
+From the project root, we can run the following commands to start the project:
+
+```sh
+npm run frontend:dev
+```
+
+The above command will start the frontend package on [http://localhost:3000/](http://localhost:3000).
+
+```sh
+npm run backend:dev
+```
+
+The command will start the backend containers. If everything goes well, it’ll be up and running on http://localhost:8080/v1/graphql.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

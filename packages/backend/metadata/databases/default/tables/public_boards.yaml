@@ -1,0 +1,9 @@
+table:
+  name: boards
+  schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    owner_id: ownerId
+    updated_at: updatedAt
+  custom_root_fields: {}

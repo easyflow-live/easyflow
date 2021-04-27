@@ -1,0 +1,14 @@
+type Query {
+  currentUser : User
+}
+
+
+
+
+type User {
+  name : String
+  email : String!
+  theme : String!
+  image : String
+}
+
