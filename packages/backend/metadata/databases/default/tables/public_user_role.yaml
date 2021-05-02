@@ -1,6 +1,12 @@
 table:
   name: user_role
   schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    role_id: roleId
+    user_id: userId
+  custom_root_fields: {}
 object_relationships:
 - name: role
   using:

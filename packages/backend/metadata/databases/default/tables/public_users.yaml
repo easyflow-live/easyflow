@@ -4,9 +4,17 @@ table:
 configuration:
   custom_column_names:
     created_at: createdAt
+    email_verified: emailVerified
     updated_at: updatedAt
   custom_root_fields: {}
 array_relationships:
+- name: boards
+  using:
+    foreign_key_constraint_on:
+      column: owner_id
+      table:
+        name: boards
+        schema: public
 - name: followers
   using:
     foreign_key_constraint_on:
@@ -27,6 +35,13 @@ array_relationships:
       column: user_id
       table:
         name: user_role
+        schema: public
+- name: sessions
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: sessions
         schema: public
 - name: stars
   using:

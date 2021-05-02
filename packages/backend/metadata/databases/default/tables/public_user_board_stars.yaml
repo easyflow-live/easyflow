@@ -1,6 +1,12 @@
 table:
   name: user_board_stars
   schema: public
+configuration:
+  custom_column_names:
+    board_id: boardId
+    created_at: createdAt
+    user_id: userId
+  custom_root_fields: {}
 object_relationships:
 - name: board
   using:

@@ -1,6 +1,10 @@
 table:
   name: roles
   schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+  custom_root_fields: {}
 array_relationships:
 - name: roles
   using:

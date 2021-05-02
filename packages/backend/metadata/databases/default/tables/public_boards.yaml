@@ -7,6 +7,10 @@ configuration:
     owner_id: ownerId
     updated_at: updatedAt
   custom_root_fields: {}
+object_relationships:
+- name: owner
+  using:
+    foreign_key_constraint_on: owner_id
 array_relationships:
 - name: stars
   using:
