@@ -1,4 +1,6 @@
 - "!include public_boards.yaml"
+- "!include public_roles.yaml"
 - "!include public_sessions.yaml"
+- "!include public_user_role.yaml"
 - "!include public_users.yaml"
 - "!include public_verification_requests.yaml"

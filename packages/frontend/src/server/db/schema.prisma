@@ -8,15 +8,16 @@ datasource db {
 }
 
 model users {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String?    @db.VarChar
-  email      String     @unique @db.VarChar
-  image      String?    @db.VarChar
-  created_at DateTime   @default(now()) @db.Timestamptz(6)
-  updated_at DateTime   @default(now()) @db.Timestamptz(6)
-  theme      String     @default("dark") @db.VarChar
-  boards     boards[]
-  sessions   sessions[]
+  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String?    @db.VarChar
+  email          String     @unique @db.VarChar
+  image          String?    @db.VarChar
+  created_at     DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime   @default(now()) @db.Timestamptz(6)
+  theme          String     @default("dark") @db.VarChar
+  email_verified DateTime?  @db.Timestamptz(6)
+  boards         boards[]
+  sessions       sessions[]
 }
 
 model boards {
