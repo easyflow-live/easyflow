@@ -8,25 +8,30 @@ datasource db {
 }
 
 model users {
-  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name           String?    @db.VarChar
-  email          String     @unique @db.VarChar
-  image          String?    @db.VarChar
-  created_at     DateTime   @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime   @default(now()) @db.Timestamptz(6)
-  theme          String     @default("dark") @db.VarChar
-  email_verified DateTime?  @db.Timestamptz(6)
-  boards         boards[]
-  sessions       sessions[]
+  id                                                          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                                        String?               @db.VarChar
+  email                                                       String                @unique @db.VarChar
+  image                                                       String?               @db.VarChar
+  created_at                                                  DateTime              @default(now()) @db.Timestamptz(6)
+  updated_at                                                  DateTime              @default(now()) @db.Timestamptz(6)
+  theme                                                       String                @default("dark") @db.VarChar
+  email_verified                                              DateTime?             @db.Timestamptz(6)
+  boards                                                      boards[]
+  sessions                                                    sessions[]
+  user_board_stars                                            user_board_stars[]
+  user_following_user_user_following_user_following_idTousers user_following_user[] @relation("user_following_user_following_idTousers")
+  user_following_user_user_following_user_user_idTousers      user_following_user[] @relation("user_following_user_user_idTousers")
+  user_role                                                   user_role[]
 }
 
 model boards {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
-  owner_id   String   @db.Uuid
-  name       String   @db.VarChar
-  users      users    @relation(fields: [owner_id], references: [id])
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at       DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime           @default(now()) @db.Timestamptz(6)
+  owner_id         String             @db.Uuid
+  name             String             @db.VarChar
+  users            users              @relation(fields: [owner_id], references: [id])
+  user_board_stars user_board_stars[]
 }
 
 model sessions {
@@ -47,4 +52,40 @@ model verification_requests {
   expires    DateTime @db.Timestamptz(6)
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model roles {
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime    @default(now()) @db.Timestamptz(6)
+  name       String      @unique @db.VarChar
+  user_role  user_role[]
+}
+
+model user_board_stars {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  user_id    String   @db.Uuid
+  board_id   String   @db.Uuid
+  star       Boolean
+  boards     boards   @relation(fields: [board_id], references: [id])
+  users      users    @relation(fields: [user_id], references: [id])
+}
+
+model user_following_user {
+  id                                            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                    DateTime @default(now()) @db.Timestamptz(6)
+  user_id                                       String   @db.Uuid
+  following_id                                  String   @db.Uuid
+  follow                                        Boolean
+  users_user_following_user_following_idTousers users    @relation("user_following_user_following_idTousers", fields: [following_id], references: [id])
+  users_user_following_user_user_idTousers      users    @relation("user_following_user_user_idTousers", fields: [user_id], references: [id])
+}
+
+model user_role {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String   @db.Uuid
+  role_id    String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  roles      roles    @relation(fields: [role_id], references: [id])
+  users      users    @relation(fields: [user_id], references: [id])
 }
