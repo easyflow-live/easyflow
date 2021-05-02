@@ -14,3 +14,10 @@ array_relationships:
       table:
         name: user_role
         schema: public
+- name: stars
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: user_board_stars
+        schema: public

@@ -7,3 +7,11 @@ configuration:
     owner_id: ownerId
     updated_at: updatedAt
   custom_root_fields: {}
+array_relationships:
+- name: stars
+  using:
+    foreign_key_constraint_on:
+      column: board_id
+      table:
+        name: user_board_stars
+        schema: public
