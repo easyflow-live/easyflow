@@ -1,0 +1,16 @@
+table:
+  name: user_following_user
+  schema: public
+configuration:
+  custom_column_names:
+    created_at: createdAt
+    following_id: followingId
+    user_id: userId
+  custom_root_fields: {}
+object_relationships:
+- name: followed
+  using:
+    foreign_key_constraint_on: following_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
