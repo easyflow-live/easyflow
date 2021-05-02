@@ -6,16 +6,19 @@ import { Session } from 'next-auth'
 import { Layout } from 'client/components/Layout'
 import { AuthProvider } from 'client/modules/Auth/components/AuthProvider'
 import { GraphQLProvider } from 'client/lib/graphql/GraphQLProvider'
-import { WithAdditionalParams } from 'next-auth/_utils'
+import { ChakraProvider } from '@chakra-ui/react'
+import { customTheme } from 'client/ui/theme'
 
 function AppProviders({
   session,
   children,
-}: PropsWithChildren<{ session: WithAdditionalParams<Session> }>) {
+}: PropsWithChildren<{ session: Session }>) {
   return (
     <GraphQLProvider>
       <NextAuthProvider session={session}>
-        <AuthProvider>{children}</AuthProvider>
+        <ChakraProvider theme={customTheme}>
+          <AuthProvider>{children}</AuthProvider>
+        </ChakraProvider>
       </NextAuthProvider>
     </GraphQLProvider>
   )
@@ -27,7 +30,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <link rel="shortcut icon" href="/images/favicon.ico" />
+        <link rel="shortcut icon" href="/images/icon.ico" />
       </Head>
       <AppProviders session={session}>
         <Layout>

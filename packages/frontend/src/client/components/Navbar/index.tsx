@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { Text } from '@chakra-ui/react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 export function Navbar() {
@@ -49,6 +50,21 @@ export function Navbar() {
 
   return (
     <div>
+      <div>
+        <Link href="/">
+          <a>
+            <Text fontSize="2xl" color="white">
+              <Text as="span" color="teal.500">
+                easy
+              </Text>
+              flow
+              <Text as="span" fontSize="xs" color="pink.500">
+                beta
+              </Text>
+            </Text>
+          </a>
+        </Link>
+      </div>
       <div>
         <Link href="/">
           <a>Home</a>

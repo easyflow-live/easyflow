@@ -19,7 +19,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",
+    "@chakra-ui/react": "^1.6.0",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.3.0",
     "@prisma/client": "^2.21.2",
+    "framer-motion": "^4.1.11",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "next": "^10.2.0",

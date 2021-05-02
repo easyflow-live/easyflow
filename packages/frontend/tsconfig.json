@@ -28,6 +28,7 @@
       "client/components/*": ["src/client/components/*"],
       "client/modules/*": ["src/client/modules/*"],
       "client/lib/*": ["src/client/lib/*"],
+      "client/ui/*": ["src/client/ui/*"],
       "pages/*": ["src/pages/*"],
       "types/*": ["src/types/*"],
       "configs/*": ["configs/*"],
