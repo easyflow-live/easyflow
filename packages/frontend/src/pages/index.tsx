@@ -1,34 +1,29 @@
 import React from 'react'
-import Head from 'next/head'
 import Link from 'next/link'
-import { useCurrentUserQuery } from 'types/generated'
+import { useCurrentUserQuery } from 'src/types/generated'
+import { Box } from '@chakra-ui/layout'
+
+import { Page } from 'src/client/shared/components/Page'
 
 function Index() {
   const currentUser = useCurrentUserQuery()
 
   return (
-    <>
-      <Head>
-        <title>Index Page</title>
-      </Head>
-
-      <>
-        <h1>My SaaS Name</h1>
-        {!currentUser ? (
-          <div>
-            <Link href="/login">
-              <a>Login</a>
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <Link href="/app">
-              <a>Go to dashboard</a>
-            </Link>
-          </div>
-        )}
-      </>
-    </>
+    <Page title="Home">
+      {!currentUser ? (
+        <div>
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </div>
+      ) : (
+        <Box bg="red.300">
+          <Link href="/app">
+            <a>Go to dashboard</a>
+          </Link>
+        </Box>
+      )}
+    </Page>
   )
 }
 

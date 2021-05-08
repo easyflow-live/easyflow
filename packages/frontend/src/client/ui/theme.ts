@@ -34,4 +34,12 @@ export const customTheme: CharkaTheme = extendTheme({
       },
     },
   },
+  breakpoints: {
+    sm: '30em',
+    md: '48em',
+    lg: '62em',
+    '2lg': '72em',
+    xl: '80em',
+    '2xl': '96em',
+  },
 })
