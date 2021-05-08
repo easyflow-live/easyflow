@@ -7,6 +7,8 @@ type PageProps = {
   title: string
 }
 
+const responsiveRisplay = { base: 'none', md: 'block' }
+
 export function Page({ children, title }: WithChildren<PageProps>) {
   return (
     <>
@@ -15,7 +17,7 @@ export function Page({ children, title }: WithChildren<PageProps>) {
       </Head>
 
       <Layout>
-        <Layout.LeftColumn display={{ base: 'none', md: 'block' }}>
+        <Layout.LeftColumn display={responsiveRisplay}>
           <LeftHeader />
           <Box bg="pink.300">
             <h1>My SaaS Name</h1>
@@ -27,7 +29,7 @@ export function Page({ children, title }: WithChildren<PageProps>) {
           {children}
         </Layout.MiddleColumn>
 
-        <Layout.RightColumn display={{ base: 'none', md: 'block' }}>
+        <Layout.RightColumn display={responsiveRisplay}>
           <RightHeader />
           <Box bg="gray.300">
             <h1>My SaaS Name</h1>
