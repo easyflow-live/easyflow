@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { useSession } from 'next-auth/client'
-import { Loader } from 'client/components/Loader'
+import { Loader } from 'src/client/shared/components/Loader'
 import {
   useFetchBoardsSubscription,
   useCreateBoardMutation,
-} from 'types/generated'
+} from 'src/types/generated'
 
 export function Boards() {
   const [name, setName] = useState('')
   const [boards, setBoards] = useState([])
   const [session] = useSession()
-  const currentUserId = session.id
+  const currentUserId = session?.id
   const [
     createBoardMutation,
     { loading: mutationFetching, error: mutationError },

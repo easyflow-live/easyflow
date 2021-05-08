@@ -3,11 +3,10 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider as NextAuthProvider } from 'next-auth/client'
 import { Session } from 'next-auth'
-import { Layout } from 'client/components/Layout'
-import { AuthProvider } from 'client/modules/Auth/components/AuthProvider'
-import { GraphQLProvider } from 'client/lib/graphql/GraphQLProvider'
 import { ChakraProvider } from '@chakra-ui/react'
-import { customTheme } from 'client/ui/theme'
+import { AuthProvider } from 'src/client/modules/Auth/components/AuthProvider'
+import { GraphQLProvider } from 'src/client/lib/graphql/GraphQLProvider'
+import { customTheme } from 'src/client/ui/theme'
 
 function AppProviders({
   session,
@@ -33,9 +32,7 @@ function App({ Component, pageProps }: AppProps) {
         <link rel="shortcut icon" href="/images/icon.ico" />
       </Head>
       <AppProviders session={session}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </AppProviders>
     </>
   )
