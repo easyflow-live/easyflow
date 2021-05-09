@@ -1,7 +1,10 @@
 import { Box } from '@chakra-ui/react'
+import { useSession } from 'next-auth/client'
 import Head from 'next/head'
+import { AccessDeniedIndicator } from '../AccessDeniedIndicator'
 import { LeftHeader, MiddleHeader, RightHeader } from '../Header'
 import { Layout } from '../Layout'
+import { Loader } from '../Loader'
 
 type PageProps = {
   title: string
@@ -10,6 +13,16 @@ type PageProps = {
 const responsiveRisplay = { base: 'none', md: 'block' }
 
 export function Page({ children, title }: WithChildren<PageProps>) {
+  const [session, loading] = useSession()
+
+  if (loading) {
+    return <Loader />
+  }
+
+  if (!session) {
+    return <AccessDeniedIndicator />
+  }
+
   return (
     <>
       <Head>
