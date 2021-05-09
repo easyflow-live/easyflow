@@ -15,6 +15,13 @@ array_relationships:
       table:
         name: boards
         schema: public
+- name: boards_member
+  using:
+    foreign_key_constraint_on:
+      column: member_id
+      table:
+        name: board_members
+        schema: public
 - name: followers
   using:
     foreign_key_constraint_on:

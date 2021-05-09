@@ -16,6 +16,7 @@ model users {
   updated_at                                                  DateTime              @default(now()) @db.Timestamptz(6)
   theme                                                       String                @default("dark") @db.VarChar
   email_verified                                              DateTime?             @db.Timestamptz(6)
+  board_members                                               board_members[]
   boards                                                      boards[]
   sessions                                                    sessions[]
   user_board_stars                                            user_board_stars[]
@@ -32,6 +33,7 @@ model boards {
   name             String             @db.VarChar
   visibility       String             @default("public") @db.VarChar
   users            users              @relation(fields: [owner_id], references: [id])
+  board_members    board_members[]
   user_board_stars user_board_stars[]
 }
 
@@ -56,10 +58,11 @@ model verification_requests {
 }
 
 model roles {
-  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at DateTime    @default(now()) @db.Timestamptz(6)
-  name       String      @unique @db.VarChar
-  user_role  user_role[]
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at    DateTime        @default(now()) @db.Timestamptz(6)
+  name          String          @unique @db.VarChar
+  board_members board_members[]
+  user_role     user_role[]
 }
 
 model user_board_stars {
@@ -89,4 +92,17 @@ model user_role {
   created_at DateTime @default(now()) @db.Timestamptz(6)
   roles      roles    @relation(fields: [role_id], references: [id])
   users      users    @relation(fields: [user_id], references: [id])
+}
+
+model board_members {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  member_id  String   @db.Uuid
+  board_id   String   @db.Uuid
+  role_id    String   @db.Uuid
+  active     Boolean
+  boards     boards   @relation(fields: [board_id], references: [id])
+  users      users    @relation(fields: [member_id], references: [id])
+  roles      roles    @relation(fields: [role_id], references: [id])
 }

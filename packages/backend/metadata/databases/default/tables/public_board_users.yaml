@@ -1,0 +1,21 @@
+table:
+  name: board_users
+  schema: public
+configuration:
+  custom_column_names:
+    board_id: boardId
+    created_at: createdAt
+    member_id: memberId
+    role_id: roleId
+    updated_at: updatedAt
+  custom_root_fields: {}
+object_relationships:
+- name: board
+  using:
+    foreign_key_constraint_on: board_id
+- name: member
+  using:
+    foreign_key_constraint_on: member_id
+- name: role
+  using:
+    foreign_key_constraint_on: role_id
