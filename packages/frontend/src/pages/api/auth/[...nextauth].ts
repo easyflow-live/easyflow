@@ -1,16 +1,36 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Session } from 'next-auth'
 import Providers from 'next-auth/providers'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
+import prisma from 'src/server/db/prisma'
+import { JWT, JWTDecodeParams, JWTEncodeParams } from 'next-auth/jwt'
 
-interface iToken {
+type Token = {
   id: string
   email: string
-  name?: string
-  picture?: string
 }
 
+type TokenUser = {
+  id: string
+  email: string
+  iat: number
+  'https://hasura.io/jwt/claims': {
+    'x-hasura-allowed-roles': string[]
+    'x-hasura-default-role': string
+    'x-hasura-user-id': string
+  }
+} & JWT
+
+type SessionUser = {
+  user: { name: string | undefined; email: string; image: string | undefined }
+  expires: string
+  id: string
+  accessToken: string
+} & Session
+
 const options = {
+  database: process.env.DATABASE_URL,
+  debug: true,
   providers: [
     Providers.Email({
       server: {
@@ -23,13 +43,16 @@ const options = {
       },
     }),
   ],
-  database: process.env.DATABASE_URL,
   session: {
     jwt: true,
   },
   jwt: {
     secret: process.env.JWT_SECRET,
-    encode: async ({ token, secret }: { token: iToken; secret: string }) => {
+    encode: async (params: JWTEncodeParams | undefined) => {
+      const { token: jwtToken, secret } = params || { token: '', secret: '' }
+
+      const token = jwtToken as Token
+
       const tokenContents = {
         id: token.id,
         email: token.email,
@@ -48,25 +71,39 @@ const options = {
         process.env.JWT_SECRET || secret
       )
 
-      return encodedToken
+      return encodedToken as string
     },
-    decode: async ({ token, secret }: { token: string; secret: string }) => {
+    decode: async (params: JWTDecodeParams | undefined) => {
+      const { token: jwtToken, secret } = params || { token: '', secret: '' }
+
+      const token = (jwtToken || '') as string
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET || secret)
 
-      return decodedToken
+      return decodedToken as JWT
     },
   },
-  debug: true,
   callbacks: {
-    session: async (session, user) => {
-      const encodedToken = jwt.sign(user, process.env.JWT_SECRET)
+    session: async (session: SessionUser, user: TokenUser) => {
+      const encodedToken = jwt.sign(user, process.env.JWT_SECRET || '')
 
-      session.id = user.id
-      session.accessToken = encodedToken
+      const userDb = await prisma.users.findUnique({
+        where: { id: user.id },
+      })
+
+      session = {
+        ...session,
+        id: user.id,
+        accessToken: encodedToken,
+        user: {
+          ...session.user,
+          image: userDb ? userDb.image || undefined : undefined,
+          name: userDb ? userDb.name || undefined : undefined,
+        },
+      }
 
       return Promise.resolve(session)
     },
-    jwt: async (token, user) => {
+    jwt: async (token: Token, user: TokenUser) => {
       const isSignIn = !!user
 
       if (isSignIn) {
@@ -75,9 +112,7 @@ const options = {
 
       return Promise.resolve(token)
     },
-    redirect: async (url: string) => {
-      return Promise.resolve(url)
-    },
+    redirect: async (url: string) => Promise.resolve(url),
   },
 }
 
