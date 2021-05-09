@@ -19,3 +19,18 @@ array_relationships:
       table:
         name: user_board_stars
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - created_at
+    - id
+    - name
+    - updated_at
+    - visibility
+    filter:
+      _or:
+      - visibility:
+          _neq: private
+      - owner_id:
+          _eq: X-Hasura-User-Id
+  role: user

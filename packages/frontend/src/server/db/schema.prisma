@@ -30,6 +30,7 @@ model boards {
   updated_at       DateTime           @default(now()) @db.Timestamptz(6)
   owner_id         String             @db.Uuid
   name             String             @db.VarChar
+  visibility       String             @default("public") @db.VarChar
   users            users              @relation(fields: [owner_id], references: [id])
   user_board_stars user_board_stars[]
 }
