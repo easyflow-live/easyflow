@@ -1,7 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
 import NextLink from 'next/link'
-import { Box, Flex, Text, Link } from '@chakra-ui/react'
+import { Box, Flex, Text, Link, Button } from '@chakra-ui/react'
+import { signIn } from 'next-auth/client'
 
 import { BoardAndProcess } from './BoardAndProcess'
 import Header from './Header'
@@ -67,6 +68,17 @@ export function LandingPage() {
                     xl: 'start',
                   }}
                 >
+                  <Button
+                    colorScheme="pink"
+                    size="lg"
+                    onClick={() =>
+                      signIn('email', {
+                        callbackUrl: `${window.location.origin}/app`,
+                      })
+                    }
+                  >
+                    Login
+                  </Button>
                   <NextLink href="/api/auth/signin" passHref>
                     <Link>Login</Link>
                   </NextLink>

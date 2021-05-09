@@ -16,13 +16,9 @@ const options = {
       server: {
         port: 465,
         host: 'smtp.gmail.com',
-        secure: true,
         auth: {
-          user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-        tls: {
-          rejectUnauthorized: false,
+          user: process.env.EMAIL_USERNAME || '',
+          pass: process.env.EMAIL_PASSWORD || '',
         },
       },
     }),
@@ -42,9 +38,9 @@ const options = {
           'x-hasura-default-role': 'user',
           'x-hasura-user-id': token.id,
         },
-        iat: Date.now() / 1000,
-        exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-        sub: token.id,
+        // iat: Date.now() / 1000,
+        // exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+        // sub: token.id,
       }
 
       const encodedToken = jwt.sign(
@@ -78,6 +74,9 @@ const options = {
       }
 
       return Promise.resolve(token)
+    },
+    redirect: async (url: string) => {
+      return Promise.resolve(url)
     },
   },
 }
