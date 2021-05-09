@@ -29,15 +29,13 @@ array_relationships:
 select_permissions:
 - permission:
     columns:
-    - created_at
-    - id
     - name
-    - updated_at
     - visibility
+    - created_at
+    - updated_at
+    - id
+    - owner_id
     filter:
-      _or:
-      - visibility:
-          _neq: private
-      - owner_id:
-          _eq: X-Hasura-User-Id
+      owner_id:
+        _eq: X-Hasura-User-Id
   role: user

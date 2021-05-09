@@ -1,7 +1,8 @@
 import { useSession } from 'next-auth/client'
-import Link from 'next/link'
+import { Boards } from 'src/client/modules/Board'
 import { AccessDeniedIndicator } from 'src/client/shared/components/AccessDeniedIndicator'
 import { Loader } from 'src/client/shared/components/Loader'
+import { Page } from 'src/client/shared/components/Page'
 
 function Index() {
   const [session, loading] = useSession()
@@ -15,14 +16,9 @@ function Index() {
   }
 
   return (
-    <div>
-      <h1>Hello {session?.user?.email}</h1>
-      <div>
-        <Link href="/app/boards">
-          <a>Boards</a>
-        </Link>
-      </div>
-    </div>
+    <Page title="Home">
+      <Boards />
+    </Page>
   )
 }
 

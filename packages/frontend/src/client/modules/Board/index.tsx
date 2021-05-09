@@ -1,58 +1,39 @@
-import React, { useState } from 'react'
-import { useSession } from 'next-auth/client'
+import { Box } from '@chakra-ui/layout'
+import React from 'react'
 import { Loader } from 'src/client/shared/components/Loader'
-import {
-  useFetchBoardsSubscription,
-  useCreateBoardMutation,
-} from 'src/types/generated'
+import { useGetBoardsQuery } from 'src/types/generated'
+import { BoardCard, Visibility } from './components/BoardCard'
+
+function Divider() {
+  return <Box my={4} />
+}
 
 export function Boards() {
-  const [name, setName] = useState('')
-  const [boards, setBoards] = useState([])
-  const [session] = useSession()
-  const currentUserId = session?.id
-  const [
-    createBoardMutation,
-    { loading: mutationFetching, error: mutationError },
-  ] = useCreateBoardMutation()
+  const { data: boards, loading } = useGetBoardsQuery()
 
-  useFetchBoardsSubscription({
-    onSubscriptionData: ({ subscriptionData: { data } }) => {
-      setBoards(data.boards)
-    },
-  })
-
-  if (!boards) {
+  if (loading) {
     return <Loader />
   }
 
-  const handleSubmit = async () => {
-    await createBoardMutation({
-      variables: {
-        user_id: currentUserId,
-        name,
-      },
-    })
-
-    if (!mutationError) {
-      setName('')
-    }
+  if (!boards?.boards) {
+    return <p>Empt list</p>
   }
 
   return (
     <div>
-      <div>
-        {boards.map((board: { id: number; name: string }) => {
-          return (
-            <div key={board.id}>
-              <div>
-                <h4>{board.name}</h4>
-                <span>{board.id}</span>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      {boards.boards.map(({ id, name, visibility }, index) => {
+        return (
+          <div key={id}>
+            <BoardCard
+              name={name}
+              projectName={name}
+              visibility={visibility as Visibility}
+            />
+
+            {boards.boards.length - 1 === index ? null : <Divider />}
+          </div>
+        )
+      })}
     </div>
   )
 }
