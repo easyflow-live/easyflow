@@ -57,6 +57,19 @@ model verification_requests {
   updated_at DateTime @default(now()) @db.Timestamptz(6)
 }
 
+model board_members {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  member_id  String   @db.Uuid
+  board_id   String   @db.Uuid
+  role_id    String   @db.Uuid
+  active     Boolean
+  boards     boards   @relation(fields: [board_id], references: [id])
+  users      users    @relation(fields: [member_id], references: [id])
+  roles      roles    @relation(fields: [role_id], references: [id])
+}
+
 model roles {
   id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at    DateTime        @default(now()) @db.Timestamptz(6)

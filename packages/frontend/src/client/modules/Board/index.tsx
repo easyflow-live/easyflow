@@ -3,6 +3,8 @@ import React from 'react'
 import { Loader } from 'src/client/shared/components/Loader'
 import { useGetBoardsQuery } from 'src/types/generated'
 import { BoardCard, Visibility } from './components/BoardCard'
+import { Empty } from './components/Empty'
+import { ScrumBoardImage } from './components/ScrumBoardImage'
 
 function Divider() {
   return <Box my={4} />
@@ -15,8 +17,13 @@ export function Boards() {
     return <Loader />
   }
 
-  if (!boards?.boards) {
-    return <p>Empt list</p>
+  if (!boards?.boards.length) {
+    return (
+      <Empty
+        image={<ScrumBoardImage />}
+        message="Create a board to start a project and get things done."
+      />
+    )
   }
 
   return (
