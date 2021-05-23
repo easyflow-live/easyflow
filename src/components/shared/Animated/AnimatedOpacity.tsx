@@ -1,28 +1,27 @@
-import { animated, useTransition } from 'react-spring';
 import { ReactChild } from 'react';
+import { HTMLMotionProps, motion } from 'framer-motion';
+import { chakra, ChakraProps } from '@chakra-ui/system';
 
-interface AnitedOpacityProps {
+const MotionDiv = chakra(motion.div);
+
+type AnitedOpacityProps = {
   show: boolean;
   children: ReactChild;
-}
+} & ChakraProps &
+  HTMLMotionProps<'div'>;
 
-export const AnimatedOpacity = ({ show, children }: AnitedOpacityProps) => {
-  const transitions = useTransition(show, null, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
-
+export const AnimatedOpacity = ({
+  show,
+  children,
+  ...props
+}: AnitedOpacityProps) => {
   return (
-    <>
-      {transitions.map(
-        ({ item, key, props }) =>
-          item && (
-            <animated.div key={key} style={props}>
-              {children}
-            </animated.div>
-          )
-      )}
-    </>
+    <MotionDiv
+      animate={{ opacity: show ? 1 : 0 }}
+      initial={{ opacity: 0 }}
+      {...props}
+    >
+      {children}
+    </MotionDiv>
   );
 };

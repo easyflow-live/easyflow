@@ -1,19 +1,40 @@
+import { Text } from '@chakra-ui/layout';
+import { chakra } from '@chakra-ui/system';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-interface BoardLinkProps {
+type BoardLinkProps = {
   title: string;
   id: string;
-}
+};
 
-export default ({ title, id }: BoardLinkProps) => {
+const MotionAnchor = chakra(motion.a);
+
+export function BoardLink({ title, id }: BoardLinkProps) {
   return (
     <Link href={'/b/[uid]'} as={`/b/${id}`}>
-      <a
+      <MotionAnchor
         title={title}
-        className='bg-gray-700 hover:bg-gray-600 shadow-lg rounded-lg p-4 ml-0 mr-4 mb-4 w-full sm:w-48 h-32 cursor-pointer break-words'
+        animate={{ x: 0, opacity: 1 }}
+        bg='gray.700'
+        borderRadius='lg'
+        cursor='pointer'
+        shadow='lg'
+        p={4}
+        ml={0}
+        mr={4}
+        mb={4}
+        w={{ base: 'full', md: 48 }}
+        h={32}
+        wordBreak='break-word'
+        initial={{ x: -50, opacity: 0 }}
+        transition='background 0.3s'
+        _hover={{ backgroundColor: 'gray.600' }}
       >
-        <span className='text-white'>{title}</span>
-      </a>
+        <Text color='white' fontWeight='bold' fontSize='lg'>
+          {title}
+        </Text>
+      </MotionAnchor>
     </Link>
   );
-};
+}

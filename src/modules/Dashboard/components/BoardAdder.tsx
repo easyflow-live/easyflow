@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
+import { Box, useOutsideClick } from '@chakra-ui/react';
 
 import { useSession } from 'hooks/use-session';
 import BoardDocument from 'modules/Board/data/board.doc';
-import ClickOutside from 'components/shared/ClickOutside';
 import NewBoardForm from 'components/shared/NewBoardForm';
+import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
 
-const BoardAdder = () => {
+export function BoardAdder() {
   const { userDoc } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const ref = React.useRef<HTMLDivElement>();
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+  useOutsideClick({
+    ref: ref,
+    handler: () => setIsOpen(false),
+  });
 
   const handleSubmit = async props => {
     const { title, code, index } = props;
@@ -34,20 +39,33 @@ const BoardAdder = () => {
   };
 
   return isOpen ? (
-    <ClickOutside handleClickOutside={toggleOpen}>
-      <div className='bg-gray-700 shadow-lg rounded-lg p-4 mr-4 mb-4 w-full sm:w-64'>
-        <NewBoardForm onKeyDown={handleKeyDown} onSubmit={handleSubmit} />
-      </div>
-    </ClickOutside>
-  ) : (
-    <button
-      title='Add a new board'
-      onClick={toggleOpen}
-      className='bg-pink-500 hover:bg-pink-600 text-4xl shadow-lg rounded-lg p-4 ml-0 mr-4 mb-4 w-full sm:w-32 h-32 cursor-pointer text-white'
+    <Box
+      bg='gray.700'
+      shadow='lg'
+      borderRadius='lg'
+      p={4}
+      mr={4}
+      mb={4}
+      w={{ base: 'full', md: 64 }}
+      ref={ref}
     >
-      +
-    </button>
+      <NewBoardForm onKeyDown={handleKeyDown} onSubmit={handleSubmit} />
+    </Box>
+  ) : (
+    <AnimatedOpacity
+      show={true}
+      w={{ base: 'full', md: 32 }}
+      ml={0}
+      mr={4}
+      mb={4}
+    >
+      <button
+        title='Add a new board'
+        onClick={toggleOpen}
+        className='bg-pink-500 hover:bg-pink-600 transition-all duration-300 text-4xl shadow-lg p-4 rounded-lg w-full h-32 cursor-pointer text-white'
+      >
+        +
+      </button>
+    </AnimatedOpacity>
   );
-};
-
-export default BoardAdder;
+}
