@@ -1,29 +1,18 @@
-import { Theme as CharkaTheme, theme as chakraTheme } from '@chakra-ui/theme';
-import { ColorHues } from '@chakra-ui/theme/dist/types/foundations/colors';
-import { tailwindColors } from './colors';
+import { extendTheme } from '@chakra-ui/react';
+import { Theme as CharkaTheme } from '@chakra-ui/theme';
+import { colors } from './colors';
 import { systemFontStack, systemMonoFontStack } from './fonts';
 
-export interface Theme extends CharkaTheme {
-  colors: CharkaTheme['colors'] & {
-    // Custom colors hues
-    indigo: ColorHues;
-  };
-}
-
-export const customTheme: Theme = {
-  ...chakraTheme,
+export const customTheme: CharkaTheme = extendTheme({
   fonts: {
-    ...chakraTheme.fonts,
     body: systemFontStack,
     heading: systemFontStack,
     mono: systemMonoFontStack,
   },
   colors: {
-    ...chakraTheme.colors,
-    ...tailwindColors,
+    ...colors,
   },
   shadows: {
-    ...chakraTheme.shadows,
     sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
     lg:
@@ -35,4 +24,14 @@ export const customTheme: Theme = {
     outline: '0 0 0 3px rgba(66, 153, 225, 0.5)',
     none: 'none',
   },
-};
+  styles: {
+    global: {
+      body: {
+        backgroundColor: 'gray.900',
+        color: 'gray.200',
+        fontFamily: 'body',
+        fontsize: '16px',
+      },
+    },
+  },
+});
