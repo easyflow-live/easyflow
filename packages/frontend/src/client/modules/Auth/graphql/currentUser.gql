@@ -4,5 +4,7 @@ query CurrentUser {
     theme
     image
     name
+    username
+    description
   }
 }

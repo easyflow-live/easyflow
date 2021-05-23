@@ -18,26 +18,12 @@ export function UserMenu() {
       </MenuButton>
 
       <MenuList bg="gray.700" border="gray">
-        <MenuItem
-          isFocusable={false}
-          closeOnSelect={false}
-          _hover={{ backgroundColor: 'inherit' }}
-          _focus={{ backgroundColor: 'inherit' }}
-          _active={{ backgroundColor: 'inherit' }}
-          as="span"
-        >
-          <div>{session.user.name || 'Fellipe Pinheiro'}</div>
-        </MenuItem>
-        <MenuItem
-          isFocusable={false}
-          closeOnSelect={false}
-          _hover={{ backgroundColor: 'inherit' }}
-          _focus={{ backgroundColor: 'inherit' }}
-          _active={{ backgroundColor: 'inherit' }}
-          as="span"
-        >
-          <div>{session.user.email}</div>
-        </MenuItem>
+        <Link href="/app" passHref>
+          <MenuItem>Dashboard</MenuItem>
+        </Link>
+        <Link href="/app/profile">
+          <MenuItem>Profile</MenuItem>
+        </Link>
         <MenuDivider />
         <MenuItem>
           <Link href="/api/auth/signout">

@@ -1,6 +1,6 @@
-import { Box } from '@chakra-ui/react'
 import { useSession } from 'next-auth/client'
 import Head from 'next/head'
+import { ProfileCard } from 'src/client/modules/User/components/ProfileCard'
 import { AccessDeniedIndicator } from '../AccessDeniedIndicator'
 import { LeftHeader, MiddleHeader, RightHeader } from '../Header'
 import { Layout } from '../Layout'
@@ -10,7 +10,8 @@ type PageProps = {
   title: string
 }
 
-const responsiveRisplay = { base: 'none', md: 'block' }
+const responsiveDisplayLeftColumn = { base: 'none', md: 'block' }
+const responsiveDisplayRightColumn = { base: 'none', '2lg': 'block' }
 
 export function Page({ children, title }: WithChildren<PageProps>) {
   const [session, loading] = useSession()
@@ -30,11 +31,9 @@ export function Page({ children, title }: WithChildren<PageProps>) {
       </Head>
 
       <Layout>
-        <Layout.LeftColumn display={responsiveRisplay}>
+        <Layout.LeftColumn display={responsiveDisplayLeftColumn}>
           <LeftHeader />
-          <Box bg="pink.300">
-            <h1>My SaaS Name</h1>
-          </Box>
+          <ProfileCard />
         </Layout.LeftColumn>
 
         <Layout.MiddleColumn>
@@ -42,11 +41,8 @@ export function Page({ children, title }: WithChildren<PageProps>) {
           {children}
         </Layout.MiddleColumn>
 
-        <Layout.RightColumn display={responsiveRisplay}>
+        <Layout.RightColumn display={responsiveDisplayRightColumn}>
           <RightHeader />
-          <Box bg="gray.300">
-            <h1>My SaaS Name</h1>
-          </Box>
         </Layout.RightColumn>
       </Layout>
     </>

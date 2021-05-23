@@ -28,6 +28,7 @@ export function RightHeader() {
       </div>
     )
   }
+
   return (
     <BasicHeader justifyContent="flex-end">
       <HStack>

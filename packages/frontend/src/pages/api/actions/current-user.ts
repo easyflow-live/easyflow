@@ -19,5 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     email: user.email,
     image: user.image,
     theme: user.theme,
+    username: user.username,
+    description: user.description,
   })
 }

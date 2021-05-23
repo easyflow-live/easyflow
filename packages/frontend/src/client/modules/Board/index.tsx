@@ -1,23 +1,31 @@
-import { Box } from '@chakra-ui/layout'
-import React from 'react'
+import { Flex, VStack, Text } from '@chakra-ui/layout'
+import React, { useEffect } from 'react'
 import { Loader } from 'src/client/shared/components/Loader'
-import { useGetBoardsQuery } from 'src/types/generated'
 import { BoardCard, Visibility } from './components/BoardCard'
 import { Empty } from './components/Empty'
 import { ScrumBoardImage } from './components/ScrumBoardImage'
+import { useBoardsStore } from './hooks/useBoardsStore'
 
 function Divider() {
-  return <Box my={4} />
+  return <Flex my={1} />
 }
 
 export function Boards() {
-  const { data: boards, loading } = useGetBoardsQuery()
+  const { boards, fetchBoards, status } = useBoardsStore()
 
-  if (loading) {
-    return <Loader />
+  useEffect(() => {
+    fetchBoards()
+  }, [fetchBoards])
+
+  if (status === 'pending') {
+    return (
+      <Flex justifyContent="center">
+        <Loader />
+      </Flex>
+    )
   }
 
-  if (!boards?.boards.length) {
+  if (!boards.length) {
     return (
       <Empty
         image={<ScrumBoardImage />}
@@ -27,20 +35,23 @@ export function Boards() {
   }
 
   return (
-    <div>
-      {boards.boards.map(({ id, name, visibility }, index) => {
-        return (
-          <div key={id}>
-            <BoardCard
-              name={name}
-              projectName={name}
-              visibility={visibility as Visibility}
-            />
+    <VStack alignItems="stretch" spacing={4}>
+      <Text ml={4} fontWeight="bold" fontSize="xl">
+        Boards
+      </Text>
 
-            {boards.boards.length - 1 === index ? null : <Divider />}
-          </div>
-        )
-      })}
-    </div>
+      {boards.map(({ id, name, visibility, members }, index) => (
+        <div key={id}>
+          <BoardCard
+            name={name}
+            projectName={name}
+            visibility={visibility as Visibility}
+            members={members}
+          />
+
+          {boards.length - 1 === index ? null : <Divider />}
+        </div>
+      ))}
+    </VStack>
   )
 }

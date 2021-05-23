@@ -10,5 +10,7 @@ type User {
   email : String!
   theme : String!
   image : String
+  username : String
+  description : String
 }
 

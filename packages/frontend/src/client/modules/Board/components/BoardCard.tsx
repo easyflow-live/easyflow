@@ -1,21 +1,31 @@
-import { Flex, Text } from '@chakra-ui/layout'
+import { Flex, Text, VStack } from '@chakra-ui/layout'
 import { Tag } from '@chakra-ui/tag'
+import { User } from '../domain/types'
+import { MembersAtavar } from './MembersAvatar'
 
 export type Visibility = 'public' | 'private'
 
 type BoardCardProps = {
   name: string
   projectName: string
+  members: User[]
   visibility: Visibility
 }
 
 export function BoardCard({
   name,
   projectName,
+  members = [],
   visibility = 'public',
 }: BoardCardProps) {
   return (
-    <Flex direction="column" borderRadius={10} bg="gray.800" p={4}>
+    <VStack
+      spacing={4}
+      alignItems="stretch"
+      borderRadius={10}
+      bg="gray.800"
+      p={4}
+    >
       <Flex justifyContent="space-between">
         <Flex direction="column">
           <Text fontWeight="bold" fontSize="lg">
@@ -25,7 +35,9 @@ export function BoardCard({
         </Flex>
       </Flex>
 
-      <Flex justifyContent="flex-end">
+      <Flex justifyContent="space-between">
+        <MembersAtavar members={members} />
+
         {
           {
             public: (
@@ -41,6 +53,6 @@ export function BoardCard({
           }[visibility]
         }
       </Flex>
-    </Flex>
+    </VStack>
   )
 }

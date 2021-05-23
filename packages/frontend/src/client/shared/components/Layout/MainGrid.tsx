@@ -2,14 +2,14 @@ import { Box, Flex, FlexProps } from '@chakra-ui/layout'
 import React from 'react'
 
 const gridTemplateColumns = {
-  md: '87px 600px 64px',
-  lg: '235px 610px 64px',
-  '2lg': '235px 640px 125px',
-  xl: '235px 640px 325px',
+  md: '280px auto',
+  lg: '280px auto',
+  '2lg': '280px 640px 220px',
+  xl: '280px 640px 320px',
 }
 
 const display = { base: 'flex', md: 'grid' }
-const width = { base: 'full', md: 'auto' }
+const width = { base: 'full', '2lg': 'auto' }
 
 export const MainGrid = ({ children }: WithChildren) => {
   return (
@@ -18,6 +18,7 @@ export const MainGrid = ({ children }: WithChildren) => {
       width={width}
       gridColumnGap={5}
       gridTemplateColumns={gridTemplateColumns}
+      paddingTop={4}
     >
       {children}
     </Box>
@@ -35,7 +36,7 @@ export function MainGridLeftColumn({
       height="full"
       flex="1 1 0%"
       direction="column"
-      paddingTop={1}
+      pl={4}
       {...props}
     >
       {children}
@@ -52,8 +53,9 @@ export function MainGridMiddleColumn({
       height="full"
       flex="1 1 0%"
       direction="column"
-      paddingTop={1}
       {...props}
+      pr={4}
+      pl={{ base: 4, md: 0 }}
     >
       {children}
     </Flex>
@@ -71,7 +73,6 @@ export function MainGridRightColumn({
       height="full"
       flex="1 1 0%"
       direction="column"
-      paddingTop={1}
       {...props}
     >
       {children}

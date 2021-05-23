@@ -16,6 +16,8 @@ model users {
   updated_at                                                  DateTime              @default(now()) @db.Timestamptz(6)
   theme                                                       String                @default("dark") @db.VarChar
   email_verified                                              DateTime?             @db.Timestamptz(6)
+  username                                                    String?               @unique @db.VarChar
+  description                                                 String?               @db.VarChar
   board_members                                               board_members[]
   boards                                                      boards[]
   sessions                                                    sessions[]
