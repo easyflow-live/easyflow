@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import App from 'next/app';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { HeadProvider, Link } from 'react-head';
 import Router from 'next/router';
 import { ToastContainer } from 'react-toastify';
@@ -16,34 +16,30 @@ import { customTheme } from 'ui/theme';
 import 'services/firebase.service';
 import 'styles/style.css';
 
-class MyApp extends App<{}> {
-  componentDidMount() {
+function MyApp({ Component, pageProps }) {
+  useEffect(() => {
     initGA();
-    Router.router.events.on('routeChangeComplete', url => logPageView(url));
-  }
+    Router.router.events.on('routeChangeComplete', (url) => logPageView(url));
+  }, []);
 
-  render() {
-    const { Component, pageProps } = this.props;
-
-    return (
-      <ChakraProvider theme={customTheme}>
-        <SessionProvider>
-          <HeadProvider headTags={[]}>
-            <InterfaceProvider>
-              <Link rel='shortcut icon' href='/static/images/icon.ico' />
-              <Header />
-              <Component {...pageProps} />
-              <ToastContainer
-                closeOnClick={false}
-                closeButton={false}
-                toastClassName='Toast-background'
-              />
-            </InterfaceProvider>
-          </HeadProvider>
-        </SessionProvider>
-      </ChakraProvider>
-    );
-  }
+  return (
+    <ChakraProvider theme={customTheme}>
+      <SessionProvider>
+        <HeadProvider headTags={[]}>
+          <InterfaceProvider>
+            <Link rel='shortcut icon' href='/static/images/icon.ico' />
+            <Header />
+            <Component {...pageProps} />
+            <ToastContainer
+              closeOnClick={false}
+              closeButton={false}
+              toastClassName='Toast-background'
+            />
+          </InterfaceProvider>
+        </HeadProvider>
+      </SessionProvider>
+    </ChakraProvider>
+  );
 }
 
 export default observer(MyApp);
