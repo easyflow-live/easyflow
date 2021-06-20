@@ -126,8 +126,8 @@ export function MembersAtavar({
   };
 
   return (
-    <Flex>
-      {members.slice(0, totalToList).map(member => (
+    <Flex pl={2}>
+      {members.slice(0, totalToList).map((member) => (
         <MemberAvatar key={member.id} member={member} />
       ))}
 
