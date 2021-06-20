@@ -5,15 +5,16 @@ import BoardDocument from 'modules/Board/data/board.doc';
 import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
 import { StartProjectEmpty } from 'components/shared/Empty/StartBoardEmpty';
 import { BoardAdder } from './components/BoardAdder';
-import { BoardLink } from './components/BoardLink';
-import { Box } from '@chakra-ui/layout';
+import { Box } from '@chakra-ui/react';
+import { BoardCard } from './components/BoardCard';
+import { UsersStoreProvider } from 'store';
 
 interface BoardsProps {
   boards: Collection<BoardDocument>;
 }
 
-const Boards = ({ boards }: BoardsProps) => {
-  const showEmpty = !boards.docs.length && !boards.isLoading;
+const Dashboard = ({ boards }: BoardsProps) => {
+  const showEmpty = !boards?.docs.length && !boards?.isLoading;
 
   if (showEmpty) {
     return (
@@ -24,14 +25,16 @@ const Boards = ({ boards }: BoardsProps) => {
   }
 
   return (
-    <Box mt={5} display='inline-flex' flexWrap='wrap' w='full'>
-      <BoardAdder />
+    <UsersStoreProvider>
+      <Box mt={5} display='inline-flex' flexWrap='wrap' w='full'>
+        <BoardAdder />
 
-      {boards.docs.map(({ id, data: { title } }) => (
-        <BoardLink key={id} title={title} id={id} />
-      ))}
-    </Box>
+        {boards.docs.map((board) => (
+          <BoardCard key={board.id} board={board} />
+        ))}
+      </Box>
+    </UsersStoreProvider>
   );
 };
 
-export default observer(Boards);
+export default observer(Dashboard);
