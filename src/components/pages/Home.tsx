@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Box } from '@chakra-ui/react';
 
 import Heading from 'components/shared/Heading';
-import Boards from 'modules/Dashboard';
+import Dashboard from 'modules/Dashboard';
 import { useSession } from 'hooks/use-session';
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
         {userDoc ? (
           <>
             <Heading text={'Boards'} />
-            <Boards boards={userDoc.boards} />
+            <Dashboard boards={userDoc.boards} />
           </>
         ) : null}
       </Box>

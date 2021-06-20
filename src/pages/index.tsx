@@ -5,11 +5,15 @@ import Home from 'components/pages/Home';
 import LandingPage from 'modules/LandingPage';
 import { useSession } from 'hooks/use-session';
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const auth = nextCookies(ctx).auth || null;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = nextCookies(ctx);
+  const sessionToken = cookies['next-auth.session-token'];
+  const authObject = cookies.auth;
+
+  const hasAuth = !!sessionToken || !!authObject;
 
   return {
-    props: { auth },
+    props: { auth: hasAuth },
   };
 };
 

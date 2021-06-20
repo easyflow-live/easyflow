@@ -81,6 +81,7 @@ const useProvideSession = () => {
       .signOut()
       .then(() => {
         cookies.remove('auth');
+        cookies.remove('next-auth.session-token');
         router.push('/');
         setUser(null);
       })
