@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import App from 'next/app';
 import { observer } from 'mobx-react-lite';
 import { HeadProvider, Link } from 'react-head';
 import Router from 'next/router';
