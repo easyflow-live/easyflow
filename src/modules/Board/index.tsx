@@ -90,7 +90,7 @@ const Board = ({ board, previewMode }: BoardProps) => {
   const showEmpty = !docs.length && !isLoading && !isLoadingBoard;
 
   return (
-    <div className='relative overflow-hidden'>
+    <>
       <SideMenu
         title='Activity'
         isOpen={isMenuOpen}
@@ -107,26 +107,20 @@ const Board = ({ board, previewMode }: BoardProps) => {
           previewMode={previewMode}
         />
 
-        <div
-          className='inline-flex mt-4 overflow-x-auto overflow-y-hidden'
-          style={{
-            width: 'calc(100vw - 3rem)',
-          }}
-        >
-          <ListColumns
-            lists={lists}
-            onCardMove={handeCardMoveAction}
-            previewMode={previewMode}
-          />
-        </div>
+        {!showEmpty && <ListColumns
+          lists={lists}
+          onCardMove={handeCardMoveAction}
+          previewMode={previewMode}
+        />}
 
-        {!previewMode && (
+
+        {!previewMode && showEmpty && (
           <AnimatedOpacity show={showEmpty}>
             <CreateContentEmpty board={board} />
           </AnimatedOpacity>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
