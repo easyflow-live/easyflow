@@ -37,9 +37,17 @@
 }
 
 html {
-  height: 100%;
   scrollbar-width: thin;
   scrollbar-color: #4a5568 #2d3748;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  display: grid;
+  grid-template-rows: 4rem 3rem auto;
+  grid-row-gap: 0.8rem;
 }
 
 *:focus,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Collection, Document } from 'firestorter';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
 import ListDocument from 'documents/list.doc';
 import firebaseService from 'services/firebase.service';
@@ -134,11 +135,11 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
       destListDocument.cards.docs.forEach((doc, index) => {
         doc.id === removedCard.id
           ? destListDocument.cards.add({
-              ...doc.data,
-              index,
-              listBefore: sourceListDocument.ref,
-              listAfter: destListDocument.ref,
-            })
+            ...doc.data,
+            index,
+            listBefore: sourceListDocument.ref,
+            listAfter: destListDocument.ref,
+          })
           : batch.update(doc.ref, { index });
       });
       batch
@@ -188,8 +189,7 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId={'board'} type='COLUMN' direction='horizontal'>
         {provided => (
-          <div
-            className='inline-flex items-start h-full'
+          <ListContainer
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
@@ -202,7 +202,7 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
               />
             ))}
             {provided.placeholder}
-          </div>
+          </ListContainer>
         )}
       </Droppable>
     </DragDropContext>
@@ -210,3 +210,17 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
 };
 
 export default observer(ListColumns);
+
+
+const ListContainer = styled.div`
+  display: flex;
+  align-items: start;
+  overflow-x: auto;
+  height: calc(100vh - 10.2rem);
+  margin-top: 1rem;
+
+  display: grid;
+  grid-auto-columns: 22rem;
+  grid-auto-flow: column;
+  grid-column-gap: 1rem;
+`

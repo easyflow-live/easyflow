@@ -63,7 +63,7 @@ const List = ({ index, list, previewMode }: ListProps) => {
         <StyledList
           tabIndex={0}
           className={cn(
-            'flex flex-col relative max-h-full min-h-0 bg-gray-750 rounded-lg p-1 mx-2 mt-px',
+            'bg-gray-750 rounded-lg p-1',
             isHiddenRef.current && 'hidden'
           )}
           previewMode={previewMode}
@@ -85,13 +85,15 @@ const List = ({ index, list, previewMode }: ListProps) => {
             />
           </div>
 
-          {!previewMode && (
-            <CardAdder
-              limit={list.data.cardsLimit}
-              cards={list.cards}
-              list={list}
-            />
-          )}
+          <div className='flex justify-center mb-2'>
+            {!previewMode && (
+              <CardAdder
+                limit={list.data.cardsLimit}
+                cards={list.cards}
+                list={list}
+              />
+            )}
+          </div>
         </StyledList>
       )}
     </DraggableElement>
@@ -101,24 +103,23 @@ const List = ({ index, list, previewMode }: ListProps) => {
 export default observer(List);
 
 const StyledList = styled.div<{ previewMode: boolean }>`
-  width: 300px;
+  flex: 0 0 27rem;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 11.8rem);
+  border-radius: 0.3rem;
+  margin-right: 1rem;
 
-  ${({ previewMode }) =>
-    previewMode
-      ? css`
-          height: calc(100vh - 115px);
-        `
-      : css`
-          height: calc(100vh - 187px);
-        `};
-
-  &:first-child {
-    margin-left: 0.2rem;
+  &:last-of-type {
+    margin-right: 0;
   }
 
+  display: grid;
+  grid-template-rows: auto minmax(auto, 1fr) auto;
+ 
   &:hover .add-card-button,
   &:focus .add-card-button,
   .add-card-button:focus {
     opacity: 1;
-  }
+  } 
 `;

@@ -27,7 +27,7 @@ export const customTheme: CharkaTheme = extendTheme({
   styles: {
     global: {
       body: {
-        backgroundColor: 'gray.900',
+        backgroundColor: 'gray.800',
         color: 'gray.200',
         fontFamily: 'body',
         fontsize: '16px',
