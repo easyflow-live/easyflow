@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import cn from 'classnames';
 
 import ListDocument, { List as ListModel } from 'documents/list.doc';
