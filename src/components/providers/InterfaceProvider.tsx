@@ -1,25 +1,27 @@
-import { createContext, useContext, useState, PropsWithChildren } from 'react';
+import { createContext, useContext, useState, PropsWithChildren } from 'react'
 
 interface InterfaceContextProps {
-  isMenuOpen: boolean;
-  setMenu: (value: boolean) => void;
-  toggleMenu: () => void;
-  previewMode: boolean;
-  togglePreviewMode: () => void;
-  setPreviewMode: (value: boolean) => void;
-  hasOpenedModal: boolean;
-  setOpenedModal: (value: boolean) => void;
+  isMenuOpen: boolean
+  setMenu: (value: boolean) => void
+  toggleMenu: () => void
+  previewMode: boolean
+  togglePreviewMode: () => void
+  setPreviewMode: (value: boolean) => void
+  hasOpenedModal: boolean
+  setOpenedModal: (value: boolean) => void
 }
 
-export const InterfaceContext = createContext<InterfaceContextProps>(null);
+export const InterfaceContext = createContext<InterfaceContextProps | null>(
+  null
+)
 
 export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
-  const [isMenuOpen, setMenu] = useState<boolean>();
-  const [previewMode, setPreviewMode] = useState<boolean>();
-  const [hasOpenedModal, setOpenedModal] = useState<boolean>(false);
+  const [isMenuOpen, setMenu] = useState<boolean>(false)
+  const [previewMode, setPreviewMode] = useState<boolean>(false)
+  const [hasOpenedModal, setOpenedModal] = useState<boolean>(false)
 
-  const togglePreviewMode = () => setPreviewMode(s => !s);
-  const toggleMenu = () => setMenu(s => !s);
+  const togglePreviewMode = () => setPreviewMode((s) => !s)
+  const toggleMenu = () => setMenu((s) => !s)
 
   return (
     <InterfaceContext.Provider
@@ -35,14 +37,14 @@ export const InterfaceProvider = (props: PropsWithChildren<{}>) => {
         setOpenedModal,
       }}
     />
-  );
-};
+  )
+}
 
 export const useInterface = () => {
-  const context = useContext(InterfaceContext);
+  const context = useContext(InterfaceContext)
 
   if (context === undefined) {
-    throw new Error('useInterface must be used within a InterfaceProvider');
+    throw new Error('useInterface must be used within a InterfaceProvider')
   }
-  return context;
-};
+  return context
+}

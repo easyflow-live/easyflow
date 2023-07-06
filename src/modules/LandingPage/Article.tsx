@@ -1,18 +1,18 @@
-import cn from 'classnames';
+import cn from 'classnames'
 
-import AnimateSlideUpinView from 'components/shared/Animated/AnimateSlideUpinView';
-import styles from './Article.module.css';
+import AnimateSlideUpinView from '@/components/shared/Animated/AnimateSlideUpinView'
+import styles from './Article.module.css'
 
-type Size = 'small' | 'large';
+type Size = 'small' | 'large'
 
 interface ArticleProps {
-  reverse?: boolean;
-  srcImg: string;
-  altImg?: string;
-  sizeImg?: Size;
-  title: string;
-  description?: string;
-  subtitle?: string;
+  reverse?: boolean
+  srcImg: string
+  altImg?: string
+  sizeImg?: Size
+  title: string
+  description?: string
+  subtitle?: string
 }
 
 const Article = ({
@@ -26,10 +26,10 @@ const Article = ({
 }: ArticleProps) => {
   const marginBetween = reverse
     ? 'sm:mr-0 md:mr-10 lg:mr-24'
-    : 'sm:ml-0 md:ml-10 lg:ml-24';
+    : 'sm:ml-0 md:ml-10 lg:ml-24'
 
-  const imageSize = sizeImg === 'small' ? 'md:w-1/2' : 'md:w-3/5';
-  const contentSize = sizeImg === 'small' ? 'md:w-1/2' : 'md:w-2/5'; // small img, bigger content
+  const imageSize = sizeImg === 'small' ? 'md:w-1/2' : 'md:w-3/5'
+  const contentSize = sizeImg === 'small' ? 'md:w-1/2' : 'md:w-2/5' // small img, bigger content
 
   return (
     <article
@@ -54,13 +54,13 @@ const Article = ({
         }`}
       >
         <>
-          <p className='flex-grow text-teal-200 mb-4'>{subtitle}</p>
-          <h3 className='flex-grow text-white text-4xl mb-4'>{title}</h3>
-          <p className='text-2xl text-teal-200 text-gray-100'>{description}</p>
+          <p className="flex-grow text-teal-200 mb-4">{subtitle}</p>
+          <h3 className="flex-grow text-white text-4xl mb-4">{title}</h3>
+          <p className="text-2xl text-teal-200 text-gray-100">{description}</p>
         </>
       </AnimateSlideUpinView>{' '}
     </article>
-  );
-};
+  )
+}
 
-export default Article;
+export default Article

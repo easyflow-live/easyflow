@@ -1,70 +1,70 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react'
 
-import { usePrevious } from 'hooks/use-previous';
-import { useClickOutside } from 'hooks/use-click-outside';
-import Button from 'components/shared/Button';
+import { usePrevious } from '@/hooks/use-previous'
+import { useClickOutside } from '@/hooks/use-click-outside'
+import Button from '@/components/shared/Button'
 
-import { EmojiSelector, getEmoji } from './EmojiSelector';
+import { EmojiSelector, getEmoji } from './EmojiSelector'
 
-import styles from './style.module.css';
+import styles from './style.module.css'
 
 interface FeedbackInputProps {
-  placeholder?: string;
+  placeholder?: string
   onFeedback?: (
     props: { url: string; note: string; emotion: string },
     done: (error: string) => void
-  ) => void;
+  ) => void
 }
 
 const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const mainRef = useRef<HTMLDivElement>(null);
-  const clearSuccessTimer = useRef(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const mainRef = useRef<HTMLDivElement>(null)
+  const clearSuccessTimer = useRef(null)
 
-  const [emoji, setEmoji] = useState(null);
-  const [, setEmojiShown] = useState(false);
-  const [loading, setLoading] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [errorMessage, setError] = useState(null);
-  const [focused, setFocused] = useState(false);
+  const [emoji, setEmoji] = useState(null)
+  const [, setEmojiShown] = useState(false)
+  const [loading, setLoading] = useState(null)
+  const [success, setSuccess] = useState(false)
+  const [errorMessage, setError] = useState(null)
+  const [focused, setFocused] = useState(false)
 
-  const previousFocused = usePrevious(focused);
-  const previousSuccess = usePrevious(success);
+  const previousFocused = usePrevious(focused)
+  const previousSuccess = usePrevious(success)
 
-  const onEmojiShown = () => setEmojiShown(true);
-  const onEmojiHidden = () => setEmojiShown(false);
+  const onEmojiShown = () => setEmojiShown(true)
+  const onEmojiHidden = () => setEmojiShown(false)
   const onEmojiSelect = (emo: string) => {
-    setEmoji(emo);
+    setEmoji(emo)
 
     if (emo) {
       if (textAreaRef.current) {
-        textAreaRef.current.focus();
+        textAreaRef.current.focus()
       }
     }
-  };
+  }
 
-  const onFocus = () => setFocused(true);
+  const onFocus = () => setFocused(true)
 
-  const handleClickOutside = () => setFocused(false);
+  const handleClickOutside = () => setFocused(false)
 
-  const done = error => {
+  const done = (error) => {
     if (!error) {
-      setLoading(false);
-      setSuccess(true);
+      setLoading(false)
+      setSuccess(true)
     } else {
-      setLoading(false);
-      setError(error);
+      setLoading(false)
+      setError(error)
     }
-  };
+  }
 
   const onSubmit = () => {
     if (textAreaRef.current && textAreaRef.current.value.trim() === '') {
-      setError("Your feedback can't be empty");
-      return;
+      setError("Your feedback can't be empty")
+      return
     }
 
     if (onFeedback) {
-      setLoading(true);
+      setLoading(true)
       onFeedback(
         {
           url:
@@ -75,68 +75,68 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
           emotion: getEmoji(emoji),
         },
         done
-      );
+      )
     }
-  };
+  }
 
   useClickOutside({
     element: mainRef,
     active: focused,
     onClick: handleClickOutside,
-  });
+  })
 
   useEffect(() => {
-    const onKeyPress = e => {
+    const onKeyPress = (e) => {
       if (e.key === 'Escape') {
-        handleClickOutside();
+        handleClickOutside()
       }
-    };
+    }
 
     if (focused) {
-      window.document.addEventListener('keyup', onKeyPress, false);
+      window.document.addEventListener('keyup', onKeyPress, false)
     }
 
     return () => {
-      window.document.removeEventListener('keyup', onKeyPress, false);
-    };
-  }, [focused]);
+      window.document.removeEventListener('keyup', onKeyPress, false)
+    }
+  }, [focused])
 
   useEffect(() => {
     {
       if (success) {
         // forget about input state
-        textAreaRef.current.value = '';
+        textAreaRef.current.value = ''
 
         // collapse in 4s
         clearSuccessTimer.current = setTimeout(() => {
           if (!document.hidden) {
-            setSuccess(false);
+            setSuccess(false)
           }
-        }, 4000);
+        }, 4000)
       } else {
         if (previousSuccess) {
-          clearTimeout(clearSuccessTimer.current);
-          clearSuccessTimer.current = null;
+          clearTimeout(clearSuccessTimer.current)
+          clearSuccessTimer.current = null
         }
 
         if (previousFocused && focused) {
-          handleClickOutside();
+          handleClickOutside()
         }
       }
     }
 
     return () => {
       if (clearSuccessTimer.current !== null) {
-        clearTimeout(clearSuccessTimer.current);
-        clearSuccessTimer.current = null;
+        clearTimeout(clearSuccessTimer.current)
+        clearSuccessTimer.current = null
       }
-    };
-  }, [success, focused, previousFocused, previousSuccess]);
+    }
+  }, [success, focused, previousFocused, previousSuccess])
 
   return (
     <main
       ref={mainRef}
-      title='Share any feedback about EasyFlow with us.'
+      title="Share any feedback about EasyFlow with us."
       className={`
           ${errorMessage != null ? styles.error : ''}
           ${loading ? styles.loading : ''}
@@ -151,7 +151,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
           ref={textAreaRef}
           disabled={loading === true || errorMessage != null}
           placeholder={placeholder || 'Feedback...'}
-          aria-label='Submit Feedback'
+          aria-label="Submit Feedback"
           onFocus={onFocus}
         />
         <div className={styles.controls}>
@@ -167,7 +167,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
               </span>
 
               <span className={styles.buttons}>
-                <Button size='small' onClick={onSubmit}>
+                <Button size="small" onClick={onSubmit}>
                   Send
                 </Button>
               </span>
@@ -181,10 +181,10 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
           <span>{errorMessage}</span>
 
           <a
-            href='#'
-            onClick={e => {
-              e.preventDefault();
-              setError(null);
+            href="#"
+            onClick={(e) => {
+              e.preventDefault()
+              setError(null)
             }}
           >
             GO BACK
@@ -199,7 +199,7 @@ const FeedbackInput = ({ placeholder, onFeedback }: FeedbackInputProps) => {
         </div>
       )}
     </main>
-  );
-};
+  )
+}
 
-export default FeedbackInput;
+export default FeedbackInput

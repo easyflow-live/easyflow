@@ -1,15 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import nodemailer from 'nodemailer';
+import { NextApiRequest, NextApiResponse } from 'next'
+import nodemailer from 'nodemailer'
 
 type Data = {
-  error?: string;
-  status?: string;
-};
+  error?: string
+  status?: string
+}
 
 const auth = {
   user: process.env.EMAIL_USER,
   pass: process.env.EMAIL_PASS,
-};
+}
 
 const transporter = nodemailer.createTransport({
   host: 'smtpout.secureserver.net',
@@ -19,7 +19,16 @@ const transporter = nodemailer.createTransport({
     user: auth.user,
     pass: auth.pass,
   },
-});
+})
+
+type TemplateProps = {
+  userName: string
+  userEmail: string
+  ownerName: string
+  boardName: string
+  baseUrl: string
+  inviteId: string
+}
 
 function createTemplate({
   userName,
@@ -28,10 +37,10 @@ function createTemplate({
   boardName,
   baseUrl,
   inviteId,
-}) {
-  const BASE_URL = baseUrl;
+}: TemplateProps) {
+  const BASE_URL = baseUrl
   const UTM_PARAMS =
-    '/?utm_source=newsletter&utm_medium=email&utm_campaign=email';
+    '/?utm_source=newsletter&utm_medium=email&utm_campaign=email'
 
   const html = `
 <!DOCTYPE html>
@@ -331,7 +340,7 @@ ul.social li{
     <div style="display: none; font-size: 1px;max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
       &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
     </div>
-    
+
     <div style="max-width: 600px; margin: 0 auto;" class="email-container">
     	<!-- BEGIN BODY -->
       <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
@@ -438,25 +447,28 @@ ul.social li{
   </center>
 </body>
 </html>
-  `;
+  `
 
-  return html;
+  return html
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  res.setHeader('Content-Type', 'application/json');
+export default async function invite(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+  res.setHeader('Content-Type', 'application/json')
 
   if (req.method !== 'POST')
-    return res.status(405).send({ error: `Method ${req.method} Not Allowed` });
+    return res.status(405).send({ error: `Method ${req.method} Not Allowed` })
 
   const mailOptions = {
     from: `Invite from EasyFlow <${auth.user}>`,
     to: req.body.to,
     subject: 'Board Invitation | EasyFlow',
     html: createTemplate({ ...req.body, baseUrl: req.headers.origin }),
-  };
+  }
 
-  const info = await transporter.sendMail(mailOptions);
+  const info = await transporter.sendMail(mailOptions)
 
-  res.send({ status: info.response });
-};
+  res.send({ status: info.response })
+}

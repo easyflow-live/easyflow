@@ -1,32 +1,32 @@
-import { memo, DetailedHTMLProps, ImgHTMLAttributes } from 'react';
-import cn from 'classnames';
+import cn from 'classnames'
+import { DetailedHTMLProps, ImgHTMLAttributes, memo } from 'react'
 
-type Size = 'small' | 'medium' | 'big';
+type Size = 'small' | 'medium' | 'big'
 
 const sizes = {
   small: 'h-6 w-6',
   medium: 'h-8 w-8',
   big: 'h-10 w-10',
-};
+}
 
 interface AvatarProps
   extends DetailedHTMLProps<
     ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
   > {
-  username: string;
-  borderColor?: string;
-  boxShadowColor?: string;
-  size?: Size;
+  username: string
+  borderColor?: string
+  boxShadowColor?: string
+  size?: Size
 }
 
 const getBorder = (borderColor: string) =>
-  borderColor ? `border-2 border-solid ${borderColor}` : '';
+  borderColor ? `border-2 border-solid ${borderColor}` : ''
 
-const Avatar = memo(
+export const Avatar = memo(
   ({
     username,
-    borderColor,
+    borderColor = '',
     className = '',
     size = 'medium',
     src = '/static/images/default-avatar.png',
@@ -45,6 +45,4 @@ const Avatar = memo(
       {...props}
     />
   )
-);
-
-export default Avatar;
+)

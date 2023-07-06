@@ -1,19 +1,19 @@
-import { Document, Collection } from 'firestorter';
+import { Document, Collection } from 'firestorter'
 
-import BoardDocument from 'modules/Board/data/board.doc';
+import BoardDocument from '@/modules/Board/data/board.doc'
 
 interface User {
-  email: string;
-  photo: string;
-  token: string;
-  username: string;
-  roles: { admin: boolean };
+  email: string
+  photo: string
+  token: string
+  username: string
+  roles: { admin: boolean }
 }
 export default class UserDocument extends Document<User> {
-  private _boards: Collection<BoardDocument>;
+  private _boards: Collection<BoardDocument> = new Collection<BoardDocument>()
 
   get boards(): Collection<BoardDocument> {
-    if (this._boards) return this._boards;
+    if (this._boards) return this._boards
 
     this._boards = new Collection<BoardDocument>(() => 'boards', {
       createDocument: (src, opts) =>
@@ -22,14 +22,14 @@ export default class UserDocument extends Document<User> {
           debug: __DEV__,
           debugName: 'Board document',
         }),
-      query: ref =>
+      query: (ref) =>
         ref
           .where('users', 'array-contains', this.ref)
           .where('archived', '==', false),
       debug: __DEV__,
       debugName: 'Board collection',
-    });
+    })
 
-    return this._boards;
+    return this._boards
   }
 }

@@ -1,18 +1,18 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react'
 
-import UserDocument from 'documents/user.doc';
-import { Collection } from 'firestorter';
+import UserDocument from '@/documents/user.doc'
+import { Collection } from 'firestorter'
 
-import FeedbackInput from './FeedbackInput';
+import FeedbackInput from './FeedbackInput'
 
 export const GiveFeedback = ({ user }: { user: UserDocument }) => {
-  const feedbackRef = useRef<Collection>(null);
+  const feedbackRef = useRef<Collection>(null)
 
   useEffect(() => {
     if (user) {
-      feedbackRef.current = new Collection(`feedbacks`);
+      feedbackRef.current = new Collection(`feedbacks`)
     }
-  }, [user]);
+  }, [user])
 
   const createFeedback = async (props, done) => {
     try {
@@ -20,12 +20,12 @@ export const GiveFeedback = ({ user }: { user: UserDocument }) => {
         ...props,
         user: user.ref,
         createdAt: Date.now(),
-      });
-      done(null);
+      })
+      done(null)
     } catch (error) {
-      done(error);
+      done(error)
     }
-  };
+  }
 
-  return <FeedbackInput onFeedback={createFeedback} />;
-};
+  return <FeedbackInput onFeedback={createFeedback} />
+}

@@ -1,31 +1,31 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
 import {
   useContext,
   createContext,
   PropsWithChildren,
   useState,
   useEffect,
-} from 'react';
-import { useRouter } from 'next/router';
-import cookies from 'js-cookie';
+} from 'react'
+import { useRouter } from 'next/router'
+import cookies from 'js-cookie'
 
-import UserDocument from 'documents/user.doc';
+import UserDocument from '@/documents/user.doc'
 
 export interface CookieUser {
-  displayName: string;
-  email: string;
-  photoURL: string;
-  id: string;
-  token: string;
-  emailVerified: string;
-  isAnonymous: boolean;
-  createdAt: number;
-  lastLoginAt: number;
+  displayName: string
+  email: string
+  photoURL: string
+  id: string
+  token: string
+  emailVerified: string
+  isAnonymous: boolean
+  createdAt: number
+  lastLoginAt: number
 }
 
 export const normalizeCookieUser = (user: firebase.User): CookieUser => {
-  const rawUser: any = user.toJSON();
+  const rawUser: any = user.toJSON()
 
   const {
     displayName,
@@ -37,7 +37,7 @@ export const normalizeCookieUser = (user: firebase.User): CookieUser => {
     uid,
     createdAt,
     lastLoginAt,
-  } = rawUser;
+  } = rawUser
 
   return {
     displayName,
@@ -49,15 +49,15 @@ export const normalizeCookieUser = (user: firebase.User): CookieUser => {
     isAnonymous,
     createdAt,
     lastLoginAt,
-  };
-};
+  }
+}
 
 interface SessionContextProps {
-  user: CookieUser;
-  initializing: boolean;
-  userDoc: UserDocument;
-  isLogged: boolean;
-  logout: () => Promise<void>;
+  user: CookieUser
+  initializing: boolean
+  userDoc: UserDocument
+  isLogged: boolean
+  logout: () => Promise<void>
 }
 
 const SessionContext = createContext<SessionContextProps>({
@@ -66,27 +66,27 @@ const SessionContext = createContext<SessionContextProps>({
   userDoc: null,
   isLogged: false,
   logout: null,
-});
+})
 
 const useProvideSession = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [user, setUser] = useState<CookieUser>();
-  const [userDoc, setUserDoc] = useState<UserDocument>(null);
-  const [initializing, setInitializing] = useState<boolean>(true);
+  const [user, setUser] = useState<CookieUser>()
+  const [userDoc, setUserDoc] = useState<UserDocument>(null)
+  const [initializing, setInitializing] = useState<boolean>(true)
 
   const logout = async () => {
     return firebase
       .auth()
       .signOut()
       .then(() => {
-        cookies.remove('auth');
-        cookies.remove('next-auth.session-token');
-        router.push('/');
-        setUser(null);
+        cookies.remove('auth')
+        cookies.remove('next-auth.session-token')
+        router.push('/')
+        setUser(null)
       })
-      .catch(console.log);
-  };
+      .catch(console.log)
+  }
 
   useEffect(() => {
     const unsubscribe = firebase
@@ -94,28 +94,28 @@ const useProvideSession = () => {
       .onAuthStateChanged(
         (authUser: firebase.User) =>
           authUser && setUser(normalizeCookieUser(authUser))
-      );
+      )
 
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribe()
+  }, [])
 
   useEffect(() => {
-    const cookie = cookies.get('auth');
+    const cookie = cookies.get('auth')
     if (!cookie) {
-      setInitializing(false);
-      return;
+      setInitializing(false)
+      return
     }
 
-    const u = JSON.parse(cookie);
-    setUser(u);
+    const u = JSON.parse(cookie)
+    setUser(u)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (user) {
-      const userDoc = new UserDocument(`users/${user.email}`);
-      setUserDoc(userDoc);
+      const userDoc = new UserDocument(`users/${user.email}`)
+      setUserDoc(userDoc)
 
       firebase
         .firestore()
@@ -128,22 +128,22 @@ const useProvideSession = () => {
           roles: {},
           token: user.token,
         })
-        .then(() => setInitializing(false));
+        .then(() => setInitializing(false))
     }
-  }, [user]);
+  }, [user])
 
-  return { user, initializing, userDoc, isLogged: !!user, logout };
-};
+  return { user, initializing, userDoc, isLogged: !!user, logout }
+}
 
 export const SessionProvider = ({ children }: PropsWithChildren<any>) => {
-  const session = useProvideSession();
+  const session = useProvideSession()
   return (
     <SessionContext.Provider value={session}>
       {children}
     </SessionContext.Provider>
-  );
-};
+  )
+}
 
 export const useSession = () => {
-  return useContext(SessionContext);
-};
+  return useContext(SessionContext)
+}

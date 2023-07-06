@@ -1,17 +1,17 @@
-import { animated, useSpring } from 'react-spring';
-import { forwardRef, ReactChild } from 'react';
+import { animated, useSpring } from 'react-spring'
+import { forwardRef, ReactNode } from 'react'
 
-type Ref = HTMLDivElement;
+type Ref = HTMLDivElement
 
 interface AnimatedSlideUpProps {
-  show: boolean;
-  children: ReactChild;
-  className?: string;
+  show: boolean
+  children: ReactNode
+  className?: string
 }
 
 export const AnimatedSlideUp = forwardRef<Ref, AnimatedSlideUpProps>(
   (props, ref) => {
-    const { show, children, className } = props;
+    const { show, children, className } = props
 
     const spring = useSpring({
       from: {
@@ -25,12 +25,12 @@ export const AnimatedSlideUp = forwardRef<Ref, AnimatedSlideUpProps>(
         freq: '0.0, 0.0',
       },
       config: { duration: 500 },
-    });
+    })
 
     return (
       <animated.div ref={ref} className={className} style={spring}>
         {children}
       </animated.div>
-    );
+    )
   }
-);
+)
