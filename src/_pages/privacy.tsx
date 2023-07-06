@@ -1,8 +1,8 @@
 import { Title } from 'react-head'
 
 import Privacy from '@/modules/LandingPage/Privacy'
-import { Footer } from '@/modules/LandingPage/Footer'
-import { Header } from '@/modules/LandingPage/Header'
+import { Footer } from '@/app/(marketing)/components/Footer'
+import { Header } from '@/app/(marketing)/components/Header'
 // import { useSession } from '@/hooks/use-session';
 
 export default function Index() {

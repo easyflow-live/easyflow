@@ -1,8 +1,8 @@
 import { Title } from 'react-head'
 
 import { Changelog } from '@/components/pages/Changelog'
-import { Header } from '@/modules/LandingPage/Header'
-import { Footer } from '@/modules/LandingPage/Footer'
+import { Header } from '@/app/(marketing)/components/Header'
+import { Footer } from '@/app/(marketing)/components/Footer'
 // import { useSession } from '@/hooks/use-session'
 
 export function Index() {

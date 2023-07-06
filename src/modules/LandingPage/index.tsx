@@ -1,20 +1,17 @@
 'use client'
 
 import React from 'react'
-import { Title } from 'react-head'
 import { useTrail, animated } from 'react-spring'
 
 // import { AnimatedSlideUp } from '@/components/shared/Animated/AnimatedSlideUp'
 import { BoardAndProcess } from '@/components/shared/images/BoardAndProcess'
 // import AnimateSlideUpinView from '@/components/shared/Animated/AnimateSlideUpinView'
 // import { SafariButtonWarning } from '@/components/shared/SafariButtonWarning's
-import { Footer } from './Footer'
-import { Header } from './Header'
 // import Article from './Article'
 
 const items = ['Simple.', 'Beautiful.', 'Darker.', 'Open source.']
 
-const LandingPage = () => {
+export function LandingPage() {
   const trail = useTrail(items.length, {
     from: {
       opacity: 0,
@@ -27,41 +24,33 @@ const LandingPage = () => {
   })
 
   return (
-    <main>
-      <Title>Easy Flow</Title>
-
-      <Header />
-
-      <section className="w-full ">
-        <div
-          className="mx-auto px-6 pt-12 pb-16"
-          style={{ maxWidth: '1280px' }}
-        >
-          <div className="xl:flex -mx-6">
+    <>
+      <section>
+        <div className="mx-auto max-w-6xl pt-12 xl:pt-0 pb-16">
+          <div className="xl:flex xl:items-center">
             <div className="px-6 text-left md:text-center xl:text-left max-w-2xl md:max-w-3xl mx-auto">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-4xl font-light text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-4xl xl:text-4xl font-light text-white leading-tight mb-2">
                 {trail.map((props, index) => (
                   <animated.div
                     key={items[index]}
-                    className="trails-text"
-                    style={{
-                      ...props,
-                      display: 'inline-block',
-                      marginRight: '0.5rem',
-                    }}
+                    className="trails-text mr-2 inline-block"
+                    style={props}
                   >
                     {items[index]}
                   </animated.div>
                 ))}
               </h1>
-              <h2 className="text-2xl sm:block text-teal-500 font-normal">
+
+              <h2 className="text-2xl sm:block text-teal-500 font-normal mb-3">
                 Everything a project manager should be.
               </h2>
-              <p className="mt-6 leading-relaxed sm:text-lg md:text-xl xl:text-lg text-gray-300">
+
+              <p className="leading-relaxed sm:text-lg md:text-xl xl:text-lg text-gray-300">
                 Easy Flow is a real time collaborative project manager based on
                 Kanban methodology. We make everything easier so you and your
                 team can focus on complete tasks and ship great products.
               </p>
+
               <div className="flex mt-6 justify-start md:justify-center xl:justify-start mb-8">
                 {/* <SafariButtonWarning /> */}
                 <span className="bg-amber-300 rounded p-4 text-amber-900">
@@ -70,7 +59,9 @@ const LandingPage = () => {
               </div>
             </div>
 
-            <BoardAndProcess />
+            <div className="flex justify-center">
+              <BoardAndProcess className="max-w-sm" />
+            </div>
           </div>
         </div>
       </section>
@@ -160,10 +151,6 @@ const LandingPage = () => {
       >
         <Pricing />
       </section> */}
-
-      <Footer />
-    </main>
+    </>
   )
 }
-
-export default LandingPage
