@@ -1,4 +1,6 @@
-import { ReactChild, ReactElement } from 'react'
+'use client'
+
+import { ReactElement } from 'react'
 
 enum LogTypes {
   feature = 'feature',
@@ -341,11 +343,11 @@ export function Changelog() {
   )
 }
 
-const LogCard = ({ children }: { children: ReactElement[] }) => (
+const LogCard = ({ children }: WithChildren) => (
   <div className="shadow-lg rounded bg-gray-750 p-5 mb-4">{children}</div>
 )
 
-const LogDate = ({ children }: { children: ReactChild }) => (
+const LogDate = ({ children }: WithChildren) => (
   <div className="border-b-2 border-gray-800 pb-4 mb-5 font-bold">
     {children}
   </div>
@@ -380,6 +382,6 @@ const LogList = ({
   </div>
 )
 
-const LogListItem = ({ children }: { children: ReactChild }) => (
+const LogListItem = ({ children }: WithChildren) => (
   <li className="ml-8 mb-1">{children}</li>
 )
