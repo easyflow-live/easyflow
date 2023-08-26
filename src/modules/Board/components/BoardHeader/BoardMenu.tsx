@@ -1,92 +1,102 @@
-import React, { useState } from 'react';
-import { FaArchive, FaHashtag } from 'react-icons/fa';
-import styled from 'styled-components';
-import { MdSettings } from 'react-icons/md';
+'use client'
 
-import BoardDocument from 'modules/Board/data/board.doc';
-import Menu, { MenuItem, Button, Divider } from 'components/shared/Menu';
-import AddTagsModal from './AddTagsModal';
+import React from 'react'
+import {
+  ArchiveIcon,
+  HashIcon,
+  SettingsIcon,
+  Users,
+  ListIcon,
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/Button'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from '@/components/ui/DropdownMenu'
+import { useBoardId } from '@/hooks/use-board-id'
+import { TeamMembers } from '../TeamMembers'
+import { useArchiveBoardById } from '../../hooks/useArchiveBoardById'
+import { useLeaveBoardById } from '../../hooks/useLeaveBoardById'
+import { UserWithBoards } from '@/types/types'
+import { GroupAdder } from '../GroupAdder'
 
-interface BoardMenuProps {
-  board: BoardDocument;
-  isOwner: boolean;
-  className: string;
-  onRemove: () => void;
+type BoardMenuProps = {
+  user: UserWithBoards | null
 }
 
-const BoardMenu = ({ board, isOwner, className, onRemove }: BoardMenuProps) => {
-  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
+export function BoardMenu({ user }: BoardMenuProps) {
+  const [showTemMembersDialog, setShowTemMembersDialog] = React.useState(false)
+  const [showGroupAdderDialog, setShowGroupAdderDialog] = React.useState(false)
+  const router = useRouter()
+  const boardId = useBoardId()
+  const board = user?.boards.find((b) => b.id === boardId)
+  const isOwner = board?.ownerId === user?.id
 
-  const toggleTagsModal = () => setIsTagsModalOpen(o => !o);
+  const { mutateAsync: archiveBoard } = useArchiveBoardById()
+  const { mutateAsync: leaveBord } = useLeaveBoardById()
 
-  const handleSelection = async (value: string) => {
-    switch (value) {
-      case 'tags':
-        toggleTagsModal();
-        break;
-
-      case 'deleteBoard':
-        onRemove();
-        break;
-
-      default:
-        break;
+  const handleArchiveOrDeleteBoard = async () => {
+    if (isOwner) {
+      await archiveBoard(boardId)
+    } else {
+      await leaveBord({ boardId, memberId: user?.id ?? '' })
     }
-  };
+    router.replace('/dashboard')
+  }
+
+  if (!board) return null
 
   return (
     <>
-      <Menu
-        onSelection={handleSelection}
-        className={`w-56 px-0 py-2 ${className}`}
-        trigger={
-          <StyledButton tag='button'>
-            <MdSettings size='16px' />
-            <div className='hidden sm:block'>&nbsp;Menu</div>
-          </StyledButton>
-        }
-        items={
-          <>
-            <MenuItem value='tags'>
-              <FaHashtag className='text-white mr-3' />
-              <span className='text-white'>Tags</span>
-            </MenuItem>
-            <Divider className='my-2 ' />
-            <MenuItem value='deleteBoard'>
-              <FaArchive className='text-red-400 mr-3' />
-              <span className='text-red-400'>
-                {isOwner ? 'Archive board' : 'Leave board'}
-              </span>
-            </MenuItem>
-          </>
-        }
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
+            <SettingsIcon className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Board menu</DropdownMenuLabel>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => setShowGroupAdderDialog(true)}>
+              <ListIcon className="mr-2 h-4 w-4" />
+              <span>Add group</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => setShowTemMembersDialog(true)}>
+              <Users className="mr-2 h-4 w-4" />
+              <span>Team</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem onClick={handleArchiveOrDeleteBoard}>
+            <ArchiveIcon className="mr-2 h-4 w-4" />
+            <span>{isOwner ? 'Archive board' : 'Leave board'}</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <TeamMembers
+        board={board}
+        open={showTemMembersDialog}
+        onOpenChange={setShowTemMembersDialog}
       />
 
-      <AddTagsModal
+      <GroupAdder
         board={board}
-        isOpen={isTagsModalOpen}
-        toggleIsOpen={toggleTagsModal}
+        open={showGroupAdderDialog}
+        onOpenChange={setShowGroupAdderDialog}
       />
     </>
-  );
-};
-
-export default BoardMenu;
-
-const StyledButton = styled(Button)`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 10px 8px 10px;
-  border-radius: 0.25rem;
-  color: #fff;
-  transition: background 0.1s;
-  cursor: pointer;
-  margin-left: 5px;
-  min-height: 40px;
-
-  &:hover,
-  &:focus {
-    background: rgba(0, 0, 0, 0.2);
-  }
-`;
+  )
+}

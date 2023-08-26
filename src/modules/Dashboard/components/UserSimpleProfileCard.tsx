@@ -1,10 +1,11 @@
-import { Flex, HStack, Text, Avatar } from '@chakra-ui/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
+import { Label } from '@/components/ui/Label'
 
 type UserSimpleProfileCardProps = {
-  username: string;
-  photo: string;
-  email: string;
-};
+  username: string
+  photo?: string
+  email: string
+}
 
 export function UserSimpleProfileCard({
   username,
@@ -12,15 +13,16 @@ export function UserSimpleProfileCard({
   email,
 }: UserSimpleProfileCardProps) {
   return (
-    <HStack alignItems='center' spacing={3} p={2}>
-      <Avatar src={photo} size='lg' />
+    <div className="flex items-center gap-3 p-2">
+      <Avatar>
+        <AvatarImage src={photo} />
+        <AvatarFallback>{username.slice(1, 2)}</AvatarFallback>
+      </Avatar>
 
-      <Flex direction='column'>
-        <Text>{username}</Text>
-        <Text fontSize='sm' color='gray.500'>
-          {email}
-        </Text>
-      </Flex>
-    </HStack>
-  );
+      <div className="flex flex-col">
+        <Label>{username}</Label>
+        <p className="text-gray-500">{email}</p>
+      </div>
+    </div>
+  )
 }

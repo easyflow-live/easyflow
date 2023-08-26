@@ -1,49 +1,53 @@
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/firestore'
-import { initFirestorter } from 'firestorter'
-
-import { Activity } from '@/modules/Activity/domain/activity'
+import { getApp, getApps, initializeApp } from 'firebase/app'
+import { getAuth, signOut } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+// import { initFirestorter } from 'firestorter'
 
 const config = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_APP_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_APP_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_APP_DATABASE_URL,
+  projectId: process.env.NEXT_PUBLIC_APP_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_APP_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
 }
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(config)
+const app = !getApps().length ? initializeApp(config) : getApp()
 
-  // @ts-ignore
-  initFirestorter({ firebase })
-}
-class FirebaseService {
-  app: firebase.app.App
-  db: firebase.firestore.Firestore
+// Initialize Firebase services
+const firestore = getFirestore(app)
+const auth = getAuth(app)
 
-  constructor() {
-    /* Firebase APIs */
-    this.db = firebase.firestore()
-  }
+// @ts-ignore
+// initFirestorter({ app, firestore })
 
-  getUsers = () => this.db.collection('users')
+export { app, firestore, auth }
 
-  getBoards = () => this.db.collection('boards')
+// class FirebaseService {
+//   app: firebase.app.App
+//   db: firebase.firestore.Firestore
 
-  getBoardInvites = () => this.db.collection('board_invites')
+//   constructor() {
+//     /* Firebase APIs */
+//     this.db = firebase.firestore()
+//   }
 
-  getUser = (email: string) => this.getUsers().doc(email)
+//   getUsers = () => this.db.collection('users')
 
-  getBoard = (id: string) => this.getBoards().doc(id)
+//   getBoards = () => this.db.collection('boards')
 
-  getBoardInvite = (id: string) => this.getBoardInvites().doc(id)
+//   getBoardInvites = () => this.db.collection('board_invites')
 
-  createActivity = (activity: Activity) => {
-    return this.db.collection('actions').add(activity)
-  }
-}
+//   getUser = (email: string) => this.getUsers().doc(email)
 
-export default new FirebaseService()
+//   getBoard = (id: string) => this.getBoards().doc(id)
+
+//   getBoardInvite = (id: string) => this.getBoardInvites().doc(id)
+
+//   createActivity = (activity: Activity) => {
+//     return this.db.collection('actions').add(activity)
+//   }
+// }
+
+// export default new FirebaseService()

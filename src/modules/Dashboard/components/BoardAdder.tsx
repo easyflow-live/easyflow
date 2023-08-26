@@ -1,71 +1,48 @@
-import React, { useState } from 'react';
-import { Box, useOutsideClick } from '@chakra-ui/react';
+'use client'
 
-import { useSession } from 'hooks/use-session';
-import BoardDocument from 'modules/Board/data/board.doc';
-import NewBoardForm from 'components/shared/NewBoardForm';
-import { AnimatedOpacity } from 'components/shared/Animated/AnimatedOpacity';
+import { LoaderIcon, PlusCircleIcon } from 'lucide-react'
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+
+import { Button } from '@/components/ui/Button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/Dialog'
+import { BoardForm } from './BoardForm'
 
 export function BoardAdder() {
-  const { userDoc } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
-  const ref = React.useRef<HTMLDivElement>();
+  const { pending } = useFormStatus()
 
-  const toggleOpen = () => setIsOpen(!isOpen);
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="flex gap-2" size="sm">
+          <PlusCircleIcon className="w-4 h-4" />
+          Add board
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add board</DialogTitle>
+          <DialogDescription>Choose a name and a code.</DialogDescription>
+        </DialogHeader>
 
-  useOutsideClick({
-    ref: ref,
-    handler: () => setIsOpen(false),
-  });
+        <BoardForm />
 
-  const handleSubmit = async props => {
-    const { title, code, index } = props;
-
-    await BoardDocument.create({
-      owner: userDoc.ref,
-      users: [userDoc.ref],
-      title,
-      code,
-      index,
-    });
-
-    setIsOpen(false);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.keyCode === 27) {
-      setIsOpen(false);
-    }
-  };
-
-  return isOpen ? (
-    <Box
-      bg='gray.700'
-      shadow='lg'
-      borderRadius='lg'
-      p={4}
-      mr={4}
-      mb={4}
-      w={{ base: 'full', md: 64 }}
-      ref={ref}
-    >
-      <NewBoardForm onKeyDown={handleKeyDown} onSubmit={handleSubmit} />
-    </Box>
-  ) : (
-    <AnimatedOpacity
-      show={true}
-      w={{ base: 'full', md: 32 }}
-      ml={0}
-      mr={4}
-      mb={4}
-    >
-      <button
-        title='Add a new board'
-        onClick={toggleOpen}
-        className='bg-pink-500 hover:bg-pink-600 transition-all duration-300 text-4xl shadow-lg p-4 rounded-lg w-full h-32 cursor-pointer text-white'
-      >
-        +
-      </button>
-    </AnimatedOpacity>
-  );
+        <DialogFooter>
+          <Button disabled={pending} type="submit" form="addBoard">
+            {pending && (
+              <LoaderIcon className="mr-2 h-4 w-4 animate-spin animate-in" />
+            )}
+            Add board
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
 }

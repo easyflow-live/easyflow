@@ -1,7 +1,16 @@
 'use client'
 
-import { HeadProvider } from 'react-head'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { ThemeProvider } from './ThemeProvider'
+import { Toaster } from '@/components/ui/Toaster'
+
+const client = new QueryClient()
 
 export function AppProviders({ children }: WithChildren) {
-  return <HeadProvider headTags={[]}>{children}</HeadProvider>
+  return (
+    <ThemeProvider attribute="class" defaultTheme="dark">
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      <Toaster />
+    </ThemeProvider>
+  )
 }

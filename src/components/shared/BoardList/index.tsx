@@ -1,57 +1,57 @@
-import React, { useState, useRef } from 'react';
-import { observer } from 'mobx-react-lite';
-import styled, { css } from 'styled-components';
-import cn from 'classnames';
+import React, { useState, useRef } from 'react'
+import { observer } from 'mobx-react-lite'
+import styled, { css } from 'styled-components'
+import cn from 'classnames'
 
-import ListDocument, { List as ListModel } from 'documents/list.doc';
-import CardAdder from 'components/shared/CardAdder';
-import Cards from 'components/shared/Cards';
-import DraggableElement from 'components/shared/DraggableElement';
-import { useInterface } from 'components/providers/InterfaceProvider';
-import { useAppToast } from 'hooks/use-app-toast';
-import ListHeader from './ListHeader';
+import ListDocument, { List as ListModel } from 'documents/list.doc'
+import CardAdder from '@/components/shared/CardAdder'
+import Cards from '@/components/shared/Cards'
+import DraggableElement from 'components/shared/DraggableElement'
+import { useInterface } from 'components/providers/InterfaceProvider'
+import { useAppToast } from 'hooks/use-app-toast'
+import ListHeader from './ListHeader'
 
 interface ListProps {
-  index: number;
-  list: ListDocument;
-  previewMode?: boolean;
+  index: number
+  list: ListDocument
+  previewMode?: boolean
 }
 
 const List = ({ index, list, previewMode }: ListProps) => {
-  const toast = useAppToast();
-  const { isLoading } = list;
+  const toast = useAppToast()
+  const { isLoading } = list
 
-  const { hasOpenedModal } = useInterface();
+  const { hasOpenedModal } = useInterface()
 
-  const isHiddenRef = useRef(false);
-  const [, forceRenderer] = useState(false);
+  const isHiddenRef = useRef(false)
+  const [, forceRenderer] = useState(false)
 
-  const updateList = (data: Partial<ListModel>) => list.ref.update(data);
+  const updateList = (data: Partial<ListModel>) => list.ref.update(data)
 
   const remove = async () => {
-    if (!isHiddenRef.current) return;
+    if (!isHiddenRef.current) return
 
-    await list.delete();
-  };
+    await list.delete()
+  }
 
   const undo = () => {
-    isHiddenRef.current = false;
-    forceRenderer(s => !s);
-  };
+    isHiddenRef.current = false
+    forceRenderer((s) => !s)
+  }
 
   const deleteList = async (title: string) => {
-    isHiddenRef.current = true;
-    forceRenderer(s => !s);
+    isHiddenRef.current = true
+    forceRenderer((s) => !s)
 
     toast({
       id: list.id,
       undo,
       title: `The list ${title} was removed.`,
       onCloseComplete: remove,
-    });
-  };
+    })
+  }
 
-  if (isLoading) return null;
+  if (isLoading) return null
 
   return (
     <DraggableElement
@@ -77,7 +77,7 @@ const List = ({ index, list, previewMode }: ListProps) => {
             onUpdate={updateList}
           />
 
-          <div className='mt-3 overflow-y-auto overflow-x-hidden'>
+          <div className="mt-3 overflow-y-auto overflow-x-hidden">
             <Cards
               cards={list.cards}
               listId={list.id}
@@ -95,10 +95,10 @@ const List = ({ index, list, previewMode }: ListProps) => {
         </StyledList>
       )}
     </DraggableElement>
-  );
-};
+  )
+}
 
-export default observer(List);
+export default observer(List)
 
 const StyledList = styled.div<{ previewMode: boolean }>`
   width: 300px;
@@ -121,4 +121,4 @@ const StyledList = styled.div<{ previewMode: boolean }>`
   .add-card-button:focus {
     opacity: 1;
   }
-`;
+`

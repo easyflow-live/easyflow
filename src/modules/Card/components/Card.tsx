@@ -1,22 +1,22 @@
-import React, { useMemo } from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useMemo } from 'react'
+import { observer } from 'mobx-react-lite'
 
-import { findCheckboxes } from 'helpers/find-check-boxes';
-import CardBadges from 'modules/Card/components/CardBadges';
-import { Card as CardModel } from 'modules/Card/data/card.doc';
-import CardMarkdown from 'modules/Card/components/CardMarkdown';
-import { User } from 'store/users';
+import { findCheckboxes } from 'helpers/find-check-boxes'
+import CardBadges from 'modules/Card/components/CardBadges'
+import { Card as CardModel } from 'modules/Card/data/card.doc'
+import CardMarkdown from '@/modules/Card/components/CardMarkdown'
+import { User } from 'store/users'
 
 interface CardProps {
-  card: CardModel;
-  previewMode: boolean;
-  assignees: User[];
-  isHidden: boolean;
-  onUpdate: (data: Partial<CardModel>) => void;
-  onComplete?: (state: boolean) => void;
-  onTagClick?: (tag: string) => void;
-  onClick?: (cardId: string) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+  card: CardModel
+  previewMode: boolean
+  assignees: User[]
+  isHidden: boolean
+  onUpdate: (data: Partial<CardModel>) => void
+  onComplete?: (state: boolean) => void
+  onTagClick?: (tag: string) => void
+  onClick?: (cardId: string) => void
+  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void
 }
 
 const Card = ({
@@ -30,21 +30,21 @@ const Card = ({
   onClick,
   onKeyDown,
 }: CardProps) => {
-  const checkboxes = useMemo(() => findCheckboxes(card.text), [card.text]);
+  const checkboxes = useMemo(() => findCheckboxes(card.text), [card.text])
 
   const showBadges =
-    card.assignee || card.date || card.tags || checkboxes.total > 0;
+    card.assignee || card.date || card.tags || checkboxes.total > 0
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.preventDefault();
-    onClick && onClick(card.id);
-  };
+    e.preventDefault()
+    onClick && onClick(card.id)
+  }
 
-  const cardProps = previewMode ? {} : { onClick: handleClick, onKeyDown };
+  const cardProps = previewMode ? {} : { onClick: handleClick, onKeyDown }
 
   return (
     <CardMarkdown
-      onChangeCheckbox={text => onUpdate({ text })}
+      onChangeCheckbox={(text) => onUpdate({ text })}
       text={card.text}
       isHidden={isHidden}
       previewMode={previewMode}
@@ -66,7 +66,7 @@ const Card = ({
       }
       {...cardProps}
     />
-  );
-};
+  )
+}
 
-export default observer(Card);
+export default observer(Card)

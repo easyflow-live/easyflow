@@ -1,52 +1,60 @@
-import { useEffect } from 'react';
-import { usePrevious } from './use-previous';
+import { RefObject, useEffect } from 'react'
+import { usePrevious } from './use-previous'
 
-function isInDOM(obj) {
-  return Boolean(obj.closest('body'));
+function isInDOM(obj: any) {
+  return Boolean(obj.closest('body'))
 }
 
-function hasParent(element, root) {
-  return root.contains(element) && isInDOM(element);
+function hasParent(element: Node | null, root: HTMLElement) {
+  return root.contains(element) && isInDOM(element)
 }
 
-export const useClickOutside = ({ element, active, onClick }) => {
-  const previousActive = usePrevious(active);
+export const useClickOutside = ({
+  element,
+  active,
+  onClick,
+}: {
+  element: RefObject<HTMLElement>
+  active: boolean
+  onClick: (e: MouseEvent | TouchEvent) => void
+}) => {
+  const previousActive = usePrevious(active)
 
   useEffect(() => {
-    if (!element) return;
+    if (!element) return
 
-    const handleClick = event => {
-      const { current } = element;
+    const handleClick = (event: MouseEvent | TouchEvent) => {
+      const { current } = element
 
-      if (!current) return;
+      if (!current) return
 
-      if (!hasParent(event.target, current)) {
+      if (!hasParent(event.target as Node, current)) {
         if (typeof onClick === 'function') {
-          onClick(event);
+          onClick(event)
         }
       }
-    };
+    }
 
     if (active) {
-      document.addEventListener('mousedown', handleClick);
-      document.addEventListener('touchstart', handleClick);
+      document.addEventListener('mousedown', handleClick)
+      document.addEventListener('touchstart', handleClick)
     }
 
     if (!previousActive && active) {
-      document.addEventListener('mousedown', handleClick);
-      document.addEventListener('touchstart', handleClick);
+      document.addEventListener('mousedown', handleClick)
+      document.addEventListener('touchstart', handleClick)
     }
 
     if (previousActive && !active) {
-      document.removeEventListener('mousedown', handleClick);
-      document.removeEventListener('touchstart', handleClick);
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('touchstart', handleClick)
     }
 
     return () => {
       if (active) {
-        document.removeEventListener('mousedown', handleClick);
-        document.removeEventListener('touchstart', handleClick);
+        document.removeEventListener('mousedown', handleClick)
+        document.removeEventListener('touchstart', handleClick)
       }
-    };
-  }, [active, element, onClick, previousActive]);
-};
+    }
+  }, [active, element, onClick, previousActive])
+}

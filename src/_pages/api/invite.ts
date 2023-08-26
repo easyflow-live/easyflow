@@ -1,10 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server'
+import { type NextRequest } from 'next/server'
 import nodemailer from 'nodemailer'
-
-type Data = {
-  error?: string
-  status?: string
-}
 
 const auth = {
   user: process.env.EMAIL_USER,
@@ -452,23 +448,21 @@ ul.social li{
   return html
 }
 
-export default async function invite(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.setHeader('Content-Type', 'application/json')
+export async function POST(request: NextRequest) {
+  const body = await request.json()
 
-  if (req.method !== 'POST')
-    return res.status(405).send({ error: `Method ${req.method} Not Allowed` })
+  // res.setHeader('Content-Type', 'application/json')
 
   const mailOptions = {
     from: `Invite from EasyFlow <${auth.user}>`,
-    to: req.body.to,
+    to: body.to,
     subject: 'Board Invitation | EasyFlow',
-    html: createTemplate({ ...req.body, baseUrl: req.headers.origin }),
+    html: createTemplate({ ...body, baseUrl: request.headers.get('origin') }),
   }
 
-  const info = await transporter.sendMail(mailOptions)
+  console.info(mailOptions)
 
-  res.send({ status: info.response })
+  // const info = await transporter.sendMail(mailOptions)
+
+  NextResponse.json({ status: 'info.response' })
 }

@@ -1,13 +1,13 @@
-import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
-import classNames from 'classnames';
+import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+import classNames from 'classnames'
 
-type Size = 'small' | 'medium';
-type Variant = 'solid' | 'secondary' | 'ghost' | 'ghost-danger';
+type Size = 'small' | 'medium'
+type Variant = 'solid' | 'secondary' | 'ghost' | 'ghost-danger'
 
 const sizes = {
   small: 'px-2 py-2 text-sm',
   medium: 'px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 md:text-lg',
-};
+}
 
 const variants = {
   solid: 'bg-pink-500 hover:bg-pink-600 shadow-md',
@@ -18,19 +18,19 @@ const variants = {
   'ghost-danger':
     'bg-transparent rounded text-red-500 hover:bg-red-500 hover:text-white',
   disabled: 'bg-pink-400 cursor-not-allowed text-gray-200',
-};
+}
 
 interface ButtonProps
   extends DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  size?: Size;
-  variant?: Variant;
-  block?: boolean;
+  size?: Size
+  variant?: Variant
+  block?: boolean
 }
 
-const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   className,
   size = 'medium',
   variant = 'solid',
@@ -53,6 +53,4 @@ const Button: React.FC<ButtonProps> = ({
     )}
     {...props}
   />
-);
-
-export default Button;
+)

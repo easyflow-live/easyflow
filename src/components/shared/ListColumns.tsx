@@ -1,135 +1,134 @@
-import React, { useState, useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
-import { Collection, Document } from 'firestorter';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import React, { useState, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
+import { Collection, Document } from 'firestorter'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import ListDocument from 'documents/list.doc';
-import firebaseService from 'services/firebase.service';
-import CardDocument from 'modules/Card/data/card.doc';
-import BoardList from 'components/shared/BoardList';
-import { useAppToast } from 'hooks/use-app-toast';
+import ListDocument from 'documents/list.doc'
+import firebaseService from 'services/firebase.service'
+import CardDocument from 'modules/Card/data/card.doc'
+import BoardList from '@/components/shared/BoardList'
+import { useAppToast } from 'hooks/use-app-toast'
 
 interface ListsProps {
-  lists: Collection<ListDocument>;
-  previewMode?: boolean;
+  lists: Collection<ListDocument>
+  previewMode?: boolean
   onCardMove: (
     card: CardDocument['ref'],
     listBefore: ListDocument['ref'],
     listAfter: ListDocument['ref'],
     cardTitle: string
-  ) => void;
+  ) => void
 }
 
 interface UpdatedHash {
-  [id: string]: number;
+  [id: string]: number
 }
 
 const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
-  const toast = useAppToast();
-  const [localLists, setLocalLists] = useState([]);
+  const toast = useAppToast()
+  const [localLists, setLocalLists] = useState([])
 
   useEffect(() => {
-    setLocalLists(lists.docs);
-  }, [lists.docs, lists.docs.length]);
+    setLocalLists(lists.docs)
+  }, [lists.docs, lists.docs.length])
 
   const updateDocs = (documents: Document[], updatedHashTable: UpdatedHash) => {
-    const batch = firebaseService.db.batch();
+    const batch = firebaseService.db.batch()
 
-    documents.forEach(doc => {
+    documents.forEach((doc) => {
       if (
         updatedHashTable[doc.id] !== null &&
         updatedHashTable[doc.id] !== undefined
       ) {
         batch.update(doc.ref, {
           index: updatedHashTable[doc.id],
-        });
+        })
       }
-    });
+    })
 
     batch.commit().catch(() =>
       toast({
         title: 'An error occurred. Please, try again.',
         id: 1,
       })
-    );
-  };
+    )
+  }
 
   const updateLists = (updatedListHash: UpdatedHash) => {
-    updateDocs(lists.docs, updatedListHash);
-  };
+    updateDocs(lists.docs, updatedListHash)
+  }
 
   const updateCards = (
     listDocument: ListDocument,
     updatedCardHash: UpdatedHash
   ) => {
-    updateDocs(listDocument.cards.docs, updatedCardHash);
-  };
+    updateDocs(listDocument.cards.docs, updatedCardHash)
+  }
 
-  const handleDragEnd = result => {
-    const { source, destination, type } = result;
-    const mutableLists = [...localLists];
+  const handleDragEnd = (result) => {
+    const { source, destination, type } = result
+    const mutableLists = [...localLists]
 
     // dropped outside the list
-    if (!destination) return;
+    if (!destination) return
 
     // did not move anywhere
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) {
-      return;
+      return
     }
 
-    const isMovingAList = type === 'COLUMN';
+    const isMovingAList = type === 'COLUMN'
 
     if (isMovingAList) {
-      const [removed] = mutableLists.splice(source.index, 1);
-      mutableLists.splice(destination.index, 0, removed);
+      const [removed] = mutableLists.splice(source.index, 1)
+      mutableLists.splice(destination.index, 0, removed)
 
-      const destId = mutableLists[destination.index].id;
-      const sourceId = mutableLists[source.index].id;
+      const destId = mutableLists[destination.index].id
+      const sourceId = mutableLists[source.index].id
 
       // Create a hash table to update only the list that changed(swapped)
       const listHashRef: UpdatedHash = {
         [destId]: destination.index,
         [sourceId]: source.index,
-      };
+      }
 
       // Update the ui
-      setLocalLists(mutableLists);
+      setLocalLists(mutableLists)
 
       // Update the databsase
-      updateLists(listHashRef);
-      return;
+      updateLists(listHashRef)
+      return
     }
 
     // otherwise, is moving a card
-    const batch = firebaseService.db.batch();
+    const batch = firebaseService.db.batch()
 
     const sourceListDocument = mutableLists.find(
-      l => l.id === source.droppableId
-    );
-    const mutableSourceCards = sourceListDocument.cards.docs;
+      (l) => l.id === source.droppableId
+    )
+    const mutableSourceCards = sourceListDocument.cards.docs
 
-    const isMovingToAnotherList =
-      source.droppableId !== destination.droppableId;
+    const isMovingToAnotherList = source.droppableId !== destination.droppableId
 
     if (isMovingToAnotherList) {
       const destListDocument = mutableLists.find(
-        l => l.id === destination.droppableId
-      );
+        (l) => l.id === destination.droppableId
+      )
 
       const [removedCard] = sourceListDocument.cards.docs.splice(
         source.index,
         1
-      );
+      )
 
-      batch.delete(removedCard.ref);
+      batch.delete(removedCard.ref)
 
       // Add the removed item to the destination list
-      destListDocument.cards.docs.splice(destination.index, 0, removedCard);
+      destListDocument.cards.docs.splice(destination.index, 0, removedCard)
 
-      setLocalLists(mutableLists);
+      setLocalLists(mutableLists)
 
       destListDocument.cards.docs.forEach((doc, index) => {
         doc.id === removedCard.id
@@ -139,8 +138,8 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
               listBefore: sourceListDocument.ref,
               listAfter: destListDocument.ref,
             })
-          : batch.update(doc.ref, { index });
-      });
+          : batch.update(doc.ref, { index })
+      })
       batch
         .commit()
         .then(() =>
@@ -151,45 +150,45 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
             removedCard.data.title
           )
         )
-        .catch(e => {
+        .catch((e) => {
           toast({
             title: 'An error occurred. Please, try again.',
             id: 0,
-          });
-          console.log(e);
-        });
+          })
+          console.log(e)
+        })
     } else {
       // Handle change cards in the same list
 
       const [removedCard] = sourceListDocument.cards.docs.splice(
         source.index,
         1
-      );
-      sourceListDocument.cards.docs.splice(destination.index, 0, removedCard);
+      )
+      sourceListDocument.cards.docs.splice(destination.index, 0, removedCard)
 
-      const destId = mutableSourceCards[destination.index].id;
-      const sourceId = mutableSourceCards[source.index].id;
+      const destId = mutableSourceCards[destination.index].id
+      const sourceId = mutableSourceCards[source.index].id
 
       // Create a hash table to update only the cards that changed(swapped)
       const cardHashRef: UpdatedHash = {
         [destId]: destination.index,
         [sourceId]: source.index,
-      };
+      }
 
       // Change state to update the ui
-      setLocalLists(mutableLists);
+      setLocalLists(mutableLists)
 
       // Update the databsase
-      updateCards(sourceListDocument, cardHashRef);
+      updateCards(sourceListDocument, cardHashRef)
     }
-  };
+  }
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId={'board'} type='COLUMN' direction='horizontal'>
-        {provided => (
+      <Droppable droppableId={'board'} type="COLUMN" direction="horizontal">
+        {(provided) => (
           <div
-            className='inline-flex items-start h-full'
+            className="inline-flex items-start h-full"
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
@@ -206,7 +205,7 @@ const ListColumns = ({ lists, onCardMove, previewMode }: ListsProps) => {
         )}
       </Droppable>
     </DragDropContext>
-  );
-};
+  )
+}
 
-export default observer(ListColumns);
+export default observer(ListColumns)

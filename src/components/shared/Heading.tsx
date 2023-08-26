@@ -1,9 +1,13 @@
 interface HeadingProps {
-  text: string;
+  text: string
 }
 
-const Heading = ({ text }: HeadingProps) => (
-  <h2 className='text-white text-xl'>{text}</h2>
-);
+export function Heading({ text }: HeadingProps) {
+  return (
+    <h2 className="text-foreground text-2xl tracking-tight font-semibold">
+      {text}
+    </h2>
+  )
+}
 
-export default Heading;
+export default Heading

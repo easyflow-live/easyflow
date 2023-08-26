@@ -1,22 +1,22 @@
-import React, { useState, ReactChild, ReactElement } from 'react';
+import React, { useState, ReactChild, ReactElement } from 'react'
 
-import { useKeySubmit } from '../../hooks/use-key-submit';
-import { Input } from '../shared';
-import { InputProps } from './Input';
+import { useKeySubmit } from '../../hooks/use-key-submit'
+import { Input } from '../shared'
+import { InputProps } from './Input'
 
 interface EditableProps {
-  value: string;
-  editable?: boolean;
-  inputProps?: InputProps;
-  onSubmit: (value: string) => void;
-  onRenderInput?: ReactElement;
+  value: string
+  editable?: boolean
+  inputProps?: InputProps
+  onSubmit: (value: string) => void
+  onRenderInput?: ReactElement
   children: ({
     value,
     onClick,
   }: {
-    value: string;
-    onClick: () => void;
-  }) => ReactChild;
+    value: string
+    onClick: () => void
+  }) => ReactChild
 }
 
 const Editable = ({
@@ -27,34 +27,34 @@ const Editable = ({
   children,
   inputProps,
 }: EditableProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [newValue, setNewValue] = useState(value);
+  const [isOpen, setIsOpen] = useState(false)
+  const [newValue, setNewValue] = useState(value)
 
   const handleClick = () => {
-    setIsOpen(true);
-    setNewValue(value);
-  };
+    setIsOpen(true)
+    setNewValue(value)
+  }
 
-  const handleChange = event => setNewValue(event.target.value);
+  const handleChange = (event) => setNewValue(event.target.value)
 
   const submitTitle = () => {
-    if (newValue === '') return;
+    if (newValue === '') return
 
     if (value !== newValue) {
-      onSubmit(newValue);
+      onSubmit(newValue)
     }
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   const revertTitle = () => {
-    setIsOpen(false);
-    setNewValue(value);
-  };
+    setIsOpen(false)
+    setNewValue(value)
+  }
 
-  const handleKeyDown = useKeySubmit(submitTitle, revertTitle);
+  const handleKeyDown = useKeySubmit(submitTitle, revertTitle)
 
   return (
-    <div className='flex-grow'>
+    <div className="flex-grow">
       {isOpen && editable ? (
         onRenderInput ? (
           React.cloneElement(onRenderInput, {
@@ -67,7 +67,7 @@ const Editable = ({
           })
         ) : (
           <Input
-            type='text'
+            type="text"
             autoFocus
             value={newValue}
             onKeyDown={handleKeyDown}
@@ -81,7 +81,7 @@ const Editable = ({
         children({ value, onClick: handleClick })
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Editable;
+export default Editable

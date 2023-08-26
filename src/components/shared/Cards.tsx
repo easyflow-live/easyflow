@@ -1,26 +1,26 @@
-import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
-import { observer } from 'mobx-react-lite';
-import { Collection } from 'firestorter';
-import styled from 'styled-components';
+import React from 'react'
+import { Droppable } from 'react-beautiful-dnd'
+import { observer } from 'mobx-react-lite'
+import { Collection } from 'firestorter'
+import styled from 'styled-components'
 
-import CardDocument, { Card as CardModel } from 'modules/Card/data/card.doc';
-import CardPlaceholder from 'components/shared/CardPlaceholder';
-import Card from 'modules/Card';
-import { emitter } from 'libs/emitter';
-import DraggableElement from './DraggableElement';
-import { useCardFullModal } from 'modules/Board/components/CardModalProvider';
+import CardDocument, { Card as CardModel } from 'modules/Card/data/card.doc'
+import CardPlaceholder from 'components/shared/CardPlaceholder'
+import Card from '@/modules/Card'
+import { emitter } from 'libs/emitter'
+import DraggableElement from './DraggableElement'
+import { useCardFullModal } from 'modules/Board/components/CardModalProvider'
 
 interface CardProps {
-  cards: Collection<CardDocument>;
-  listId: string;
-  previewMode?: boolean;
+  cards: Collection<CardDocument>
+  listId: string
+  previewMode?: boolean
 }
 
 const Cards = ({ cards, listId, previewMode }: CardProps) => {
-  const { isLoading } = cards;
+  const { isLoading } = cards
 
-  const { isOpen, hideModal, showModal } = useCardFullModal();
+  const { isOpen, hideModal, showModal } = useCardFullModal()
 
   const removeCard = (card: CardDocument) => {
     card.ref.delete().then(() =>
@@ -29,11 +29,11 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
         title: card.data.title || '',
         listId,
       })
-    );
-  };
+    )
+  }
 
   const updateCard = (card: CardDocument, data: Partial<CardModel>) => {
-    const oldData = { ...card.data };
+    const oldData = { ...card.data }
 
     card.ref.update(data).then(() =>
       emitter.emit('EDIT_CARD', {
@@ -44,13 +44,13 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
         oldTitle: oldData.title,
         listId,
       })
-    );
-  };
+    )
+  }
 
   return (
-    <Droppable droppableId={listId} direction='vertical' isCombineEnabled>
-      {provided => (
-        <StyledCards className='px-2' ref={provided.innerRef}>
+    <Droppable droppableId={listId} direction="vertical" isCombineEnabled>
+      {(provided) => (
+        <StyledCards className="px-2" ref={provided.innerRef}>
           {isLoading ? (
             <CardPlaceholder />
           ) : (
@@ -79,10 +79,10 @@ const Cards = ({ cards, listId, previewMode }: CardProps) => {
         </StyledCards>
       )}
     </Droppable>
-  );
-};
+  )
+}
 
-export default observer(Cards);
+export default observer(Cards)
 
 const StyledCards = styled.div`
   min-height: 1px;
@@ -93,4 +93,4 @@ const StyledCards = styled.div`
   & > .card:last-child {
     margin-bottom: 0;
   }
-`;
+`

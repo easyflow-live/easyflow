@@ -1,19 +1,19 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
-import cn from 'classnames';
+import React from 'react'
+import { observer } from 'mobx-react-lite'
+import cn from 'classnames'
 
-import ListDocument, { List as ListModel } from 'documents/list.doc';
-import Editable from 'components/shared/Editable';
-import CardCounter from 'components/shared/CardCounter';
-import ListMenu from './ListMenu';
+import ListDocument, { List as ListModel } from 'documents/list.doc'
+import Editable from '@/components/shared/Editable'
+import CardCounter from 'components/shared/CardCounter'
+import ListMenu from './ListMenu'
 
 interface ListHeaderProps {
-  listTitle: string;
-  list: ListDocument;
-  isDragging: boolean;
-  previewMode?: boolean;
-  onRemove: (title: string) => Promise<void>;
-  onUpdate: (data: Partial<ListModel>) => Promise<void>;
+  listTitle: string
+  list: ListDocument
+  isDragging: boolean
+  previewMode?: boolean
+  onRemove: (title: string) => Promise<void>
+  onUpdate: (data: Partial<ListModel>) => Promise<void>
 }
 
 const ListHeader = ({
@@ -24,18 +24,17 @@ const ListHeader = ({
   onRemove,
   onUpdate,
 }: ListHeaderProps) => {
-  const isEditable = !previewMode;
+  const isEditable = !previewMode
 
   const handleSubmit = (value: string) => {
-    if (value === '') return;
+    if (value === '') return
 
     if (value !== listTitle) {
-      onUpdate({ title: value });
+      onUpdate({ title: value })
     }
-  };
+  }
 
-  const handleCounterSubmit = (value: number) =>
-    onUpdate({ cardsLimit: value });
+  const handleCounterSubmit = (value: number) => onUpdate({ cardsLimit: value })
 
   return (
     <div
@@ -50,15 +49,15 @@ const ListHeader = ({
         inputProps={{ isFullWidth: false, style: { maxWidth: '179px' } }}
       >
         {({ value, onClick }) => (
-          <div className='flex-grow'>
+          <div className="flex-grow">
             <div
-              role='button'
+              role="button"
               tabIndex={0}
               onClick={onClick}
-              className='text-white text-left font-semibold w-full cursor-text break-words'
+              className="text-white text-left font-semibold w-full cursor-text break-words"
             >
               <span
-                title='Click to change the list title'
+                title="Click to change the list title"
                 className={cn({ 'cursor-text': isEditable })}
               >
                 {value}
@@ -77,7 +76,7 @@ const ListHeader = ({
 
       {isEditable && <ListMenu title={list.data.title} onRemove={onRemove} />}
     </div>
-  );
-};
+  )
+}
 
-export default observer(ListHeader);
+export default observer(ListHeader)

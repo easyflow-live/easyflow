@@ -1,31 +1,13 @@
-import { useState } from 'react';
+'use client'
 
-import { ScrumBoard } from 'components/shared/images/ScrumBoard';
-import AddBoardModal from 'components/shared/AddBoardModal';
-import Button from 'components/shared/Button';
-import { Empty } from './Empty';
-
-const AddBoardButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
-
-  return (
-    <>
-      <Button className='mt-5' onClick={toggle}>
-        Add new board
-      </Button>
-
-      <AddBoardModal isOpen={isOpen} toggleIsOpen={toggle} />
-    </>
-  );
-};
+import { BoardAdder } from '@/modules/Dashboard/components/BoardAdder'
+import { Empty } from './Empty'
 
 export const StartProjectEmpty = () => (
   <Empty
-    image={<ScrumBoard />}
-    message='Create a board to start a project and get things done.'
-    button={<AddBoardButton />}
-    messageClass='mt-8'
+    image={null}
+    message="Create a board to start a project and get things done."
+    button={<BoardAdder />}
+    messageClass="mt-8"
   />
-);
+)
